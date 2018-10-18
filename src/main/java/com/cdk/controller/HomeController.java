@@ -438,7 +438,7 @@ public class HomeController {
         if(Objects.equals(deleteUserRoles,"")){
             System.out.println("无任何删除操作");
             System.out.println("############################");
-            return new Result(200,"无任何删除操作",null );
+            return new Result(400,"无任何删除操作",null );
         }
         System.out.println("id：" + id);
         System.out.println("deleteUserRoles：" + deleteUserRoles);
@@ -465,7 +465,7 @@ public class HomeController {
             re = new Result(200,"用户角色删除成功",null );
         }else if(temp==99){
             System.out.println("无任何删除操作");
-            re = new Result(200,"无任何删除操作",null );
+            re = new Result(400,"无任何删除操作",null );
         }else{
             System.out.println("用户角色删除失败");
             re = new Result(400,"用户角色删除失败",null );
@@ -483,7 +483,7 @@ public class HomeController {
         if(Objects.equals(deleteRoleRights,"")){
             System.out.println("无任何删除操作");
             System.out.println("############################");
-            return new Result(200,"无任何删除操作",null );
+            return new Result(400,"无任何删除操作",null );
         }
         System.out.println("id：" + id);
         System.out.println("deleteRoleRights：" + deleteRoleRights);
@@ -510,10 +510,142 @@ public class HomeController {
             re = new Result(200,"角色权限删除成功",null );
         }else if(temp==99){
             System.out.println("无任何删除操作");
-            re = new Result(200,"无任何删除操作",null );
+            re = new Result(400,"无任何删除操作",null );
         }else{
             System.out.println("角色权限删除失败");
             re = new Result(400,"角色权限删除失败",null );
+        }
+        System.out.println("############################");
+        return re;
+    }
+
+    @RequestMapping(value="/deleteAllUser", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Result deleteAllUser(@RequestBody Map<String,String> map){
+        String id = (map.get("id") !=null?map.get("id").toString():"");
+        System.out.println("id：" + id);
+        if(Objects.equals(id,"")){
+            System.out.println("无任何批量删除操作");
+            System.out.println("############################");
+            return new Result(400,"无任何批量删除操作",null );
+        }
+
+        String[] ObjectArry =id.split( ",");
+        System.out.println("ObjectArry：" + ObjectArry);
+
+        Result  re;
+        String sql[] = new String[ObjectArry.length] ;
+        String strSql = "";
+        int[] temp = new int[ObjectArry.length];
+
+        for(int i = 0 ;i < ObjectArry.length;i++){
+            //UPDATE user_roles  set  isDelete='1' where
+            sql[i]="UPDATE  t_user  set isDelete='1' where id = '"+ObjectArry[i]+"';";
+            strSql += sql;
+            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
+            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
+            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
+        }
+        System.out.println("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
+        Object args[] = new Object[]{id};
+        if (temp.length !=0 ) {
+            System.out.println("用户批量删除成功");
+            re = new Result(200,"用户批量删除成功",null );
+        }else if(ObjectArry.length==0){
+            System.out.println("无任何删除操作");
+            re = new Result(400,"无任何删除操作",null );
+        }else{
+            System.out.println("用户批量删除失败");
+            re = new Result(400,"用户批量删除失败",null );
+        }
+        System.out.println("############################");
+        return re;
+    }
+
+    @RequestMapping(value="/deleteAllRole", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Result deleteAllRole(@RequestBody Map<String,String> map){
+        String id = (map.get("id") !=null?map.get("id").toString():"");
+        System.out.println("id：" + id);
+        if(Objects.equals(id,"")){
+            System.out.println("无任何批量删除操作");
+            System.out.println("############################");
+            return new Result(400,"无任何批量删除操作",null );
+        }
+
+        String[] ObjectArry =id.split( ",");
+        System.out.println("ObjectArry：" + ObjectArry);
+
+        Result  re;
+        String sql[] = new String[ObjectArry.length] ;
+        String strSql = "";
+        int[] temp = new int[ObjectArry.length];
+
+        for(int i = 0 ;i < ObjectArry.length;i++){
+            //UPDATE user_roles  set  isDelete='1' where
+            sql[i]="UPDATE  t_role  set isDelete='1' where id = '"+ObjectArry[i]+"';";
+            strSql += sql;
+            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
+            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
+            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
+        }
+        System.out.println("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
+        Object args[] = new Object[]{id};
+        if (temp.length !=0 ) {
+            System.out.println("角色批量删除成功");
+            re = new Result(200,"角色批量删除成功",null );
+        }else if(ObjectArry.length==0){
+            System.out.println("无任何删除操作");
+            re = new Result(400,"无任何删除操作",null );
+        }else{
+            System.out.println("角色批量删除失败");
+            re = new Result(400,"角色批量删除失败",null );
+        }
+        System.out.println("############################");
+        return re;
+    }
+
+    @RequestMapping(value="/deleteAllRight", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public Result deleteAllRight(@RequestBody Map<String,String> map){
+        String id = (map.get("id") !=null?map.get("id").toString():"");
+        System.out.println("id：" + id);
+        if(Objects.equals(id,"")){
+            System.out.println("无任何批量删除操作");
+            System.out.println("############################");
+            return new Result(400,"无任何批量删除操作",null );
+        }
+
+        String[] ObjectArry =id.split( ",");
+        System.out.println("ObjectArry：" + ObjectArry);
+
+        Result  re;
+        String sql[] = new String[ObjectArry.length] ;
+        String strSql = "";
+        int[] temp = new int[ObjectArry.length];
+
+        for(int i = 0 ;i < ObjectArry.length;i++){
+            //UPDATE user_roles  set  isDelete='1' where
+            sql[i]="UPDATE  t_right  set isDelete='1' where id = '"+ObjectArry[i]+"';";
+            strSql += sql;
+            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
+            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
+            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
+        }
+        System.out.println("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
+        Object args[] = new Object[]{id};
+        if (temp.length !=0 ) {
+            System.out.println("权限批量删除成功");
+            re = new Result(200,"权限批量删除成功",null );
+        }else if(ObjectArry.length==0){
+            System.out.println("无任何删除操作");
+            re = new Result(400,"无任何删除操作",null );
+        }else{
+            System.out.println("权限批量删除失败");
+            re = new Result(400,"权限批量删除失败",null );
         }
         System.out.println("############################");
         return re;
@@ -883,12 +1015,14 @@ public class HomeController {
                 sql+=" and state != 1 ";
             }
         }
-
+        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        int total = list.size();
         sql+=" limit "+(pageNo-1)*pageSize+", "+pageSize;
         System.out.println("sql：" + sql);
-        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        list=jdbcTemplate.queryForList(sql);
         Map<String,Object> JsonMap =  new HashMap();
         JsonMap.put("list", list);
+        JsonMap.put("total", total);
 
         System.out.println("UserData：" + JsonMap);
         System.out.println("############################");
@@ -949,14 +1083,17 @@ public class HomeController {
                 sql+=" and a.state != 1 ";
             }
         }
+        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        int total = list.size();
         if(!Objects.equals(isPage,"")){
             sql+=" limit "+(pageNo-1)*pageSize+", "+pageSize;
         }
 
         System.out.println("sql：" + sql);
-        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        list=jdbcTemplate.queryForList(sql);
         Map<String,Object> JsonMap =  new HashMap();
         JsonMap.put("list", list);
+        JsonMap.put("total", total);
 
         System.out.println("RoleData：" + JsonMap);
         System.out.println("############################");
@@ -1021,14 +1158,17 @@ public class HomeController {
                 sql+=" and state != 1 ";
             }
         }
+        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        int total = list.size();
         if(!Objects.equals(isPage,"")){
             sql+=" limit "+(pageNo-1)*pageSize+", "+pageSize;
         }
 
         System.out.println("sql：" + sql);
-        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        list=jdbcTemplate.queryForList(sql);
         Map<String,Object> JsonMap =  new HashMap();
         JsonMap.put("list", list);
+        JsonMap.put("total", total);
 
         System.out.println("RightData：" + JsonMap);
         System.out.println("############################");
