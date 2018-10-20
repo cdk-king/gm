@@ -1176,6 +1176,8 @@ public class HomeController {
         return JsonMap;
     }
 
+
+
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map){
 
@@ -1213,6 +1215,44 @@ public class HomeController {
     public Result getUserAllRole(@RequestBody Map map){
 
         String id = (map.get("id") !=null?map.get("id").toString():"");
+
+        System.out.println("id：" + id);
+
+        String sql="SELECT a.id,c.name,a.role from t_role as a " +
+                "join t_user_roles as b on a.id = b.roleId join t_user as c on b.userId = c.id " +
+                "where a.isDelete != 1 and c.isDelete!=1 and  c.id = " + id;
+
+        System.out.println("sql：" + sql);
+        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        System.out.println("list.size()：" + list.size());
+        System.out.println(list);
+        Object[] str =  new String[list.size() ];
+
+        for(int i = 0;i<list.size();i++){
+            str[i] = list.get(i).get("id").toString();
+        }
+
+        Result re;
+
+        Map<String,Object> JsonMap =  new HashMap();
+        JsonMap.put("list", list);
+        re = new Result(200,"用户角色组获取成功",str );
+
+        System.out.println(str);
+        System.out.println("############################");
+
+        return re;
+    }
+
+    /*
+    *   待完成
+    */
+    @RequestMapping("/getGameListForUser")
+    public Result getGameListForUser(@RequestBody Map map){
+
+        String id = (map.get("id") !=null?map.get("id").toString():"");
+
+        //获取
 
         System.out.println("id：" + id);
 
