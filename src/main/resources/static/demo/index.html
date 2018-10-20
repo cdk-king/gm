@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<style>
+    body, html {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 10px;
+        background: beige;
+    }
+
+    * {
+        font-family: Microsoft YaHei, Tahoma, Helvetica, Arial, sans-serif;
+    }
+
+    .header {
+        background-color: #f5f5f5;
+        padding: 20px;
+    }
+
+    .header a {
+        padding: 0 20px;
+    }
+
+    .container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 10px;
+        height: 40px;
+        background-color: #f5f5f5;
+        border-top: 1px solid #ddd;
+        padding: 20px;
+    }
+
+</style>
+<body>
+<!--/*@thymesVar id="name" type="java.lang.String"*/-->
+<p th:text="'Hello！, ' + ${name} + '!'">3333</p>
+<br></br>
+<a href="/getCount" th:text="getCount"></a>
+<br></br>
+<a th:href="@{/one}">布局方法一</a> <a th:href="@{/two}">布局方法二</a>
+
+<div class="container" layout:fragment="content"></div>
+<footer class="footer">
+    <div>
+        <p style="float: left">&copy; cdk 2018</p>
+        <p style="float: left">
+            Powered by <a href="" target="_blank">cdk</a>
+        </p>
+    </div>
+</footer>
+</body>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<script type="text/javascript" th:src="@{js/main.js}"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+<script>
+
+
+</script>
+</html>
