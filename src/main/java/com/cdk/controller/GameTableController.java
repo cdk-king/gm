@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -87,7 +88,7 @@ public class GameTableController {
 
         return JsonMap;
     }
-
+    @Transactional
     @RequestMapping(value="/editGame", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result editGame(@RequestBody Map map){
@@ -131,7 +132,7 @@ public class GameTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping("/addGame")
     public Result addGame(@RequestBody Map map){
 
@@ -176,7 +177,7 @@ public class GameTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping(value="/deleteGame", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteGame(@RequestBody Map map){
@@ -249,7 +250,7 @@ public class GameTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping(value="/deleteAllGame", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteAllGame(@RequestBody Map<String,String> map){

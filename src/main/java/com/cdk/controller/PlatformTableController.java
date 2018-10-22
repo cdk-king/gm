@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,6 +23,8 @@ public class PlatformTableController {
         String platformName = (map.get("platform")!=null?map.get("platform").toString():"");
         String platformTag = (map.get("platformTag")!=null?map.get("platformTag").toString():"");
         String platform_describe = (map.get("platform_describe")!=null?map.get("platform_describe").toString():"");
+
+        String gameName = (map.get("gameName")!=null?map.get("gameName").toString():"");
 
         String addUser = (map.get("addUser")!=null?map.get("addUser").toString():"");
         String addDatetime = (map.get("addDatetime")!=null?map.get("addDatetime").toString():"");
@@ -52,16 +55,19 @@ public class PlatformTableController {
 
         String sql="select a.*,b.gameName,c.role from t_gameplatform as a left JOIN " +
                 "  t_game  as b on a.gameId = b.id and b.isDelete!=1  left JOIN" +
-                "  t_role as c on a.roleId = c.id and c.isDelete != 1  where a.isDelete != 1  ";
+                "  t_role as c on a.roleId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
 
         if(platformName!=""){
-            sql+=" and platform LIKE '%"+ platformName +"%'";
+            sql+=" and a.platform LIKE '%"+ platformName +"%'";
         }
         if(platform_describe!=""){
-            sql+=" and platform_describe LIKE '%"+ platform_describe +"%'";
+            sql+=" and a.platform_describe LIKE '%"+ platform_describe +"%'";
         }
         if(platformTag!=""){
-            sql+=" and platformTag LIKE '%"+ platformTag +"%'";
+            sql+=" and a.platformTag LIKE '%"+ platformTag +"%'";
+        }
+        if(gameName!=""){
+            sql+=" and b.gameName LIKE '%"+ gameName +"%'";
         }
         //0：全部，1：冻结，2：未冻结
         if(!Objects.equals(state,"") && !Objects.equals(state,"0")){
@@ -73,6 +79,9 @@ public class PlatformTableController {
                 sql+=" and state != 1 ";
             }
         }
+
+        sql += " order by a.id ";
+
         List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
         int total = list.size();
         if(!Objects.equals(isPage,"")){
@@ -135,6 +144,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @Transactional
     @RequestMapping("/addPlatform")
     public Result addPlatform(@RequestBody Map map){
 
@@ -185,7 +195,7 @@ public class PlatformTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping(value="/editPlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result editPlatform(@RequestBody Map map){
@@ -234,7 +244,7 @@ public class PlatformTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping(value="/deletePlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deletePlatform(@RequestBody Map map){
@@ -306,7 +316,7 @@ public class PlatformTableController {
         System.out.println("############################");
         return re;
     }
-
+    @Transactional
     @RequestMapping(value="/deleteAllPlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteAllPlatform(@RequestBody Map<String,String> map){

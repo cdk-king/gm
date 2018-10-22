@@ -22,8 +22,39 @@ import java.util.*;
 
 import static com.cdk.util.MD5Util.*;
 
+/**
+ * 〈一句话功能简述〉
+ * 〈功能详细描述〉
+ * @author    [作者]
+ * @version   [版本号, YYYY-MM-DD]
+ * @see       [相关类/方法]
+ * @since     [产品/模块版本]
+ * @deprecated
+ */
 @RestController
 public class HomeController {
+
+///**
+//* 登录验证
+//* @param 传入的
+//* @return
+//* @throws Exception
+//*/
+//这种注释效果
+//方法： 1、先敲“/”在敲两个**，然后回车
+//
+//方法： 2、alt+shift+J
+
+    /**
+  * 〈一句话功能简述〉
+  * 〈功能详细描述〉
+  * @param  [参数1]   [参数1说明]
+  * @param  [参数2]   [参数2说明]
+  * @return [返回类型说明]
+  * @exception/throws [违例类型] [违例说明]
+  * @see [类、类#方法、类#成员]
+  * @deprecated
+  */
     @RequestMapping("/cdk")
     public String cdk(){
         String s = new String("cdk");
@@ -1252,8 +1283,6 @@ public class HomeController {
 
         String id = (map.get("id") !=null?map.get("id").toString():"");
 
-        //获取
-
         System.out.println("id：" + id);
 
         String sql="SELECT a.id,c.name,a.role from t_role as a " +
@@ -1282,8 +1311,7 @@ public class HomeController {
         return re;
     }
 
-    @Resource
-    private DemoService demoService;
+
 
     /**
 
@@ -1292,6 +1320,8 @@ public class HomeController {
      * @return
 
      */
+    @Resource
+    private DemoService demoService;
 
     @RequestMapping("/save")
     public String save(){
