@@ -22,8 +22,39 @@ import java.util.*;
 
 import static com.cdk.util.MD5Util.*;
 
+/**
+ * 〈一句话功能简述〉
+ * 〈功能详细描述〉
+ * @author    [作者]
+ * @version   [版本号, YYYY-MM-DD]
+ * @see       [相关类/方法]
+ * @since     [产品/模块版本]
+ * @deprecated
+ */
 @RestController
 public class HomeController {
+
+///**
+//* 登录验证
+//* @param 传入的
+//* @return
+//* @throws Exception
+//*/
+//这种注释效果
+//方法： 1、先敲“/”在敲两个**，然后回车
+//
+//方法： 2、alt+shift+J
+
+    /**
+  * 〈一句话功能简述〉
+  * 〈功能详细描述〉
+  * @param  [参数1]   [参数1说明]
+  * @param  [参数2]   [参数2说明]
+  * @return [返回类型说明]
+  * @exception/throws [违例类型] [违例说明]
+  * @see [类、类#方法、类#成员]
+  * @deprecated
+  */
     @RequestMapping("/cdk")
     public String cdk(){
         String s = new String("cdk");
@@ -1176,6 +1207,8 @@ public class HomeController {
         return JsonMap;
     }
 
+
+
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map){
 
@@ -1242,8 +1275,43 @@ public class HomeController {
         return re;
     }
 
-    @Resource
-    private DemoService demoService;
+    /*
+    *   待完成
+    */
+    @RequestMapping("/getGameListForUser")
+    public Result getGameListForUser(@RequestBody Map map){
+
+        String id = (map.get("id") !=null?map.get("id").toString():"");
+
+        System.out.println("id：" + id);
+
+        String sql="SELECT a.id,c.name,a.role from t_role as a " +
+                "join t_user_roles as b on a.id = b.roleId join t_user as c on b.userId = c.id " +
+                "where a.isDelete != 1 and c.isDelete!=1 and  c.id = " + id;
+
+        System.out.println("sql：" + sql);
+        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        System.out.println("list.size()：" + list.size());
+        System.out.println(list);
+        Object[] str =  new String[list.size() ];
+
+        for(int i = 0;i<list.size();i++){
+            str[i] = list.get(i).get("id").toString();
+        }
+
+        Result re;
+
+        Map<String,Object> JsonMap =  new HashMap();
+        JsonMap.put("list", list);
+        re = new Result(200,"用户角色组获取成功",str );
+
+        System.out.println(str);
+        System.out.println("############################");
+
+        return re;
+    }
+
+
 
     /**
 
@@ -1252,6 +1320,8 @@ public class HomeController {
      * @return
 
      */
+    @Resource
+    private DemoService demoService;
 
     @RequestMapping("/save")
     public String save(){
