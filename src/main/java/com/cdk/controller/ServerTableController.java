@@ -215,6 +215,7 @@ public class ServerTableController {
     }
 
 
+    public static final Result success = new Result(200,"服务器解冻成功",null );
     @RequestMapping(value="/changeStateToNormal_Server", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Platform(@RequestBody Map map){
@@ -229,7 +230,7 @@ public class ServerTableController {
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             System.out.println("服务器解冻成功");
-            re = new Result(200,"服务器解冻成功",null );
+            re = success;
         }else {
             System.out.println("服务器解冻失败");
             re = new Result(400,"服务器解冻失败",null );
@@ -409,7 +410,7 @@ public class ServerTableController {
 
         System.out.println("id：" + id);
 
-        String sql="SELECT a.id as gameId ,b.id as platformId,c.id as serverId FROM t_game as a join t_gameplatform as b on a.id = b.gameId \n" +
+        String sql="SELECT a.id as gameId ,b.id as platformId,c.id as serverId,a.gameName,b.platform,c.server FROM t_game as a join t_gameplatform as b on a.id = b.gameId \n" +
                 "join t_gameserver as c on b.id = c.platformId where a.isDelete!=1 and b.isDelete!=1 and c.isDelete !=1 ORDER BY a.id ,b.id,c.id";
 
         System.out.println("sql：" + sql);
