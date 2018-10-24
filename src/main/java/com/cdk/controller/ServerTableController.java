@@ -12,6 +12,8 @@ import java.util.*;
 @RestController
 public class ServerTableController {
 
+    public static final String  Divider= "############################";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -93,7 +95,7 @@ public class ServerTableController {
         JsonMap.put("list", list);
         JsonMap.put("total", total);
         System.out.println("serverData：" + JsonMap);
-        System.out.println("############################");
+        System.out.println(Divider);
 
         return JsonMap;
     }
@@ -141,7 +143,7 @@ public class ServerTableController {
             System.out.println("服务器添加失败");
             re = new Result(400,"服务器添加失败",null );
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
     @Transactional
@@ -188,7 +190,7 @@ public class ServerTableController {
             re = new Result(400,"服务器信息更新失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -210,12 +212,13 @@ public class ServerTableController {
             re = new Result(400,"渠道列表获取失败",list );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
 
     public static final Result success = new Result(200,"服务器解冻成功",null );
+
     @RequestMapping(value="/changeStateToNormal_Server", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Platform(@RequestBody Map map){
@@ -236,7 +239,7 @@ public class ServerTableController {
             re = new Result(400,"服务器解冻失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -260,7 +263,7 @@ public class ServerTableController {
             re = new Result(400,"服务器冻结失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
     @Transactional
@@ -284,7 +287,7 @@ public class ServerTableController {
             re = new Result(400,"服务器删除失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -296,7 +299,7 @@ public class ServerTableController {
         System.out.println("id：" + id);
         if(Objects.equals(id,"")){
             System.out.println("无任何批量删除操作");
-            System.out.println("############################");
+            System.out.println(Divider);
             return new Result(400,"无任何批量删除操作",null );
         }
 
@@ -328,7 +331,7 @@ public class ServerTableController {
             System.out.println("服务器批量删除失败");
             re = new Result(400,"服务器批量删除失败",null );
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -359,7 +362,7 @@ public class ServerTableController {
         System.out.println(list);
         Result re;
         re = new Result(200,"用户渠道列表获取成功",list );
-        System.out.println("############################");
+        System.out.println(Divider);
 
         return re;
     }
@@ -389,7 +392,7 @@ public class ServerTableController {
         System.out.println(list);
         Result re;
         re = new Result(200,"渠道服务器列表获取成功",list );
-        System.out.println("############################");
+        System.out.println(Divider);
 
         return re;
     }
@@ -418,7 +421,7 @@ public class ServerTableController {
         System.out.println(list);
         Result re;
         re = new Result(200,"服务器树状结构获取成功",list );
-        System.out.println("############################");
+        System.out.println(Divider);
 
         return re;
     }

@@ -72,9 +72,9 @@
 
         <!--&lt;!&ndash; 热部署 &ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-devtools</artifactId>-->
-            <!--<optional>true</optional> &lt;!&ndash; 这个需要为 true 热部署才有效 &ndash;&gt;-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-devtools</artifactId>-->
+        <!--<optional>true</optional> &lt;!&ndash; 这个需要为 true 热部署才有效 &ndash;&gt;-->
         <!--</dependency>-->
 
         <!-- thymeleaf依赖. -->
@@ -102,8 +102,18 @@
             <scope>provided</scope>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
+            <version>1.4.10</version>
+        </dependency>
 
+
+    </dependencies>
 
 
 </project>

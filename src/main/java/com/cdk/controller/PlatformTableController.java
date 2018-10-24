@@ -12,6 +12,8 @@ import java.util.*;
 @RestController
 public class PlatformTableController {
 
+    public static final String  Divider= "############################";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -94,7 +96,7 @@ public class PlatformTableController {
         JsonMap.put("list", list);
         JsonMap.put("total", total);
         System.out.println("platformData：" + JsonMap);
-        System.out.println("############################");
+        System.out.println(Divider);
 
         return JsonMap;
     }
@@ -117,7 +119,7 @@ public class PlatformTableController {
             re = new Result(400,"游戏列表获取失败",list );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -140,7 +142,7 @@ public class PlatformTableController {
             re = new Result(400,"角色列表获取失败",list );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -192,7 +194,7 @@ public class PlatformTableController {
             System.out.println("权限添加失败");
             re = new Result(400,"权限添加失败",null );
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
     @Transactional
@@ -241,7 +243,7 @@ public class PlatformTableController {
             re = new Result(400,"平台信息更新失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
     @Transactional
@@ -265,7 +267,7 @@ public class PlatformTableController {
             re = new Result(400,"平台删除失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -289,7 +291,7 @@ public class PlatformTableController {
             re = new Result(400,"游戏解冻失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
@@ -313,7 +315,7 @@ public class PlatformTableController {
             re = new Result(400,"平台冻结失败",null );
 
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
     @Transactional
@@ -324,7 +326,7 @@ public class PlatformTableController {
         System.out.println("id：" + id);
         if(Objects.equals(id,"")){
             System.out.println("无任何批量删除操作");
-            System.out.println("############################");
+            System.out.println(Divider);
             return new Result(400,"无任何批量删除操作",null );
         }
 
@@ -356,7 +358,7 @@ public class PlatformTableController {
             System.out.println("平台批量删除失败");
             re = new Result(400,"平台批量删除失败",null );
         }
-        System.out.println("############################");
+        System.out.println(Divider);
         return re;
     }
 
