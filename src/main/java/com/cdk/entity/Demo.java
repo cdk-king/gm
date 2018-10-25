@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 //@Table配置需要操作的数据库
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class Demo {
     public Demo() {
 
@@ -23,10 +23,10 @@ public class Demo {
     @GeneratedValue
     private long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name="psw")
+    @Column(name = "psw")
     private String psw;
 
     public long getId() {
@@ -44,6 +44,7 @@ public class Demo {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getPsw() {
         return psw;
     }

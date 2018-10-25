@@ -95,7 +95,7 @@ public class MD5Util {
         return convertMD5(convertMD5(str));
     }
 
-//    public static void main(String[] args) {
+//    public static void Main(String[] args) {
 //        String s = new String("13917114404");
 //        System.out.println(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
 //        System.out.println("原始：" + s);
