@@ -1,12 +1,17 @@
 package com.cdk.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 //@Table配置需要操作的数据库
 @Entity
-@Table(name="t_user")
+@Table(name = "t_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = -6249397911566315813L;
@@ -14,10 +19,10 @@ public class User implements Serializable {
     public User() {
         //无参构造器
     }
+
     //有参构造器
-    public User(int  id, String name, String account, String password, String nick, int age,
-                int sex, Date date, String address,String phone,String email,String type,
-                int state,Date addDatetime,Date lastDatetime,int isDelete) {
+    public User(int id, String name, String account, String password, String nick, int age, int sex, Date date, String address, String phone,
+            String email, String type, int state, Date addDatetime, Date lastDatetime, int isDelete) {
         this.id = id;
         this.name = name;
         this.account = account;
@@ -46,78 +51,82 @@ public class User implements Serializable {
     /**
      * 用户名
      */
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
     /**
      * 账号
      */
-    @Column(name="account")
+    @Column(name = "account")
     private String account;
     /**
      * 密码
      */
-    @Column(name="password")
+    @Column(name = "password")
     private String password;
     /**
      * 昵称
      */
-    @Column(name="nick")
+    @Column(name = "nick")
     private String nick;
     /**
      * 年龄
      */
-    @Column(name="age")
+    @Column(name = "age")
     private int age;
     /**
      * 性别
      */
-    @Column(name="sex")
+    @Column(name = "sex")
     private int sex;
     /**
      * 日期
      */
-    @Column(name="date")
+    @Column(name = "date")
     private Date date;
     /**
      * 地址
      */
-    @Column(name="address")
+    @Column(name = "address")
     private String address;
     /**
      * 手机
      */
-    @Column(name="phone")
+    @Column(name = "phone")
     private String phone;
     /**
      * 邮箱
      */
-    @Column(name="email")
+    @Column(name = "email")
     private String email;
     /**
      * 类别
      */
-    @Column(name="type")
+    @Column(name = "type")
     private String type;
     /**
      * 状态
      */
-    @Column(name="state")
+    @Column(name = "state")
     private int state;
     /**
      * 添加时间
      */
-    @Column(name="addDatetime")
+    @Column(name = "addDatetime")
     private Date addDatetime;
     /**
      * 更新时间
      */
-    @Column(name="lastDatetime")
+    @Column(name = "lastDatetime")
     private Date lastDatetime;
     /**
      * 删除标识
      */
-    @Column(name="isDelete")
+    @Column(name = "isDelete")
     private int isDelete;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public int getId() {
         return id;

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class TestController {
 
-    public static final String  Divider= "############################";
+    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -20,14 +20,14 @@ public class TestController {
     //org.springframework.ui.Model
     //事实上model数据，最终spring也是写到HttpServletRequest属性中，只是用model更符合mvc设计,减少各层间耦合。
     @RequestMapping("/testModel")
-    public ModelAndView index(Model model){
+    public ModelAndView index(Model model) {
         model.addAttribute("name", "CDK");
         ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 
     @RequestMapping("/testRequest")
-    public ModelAndView request(HttpServletRequest request){
+    public ModelAndView request(HttpServletRequest request) {
         request.setAttribute("name", "Main world");
         ModelAndView mv = new ModelAndView("index");
         return mv;

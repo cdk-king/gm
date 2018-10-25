@@ -1,26 +1,14 @@
 package com.cdk.controller;
 
-import com.cdk.entity.VueLoginInfoVo;
-import com.cdk.result.Result;
-import com.cdk.result.ResultCode;
-import com.cdk.result.ResultFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.cdk.entity.Demo;
 import com.cdk.service.DemoService;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import static com.cdk.util.MD5Util.*;
+import javax.annotation.Resource;
 
 /**
  *  * 〈一句话功能简述〉
@@ -36,27 +24,27 @@ import static com.cdk.util.MD5Util.*;
 //@RestController注解相当于@ResponseBody ＋ @Controller
 public class HomeController {
 
-    public static final String  Divider= "############################";
+    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     /**
-     * 〈一句话功能简述〉
-     * 〈功能详细描述〉
-     * @param  [参数1]   [参数1说明]
-     * @param  [参数2]   [参数2说明]
-     * @return [返回类型说明]
-     * @exception/throws [违例类型] [违例说明]
-     * @see [类、类#方法、类#成员]
-     * @deprecated
-     */
+      * 〈一句话功能简述〉
+      * 〈功能详细描述〉
+      * @param  [参数1]   [参数1说明]
+      * @param  [参数2]   [参数2说明]
+      * @return [返回类型说明]
+      * @exception/throws [违例类型] [违例说明]
+      * @see [类、类#方法、类#成员]
+      * @deprecated
+      */
 
     /**
-    * 测试保存数据方法.
-    *
-    * @return
-    */
+     * 测试保存数据方法.
+     *
+     * @return
+     */
     @Resource
     private DemoService demoService;
 
@@ -85,8 +73,7 @@ public class HomeController {
 
     @RequestMapping("/delLastUser")
     public String delLastUser() {
-        String sql = "delete from t_user where id in\n" +
-                "(select n.id from (select id from t_user order by id desc limit 1) as n)";
+        String sql = "delete from t_user where id in\n" + "(select n.id from (select id from t_user order by id desc limit 1) as n)";
         jdbcTemplate.execute(sql);
         return "delLastUser";
     }

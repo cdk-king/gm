@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.cdk.entity.Demo;
 
-public interface DemoDao extends JpaRepository<Demo, Long>, DemoInterface{
+public interface DemoDao extends JpaRepository<Demo, Long>{
 
 
 

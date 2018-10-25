@@ -1,0 +1,126 @@
+package com.cdk.entity;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+//@Table配置需要操作的数据库
+@Entity
+@Table(name = "t_role")
+public class Role implements Serializable {
+    private static final long serialVersionUID = -6249397911566315813L;
+
+    public Role() {
+        //无参构造器
+    }
+
+    //有参构造器
+    public Role(int id, String role, String role_describe, String addUser, Date addDatetime, int state, int isDelete) {
+
+    }
+
+    /**
+     * 角色-编号
+     */
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private int id;
+    /**
+     * 角色名
+     */
+    @Column(name = "role")
+    private String role;
+    /**
+     * 角色描述
+     */
+    @Column(name = "role_describe")
+    private String role_describe;
+    /**
+     * 添加人
+     */
+    @Column(name = "addUser")
+    private String addUser;
+    /**
+     * 添加时间
+     */
+    @Column(name = "addDatetime")
+    private Date addDatetime;
+    /**
+     * 状态
+     */
+    @Column(name = "state")
+    private int state;
+    /**
+     * 删除标识
+     */
+    @Column(name = "isDelete")
+    private int isDelete;
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getRole_describe() {
+        return role_describe;
+    }
+
+    public String getAddUser() {
+        return addUser;
+    }
+
+    public Date getAddDatetime() {
+        return addDatetime;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setRole_describe(String role_describe) {
+        this.role_describe = role_describe;
+    }
+
+    public void setAddUser(String addUser) {
+        this.addUser = addUser;
+    }
+
+    public void setAddDatetime(Date addDatetime) {
+        this.addDatetime = addDatetime;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
+    }
+
+}

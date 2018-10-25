@@ -1,25 +1,30 @@
 package com.cdk.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import  org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
 import com.cdk.entity.VueLoginInfoVo;
 import com.cdk.result.Result;
-import  com.cdk.result.ResultFactory;
+import com.cdk.result.ResultFactory;
 
-import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import javax.validation.Valid;
 
 
 @RestController
 public class LoginController {
 
-    public static final String  Divider= "############################";
+    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -39,7 +44,7 @@ public class LoginController {
     @CrossOrigin
     @RequestMapping(value = "/testLogin", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public Result login(@Valid @RequestBody VueLoginInfoVo loginInfoVo,BindingResult bindingResult){
+    public Result login(@Valid @RequestBody VueLoginInfoVo loginInfoVo, BindingResult bindingResult) {
         //    if(bindingResult.hasErrors()){
         //        String message = String.format("登录失败，详细信息[%s]",bindingResult.getFieldError().getDefaultMessage());
         //        return ResultFactory.buidFailResult(message);
@@ -53,9 +58,9 @@ public class LoginController {
     }
 
     //HttpServletRequest request
-    @RequestMapping(value="/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public Result login(@RequestBody VueLoginInfoVo loginInfoVo){
+    public Result login(@RequestBody VueLoginInfoVo loginInfoVo) {
 
         //String username = request.getParameter("username");
         String username = loginInfoVo.getUsername();
@@ -67,24 +72,24 @@ public class LoginController {
         //String sql="select * from user where name = '" +  username + "' order by id desc limit 1";
         //Map<String,Object> map=jdbcTemplate.queryForMap(sql);
 
-        String sql="select * from t_user where name = '" +  username + "' order by id desc limit 1";
+        String sql = "select * from t_user where name = '" + username + "' order by id desc limit 1";
         System.out.println("sql：" + sql);
-        List<Map<String,Object>> list=jdbcTemplate.queryForList(sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 
-        if(list != null && list.size() >= 1){
+        if (list != null && list.size() >= 1) {
             //因为string属于符合数据类型，所以应该是使用equals，假如我们使用==比较，肯定是比较它们的内存地址了
-            if(!Objects.equals(list.get(0).get("password"),password)){
-                Result  re = new Result(400,"登录失败，密码错误",list.get(0).get("password")+"|" + password );
+            if (!Objects.equals(list.get(0).get("password"), password)) {
+                Result re = new Result(400, "登录失败，密码错误", list.get(0).get("password") + "|" + password);
                 System.out.println("登录失败，密码错误");
                 return re;
             }
-        }else{
-            Result  re = new Result(400,"登录失败，用户名无效", password );
+        } else {
+            Result re = new Result(400, "登录失败，用户名无效", password);
             System.out.println("登录失败，用户名无效");
             return re;
         }
 
-        Result  re = new Result(200,"登录成功",list.get(0) );
+        Result re = new Result(200, "登录成功", list.get(0));
         System.out.println("用户登录成功");
         return re;
     }
