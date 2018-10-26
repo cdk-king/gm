@@ -21,7 +21,12 @@ public class Role implements Serializable {
 
     //有参构造器
     public Role(int id, String role, String role_describe, String addUser, Date addDatetime, int state, int isDelete) {
-
+        this.id = id;
+        this.role = role;
+        this.role_describe = role_describe;
+        this.addUser = addUser;
+        this.state = state;
+        this.isDelete = isDelete;
     }
 
     /**
