@@ -20,7 +20,6 @@ public class TestControllerTest {
     @Test
     public void testTwo() {
         System.out.println("test hello 2");
-
     }
 
     @Before

@@ -33,4 +33,11 @@ public class TestController {
         return mv;
     }
 
+    @RequestMapping("/test")
+    public String test(HttpServletRequest request) {
+
+        return "cdk11";
+    }
+
+
 }

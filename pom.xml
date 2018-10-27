@@ -27,10 +27,13 @@
     </parent>
 
     <plugins>
-        <plugins>
+        <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
-        </plugins>
+            <configuration>
+                <fork>true</fork>//该配置必须
+            </configuration>
+        </plugin>
     </plugins>
 
 
@@ -110,6 +113,13 @@
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.10</version>
+        </dependency>
+
+        <!-- 热部署模块 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
         </dependency>
 
 

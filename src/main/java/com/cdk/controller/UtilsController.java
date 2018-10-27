@@ -1,6 +1,7 @@
 package com.cdk.controller;
 
 import com.cdk.result.Result;
+import com.cdk.service.impl.UtilsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +24,9 @@ public class UtilsController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private UtilsServiceImpl utilsServiceImpl;
 
     /**
       * 〈一句话功能简述〉
@@ -50,67 +52,15 @@ public class UtilsController {
 
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map) {
-
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
-
-        System.out.println("id：" + id);
-
-        String sql = "SELECT e.id,e.name,c.role,a.rightName,a.rightTag from t_right as a join\n" +
-                "t_role_rights as b on a.id = b.rightId join t_role as c on c.id = b.roleId " +
-                "join t_user_roles as d on c.id = d.roleId join t_user as e on d.userId = e.id " +
-                "where e.isDelete != 1 and c.isDelete!=1 and a.isDelete!=1  and  e.id = " + id;
-
-        System.out.println("sql：" + sql);
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        System.out.println("list.size()：" + list.size());
-        Object[] str = new String[list.size()];
-
-        for (int i = 0; i < list.size(); i++) {
-            str[i] = list.get(i).get("rightTag");
-        }
-
-        Result re;
-
-        Map<String, Object> JsonMap = new HashMap();
-        JsonMap.put("list", list);
-        re = new Result(200, "用户权限组获取成功", str);
-
-        System.out.println("RightData：" + str);
+        Result re = utilsServiceImpl.getUserAllRight(map);
         System.out.println(Divider);
-
         return re;
     }
 
     @RequestMapping("/getUserAllRole")
     public Result getUserAllRole(@RequestBody Map map) {
-
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
-
-        System.out.println("id：" + id);
-
-        String sql =
-                "SELECT a.id,c.name,a.role from t_role as a " + "join t_user_roles as b on a.id = b.roleId join t_user as c on b.userId = c.id " +
-                        "where a.isDelete != 1 and c.isDelete!=1 and  c.id = " + id;
-
-        System.out.println("sql：" + sql);
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        System.out.println("list.size()：" + list.size());
-        System.out.println(list);
-        Object[] str = new String[list.size()];
-
-        for (int i = 0; i < list.size(); i++) {
-            str[i] = list.get(i).get("id").toString();
-        }
-
-        Result re;
-
-        Map<String, Object> JsonMap = new HashMap();
-        JsonMap.put("list", list);
-        re = new Result(200, "用户角色组获取成功", str);
-
-        System.out.println(str);
+        Result re = utilsServiceImpl.getUserAllRole(map);
         System.out.println(Divider);
-
         return re;
     }
 }
