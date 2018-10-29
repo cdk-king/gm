@@ -38,6 +38,13 @@
 
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/fast-md5/fast-md5 -->
+        <!--<dependency>-->
+        <!--<groupId>fast-md5</groupId>-->
+        <!--<artifactId>fast-md5</artifactId>-->
+        <!--<version>2.5</version>-->
+        <!--</dependency>-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
