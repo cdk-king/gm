@@ -1,6 +1,8 @@
 package com.cdk.controller;
 
 
+import com.cdk.Main;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +22,6 @@ public class TestControllerTest {
     @Test
     public void testTwo() {
         System.out.println("test hello 2");
-
     }
 
     @Before
