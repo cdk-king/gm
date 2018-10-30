@@ -260,7 +260,9 @@ public class ServerServiceImpl {
     public Result getServerListForUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         System.out.println("id：" + id);
-
+        if (Objects.equals(id, "")) {
+            return new Result(400, "渠道服务器列表获取失败", null);
+        }
         User user = new User();
         user.setId(Integer.parseInt(id));
 

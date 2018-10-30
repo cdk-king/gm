@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
@@ -65,14 +66,15 @@ public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
         //int type = giftDaoImpl.getGiftType(coupon.getGiftId());
         int type = 0;
         String expectedSign = getSign(type, coupon.getGiftId(), coupon.getPlatformId(), coupon.getCouponCount());
+        System.out.println(sign);
         if (!expectedSign.equals(sign)) {
             return new Result(400, "CDK生成失败", "");
         }
         coupon.setCouponId(type + coupon.getGiftId() * GIFTID_OFFSET);
-        int temp = couponDaoImpl.generateCDK(coupon);
+        String[] temp = couponDaoImpl.generateCDK(coupon);
         Result re;
-        if (temp > 0) {
-            re = new Result(200, "CDK生成成功", "");
+        if (!Objects.equals(temp, null)) {
+            re = new Result(200, "CDK生成成功", temp);
         } else {
             re = new Result(400, "CDK生成失败", "");
         }
@@ -85,17 +87,15 @@ public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
         String strOperator = String.valueOf(platformId);
         String strCount = String.valueOf(count);
         System.out.println(SIGN_KEY_BYTES);
-        String cdk = "cdk";
-        System.out.println(cdk);
         //输出的是byte对象的内存地址
         //都是英文，所以结果相同
 
-        for (int i = 0; i < SIGN_KEY_BYTES.length; i++) {
-            System.out.println(SIGN_KEY_BYTES[i]);
-        }
-        for (int i = 0; i < cdk.getBytes().length; i++) {
-            System.out.println(cdk.getBytes()[i]);
-        }
+        //        for (int i = 0; i < SIGN_KEY_BYTES.length; i++) {
+        //            System.out.println(SIGN_KEY_BYTES[i]);
+        //        }
+        //        for (int i = 0; i < cdk.getBytes().length; i++) {
+        //            System.out.println(cdk.getBytes()[i]);
+        //        }
         MD5 md5 = new MD5();
         md5.Update(strCouponID);
         md5.Update(strOperator);

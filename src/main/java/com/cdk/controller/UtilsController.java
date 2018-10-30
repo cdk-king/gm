@@ -63,4 +63,18 @@ public class UtilsController {
         System.out.println(Divider);
         return re;
     }
+
+    @RequestMapping("/getGameListForUser")
+    public Result getGameListForUser(@RequestBody Map map) {
+        Result re = utilsServiceImpl.getGameListForUser(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/getPlatformListForGameId")
+    public Result getPlatformListForGameId(@RequestBody Map map) {
+        Result re = utilsServiceImpl.getPlatformListForGameId(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

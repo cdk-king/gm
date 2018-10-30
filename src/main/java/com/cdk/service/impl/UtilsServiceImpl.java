@@ -1,6 +1,7 @@
 package com.cdk.service.impl;
 
 import com.cdk.dao.impl.UtilsDaoImpl;
+import com.cdk.entity.Game;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
 
@@ -70,6 +71,40 @@ public class UtilsServiceImpl {
 
         System.out.println(str);
 
+        return re;
+    }
+
+    public Result getGameListForUser(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        User user = new User();
+        user.setId(Integer.parseInt(id));
+        List<Map<String, Object>> list = utilsDaoImpl.getGameListForUser(user);
+        Result re;
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        if (list.size() > 0) {
+            re = new Result(200, "用户游戏列表获取成功", JsonMap);
+        } else {
+            re = new Result(400, "用户游戏列表获取失败", JsonMap);
+        }
+        return re;
+    }
+
+    public Result getPlatformListForGameId(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        Game game = new Game();
+        game.setId(Integer.parseInt(id));
+        List<Map<String, Object>> list = utilsDaoImpl.getPlatformListForGameId(game);
+        Result re;
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        if (list.size() > 0) {
+            re = new Result(200, "用户游戏列表获取成功", JsonMap);
+        } else {
+            re = new Result(400, "用户游戏列表获取失败", JsonMap);
+        }
         return re;
     }
 }

@@ -64,6 +64,7 @@ public class BufferUtil {
      * {@code value} is treated as unsigned, so it won't be sign-extended if
      * negative.
      */
+    ////计算一个整数在varint编码下所占的字节数，
     public static int computeVarInt32Size(final int value) {
         if ((value & (0xffffffff << 7)) == 0) {
             return 1;
