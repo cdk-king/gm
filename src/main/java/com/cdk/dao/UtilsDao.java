@@ -14,4 +14,6 @@ public interface UtilsDao {
     public List<Map<String, Object>> getGameListForUser(User user);
 
     public List<Map<String, Object>> getPlatformListForGameId(Game game);
+
+    public List<Map<String, Object>> getPlatformListForUserIdAndGameId(User user, Game game);
 }

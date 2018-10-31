@@ -2,27 +2,20 @@ package com.cdk.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_gift")
 public class Gift {
     public Gift() {
         //无参构造器
     }
 
-    public Gift(int id, int platformId, String giftName, String gift_describe, String giftTag, String giftValue, int propId, String addUser,
-            Date addDatetime, int state, int sort, int isDelete) {
+    public Gift(int id, int platformId, String giftName, String gift_describe, String giftTag, int giftType, String giftValue, int propId,
+            String addUser, Date addDatetime, int state, int sort, int isDelete) {
         this.id = id;
         this.platformId = platformId;
         this.giftName = giftName;
         this.gift_describe = gift_describe;
         this.giftTag = giftTag;
+        this.giftType = giftType;
         this.giftValue = giftValue;
         this.propId = propId;
         this.addUser = addUser;
@@ -36,75 +29,75 @@ public class Gift {
     /**
      * 礼包-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
 
     /**
      * 平台-编号
      */
-    @Column(name = "platformId")
     private int platformId;
 
     /**
      * 礼包名字
      */
-    @Column(name = "giftName")
+
     private String giftName;
 
     /**
      * 礼包说明
      */
-    @Column(name = "gift_describe")
+
     private String gift_describe;
 
     /**
      * 礼包标识
      */
-    @Column(name = "giftTag")
+
     private String giftTag;
+
+    /**
+     * 礼包类型
+     */
+
+    private int giftType;
 
     /**
      * 礼包价值
      */
-    @Column(name = "giftValue")
+
     private String giftValue;
 
     /**
      * 道具编号
      */
-    @Column(name = "propId")
+
     private int propId;
 
     /**
      * 添加人
      */
-    @Column(name = "addUser")
+
     private String addUser;
 
     /**
      * 添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
 
     /**
      * 状态
      */
-    @Column(name = "state")
     private int state;
 
     /**
      * 分类
      */
-    @Column(name = "sort")
     private int sort;
 
     /**
      * 删除标识
      */
-    @Column(name = "isDelete")
     private int isDelete;
 
     public int getId() {
@@ -201,5 +194,13 @@ public class Gift {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getGiftType() {
+        return giftType;
+    }
+
+    public void setGiftType(int giftType) {
+        this.giftType = giftType;
     }
 }

@@ -6,9 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+//@Table @Column 自动生成表名列名问题！
 //@Table配置需要操作的数据库
 @Entity
-@Table(name = "user")
+@Table(name = "demo")
 public class Demo {
     public Demo() {
 

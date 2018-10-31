@@ -3,15 +3,7 @@ package com.cdk.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = -6249397911566315813L;
@@ -44,84 +36,80 @@ public class User implements Serializable {
     /**
      * 用户-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
     /**
      * 用户名
      */
-    @Column(name = "name")
+
     private String name;
     /**
      * 账号
      */
-    @Column(name = "account")
+
     private String account;
     /**
      * 密码
      */
-    @Column(name = "password")
+
     private String password;
     /**
      * 昵称
      */
-    @Column(name = "nick")
+
     private String nick;
     /**
      * 年龄
      */
-    @Column(name = "age")
+
     private int age;
     /**
      * 性别
      */
-    @Column(name = "sex")
+
     private int sex;
     /**
      * 日期
      */
-    @Column(name = "date")
     private Date date;
     /**
      * 地址
      */
-    @Column(name = "address")
+
     private String address;
     /**
      * 手机
      */
-    @Column(name = "phone")
+
     private String phone;
     /**
      * 邮箱
      */
-    @Column(name = "email")
+
     private String email;
     /**
      * 类别
      */
-    @Column(name = "type")
+
     private String type;
     /**
      * 状态
      */
-    @Column(name = "state")
+
     private int state;
     /**
      * 添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
     /**
      * 更新时间
      */
-    @Column(name = "lastDatetime")
+
     private Date lastDatetime;
     /**
      * 删除标识
      */
-    @Column(name = "isDelete")
     private int isDelete;
 
     public static long getSerialVersionUID() {

@@ -2,15 +2,7 @@ package com.cdk.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_gameplatform")
 public class Platform {
     public Platform() {
         //无参构造器
@@ -35,75 +27,63 @@ public class Platform {
     /**
      * 平台-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
 
     /**
      * 平台名
      */
-    @Column(name = "platform")
     private String platform;
 
     /**
      * 所属游戏编号
      */
-    @Column(name = "gameId")
     private int gameId;
 
     /**
      * 对应角色编号
      */
-    @Column(name = "roleId")
     private int roleId;
 
     /**
      * 平台标识
      */
-    @Column(name = "platformTag")
     private String platformTag;
 
     /**
      * 平台描述
      */
-    @Column(name = "platform_describe")
     private String platform_describe;
 
     /**
      * 父平台编号
      */
-    @Column(name = "parentId")
     private int parentId;
 
     /**
      * 平台状态
      */
-    @Column(name = "state")
+
     private int state;
 
     /**
      * 平台排序
      */
-    @Column(name = "sort")
     private int sort;
 
     /**
      * 平台添加人
      */
-    @Column(name = "addUser")
     private String addUser;
 
     /**
      * 平台添加人
      */
-    @Column(name = "addDatetime")
     private Date addDatetime;
 
     /**
      * 平台删除标识
      */
-    @Column(name = "isDelete")
     private int isDelete;
 
     public int getId() {

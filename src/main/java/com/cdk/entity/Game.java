@@ -3,15 +3,7 @@ package com.cdk.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_game")
 public class Game implements Serializable {
     private static final long serialVersionUID = -6249397911566315813L;
 
@@ -35,57 +27,55 @@ public class Game implements Serializable {
     /**
      * 游戏-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
 
     /**
      * 游戏名
      */
-    @Column(name = "gameName")
+
     private String gameName;
 
     /**
      * 游戏描述
      */
-    @Column(name = "game_describe")
+
     private String game_describe;
 
     /**
      * 游戏标识
      */
-    @Column(name = "gameTag")
+
     private String gameTag;
 
     /**
      * 游戏状态
      */
-    @Column(name = "state")
+
     private int state;
 
     /**
      * 游戏添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
 
     /**
      * 游戏添加人
      */
-    @Column(name = "addUser")
+
     private String addUser;
 
     /**
      * 游戏排序
      */
-    @Column(name = "sort")
+
     private int sort;
 
     /**
      * 游戏删除标识
      */
-    @Column(name = "isDelete")
+
     private int isDelete;
 
     public static long getSerialVersionUID() {

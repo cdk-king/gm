@@ -58,4 +58,13 @@ public class UtilsDaoImpl implements UtilsDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
+
+    @Override
+    public List<Map<String, Object>> getPlatformListForUserIdAndGameId(User user, Game game) {
+        String sql = "SELECT d.id, d.platform   from t_user as a \n" + "join t_user_roles as b on a.id = b.userId \n" +
+                "join t_role as c on b.roleId = c.id \n" + "join t_gameplatform as d on c.id = d.roleId  \n" +
+                "where a.isDelete != 1 and c.isDelete!=1 and d.isDelete!=1 and  a.id ='" + user.getId() + "' and d.gameId ='" + game.getId() + "' ";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
+    }
 }
