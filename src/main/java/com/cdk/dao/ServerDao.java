@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ServerDao {
 
-    public Map<String, Object> getAllServer(Server server, String platformName, String isPage, int pageNo, int pageSize);
+    public Map<String, Object> getAllServer(Server server, String platformName, String gameName, String isPage, int pageNo, int pageSize);
 
     public int addServer(Server server);
 

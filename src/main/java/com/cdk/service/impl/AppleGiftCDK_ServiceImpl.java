@@ -1,9 +1,14 @@
 package com.cdk.service.impl;
 
+import com.google.common.io.BaseEncoding;
+
 import com.cdk.dao.impl.CouponDaoImpl;
+import com.cdk.dao.impl.GiftDaoImpl;
 import com.cdk.entity.Coupon;
+import com.cdk.entity.Gift;
 import com.cdk.result.Result;
 import com.cdk.service.AppleGiftCDK_Service;
+import com.cdk.util.BufferUtil;
 import com.twmacinta.util.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,6 +33,8 @@ public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
 
     @Autowired
     public CouponDaoImpl couponDaoImpl;
+    @Autowired
+    public GiftDaoImpl giftDaoImpl;
 
     public Result generateCDK(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
@@ -81,6 +89,65 @@ public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
         return re;
     }
 
+    public Result analyseCDK(Map map) {
+        String analyseCDK = (map.get("analyseCDK") != null ? map.get("analyseCDK").toString() : "");
+        //int temp = couponDaoImpl.exchangeCDK(exchangeCDK);
+        Map<String, Integer> temp = analyse(analyseCDK);
+        Result re;
+        if (temp.get("couponID") > 0) {
+            re = new Result(200, "CDK解析成功", temp);
+        } else {
+            re = new Result(400, "CDK解析失败", "");
+        }
+        return re;
+    }
+
+    public Map<String, Integer> analyse(String cdk) {
+        System.out.println(cdk);
+        Map<String, Integer> map = new HashMap();
+        //base32解码
+        byte[] data = BaseEncoding.base32().decode(cdk);
+        try {
+            char[] strChar = cdk.toCharArray();
+            String result = "";
+            for (int i = 0; i < strChar.length; i++) {
+                result += Integer.toBinaryString(strChar[i]) + " ";
+            }
+            System.out.println(result);
+            int a = BufferUtil.readVarInt32(data, 2);
+            int length = BufferUtil.computeVarInt32Size(a) + 2;
+            System.out.println(a);
+            long b = BufferUtil.readVarInt64(data, length);
+            System.out.println(b);
+
+            map.put("couponID", a);
+            map.put("sequenceID", (int) b);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return map;
+        //英文数字为一字节（byte），8位（bit），汉字两字节
+        //        data[0] = (byte) (salt >>> 8);
+        //        data[1] = (byte) salt;
+        //
+        //        int index = BufferUtil.writeVarInt32(data, 2, couponID);
+        //        index = BufferUtil.writeVarInt64(data, index, sequenceID);
+        //
+        //        Adler32 adler = new Adler32();
+        //
+        //        adler.update(data);
+        //
+        //        long value = adler.getValue();
+        //
+        //        data[0] = (byte) (value >>> 16);
+        //        data[1] = (byte) value;
+        //
+        //        String encoded = Base64.getEncoder().encodeToString(data);
+        //        System.out.print("Base64:");
+        //        System.out.println(encoded);
+        //        return encoding.encode(data);
+    }
+
     public String getSign(int type, int giftId, int platformId, int count) {
         int CouponId = type + giftId * GIFTID_OFFSET;
         String strCouponID = String.valueOf(CouponId);
@@ -109,5 +176,39 @@ public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
         //                .append("&count=").append(strCount).append("&sign=").append(sign).toString();
         //        System.out.println(request);
         return sign;
+    }
+
+    public Result getGiftListForPlatformId(Map map) {
+
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+
+        Gift gift = new Gift();
+        gift.setPlatformId(Integer.parseInt(platformId));
+
+        Map<String, Object> JsonMap = giftDaoImpl.getGiftListForPlatformId(gift);
+        Result re;
+        if (!Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(200, "礼包列表获取成功", JsonMap);
+        } else {
+            re = new Result(400, "礼包列表获取失败", "");
+        }
+        return re;
+    }
+
+    public Result getNewGiftListForPlatformId(Map map) {
+
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+
+        Gift gift = new Gift();
+        gift.setPlatformId(Integer.parseInt(platformId));
+
+        Map<String, Object> JsonMap = giftDaoImpl.getNewGiftListForPlatformId(gift);
+        Result re;
+        if (!Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(200, "礼包列表获取成功", JsonMap);
+        } else {
+            re = new Result(400, "礼包列表获取失败", "");
+        }
+        return re;
     }
 }

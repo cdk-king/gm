@@ -27,5 +27,25 @@ public class AppleGiftCDKController {
         return re;
     }
 
+    @RequestMapping("/analyseCDK")
+    public Result analyseCDK(@RequestBody Map map) {
+        Result re = appleGiftCDK_ServiceImpl.analyseCDK(map);
+        System.out.println(Divider);
+        return re;
+    }
 
+
+    @RequestMapping("/getGiftListForPlatformId")
+    public Result getGiftListForPlatformId(@RequestBody Map map) {
+        Result re = appleGiftCDK_ServiceImpl.getGiftListForPlatformId(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/getNewGiftListForPlatformId")
+    public Result getNewGiftListForPlatformId(@RequestBody Map map) {
+        Result re = appleGiftCDK_ServiceImpl.getNewGiftListForPlatformId(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

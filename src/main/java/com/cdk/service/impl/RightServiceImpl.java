@@ -120,6 +120,7 @@ public class RightServiceImpl implements RightService {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
+        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
 
         System.out.println("id：" + id);
         System.out.println("rightName：" + rightName);
@@ -127,10 +128,10 @@ public class RightServiceImpl implements RightService {
         System.out.println("rightTag：" + rightTag);
         System.out.println("rightParentId：" + rightParentId);
         System.out.println("rightSort：" + rightSort);
-
         System.out.println("addUser：" + addUser);
         System.out.println("addDatetime：" + addDatetime);
         System.out.println("state：" + state);
+        System.out.println("sort：" + sort);
 
         Right right = new Right();
         right.setId(Integer.parseInt(id));
@@ -138,6 +139,11 @@ public class RightServiceImpl implements RightService {
         right.setRight_describe(right_describe);
         right.setRightTag(rightTag);
         right.setAddUser(addUser);
+        try {
+            right.setRightSort(Integer.parseInt(sort));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
         Result re;
         int temp = rightDaoImpl.editRight(right);

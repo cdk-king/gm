@@ -72,4 +72,23 @@ public class GiftDaoImpl implements GiftDao {
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
+
+    @Override
+    public Map<String, Object> getGiftListForPlatformId(Gift gift) {
+        String sql = "select id,giftName from t_gift where platformId = " + gift.getPlatformId() + "  and isDelete!=1 ";
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
+    }
+
+    public Map<String, Object> getNewGiftListForPlatformId(Gift gift) {
+        String sql = "select id,giftName from t_gift_upload where platformId = " + gift.getPlatformId() + " ";
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
+    }
 }

@@ -55,7 +55,6 @@ public class GiftServiceImpl {
         } else {
             re = new Result(200, "礼包列表获取成功", JsonMap);
         }
-
         return re;
     }
 

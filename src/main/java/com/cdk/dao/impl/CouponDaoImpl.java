@@ -85,6 +85,11 @@ public class CouponDaoImpl {
         return resultList;
     }
 
+    public int exchangeCDK(String cdk) {
+        int temp = 1;
+        return temp;
+    }
+
     public int getMaxEnd_sequence(Coupon coupon) {
         String sql = "select max(end_sequence) as max_end_sequence from t_coupon ";
         //+" where id=" + coupon.getCouponId() + " and platformId=" + coupon.getPlatformId();
@@ -184,7 +189,8 @@ public class CouponDaoImpl {
         int len = BufferUtil.computeVarInt32Size(couponID) + BufferUtil.computeVarInt64Size(sequenceID) + 2;
 
         byte[] data = new byte[len];
-
+        //英文数字为一字节（byte），8位（bit），汉字两字节
+        //int 32位 4字节
         data[0] = (byte) (salt >>> 8);
         data[1] = (byte) salt;
 

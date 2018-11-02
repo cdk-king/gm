@@ -9,4 +9,6 @@ public interface GiftDao {
     public Map<String, Object> getGift(Gift gift, String isPage, int pageNo, int pageSize, String strPlatform);
 
     public int addGift(Gift gift);
+
+    public Map<String, Object> getGiftListForPlatformId(Gift gift);
 }
