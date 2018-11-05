@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -64,7 +65,13 @@ public class CDK_ServiceImpl {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         int platformId = Integer.parseInt(strPlatformId);
         Map<String, Integer> temp = analyse(cdk);
-        if (temp.get("couponID") > 0) {
+        if (temp.get("couponId") > 0) {
+            int check = checkCDK(temp, cdk, platformId);
+            System.out.println("check:" + check);
+            if (check == 1) {
+                re = new Result(400, "当前CDK已被使用或者激活", "");
+                return re;
+            }
             int a = cdkDaoImpl.exchangeCDK(temp, platformId, cdk);
             if (a > 0) {
                 re = new Result(200, "CDK解析成功", temp);
@@ -75,6 +82,16 @@ public class CDK_ServiceImpl {
             re = new Result(400, "CDK解析失败", "");
         }
         return re;
+    }
+
+    public int checkCDK(Map map, String cdk, int platformId) {
+        List<Map<String, Object>> list = cdkDaoImpl.checkCDK(map, cdk, platformId);
+        System.out.println(list);
+        System.out.println(list.size());
+        if (null == list || list.size() == 0) {
+            return 0;
+        }
+        return 1;
     }
 
     public Map<String, Integer> analyse(String cdk) {
@@ -95,8 +112,8 @@ public class CDK_ServiceImpl {
             long b = BufferUtil.readVarInt64(data, length);
             System.out.println(b);
 
-            map.put("couponID", a);
-            map.put("sequenceID", (int) b);
+            map.put("couponId", a);
+            map.put("sequenceId", (int) b);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

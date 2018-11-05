@@ -1,5 +1,6 @@
 package com.cdk.dao;
 
+import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 
@@ -26,7 +27,7 @@ public interface ServerDao {
 
     public List<Map<String, Object>> getPlatformListForUser(User user);
 
-    public List<Map<String, Object>> getServerListForUser(User user);
+    public List<Map<String, Object>> getServerListForPlatform(Platform platform);
 
     public List<Map<String, Object>> getServerTree();
 }

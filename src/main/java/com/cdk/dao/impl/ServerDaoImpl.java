@@ -1,6 +1,7 @@
 package com.cdk.dao.impl;
 
 import com.cdk.dao.ServerDao;
+import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 
@@ -151,9 +152,9 @@ public class ServerDaoImpl implements ServerDao {
     }
 
     @Override
-    public List<Map<String, Object>> getServerListForUser(User user) {
+    public List<Map<String, Object>> getServerListForPlatform(Platform platform) {
         String sql = "SELECT a.id as serverId,a.server as serverName,a.serverIp from t_gameserver as a \n" +
-                "join t_gameplatform as b on a.platformId = b.id \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.id =" + user.getId();
+                "join t_gameplatform as b on a.platformId = b.id \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.id =" + platform.getId();
 
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);

@@ -1,6 +1,7 @@
 package com.cdk.service.impl;
 
 import com.cdk.dao.impl.ServerDaoImpl;
+import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
@@ -258,16 +259,16 @@ public class ServerServiceImpl {
         return re;
     }
 
-    public Result getServerListForUser(Map map) {
+    public Result getServerListForPlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         System.out.println("id：" + id);
         if (Objects.equals(id, "")) {
             return new Result(400, "渠道服务器列表获取失败", null);
         }
-        User user = new User();
-        user.setId(Integer.parseInt(id));
+        Platform platform = new Platform();
+        platform.setId(Integer.parseInt(id));
 
-        List<Map<String, Object>> list = serverDaoImpl.getPlatformListForUser(user);
+        List<Map<String, Object>> list = serverDaoImpl.getServerListForPlatform(platform);
         Result re;
         if (list.size() != 0) {
             re = new Result(200, "渠道服务器列表获取成功", list);

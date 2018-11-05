@@ -100,9 +100,9 @@ public class ServerTableController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
-    @RequestMapping("/getServerListForUser")
-    public Result getServerListForUser(@RequestBody Map map) {
-        Result re = serverServiceImpl.getServerListForUser(map);
+    @RequestMapping("/getServerListForPlatform")
+    public Result getServerListForPlatform(@RequestBody Map map) {
+        Result re = serverServiceImpl.getServerListForPlatform(map);
         System.out.println(Divider);
         return re;
     }
