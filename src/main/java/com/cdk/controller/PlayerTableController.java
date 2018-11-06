@@ -33,4 +33,34 @@ public class PlayerTableController {
         System.out.println(Divider);
         return re;
     }
+
+
+    @RequestMapping("/ImportPlayer")
+    public Result ImportPlayer(@RequestBody Map map) {
+        Result re = playerServiceImpl.ImportPlayer(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/ChangeProhibitSpeakToNormal")
+    public Result ChangeProhibitSpeakToNormal(@RequestBody Map map) {
+        Result re = playerServiceImpl.ChangeProhibitSpeakToNormal(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/ChangeToBan")
+    public Result ChangeToBan(@RequestBody Map map) {
+        Result re = playerServiceImpl.ChangeToBan(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/ChangeBanToNormal")
+    public Result ChangeBanToNormal(@RequestBody Map map) {
+        Result re = playerServiceImpl.ChangeBanToNormal(map);
+        System.out.println(Divider);
+        return re;
+    }
+
 }

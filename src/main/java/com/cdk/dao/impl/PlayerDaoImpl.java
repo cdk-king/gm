@@ -2,10 +2,15 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.Player;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,13 +132,141 @@ public class PlayerDaoImpl {
         return JsonMap;
     }
 
-    public int ChangeToProhibitSpeak(Player player) {
+    public int ChangeToProhibitSpeak(Player player, String userId) {
         String sql = "UPDATE t_player SET isProhibitSpeak='1' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
                 player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
                 "' and serverId = '" + player.getServerId() + "'    ";
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            SaveProhibitSpeakLog(player, userId);
+        }
         return temp;
     }
 
+    public void SaveProhibitSpeakLog(Player player, String userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql =
+                "insert t_player_prohibitspeak_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToProhibitSpeak) values ('" +
+                        player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() +
+                        "','" + player.getServerId() + "','" + addDatetime + "','" + userId + "','1')  ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            System.out.println("禁言日志保存成功");
+        } else {
+            System.out.println("禁言日志保存失败");
+        }
+    }
+
+    public int ChangeProhibitSpeakToNormal(Player player, String userId) {
+        String sql = "UPDATE t_player SET isProhibitSpeak='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
+                player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
+                "' and serverId = '" + player.getServerId() + "'    ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            SaveProhibitSpeakToNormalLog(player, userId);
+        }
+        return temp;
+    }
+
+    public void SaveProhibitSpeakToNormalLog(Player player, String userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql =
+                "insert t_player_prohibitspeak_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToProhibitSpeak) values ('" +
+                        player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() +
+                        "','" + player.getServerId() + "','" + addDatetime + "','" + userId + "','0')  ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            System.out.println("解除禁言日志保存成功");
+        } else {
+            System.out.println("解除禁言日志保存失败");
+        }
+    }
+
+    public int ChangeToBan(Player player, String userId) {
+        String sql = "UPDATE t_player SET isBan='1' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
+                player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
+                "' and serverId = '" + player.getServerId() + "'    ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            SaveBanLog(player, userId);
+        }
+        return temp;
+    }
+
+    public void SaveBanLog(Player player, String userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql = "insert t_player_ban_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToBan) values ('" +
+                player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() + "','" +
+                player.getServerId() + "','" + addDatetime + "','" + userId + "','1')  ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            System.out.println("禁封日志保存成功");
+        } else {
+            System.out.println("禁封日志保存失败");
+        }
+    }
+
+    public int ChangeBanToNormal(Player player, String userId) {
+        String sql = "UPDATE t_player SET isBan='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
+                player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
+                "' and serverId = '" + player.getServerId() + "'    ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            SaveBanToNormalLog(player, userId);
+        }
+        return temp;
+    }
+
+    public void SaveBanToNormalLog(Player player, String userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql = "insert t_player_ban_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToBan) values ('" +
+                player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() + "','" +
+                player.getServerId() + "','" + addDatetime + "','" + userId + "','0')  ";
+        System.out.println(sql);
+        int temp = jdbcTemplate.update(sql);
+        if (temp > 0) {
+            System.out.println("解除禁封日志保存成功");
+        } else {
+            System.out.println("解除禁封日志保存失败");
+        }
+    }
+
+    public int[] ImportPlayer(JSONArray jsonArray, int platformId, int serverId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql[] = new String[jsonArray.length()];
+        String strSql = "";
+        //清空数据库表
+        strSql = "truncate table t_player";
+        jdbcTemplate.update(strSql);
+        int[] temp = new int[jsonArray.length()];
+        for (int i = 1; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                sql[i] = "insert into t_player (playerName,playerAccount,playerId,isOnline,lastIp,vipLevel,diamond,rechargeAmount," +
+                        "level,registrationTime,combatPower,addDateTime,isProhibitSpeak,isBan,platformId,serverId) values ( '" +
+                        jsonObject.get("playerName") + "','" + jsonObject.get("playerAccount") + "','" + jsonObject.get("playerId") + "', '" +
+                        jsonObject.get("isOnline") + "'  ,'" + jsonObject.get("lastIp") + "'  ,'" + jsonObject.get("vipLevel") + "' ,'" +
+                        jsonObject.get("diamond") + "'  ,'" + jsonObject.get("rechargeAmount") + "'  ,'" + jsonObject.get("level") + "'  ,  '" +
+                        jsonObject.get("registrationTime") + "'  ,'" + jsonObject.get("combatPower") + "'  ,'" + addDatetime + "'  ,'" +
+                        jsonObject.get("isProhibitSpeak") + "'  ,'" + jsonObject.get("isBan") + "'  ,'" + platformId + "'  ,'" + serverId + "' ) ; ";
+                strSql += sql;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        temp = jdbcTemplate.batchUpdate(sql);
+        return temp;
+    }
 }
