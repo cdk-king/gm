@@ -1,0 +1,90 @@
+package com.cdk.service.impl;
+
+import com.cdk.dao.impl.PlatformNoticeDaoImpl;
+import com.cdk.entity.PlatformNotice;
+import com.cdk.result.Result;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+
+@Service
+public class PlatformNoticeServiceImpl {
+
+    public static final String Divider = "############################";
+    public static final String Split = "----------------";
+
+    @Autowired
+    public PlatformNoticeDaoImpl platformNoticeDaoImpl;
+
+    public Result getPlatformNotice(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
+        String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        int pageNo = Integer.parseInt(StrPageNo);
+        int pageSize = Integer.parseInt(StrPageSize);
+        int platformId = Integer.parseInt(strPlatformId);
+        Result re;
+        PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setPlatformId(platformId);
+        platformNotice.setServerList(serverName);
+        platformNotice.setNoticeContent(noticeContent);
+        platformNotice.setAddUser(addUser);
+        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize);
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "全服公告列表获取失败", "");
+        } else {
+            re = new Result(200, "全服公告列表获取成功", JsonMap);
+        }
+        return re;
+    }
+
+    public Result addPlatformNotice(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
+        String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
+        String strEndDatetime = (map.get("endDatetime") != null ? map.get("endDatetime").toString() : "");
+        String noticeTitle = (map.get("noticeTitle") != null ? map.get("noticeTitle").toString() : "");
+        String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
+        int platformId = Integer.parseInt(strPlatformId);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ParsePosition pos = new ParsePosition(0);
+        Date startDatetime = formatter.parse(strStartDatetime, pos);
+        //必须重新创建实例
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        pos = new ParsePosition(0);
+        Date endDatetime = formatter.parse(strEndDatetime, pos);
+
+        Result re;
+        PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setPlatformId(platformId);
+        platformNotice.setServerList(strServerList);
+        platformNotice.setNoticeTitle(noticeTitle);
+        platformNotice.setNoticeContent(noticeContent);
+        platformNotice.setAddUser(addUser);
+        platformNotice.setStartDatetime(startDatetime);
+        platformNotice.setEndDatetime(endDatetime);
+
+
+        int temp = platformNoticeDaoImpl.addPlatformNotice(platformNotice);
+        if (temp > 0) {
+            System.out.println("全服公告添加成功");
+            re = new Result(200, "全服公告添加成功", null);
+        } else {
+            System.out.println("全服公告添加失败");
+            re = new Result(400, "全服公告添加失败", null);
+        }
+        return re;
+    }
+}

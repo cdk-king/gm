@@ -43,4 +43,25 @@ public class SendNoticeController {
         System.out.println(Divider);
         return re;
     }
+
+    @RequestMapping("/getNotice")
+    public Result getNotice(@RequestBody Map map) {
+        Result re = sendNoticeServiceImpl.getNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/deleteAllNotice")
+    public Result deleteAllNotice(@RequestBody Map map) {
+        Result re = sendNoticeServiceImpl.deleteAllNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/sendNotice")
+    public Result sendNotice(@RequestBody Map map) {
+        Result re = sendNoticeServiceImpl.sendNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

@@ -29,6 +29,7 @@ public class PlayerServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strSearchForm = (map.get("searchForm") != null ? map.get("searchForm").toString() : "");
+
         //strSearchForm = JSON.toJSONString(strSearchForm);
         System.out.println(strSearchForm);
         JSONObject jsonObject = JSON.parseObject(strSearchForm);
@@ -72,12 +73,15 @@ public class PlayerServiceImpl {
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
         String playerId = (map.get("playerId") != null ? map.get("playerId").toString() : "");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
+        String strProhibitSpeakTime = (map.get("prohibitSpeakTime") != null ? map.get("prohibitSpeakTime").toString() : "0");
+        int prohibitSpeakTime = Integer.parseInt(strProhibitSpeakTime);
         Player player = new Player();
         player.setServerId(Integer.parseInt(strServerId));
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
         player.setPlayerId(Integer.parseInt(playerId));
+        player.setProhibitSpeakTime(prohibitSpeakTime);
         Result re;
         int temp = playerDaoImpl.ChangeToProhibitSpeak(player, userId);
         if (temp > 0) {
@@ -122,12 +126,15 @@ public class PlayerServiceImpl {
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
         String playerId = (map.get("playerId") != null ? map.get("playerId").toString() : "");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
+        String strBanTime = (map.get("banTime") != null ? map.get("banTime").toString() : "0");
+        int banTime = Integer.parseInt(strBanTime);
         Player player = new Player();
         player.setServerId(Integer.parseInt(strServerId));
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
         player.setPlayerId(Integer.parseInt(playerId));
+        player.setBanTime(banTime);
         Result re;
         int temp = playerDaoImpl.ChangeToBan(player, userId);
         if (temp > 0) {

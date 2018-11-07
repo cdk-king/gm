@@ -9,7 +9,7 @@ public class Player {
 
     public Player(int id, String playerName, String playerAccount, int playerId, int isOnline, String lastIp, int vipLevel, int diamond,
             int rechargeAmount, int level, Date registrationTime, int combatPower, Date addDateTime, int isProhibitSpeak, int isBan, int platformId,
-            int serverId) {
+            int serverId, int prohibitSpeakTime, int banTime) {
         this.id = id;
         this.playerName = playerName;
         this.playerAccount = playerAccount;
@@ -27,6 +27,8 @@ public class Player {
         this.isBan = isBan;
         this.platformId = platformId;
         this.serverId = serverId;
+        this.prohibitSpeakTime = prohibitSpeakTime;
+        this.banTime = banTime;
     }
 
     /**
@@ -117,6 +119,16 @@ public class Player {
      * 玩家所在服务器Id
      */
     private int serverId;
+
+    /**
+     * 禁言时间
+     */
+    private int prohibitSpeakTime;
+
+    /**
+     * 禁封时间
+     */
+    private int banTime;
 
     public int getId() {
         return id;
@@ -252,5 +264,21 @@ public class Player {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+
+    public int getProhibitSpeakTime() {
+        return prohibitSpeakTime;
+    }
+
+    public void setProhibitSpeakTime(int prohibitSpeakTime) {
+        this.prohibitSpeakTime = prohibitSpeakTime;
+    }
+
+    public int getBanTime() {
+        return banTime;
+    }
+
+    public void setBanTime(int banTime) {
+        this.banTime = banTime;
     }
 }
