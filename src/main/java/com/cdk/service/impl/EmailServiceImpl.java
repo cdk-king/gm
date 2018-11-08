@@ -1,0 +1,132 @@
+package com.cdk.service.impl;
+
+import com.cdk.dao.impl.EmailDaoImpl;
+import com.cdk.entity.Email;
+import com.cdk.result.Result;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+
+@Service
+public class EmailServiceImpl {
+
+    public static final String Divider = "############################";
+    public static final String Split = "----------------";
+
+    @Autowired
+    public EmailDaoImpl emailDaoImpl;
+
+    public Result getEmail(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String emailContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
+
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        int pageNo = Integer.parseInt(StrPageNo);
+        int pageSize = Integer.parseInt(StrPageSize);
+        int platformId = Integer.parseInt(strPlatformId);
+        int serverId = Integer.parseInt(strPlatformId);
+        Result re;
+        Email email = new Email();
+        email.setPlatformId(platformId);
+        email.setServerId(serverId);
+        email.setEmailContent(emailContent);
+        email.setAddUser(addUser);
+        Map<String, Object> JsonMap = emailDaoImpl.getEmail(email, isPage, pageNo, pageSize);
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "邮件列表获取失败", "");
+        } else {
+            re = new Result(200, "邮件列表获取成功", JsonMap);
+        }
+        return re;
+    }
+
+    public Result addEmail(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
+        String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
+        String sendReason = (map.get("sendReason") != null ? map.get("sendReason").toString() : "");
+        String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "1");
+        String strMinLevel = (map.get("minLevel") != null ? map.get("minLevel").toString() : "0");
+        String strMaxLevel = (map.get("maxLevel") != null ? map.get("maxLevel").toString() : "0");
+
+        String strMinVipLevel = (map.get("minVipLevel") != null ? map.get("minVipLevel").toString() : "0");
+        String strMaxVipLevel = (map.get("maxVipLevel") != null ? map.get("maxVipLevel").toString() : "0");
+
+        String strMinRegistrationTime = (map.get("minRegistrationTime") != null ? map.get("minRegistrationTime").toString() : "");
+        String strMaxRegistrationTime = (map.get("maxRegistrationTime") != null ? map.get("maxRegistrationTime").toString() : "");
+
+        String strIsOnline = (map.get("isOnline") != null ? map.get("isOnline").toString() : "0");
+        String strSex = (map.get("sex") != null ? map.get("sex").toString() : "0");
+
+        String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
+        String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
+        String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
+
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
+        int platformId = Integer.parseInt(strPlatformId);
+        int serverId = Integer.parseInt(strServerId);
+        int sendType = Integer.parseInt(strSendType);
+        int minLevel = Integer.parseInt(strMinLevel);
+        int maxLevel = Integer.parseInt(strMaxLevel);
+        int minVipLevel = Integer.parseInt(strMinVipLevel);
+        int maxVipLevel = Integer.parseInt(strMaxVipLevel);
+        int isOnline = Integer.parseInt(strIsOnline);
+        int sex = Integer.parseInt(strSex);
+
+
+        Result re;
+        Email email = new Email();
+        email.setPlatformId(platformId);
+        email.setServerId(serverId);
+        email.setEmailTitle(emailTitle);
+        email.setEmailContent(emailContent);
+        email.setSendReason(sendReason);
+        email.setSendType(sendType);
+        email.setMinLevel(minLevel);
+        email.setMaxLevel(maxLevel);
+        email.setMinVipLevel(minVipLevel);
+        email.setMaxVipLevel(maxVipLevel);
+        email.setIsOnline(isOnline);
+        email.setSex(sex);
+        email.setPlayerNameList(playerNameList);
+        email.setPlayerAccountList(playerAccountList);
+        email.setPlayerIdList(playerIdList);
+        email.setAddUser(addUser);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ParsePosition pos = new ParsePosition(0);
+        if (!Objects.equals(strMinRegistrationTime, "")) {
+            Date minRegistrationTime = formatter.parse(strMinRegistrationTime, pos);
+            email.setMinRegistrationTime(minRegistrationTime);
+        }
+        //必须重新创建实例
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        pos = new ParsePosition(0);
+        if (!Objects.equals(strMaxRegistrationTime, "")) {
+            Date maxRegistrationTime = formatter.parse(strMaxRegistrationTime, pos);
+            email.setMaxRegistrationTime(maxRegistrationTime);
+        }
+
+        int temp = emailDaoImpl.addEmail(email);
+        if (temp > 0) {
+            System.out.println("邮件添加成功");
+            re = new Result(200, "邮件添加成功", null);
+        } else {
+            System.out.println("邮件添加失败");
+            re = new Result(400, "邮件添加失败", null);
+        }
+        return re;
+    }
+
+}

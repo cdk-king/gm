@@ -34,4 +34,33 @@ public class PlatformNoticeController {
         System.out.println(Divider);
         return re;
     }
+
+    @RequestMapping("/editPlatformNotice")
+    public Result editPlatformNotice(@RequestBody Map map) {
+        Result re = platformNoticeServiceImpl.editPlatformNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/deletePlatformNotice")
+    public Result deletePlatformNotice(@RequestBody Map map) {
+        Result re = platformNoticeServiceImpl.deletePlatformNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/sendPlatformNotice")
+    public Result sendPlatformNotice(@RequestBody Map map) {
+        Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+
+    @RequestMapping("/deleteAllPlatformNotice")
+    public Result deleteAllPlatformNotice(@RequestBody Map map) {
+        Result re = platformNoticeServiceImpl.deleteAllPlatformNotice(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

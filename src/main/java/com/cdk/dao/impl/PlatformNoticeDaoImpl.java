@@ -67,4 +67,53 @@ public class PlatformNoticeDaoImpl {
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
+
+    public int editPlatformNotice(PlatformNotice platformNotice) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String startDatetime = formatter.format(platformNotice.getStartDatetime());
+        System.out.println("startDatetime:" + startDatetime);
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String endDatetime = formatter.format(platformNotice.getEndDatetime());
+        System.out.println("endDatetime:" + endDatetime);
+
+        String sql =
+                "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +
+                        "',noticeTitle='" + platformNotice.getNoticeTitle() + "',noticeContent='" + platformNotice.getNoticeContent() +
+                        "',startDatetime='" + startDatetime + "',endDatetime='" + endDatetime + "',addUser='" + platformNotice.getAddUser() +
+                        "' where id = '" + platformNotice.getId() + "'";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int deletePlatformNotice(PlatformNotice platformNotice) {
+        String sql = "UPDATE  t_platform_notice  set isDelete = 1 where id = '" + platformNotice.getId() + "'";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int sendPlatformNotice(PlatformNotice platformNotice) {
+        String sql = "UPDATE  t_platform_notice  set sendState = 1 where id = '" + platformNotice.getId() + "'";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int[] deleteAllPlatformNotice(String[] idList) {
+        String strSql = "";
+        String sql[] = new String[idList.length];
+        int[] temp = new int[idList.length];
+
+        for (int i = 0; i < idList.length; i++) {
+            sql[i] = "UPDATE  t_platform_notice  set isDelete='1' where id = '" + idList[i] + "';";
+            strSql += sql;
+        }
+        System.out.println("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
+        return temp;
+    }
 }

@@ -87,4 +87,112 @@ public class PlatformNoticeServiceImpl {
         }
         return re;
     }
+
+    public Result editPlatformNotice(Map map) {
+        String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
+        String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
+        String strEndDatetime = (map.get("endDatetime") != null ? map.get("endDatetime").toString() : "");
+        String noticeTitle = (map.get("noticeTitle") != null ? map.get("noticeTitle").toString() : "");
+        String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
+        int platformId = Integer.parseInt(strPlatformId);
+        int id = Integer.parseInt(strId);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ParsePosition pos = new ParsePosition(0);
+        Date startDatetime = formatter.parse(strStartDatetime, pos);
+        //必须重新创建实例
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        pos = new ParsePosition(0);
+        Date endDatetime = formatter.parse(strEndDatetime, pos);
+
+        Result re;
+        PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setId(id);
+        platformNotice.setPlatformId(platformId);
+        platformNotice.setServerList(strServerList);
+        platformNotice.setNoticeTitle(noticeTitle);
+        platformNotice.setNoticeContent(noticeContent);
+        platformNotice.setAddUser(addUser);
+        platformNotice.setStartDatetime(startDatetime);
+        platformNotice.setEndDatetime(endDatetime);
+
+
+        int temp = platformNoticeDaoImpl.editPlatformNotice(platformNotice);
+        if (temp > 0) {
+            System.out.println("全服公告编辑成功");
+            re = new Result(200, "全服公告编辑成功", null);
+        } else {
+            System.out.println("全服公告编辑失败");
+            re = new Result(400, "全服公告编辑失败", null);
+        }
+        return re;
+    }
+
+
+    public Result deletePlatformNotice(Map map) {
+        String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        int id = Integer.parseInt(strId);
+
+        Result re;
+        PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setId(id);
+
+        int temp = platformNoticeDaoImpl.deletePlatformNotice(platformNotice);
+        if (temp > 0) {
+            System.out.println("全服公告删除成功");
+            re = new Result(200, "全服公告删除成功", null);
+        } else {
+            System.out.println("全服公告删除失败");
+            re = new Result(400, "全服公告删除失败", null);
+        }
+        return re;
+    }
+
+    public Result sendPlatformNotice(Map map) {
+        String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        int id = Integer.parseInt(strId);
+
+        Result re;
+        PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setId(id);
+
+        int temp = platformNoticeDaoImpl.sendPlatformNotice(platformNotice);
+        if (temp > 0) {
+            System.out.println("全服公告发送成功");
+            re = new Result(200, "全服公告发送成功", null);
+        } else {
+            System.out.println("全服公告发送失败");
+            re = new Result(400, "全服公告发送失败", null);
+        }
+        return re;
+    }
+
+    public Result deleteAllPlatformNotice(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        if (Objects.equals(id, "")) {
+            System.out.println("无任何批量删除操作");
+            return new Result(400, "无任何批量删除操作", null);
+        }
+
+        String[] objectArry = id.split(",");
+        System.out.println("ObjectArry：" + objectArry);
+        Result re;
+        String sql[] = new String[objectArry.length];
+        int[] temp = platformNoticeDaoImpl.deleteAllPlatformNotice(objectArry);
+        if (temp.length != 0) {
+            System.out.println("公告批量删除成功");
+            re = new Result(200, "公告批量删除成功", null);
+        } else if (objectArry.length == 0) {
+            System.out.println("无任何删除操作");
+            re = new Result(400, "无任何删除操作", null);
+        } else {
+            System.out.println("公告批量删除失败");
+            re = new Result(400, "公告批量删除失败", null);
+        }
+        return re;
+    }
 }
