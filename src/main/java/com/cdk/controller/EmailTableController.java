@@ -33,4 +33,25 @@ public class EmailTableController {
         System.out.println(Divider);
         return re;
     }
+
+    @RequestMapping("/editEmail")
+    public Result editEmail(@RequestBody Map map) {
+        Result re = emailServiceImpl.editEmail(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/sendEmail")
+    public Result sendEmail(@RequestBody Map map) {
+        Result re = emailServiceImpl.sendEmail(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/deleteEmail")
+    public Result deleteEmail(@RequestBody Map map) {
+        Result re = emailServiceImpl.deleteEmail(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

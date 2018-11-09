@@ -84,4 +84,70 @@ public class EmailDaoImpl {
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
+
+    public int editEmail(Email email) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        System.out.println(email.getMinRegistrationTime());
+        String minRegistrationTime = "";
+        String maxRegistrationTime = "";
+
+
+        String sql = "update t_send_email SET platformId='" + email.getPlatformId() + "',serverId='" + email.getServerId() + "',emailTitle='" +
+                email.getEmailTitle() + "',emailContent='" + email.getEmailContent() + "',sendReason='" + email.getSendReason() + "',sendType='" +
+                email.getSendType() + "',minLevel='" + email.getMinLevel() + "',maxLevel='" + email.getMaxLevel() + "',minVipLevel='" +
+                email.getMinVipLevel() + "',maxVipLevel='" + email.getMaxVipLevel() + "',";
+
+
+        //                "insert into t_send_email (platformId,serverId,emailTitle,emailContent,sendReason,sendType,minLevel,maxLevel,minVipLevel,maxVipLevel," +
+        //                        "minRegistrationTime,maxRegistrationTime,isOnline,sex,playerNameList,playerAccountList,playerIdList,addUser,addDatetime,isDelete,sendState) " +
+        //                        " values ('" + email.getPlatformId() + "','" + email.getServerId() + "','" + email.getEmailTitle() + "','" +
+        //                        email.getEmailContent() + "','" + email.getSendReason() + "','" + email.getSendType() + "','" + email.getMinLevel() + "','" +
+        //                        email.getMaxLevel() + "','" + email.getMinVipLevel() + "','" + email.getMaxVipLevel() + "',";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (!Objects.equals(email.getMinRegistrationTime(), null)) {
+            minRegistrationTime = formatter.format(email.getMinRegistrationTime());
+            sql += "minRegistrationTime='" + minRegistrationTime + "',";
+        } else {
+
+        }
+        System.out.println("minRegistrationTime:" + minRegistrationTime);
+        formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        if (!Objects.equals(email.getMaxRegistrationTime(), null)) {
+            maxRegistrationTime = formatter.format(email.getMaxRegistrationTime());
+            sql += "maxRegistrationTime='" + maxRegistrationTime + "', ";
+        } else {
+
+        }
+        System.out.println("maxRegistrationTime:" + maxRegistrationTime);
+
+        sql += "isOnline='" + email.getIsOnline() + "',sex='" + email.getSex() + "', playerNameList='" + email.getPlayerNameList() +
+                "', playerAccountList='" + email.getPlayerAccountList() + "',playerIdList='" + email.getPlayerIdList() + "' where id = '" +
+                email.getId() + "' ";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int sendEmail(Email email) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+
+        String sql = "update t_send_email SET sendState='1',sendDatetime = '" + addDatetime + "' where id= '" + email.getId() + "'";
+
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int deleteEmail(Email email) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+
+        String sql = "update t_send_email SET isDelete='1' where id= '" + email.getId() + "'";
+
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
 }

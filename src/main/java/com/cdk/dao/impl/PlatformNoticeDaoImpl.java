@@ -49,40 +49,52 @@ public class PlatformNoticeDaoImpl {
 
 
     public int addPlatformNotice(PlatformNotice platformNotice) {
+        String startDatetime = "null";
+        String endDatetime = "null";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String startDatetime = formatter.format(platformNotice.getStartDatetime());
+        if (!Objects.equals(platformNotice.getStartDatetime(), null)) {
+            startDatetime = "'" + formatter.format(platformNotice.getStartDatetime()) + "'";
+        }
         System.out.println("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String endDatetime = formatter.format(platformNotice.getEndDatetime());
+        if (!Objects.equals(platformNotice.getEndDatetime(), null)) {
+            endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
+        }
         System.out.println("endDatetime:" + endDatetime);
         String sql =
                 "insert into t_platform_notice (platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete) " +
                         " values ('" + platformNotice.getPlatformId() + "','" + platformNotice.getServerList() + "','" +
-                        platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "','" + startDatetime + "','" + endDatetime +
-                        "','0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0')";
+                        platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "'," + startDatetime + "," + endDatetime +
+                        ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0')";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int editPlatformNotice(PlatformNotice platformNotice) {
+        String startDatetime = "null";
+        String endDatetime = "null";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String startDatetime = formatter.format(platformNotice.getStartDatetime());
+        if (!Objects.equals(platformNotice.getStartDatetime(), null)) {
+            startDatetime = "'" + formatter.format(platformNotice.getStartDatetime()) + "'";
+        }
         System.out.println("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String endDatetime = formatter.format(platformNotice.getEndDatetime());
+        if (!Objects.equals(platformNotice.getEndDatetime(), null)) {
+            endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
+        }
         System.out.println("endDatetime:" + endDatetime);
 
         String sql =
                 "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +
                         "',noticeTitle='" + platformNotice.getNoticeTitle() + "',noticeContent='" + platformNotice.getNoticeContent() +
-                        "',startDatetime='" + startDatetime + "',endDatetime='" + endDatetime + "',addUser='" + platformNotice.getAddUser() +
+                        "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime + ",addUser='" + platformNotice.getAddUser() +
                         "' where id = '" + platformNotice.getId() + "'";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
