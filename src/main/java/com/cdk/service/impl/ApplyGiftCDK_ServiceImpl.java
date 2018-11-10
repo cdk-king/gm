@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class AppleGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
+public class ApplyGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";
