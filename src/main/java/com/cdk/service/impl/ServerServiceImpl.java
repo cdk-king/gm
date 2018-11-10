@@ -1,6 +1,7 @@
 package com.cdk.service.impl;
 
 import com.cdk.dao.impl.ServerDaoImpl;
+import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
@@ -24,6 +25,7 @@ public class ServerServiceImpl {
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
+        String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
@@ -63,7 +65,7 @@ public class ServerServiceImpl {
         server.setState(Integer.parseInt(state));
 
 
-        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformName, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformName, gameName, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "服务器列表获取失败", "");
         } else {
@@ -257,14 +259,16 @@ public class ServerServiceImpl {
         return re;
     }
 
-    public Result getServerListForUser(Map map) {
+    public Result getServerListForPlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         System.out.println("id：" + id);
+        if (Objects.equals(id, "")) {
+            return new Result(400, "渠道服务器列表获取失败", null);
+        }
+        Platform platform = new Platform();
+        platform.setId(Integer.parseInt(id));
 
-        User user = new User();
-        user.setId(Integer.parseInt(id));
-
-        List<Map<String, Object>> list = serverDaoImpl.getPlatformListForUser(user);
+        List<Map<String, Object>> list = serverDaoImpl.getServerListForPlatform(platform);
         Result re;
         if (list.size() != 0) {
             re = new Result(200, "渠道服务器列表获取成功", list);

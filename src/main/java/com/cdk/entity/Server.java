@@ -2,15 +2,7 @@ package com.cdk.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_gameserver")
 public class Server {
 
     public Server() {
@@ -35,63 +27,61 @@ public class Server {
     /**
      * 服务器-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
 
     /**
      * 服务器名
      */
-    @Column(name = "server")
+
     private String server;
 
     /**
      * 服务器IP
      */
-    @Column(name = "serverIp")
+
     private String serverIp;
 
     /**
      * 平台ID
      */
-    @Column(name = "platformId")
+
     private int platformId;
 
     /**
      * 服务器描述
      */
-    @Column(name = "server_describe")
+
     private String server_describe;
 
     /**
      * 服务器状态
      */
-    @Column(name = "state")
+
     private int state;
 
     /**
      * 服务器排序
      */
-    @Column(name = "sort")
+
     private int sort;
 
     /**
      * 服务器添加人
      */
-    @Column(name = "addUser")
+
     private String addUser;
 
     /**
      * 服务器添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
 
     /**
      * 服务器删除标识
      */
-    @Column(name = "isDelete")
+
     private int isDelete;
 
     public int getId() {

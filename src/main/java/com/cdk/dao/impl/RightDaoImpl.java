@@ -76,7 +76,8 @@ public class RightDaoImpl implements RightDao {
     public int editRight(Right right) {
         String sql = "UPDATE t_right as a SET a.rightName='" + right.getRightName() + "',a.right_describe = '" + right.getRight_describe() + "',"
                 //+"a.rightParentId=0,a.rightSort=0,"
-                + "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "' where a.id =" + right.getId() + "";
+                + "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "',a.rightSort = " + right.getRightSort() +
+                " where a.id =" + right.getId() + "";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

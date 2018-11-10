@@ -1,6 +1,7 @@
 package com.cdk.dao.impl;
 
 import com.cdk.dao.ServerDao;
+import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 
@@ -24,7 +25,7 @@ public class ServerDaoImpl implements ServerDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Map<String, Object> getAllServer(Server server, String platformName, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getAllServer(Server server, String platformName, String gameName, String isPage, int pageNo, int pageSize) {
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.id and b.isDelete!=1  left JOIN \n" +
                 " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
@@ -40,6 +41,9 @@ public class ServerDaoImpl implements ServerDao {
         }
         if (platformName != "") {
             sql += " and b.platform LIKE '%" + platformName + "%'";
+        }
+        if (gameName != "") {
+            sql += " and c.gameName LIKE '%" + gameName + "%'";
         }
         //0：全部，1：冻结，2：未冻结
         if (!Objects.equals(server.getState(), null) && !Objects.equals(server.getState(), 0)) {
@@ -148,9 +152,9 @@ public class ServerDaoImpl implements ServerDao {
     }
 
     @Override
-    public List<Map<String, Object>> getServerListForUser(User user) {
+    public List<Map<String, Object>> getServerListForPlatform(Platform platform) {
         String sql = "SELECT a.id as serverId,a.server as serverName,a.serverIp from t_gameserver as a \n" +
-                "join t_gameplatform as b on a.platformId = b.id \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.id =" + user.getId();
+                "join t_gameplatform as b on a.platformId = b.id \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.id =" + platform.getId();
 
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);

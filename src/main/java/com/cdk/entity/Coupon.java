@@ -2,15 +2,6 @@ package com.cdk.entity;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_coupon")
 public class Coupon {
 
     public Coupon() {
@@ -36,69 +27,67 @@ public class Coupon {
     /**
      * 优惠券-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
 
     /**
      * 平台编号
      */
-    @Column(name = "platformId")
+
     private int platformId;
 
     /**
      * 优惠券标识
      */
-    @Column(name = "couponId")
+
     private int couponId;
 
     /**
      * 礼包编号
      */
-    @Column(name = "giftId")
+
     private int giftId;
 
     /**
      * 优惠券标题
      */
-    @Column(name = "couponTitle")
+
     private String couponTitle;
 
     /**
      * 优惠券说明
      */
-    @Column(name = "coupon_describe")
+
     private String coupon_describe;
 
     /**
      * 优惠券激活码数量
      */
-    @Column(name = "couponCount")
+
     private int couponCount;
 
     /**
      * 优惠券开始时间
      */
-    @Column(name = "startDatetime")
+
     private Date startDatetime;
 
     /**
      * 优惠券结束时间
      */
-    @Column(name = "endDatetime")
+
     private Date endDatetime;
 
     /**
      * 申请人
      */
-    @Column(name = "addUser")
+
     private String addUser;
 
     /**
      * 添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
 
     public int getId() {

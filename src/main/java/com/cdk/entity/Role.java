@@ -3,15 +3,7 @@ package com.cdk.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-//@Table配置需要操作的数据库
-@Entity
-@Table(name = "t_role")
 public class Role implements Serializable {
     private static final long serialVersionUID = -6249397911566315813L;
 
@@ -32,39 +24,36 @@ public class Role implements Serializable {
     /**
      * 角色-编号
      */
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
+
     private int id;
     /**
      * 角色名
      */
-    @Column(name = "role")
+
     private String role;
     /**
      * 角色描述
      */
-    @Column(name = "role_describe")
+
     private String role_describe;
     /**
      * 添加人
      */
-    @Column(name = "addUser")
+
     private String addUser;
     /**
      * 添加时间
      */
-    @Column(name = "addDatetime")
+
     private Date addDatetime;
     /**
      * 状态
      */
-    @Column(name = "state")
+
     private int state;
     /**
      * 删除标识
      */
-    @Column(name = "isDelete")
     private int isDelete;
 
 

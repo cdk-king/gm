@@ -90,21 +90,6 @@ public class ServerTableController {
         return re;
     }
 
-    /**
-      * 〈获取用户所在的渠道平台列表〉
-      * 〈通过用户的UserId查找到用户的角色列表，在通过用户角色查找到该角色对应的唯一渠道平台〉
-      * @param  [map]   [获取一个hashMap对象，从中取得键值为id的值(userId)]
-      * @return [Result对象，包含响应码code，信息message和数据data，data是包含list的结果集]
-      * @exception/throws [违例类型] [违例说明]
-      * @see [类、类#方法、类#成员]
-      * @deprecated
-      */
-    @RequestMapping("/getPlatformListForUser")
-    public Result getPlatformListForUser(@RequestBody Map map) {
-        Result re = serverServiceImpl.getPlatformListForUser(map);
-        System.out.println(Divider);
-        return re;
-    }
 
     /**
       * 〈获取某渠道平台上的所有服务器列表〉
@@ -115,9 +100,9 @@ public class ServerTableController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
-    @RequestMapping("/getServerListForUser")
-    public Result getServerListForUser(@RequestBody Map map) {
-        Result re = serverServiceImpl.getServerListForUser(map);
+    @RequestMapping("/getServerListForPlatform")
+    public Result getServerListForPlatform(@RequestBody Map map) {
+        Result re = serverServiceImpl.getServerListForPlatform(map);
         System.out.println(Divider);
         return re;
     }
