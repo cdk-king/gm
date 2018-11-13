@@ -1,9 +1,8 @@
 package com.cdk.util;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.twmacinta.util.MD5;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -301,7 +300,7 @@ public class HttpRequestUtil {
         //String sr = HttpRequestUtil.sendGet(url, para);
         String sr = HttpRequestUtil.sendPost(url, para, false);
         //System.out.println(sr);
-        JSONObject jsonObject = JSONObject.fromObject(sr);
+        JSONObject jsonObject = JSONObject.parseObject(sr);
         //System.out.println(jsonObject.get("trans_result"));
         JSONArray list = jsonObject.getJSONArray("trans_result");
         JSONObject info = list.getJSONObject(0);

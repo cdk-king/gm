@@ -1,6 +1,6 @@
 package com.cdk.test;
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ public class RequestAPI_Test {
 
 
         //处理返回的JSON数据并返回
-        JSONObject pageBean = JSONObject.fromObject(string).getJSONObject("showapi_res_body");
+        JSONObject pageBean = JSONObject.parseObject(string).getJSONObject("showapi_res_body");
         return pageBean.getString("text");
     }
 
