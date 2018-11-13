@@ -1,5 +1,7 @@
 package com.cdk.service.impl;
 
+import com.cdk.cache.CacheListener;
+import com.cdk.cache.CacheManagerImpl;
 import com.cdk.dao.impl.PlatformNoticeDaoImpl;
 import com.cdk.entity.PlatformNotice;
 import com.cdk.result.Result;
@@ -12,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PlatformNoticeServiceImpl {
@@ -21,6 +24,11 @@ public class PlatformNoticeServiceImpl {
 
     @Autowired
     public PlatformNoticeDaoImpl platformNoticeDaoImpl;
+    //@Autowired   @Service实现自动装填
+    //public CacheManagerImpl cacheManagerImpl;
+    public CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
+
+    public CacheListener cacheListener;
 
     public Result getPlatformNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -76,10 +84,21 @@ public class PlatformNoticeServiceImpl {
         platformNotice.setStartDatetime(startDatetime);
         platformNotice.setEndDatetime(endDatetime);
 
+        Object a = new Object();
+
 
         int temp = platformNoticeDaoImpl.addPlatformNotice(platformNotice);
         if (temp > 0) {
             System.out.println("全服公告添加成功");
+            long number = 20000L;
+            cacheManagerImpl.putCache("Notice", platformNotice, 20000L);
+            //cacheListener = new CacheListener(cacheManagerImpl);
+            //cacheListener.startListen();
+            Logger logger = Logger.getLogger("platformNoticeLog");
+            logger.info("Notice缓存添加成功");
+            PlatformNotice data = (PlatformNotice) cacheManagerImpl.getCacheDataByKey("Notice");
+            String content = data.getNoticeContent();
+            logger.info(content);
             re = new Result(200, "全服公告添加成功", null);
         } else {
             System.out.println("全服公告添加失败");

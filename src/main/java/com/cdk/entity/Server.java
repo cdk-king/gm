@@ -9,12 +9,13 @@ public class Server {
         //无参构造器
     }
 
-    public Server(int id, String server, String serverIp, int platformId, String server_describe, int state, int sort, String addUser,
-            Date addDatetime, int isDelete) {
+    public Server(int id, String server, String serverIp, String serverPort, int platformId, String server_describe, int state, int sort,
+            String addUser, Date addDatetime, int isDelete) {
         //有参构造器
         this.id = id;
         this.server = server;
         this.serverIp = serverIp;
+        this.serverPort = serverPort;
         this.platformId = platformId;
         this.server_describe = server_describe;
         this.state = state;
@@ -41,6 +42,12 @@ public class Server {
      */
 
     private String serverIp;
+
+    /**
+     * 服务器端口
+     */
+
+    private String serverPort;
 
     /**
      * 平台ID
@@ -162,5 +169,13 @@ public class Server {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getServerPort() {
+        return serverPort;
+    }
+
+    public void setServerPort(String serverPort) {
+        this.serverPort = serverPort;
     }
 }

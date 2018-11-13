@@ -11,7 +11,8 @@ public class Game implements Serializable {
         //无参构造器
     }
 
-    public Game(int id, String gameName, String game_describe, String gameTag, int state, Date addDatetime, String addUser, int sort, int isDelete) {
+    public Game(int id, String gameName, String game_describe, String gameTag, String gameEncryptSign, int state, Date addDatetime, String addUser,
+            int sort, int isDelete) {
         //有参构造器
         this.id = id;
         this.gameName = gameName;
@@ -22,6 +23,7 @@ public class Game implements Serializable {
         this.addUser = addUser;
         this.sort = sort;
         this.isDelete = isDelete;
+        this.gameEncryptSign = gameEncryptSign;
     }
 
     /**
@@ -47,6 +49,12 @@ public class Game implements Serializable {
      */
 
     private String gameTag;
+
+    /**
+     * 游戏加密标识
+     */
+
+    private String gameEncryptSign;
 
     /**
      * 游戏状态
@@ -152,5 +160,13 @@ public class Game implements Serializable {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getGameEncryptSign() {
+        return gameEncryptSign;
+    }
+
+    public void setGameEncryptSign(String gameEncryptSign) {
+        this.gameEncryptSign = gameEncryptSign;
     }
 }

@@ -81,6 +81,7 @@ public class ServerServiceImpl {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
+        String serverPort = (map.get("serverPort") != null ? map.get("serverPort").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -100,6 +101,7 @@ public class ServerServiceImpl {
         server.setServer_describe(server_describe);
         server.setPlatformId(Integer.parseInt(platformId));
         server.setAddUser(addUser);
+        server.setServerPort(serverPort);
 
         Result re;
         int temp = serverDaoImpl.addServer(server);
@@ -120,6 +122,7 @@ public class ServerServiceImpl {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
+        String serverPort = (map.get("serverPort") != null ? map.get("serverPort").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -140,6 +143,7 @@ public class ServerServiceImpl {
         server.setServer_describe(server_describe);
         server.setPlatformId(Integer.parseInt(platformId));
         server.setAddUser(addUser);
+        server.setServerPort(serverPort);
 
         Result re;
         int temp = serverDaoImpl.editServer(server);

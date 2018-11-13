@@ -67,4 +67,11 @@ public class UtilsDaoImpl implements UtilsDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
+
+    public int getPlatformIdForServerId(String serverId) {
+        String sql = "SELECT platformId from t_gameserver where serverId= '" + serverId + "' and isDelete!=1";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        int platformId = Integer.parseInt(list.get(0).get("platformId").toString());
+        return platformId;
+    }
 }

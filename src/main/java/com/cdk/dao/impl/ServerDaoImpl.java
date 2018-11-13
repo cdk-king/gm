@@ -73,9 +73,9 @@ public class ServerDaoImpl implements ServerDao {
     public int addServer(Server server) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert into t_gameserver (server,serverIp,server_describe,platformId,sort,addUser,addDatetime,state,isDelete) " + " values ('" +
-                server.getServer() + "','" + server.getServerIp() + "','" + server.getServer_describe() + "','" + server.getPlatformId() + "','0','" +
-                server.getAddUser() + "','" + addDatetime + "','0','0')";
+        String sql = "insert into t_gameserver (server,serverIp,serverPort,server_describe,platformId,sort,addUser,addDatetime,state,isDelete) " +
+                " values ('" + server.getServer() + "','" + server.getServerIp() + "','" + server.getServerPort() + "','" +
+                server.getServer_describe() + "','" + server.getPlatformId() + "','0','" + server.getAddUser() + "','" + addDatetime + "','0','0')";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -84,8 +84,8 @@ public class ServerDaoImpl implements ServerDao {
     @Override
     public int editServer(Server server) {
         String sql = "UPDATE t_gameserver as a SET a.server='" + server.getServer() + "',a.server_describe = '" + server.getServer_describe() + "'," +
-                "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" + server.getServerIp() + "' ,a.addUser = '" + server.getAddUser() +
-                "' where a.id =" + server.getId() + "";
+                "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" + server.getServerIp() + "' ,a.serverPort = '" +
+                server.getServerPort() + "',a.addUser = '" + server.getAddUser() + "' where a.id =" + server.getId() + "";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
