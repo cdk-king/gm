@@ -5,6 +5,7 @@ import com.cdk.service.impl.CDK_ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +29,18 @@ public class CDK_TableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/exchangeCDK")
     public Result exchangeCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.exchangeCDK(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/exchangeCDK_External")
+    public Result exchangeCDK_External(@RequestBody Map map) {
+        Result re = cdkServiceImpl.exchangeCDK_External(map);
         System.out.println(Divider);
         return re;
     }

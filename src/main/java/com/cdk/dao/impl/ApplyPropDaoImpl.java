@@ -34,7 +34,7 @@ public class ApplyPropDaoImpl {
 
     public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize) {
         String sql =
-                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on c.id = a.serverId join t_user as d on d.id = a.addUser  where a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
+                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on c.id = a.serverId join t_user as d on d.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
         if (!Objects.equals(applyProp.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + applyProp.getPlatformId() + "' ";
         }
@@ -99,6 +99,24 @@ public class ApplyPropDaoImpl {
         String sql = "UPDATE  t_prop_apply  set isDelete='1' " + " where id = '" + applyProp.getId() + "' ";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int[] deleteAllApplyProp(String[] idList) {
+
+        String strSql = "";
+        String sql[] = new String[idList.length];
+        int[] temp = new int[idList.length];
+
+        for (int i = 0; i < idList.length; i++) {
+            sql[i] = "UPDATE  t_prop_apply  set isDelete='1' where id = '" + idList[i] + "';";
+            strSql += sql;
+            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
+            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
+            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
+        }
+        System.out.println("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
 }

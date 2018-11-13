@@ -70,6 +70,7 @@ public class GameServiceImpl implements GameService {
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String gameTag = (map.get("gameTag") != null ? map.get("gameTag").toString() : "");
         String game_describe = (map.get("game_describe") != null ? map.get("game_describe").toString() : "");
+        String gameEncryptSign = (map.get("gameEncryptSign") != null ? map.get("gameEncryptSign").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
 
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -89,6 +90,7 @@ public class GameServiceImpl implements GameService {
         game.setGame_describe(game_describe);
         game.setGameTag(gameTag);
         game.setAddUser(addUser);
+        game.setGameEncryptSign(gameEncryptSign);
 
         int temp = gameDaoImpl.addGame(game);
         if (temp > 0) {
@@ -106,6 +108,7 @@ public class GameServiceImpl implements GameService {
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String game_describe = (map.get("game_describe") != null ? map.get("game_describe").toString() : "");
         String gameTag = (map.get("gameTag") != null ? map.get("gameTag").toString() : "");
+        String gameEncryptSign = (map.get("gameEncryptSign") != null ? map.get("gameEncryptSign").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
@@ -127,6 +130,7 @@ public class GameServiceImpl implements GameService {
         game.setGame_describe(game_describe);
         game.setGameTag(gameTag);
         game.setAddUser(addUser);
+        game.setGameEncryptSign(gameEncryptSign);
 
         int temp = gameDaoImpl.editGame(game);
         if (temp > 0) {

@@ -55,21 +55,38 @@ public class CDK_DaoImpl {
         return JsonMap;
     }
 
-    public int exchangeCDK(Map map, int platform, String cdk) {
+    public int exchangeCDK(Map map, int platformId, String cdk) {
         String couponId = (map.get("couponId") != null ? map.get("couponId").toString() : "");
         String sequenceId = (map.get("sequenceId") != null ? map.get("sequenceId").toString() : "");
-        String sql =
-                "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platform + "','" +
-                        cdk + "',1)";
+        String sql = "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platformId +
+                "','" + cdk + "',1)";
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
+
+    //    public int exchangeCDKByServerId(Map map, int platformId, String cdk) {
+    //        String couponId = (map.get("couponId") != null ? map.get("couponId").toString() : "");
+    //        String sequenceId = (map.get("sequenceId") != null ? map.get("sequenceId").toString() : "");
+    //        String sql =
+    //                "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platformId + "','" +
+    //                        cdk + "',1)";
+    //        int temp = jdbcTemplate.update(sql);
+    //        return temp;
+    //    }
 
 
     public List<Map<String, Object>> checkCDK(Map map, String cdk, int platformId) {
         String sql =
                 "select * from t_cdk where couponId = '" + map.get("couponId") + "' and sequenceId = '" + map.get("sequenceId") + "' and cdk = '" +
                         cdk + "' and platformId = '" + platformId + "' ";
+        System.out.println(sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    public List<Map<String, Object>> checkCDKByServerId(Map map, String cdk, int serverId) {
+        String sql = "select * from t_cdk as a join t_gameserver as b on a.platformId = b.platformId where a.couponId = '" + map.get("couponId") +
+                "' and a.sequenceId = '" + map.get("sequenceId") + "' and a.cdk = '" + cdk + "' and b.Id = " + serverId;
         System.out.println(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;

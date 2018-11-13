@@ -4,6 +4,7 @@ package com.cdk.service.impl;
 import com.google.common.io.BaseEncoding;
 
 import com.cdk.dao.impl.CDK_DaoImpl;
+import com.cdk.dao.impl.UtilsDaoImpl;
 import com.cdk.entity.CDK;
 import com.cdk.result.Result;
 import com.cdk.util.BufferUtil;
@@ -24,6 +25,9 @@ public class CDK_ServiceImpl {
 
     @Autowired
     public CDK_DaoImpl cdkDaoImpl;
+
+    @Autowired
+    public UtilsDaoImpl utilDaoImpl;
 
     public Result getCDK(Map map) {
         String couponId = ((map.get("couponId") != null && map.get("couponId") != "") ? map.get("couponId").toString() : "0");
@@ -59,6 +63,42 @@ public class CDK_ServiceImpl {
         return re;
     }
 
+    /***
+     *
+     * @param map
+     * @return
+     */
+    public Result exchangeCDK_External(Map map) {
+        Result re;
+        String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
+        String strServerId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
+        int serverId = Integer.parseInt(strServerId);
+        int platformId = utilDaoImpl.getPlatformIdForServerId(strServerId);
+        Map<String, Integer> temp = analyse(cdk);
+        if (temp.get("couponId") > 0) {
+            int check = checkCDK(temp, cdk, platformId);
+            System.out.println("check:" + check);
+            if (check == 1) {
+                re = new Result(400, "当前CDK已被使用或者激活", "");
+                return re;
+            }
+            int a = cdkDaoImpl.exchangeCDK(temp, platformId, cdk);
+            if (a > 0) {
+                re = new Result(200, "CDK解析成功", temp);
+            } else {
+                re = new Result(400, "CDK解析失败", "");
+            }
+        } else {
+            re = new Result(400, "CDK解析失败", "");
+        }
+        return re;
+    }
+
+    /***
+     *
+     * @param map
+     * @return
+     */
     public Result exchangeCDK(Map map) {
         Result re;
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
@@ -86,6 +126,16 @@ public class CDK_ServiceImpl {
 
     public int checkCDK(Map map, String cdk, int platformId) {
         List<Map<String, Object>> list = cdkDaoImpl.checkCDK(map, cdk, platformId);
+        System.out.println(list);
+        System.out.println(list.size());
+        if (null == list || list.size() == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+    public int checkCDKByServerId(Map map, String cdk, int serverId) {
+        List<Map<String, Object>> list = cdkDaoImpl.checkCDKByServerId(map, cdk, serverId);
         System.out.println(list);
         System.out.println(list.size());
         if (null == list || list.size() == 0) {

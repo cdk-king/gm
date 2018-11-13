@@ -61,4 +61,11 @@ public class ApplyPropController {
         System.out.println(Divider);
         return re;
     }
+
+    @RequestMapping("/deleteAllApplyProp")
+    public Result deleteAllApplyProp(@RequestBody Map map) {
+        Result re = applyPropServiceImpl.deleteAllApplyProp(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

@@ -182,4 +182,30 @@ public class ApplyPropServiceImpl {
         return re;
     }
 
+    public Result deleteAllApplyProp(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        if (Objects.equals(id, "")) {
+            System.out.println("无任何批量删除操作");
+            return new Result(400, "无任何批量删除操作", null);
+        }
+
+        String[] objectArry = id.split(",");
+        System.out.println("ObjectArry：" + objectArry);
+        Result re;
+        String sql[] = new String[objectArry.length];
+        int[] temp = applyPropDaoImpl.deleteAllApplyProp(objectArry);
+        if (temp.length != 0) {
+            System.out.println("道具申请批量删除成功");
+            re = new Result(200, "道具申请批量删除成功", null);
+        } else if (objectArry.length == 0) {
+            System.out.println("无任何删除操作");
+            re = new Result(400, "无任何删除操作", null);
+        } else {
+            System.out.println("道具申请批量删除失败");
+            re = new Result(400, "道具申请批量删除失败", null);
+        }
+        return re;
+    }
+
 }
