@@ -20,9 +20,37 @@ public class PlayerTableController {
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
 
-    @RequestMapping("/getPlayer")
+    @RequestMapping("/api/player/getPlayer")
     public Result getPlayer(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayer(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/api/player/getPlayerFromServer")
+    public Result getPlayerFromServer(@RequestBody Map map) {
+        Result re = playerServiceImpl.getPlayerFromServer(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/api/player/getPlayerDetailInfo")
+    public Result getPlayerDetailInfo(@RequestBody Map map) {
+        Result re = playerServiceImpl.getPlayerDetailInfo(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/api/player/talkBan")
+    public Result talkBan(@RequestBody Map map) {
+        Result re = playerServiceImpl.talkBan(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/api/player/Ban")
+    public Result Ban(@RequestBody Map map) {
+        Result re = playerServiceImpl.Ban(map);
         System.out.println(Divider);
         return re;
     }

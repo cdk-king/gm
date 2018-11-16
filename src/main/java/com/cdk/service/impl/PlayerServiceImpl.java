@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdk.dao.impl.PlayerDaoImpl;
 import com.cdk.entity.Player;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,12 +17,123 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class PlayerServiceImpl {
+public class PlayerServiceImpl extends ApiHandeler {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
+    public PlayerServiceImpl() {
+        super();
+    }
+
     @Autowired
     public PlayerDaoImpl playerDaoImpl;
+
+    public Result getPlayerDetailInfo(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
+        String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
+
+        int platformId = Integer.parseInt(strPlatformId);
+
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = strPlatformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        if (!Objects.equals(WorldID, "")) {
+            param += "&WorldID=" + WorldID;
+        }
+        if (!Objects.equals(PlayerID, "")) {
+            param += "&PlayerID=" + PlayerID;
+        }
+
+        String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
+        System.out.println(url);
+        System.out.println(param);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+
+        Result re;
+        if (!data.isEmpty()) {
+            re = new Result(200, "玩家详细信息获取成功", data);
+        } else {
+            re = new Result(400, "玩家详细信息获取失败", "");
+        }
+        return re;
+    }
+
+
+    public Result getPlayerFromServer(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
+        String AccountName = (map.get("AccountName") != null ? map.get("AccountName").toString() : "");
+        String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
+        String PlayerName = (map.get("PlayerName") != null ? map.get("PlayerName").toString() : "");
+        String LoginBan = (map.get("LoginBan") != null ? map.get("LoginBan").toString() : "");
+        String TalkBan = (map.get("TalkBan") != null ? map.get("TalkBan").toString() : "");
+
+        int pageNo = 1;
+        int pageSize = 5;
+        try {
+            pageNo = Integer.parseInt(StrPageNo);
+            pageSize = Integer.parseInt(StrPageSize);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        int platformId = Integer.parseInt(strPlatformId);
+        int serverId = Integer.parseInt(strServerId);
+        Player player = new Player();
+        player.setPlatformId(platformId);
+        player.setServerId(serverId);
+
+
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = strPlatformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        if (!Objects.equals(WorldID, "")) {
+            param += "&WorldID=" + WorldID;
+        }
+        if (!Objects.equals(AccountName, "")) {
+            param += "&AccountName=" + AccountName;
+        }
+        if (!Objects.equals(PlayerID, "")) {
+            param += "&PlayerID=" + PlayerID;
+        }
+        if (!Objects.equals(PlayerName, "")) {
+            param += "&PlayerName=" + PlayerName;
+        }
+        if (!Objects.equals(LoginBan, "")) {
+            param += "&LoginBan=" + LoginBan;
+        }
+        if (!Objects.equals(TalkBan, "")) {
+            param += "&TalkBan=" + TalkBan;
+        }
+        String url = apiUrl + "/QueryPlayer/PlayerList";
+        System.out.println(url);
+        System.out.println(param);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+
+        Result re;
+        if (!data.isEmpty()) {
+            re = new Result(200, "玩家列表获取成功", data);
+        } else {
+            re = new Result(400, "玩家列表获取失败", "");
+        }
+
+        return re;
+    }
 
     public Result getPlayer(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -65,6 +178,96 @@ public class PlayerServiceImpl {
         return re;
     }
 
+
+    public Result Ban(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
+        String PlayerIds = (map.get("PlayerIds") != null ? map.get("PlayerIds").toString() : "");
+        String AccountName = (map.get("AccountName") != null ? map.get("AccountName").toString() : "");
+        String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
+        String HowLong = (map.get("HowLong") != null ? map.get("HowLong").toString() : "");
+
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = strPlatformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        if (!Objects.equals(WorldID, "")) {
+            param += "&WorldID=" + WorldID;
+        }
+        if (!Objects.equals(PlayerIds, "")) {
+            param += "&PlayerIds=" + PlayerIds;
+        } else if (!Objects.equals(AccountName, "")) {
+            param += "&AccountName=" + AccountName;
+        }
+        if (!Objects.equals(Remove, "")) {
+            param += "&Remove=" + Remove;
+        }
+        if (!Objects.equals(HowLong, "")) {
+            param += "&HowLong=" + HowLong;
+        }
+
+        String url = apiUrl + "/UpdateAccount/FreezeAccount";
+        System.out.println(url);
+        System.out.println(param);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+
+        Result re;
+        if (!data.isEmpty()) {
+            re = new Result(200, "玩家禁封成功", data);
+        } else {
+            re = new Result(400, "玩家禁封失败", data);
+        }
+        return re;
+    }
+
+    public Result talkBan(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
+        String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
+        String PlayerName = (map.get("PlayerName") != null ? map.get("PlayerName").toString() : "");
+        String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
+        String HowLong = (map.get("HowLong") != null ? map.get("HowLong").toString() : "");
+
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = strPlatformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        if (!Objects.equals(WorldID, "")) {
+            param += "&WorldID=" + WorldID;
+        }
+        if (!Objects.equals(PlayerID, "")) {
+            param += "&PlayerID=" + PlayerID;
+        } else if (!Objects.equals(PlayerName, "")) {
+            param += "&PlayerName=" + PlayerName;
+        }
+        if (!Objects.equals(Remove, "")) {
+            param += "&Remove=" + Remove;
+        }
+        if (!Objects.equals(HowLong, "")) {
+            param += "&HowLong=" + HowLong;
+        }
+
+        String url = apiUrl + "/UpdatePlayer/GagPlayer";
+        System.out.println(url);
+        System.out.println(param);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+
+        Result re;
+        if (!data.isEmpty()) {
+            re = new Result(200, "玩家禁言成功", data);
+        } else {
+            re = new Result(400, "玩家禁言失败", data);
+        }
+        return re;
+    }
 
     public Result ChangeToProhibitSpeak(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");

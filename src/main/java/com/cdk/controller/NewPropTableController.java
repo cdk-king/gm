@@ -35,4 +35,11 @@ public class NewPropTableController {
         return re;
     }
 
+    @RequestMapping("/api/newProp/getPropTypeList")
+    public Result getPropTypeList(@RequestBody Map map) {
+        Result re = newPropServiceImpl.getPropTypeList(map);
+        System.out.println(Divider);
+        return re;
+    }
+
 }

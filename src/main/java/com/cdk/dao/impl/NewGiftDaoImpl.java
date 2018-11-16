@@ -1,10 +1,9 @@
 package com.cdk.dao.impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cdk.entity.NewGift;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -23,22 +22,19 @@ public class NewGiftDaoImpl {
     private JdbcTemplate jdbcTemplate;
 
     public int[] ImportGift(JSONArray jsonArray, int platformId) {
-        String sql[] = new String[jsonArray.length()];
+        String sql[] = new String[jsonArray.size()];
         String strSql = "";
         //清空数据库表
         strSql = "truncate table t_gift_upload";
         jdbcTemplate.update(strSql);
-        int[] temp = new int[jsonArray.length()];
-        for (int i = 1; i < jsonArray.length(); i++) {
-            try {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                sql[i] = "insert into t_gift_upload (id,giftName,giftTag,giftDescribe,giftValue,platformId) values ('" + jsonObject.get("giftId") +
-                        "', '" + jsonObject.get("giftName") + "','" + jsonObject.get("giftTag") + "','" + jsonObject.get("gift_describe") + "', '" +
-                        jsonObject.get("giftValue") + "'  ,'" + platformId + "' ) ; ";
-                strSql += sql;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        int[] temp = new int[jsonArray.size()];
+        for (int i = 1; i < jsonArray.size(); i++) {
+
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            sql[i] = "insert into t_gift_upload (id,giftName,giftTag,giftDescribe,giftValue,platformId) values ('" + jsonObject.get("giftId") +
+                    "', '" + jsonObject.get("giftName") + "','" + jsonObject.get("giftTag") + "','" + jsonObject.get("gift_describe") + "', '" +
+                    jsonObject.get("giftValue") + "'  ,'" + platformId + "' ) ; ";
+            strSql += sql;
         }
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;

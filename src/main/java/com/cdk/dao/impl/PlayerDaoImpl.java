@@ -35,7 +35,6 @@ public class PlayerDaoImpl {
         if (player.getServerId() != 0) {
             sql += " and a.serverId='" + player.getServerId() + "' ";
         }
-        System.out.println("playerName:" + searchForm.get("playerName"));
         if (!Objects.equals(searchForm.get("playerName"), "")) {
             sql += " and a.playerName='" + searchForm.get("playerName") + "' ";
         }
@@ -51,7 +50,6 @@ public class PlayerDaoImpl {
         if (!Objects.equals(searchForm.get("lastIp"), "")) {
             sql += " and a.lastIp='" + searchForm.get("lastIp") + "' ";
         }
-        System.out.println("isOnline:" + searchForm.get("isOnline"));
         if (!Objects.equals(searchForm.get("isOnline"), "")) {
             if (Objects.equals(searchForm.get("isOnline"), "1")) {
                 sql += " and a.isOnline='0' ";

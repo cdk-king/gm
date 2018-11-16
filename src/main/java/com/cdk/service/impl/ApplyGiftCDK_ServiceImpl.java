@@ -7,7 +7,6 @@ import com.cdk.dao.impl.GiftDaoImpl;
 import com.cdk.entity.Coupon;
 import com.cdk.entity.Gift;
 import com.cdk.result.Result;
-import com.cdk.service.AppleGiftCDK_Service;
 import com.cdk.util.BufferUtil;
 import com.twmacinta.util.MD5;
 
@@ -22,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class ApplyGiftCDK_ServiceImpl implements AppleGiftCDK_Service {
+public class ApplyGiftCDK_ServiceImpl {
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";

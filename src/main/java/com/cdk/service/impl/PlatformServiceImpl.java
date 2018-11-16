@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.PlatformDaoImpl;
 import com.cdk.entity.Platform;
 import com.cdk.result.Result;
-import com.cdk.service.PlatformService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class PlatformServiceImpl implements PlatformService {
+public class PlatformServiceImpl {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired

@@ -10,6 +10,7 @@ public class CacheListener {
 
     public CacheListener(CacheManagerImpl cacheManagerImpl) {
         this.cacheManagerImpl = cacheManagerImpl;
+
     }
 
     public void startListenUseThread(String key) {

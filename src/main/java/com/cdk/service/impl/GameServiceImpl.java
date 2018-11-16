@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.GameDaoImpl;
 import com.cdk.entity.Game;
 import com.cdk.result.Result;
-import com.cdk.service.GameService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class GameServiceImpl implements GameService {
+public class GameServiceImpl {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired

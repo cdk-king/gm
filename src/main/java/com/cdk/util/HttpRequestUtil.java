@@ -2,6 +2,9 @@ package com.cdk.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cdk.dao.UtilsDao;
+import com.cdk.entity.Game;
+import com.cdk.entity.User;
 import com.twmacinta.util.MD5;
 
 import java.io.BufferedReader;
@@ -314,6 +317,39 @@ public class HttpRequestUtil {
         //        } catch (UnsupportedEncodingException e) {
         //            e.printStackTrace();
         //        }
+    }
+
+    public void aaa(UtilsDao a) {
+
+    }
+
+    public void b() {
+        aaa(new UtilsDao() {
+            @Override
+            public List<Map<String, Object>> getUserAllRight(User user) {
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> getUserAllRole(User user) {
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> getGameListForUser(User user) {
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> getPlatformListForGameId(Game game) {
+                return null;
+            }
+
+            @Override
+            public List<Map<String, Object>> getPlatformListForUserIdAndGameId(User user, Game game) {
+                return null;
+            }
+        });
     }
 }
 

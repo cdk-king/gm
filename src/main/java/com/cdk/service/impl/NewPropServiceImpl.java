@@ -24,10 +24,12 @@ public class NewPropServiceImpl {
     public Result ImportProp(Map map) {
         int len = 10;
         int platformId = 0;
+        int gameId = 0;
         Result re;
 
         String strlist = map.get("list").toString();
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
             System.out.println("道具导入失败");
             re = new Result(400, "道具导入失败", null);
@@ -36,6 +38,7 @@ public class NewPropServiceImpl {
         JSONArray jsonArray = null;
         try {
             platformId = Integer.parseInt(strPlatformId);
+            gameId = Integer.parseInt(strGameId);
             jsonArray = new JSONArray(strlist);
             System.out.println(jsonArray);
             System.out.println(jsonArray.length());
@@ -45,7 +48,7 @@ public class NewPropServiceImpl {
         }
 
         int[] temp = new int[len];
-        temp = newPropDaoImpl.ImportProp(jsonArray, platformId);
+        temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
         if (temp.length > 0) {
             System.out.println("道具导入成功");
             re = new Result(200, "道具导入成功", null);
@@ -56,10 +59,27 @@ public class NewPropServiceImpl {
         return re;
     }
 
+    public Result getPropTypeList(Map map) {
+        String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+
+        Result re;
+        int gameId = Integer.parseInt(strGameId);
+
+        Map<String, Object> JsonMap = newPropDaoImpl.getPropTypeList(gameId);
+        System.out.println(JsonMap.get("list"));
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "道具类别列表获取失败", "");
+        } else {
+            re = new Result(200, "道具类别列表获取成功", JsonMap);
+        }
+        return re;
+
+    }
+
 
     public Result getPropUplaod(Map map) {
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
-        String propTag = (map.get("propTag") != null ? map.get("propTag").toString() : "");
+        String propType = (map.get("propType") != null ? map.get("propType").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -79,7 +99,7 @@ public class NewPropServiceImpl {
 
         NewProp newProp = new NewProp();
         newProp.setPropName(propName);
-        newProp.setPropTag(propTag);
+        newProp.setPropType(propType);
         newProp.setPlatformId(Integer.parseInt(platformId));
 
         Map<String, Object> JsonMap = newPropDaoImpl.getPropUplaod(newProp, isPage, pageNo, pageSize, strPlatform);

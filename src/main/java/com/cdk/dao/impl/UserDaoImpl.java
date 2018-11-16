@@ -58,10 +58,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Map<String, Object> getUser(User user, int pageNo, int pageSize) {
-
-        String sql =
-                "select * ,(select GROUP_CONCAT(b.roleId,\"#cdk#\",c. role) as info from t_user_roles as b JOIN t_role as c on b.roleId = c.id\n" +
-                        "where a.id= b.userId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as roles";
+        //distinct去重，GROUP_CONCAT合并，注意GROUP_CONCAT的默认长度是1024，所以尽量不要拼接name
+        String sql = "select * ,(select GROUP_CONCAT(distinct b.roleId) as info from t_user_roles as b JOIN t_role as c on b.roleId = c.id\n" +
+                "where a.id= b.userId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as roles";
         sql += " from t_user as a where a.isDelete != 1  ";
         if (user.getName() != "") {
             sql += " and a.name LIKE '%" + user.getName() + "%'";
