@@ -3,15 +3,21 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.ApplyPropDaoImpl;
 import com.cdk.entity.ApplyProp;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class ApplyPropServiceImpl {
+public class ApplyPropServiceImpl extends ApiHandeler {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -28,6 +34,110 @@ public class ApplyPropServiceImpl {
         }
         return re;
     }
+
+    public Result getMoneyTypeList(Map map) {
+        String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        int gameId = Integer.parseInt(strGameId);
+        Result re;
+        Map<String, Object> JsonMap = applyPropDaoImpl.getMoneyTypeList(gameId);
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "货币类别列表获取失败", "");
+        } else {
+            re = new Result(200, "货币类别列表获取成功", JsonMap);
+        }
+        return re;
+    }
+
+    public Result getPropQualityList(Map map) {
+        String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        int gameId = Integer.parseInt(strGameId);
+        Result re;
+        Map<String, Object> JsonMap = applyPropDaoImpl.getPropQualityList(gameId);
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "品质类别列表获取失败", "");
+        } else {
+            re = new Result(200, "品质类别列表获取成功", JsonMap);
+        }
+        return re;
+    }
+
+
+    public Result confirmApply(Map map) {
+        String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String serverId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String IsAllPlayer = ((map.get("IsAllPlayer") != null && map.get("IsAllPlayer") != "") ? map.get("IsAllPlayer").toString() : "0");
+        String PlayerID = ((map.get("PlayerID") != null) ? map.get("PlayerID").toString() : "");
+        String PlayerName = ((map.get("PlayerName") != null) ? map.get("PlayerName").toString() : "");
+        String Title = ((map.get("Title") != null) ? map.get("Title").toString() : "");
+        String Content = ((map.get("Content") != null) ? map.get("Content").toString() : "");
+        String ItemList = ((map.get("ItemList") != null) ? map.get("ItemList").toString() : "");
+        String Money = ((map.get("Money") != null) ? map.get("Money").toString() : "");
+        System.out.println(ItemList);
+        System.out.println(Money);
+        int id = Integer.parseInt(strId);
+
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = platformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        if (!Objects.equals(serverId, "")) {
+            param += "&WorldID=" + serverId;
+        }
+        param += "&IsAllPlayer=" + IsAllPlayer;
+
+        if (!Objects.equals(PlayerID, "")) {
+            param += "&PlayerID=" + PlayerID;
+        } else {
+            param += "&PlayerName=" + PlayerName;
+        }
+        try {
+            //中文转码
+            Title = URLEncoder.encode(Title, "UTF-8");
+            Content = URLEncoder.encode(Content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        param += "&Title=" + Title;
+        param += "&Content=" + Content;
+
+        if (!Objects.equals(ItemList, "")) {
+            param += "&ItemList=" + ItemList;
+        }
+        if (!Objects.equals(Money, "")) {
+            param += "&Money=" + Money;
+        }
+
+
+        String url = apiUrl + "/UpdatePlayer/Mail";
+        System.out.println(url);
+
+        System.out.println(param);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+
+        Result re;
+        JSONObject jb = JSONObject.fromObject(data);
+        Map resultMap = (Map) jb;
+        System.out.println(resultMap);
+        if (!Objects.equals(resultMap.get("Result"), 1)) {
+            int temp = applyPropDaoImpl.changeApplyState(id, 2);
+            re = new Result(400, "道具申请邮件发送失败", data);
+        } else {
+            int temp = applyPropDaoImpl.changeApplyState(id, 1);
+            if (temp > 0) {
+                re = new Result(200, "道具申请邮件发送成功，信息录入失败", data);
+            } else {
+                re = new Result(200, "道具申请邮件发送成功，信息录入失败", data);
+            }
+        }
+        return re;
+    }
+
 
     public Result getApplyProp(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -80,13 +190,16 @@ public class ApplyPropServiceImpl {
         String strApplyUser = (map.get("applyUser") != null ? map.get("applyUser").toString() : "0");
         String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
+        String strMoneyType = (map.get("moneyType") != null ? map.get("moneyType").toString() : "0");
+        String strMoneyCount = (map.get("moneyCount") != null ? map.get("moneyCount").toString() : "0");
 
         int platformId = Integer.parseInt(strPlatformId);
         int serverId = Integer.parseInt(strServerId);
         int applyType = Integer.parseInt(strApplyType);
         int playerType = Integer.parseInt(strPlayerType);
         int addUser = Integer.parseInt(strAddUser);
-
+        int moneyType = Integer.parseInt(strMoneyType);
+        int moneyCount = Integer.parseInt(strMoneyCount);
 
         Result re;
         ApplyProp applyProp = new ApplyProp();
@@ -103,6 +216,8 @@ public class ApplyPropServiceImpl {
         applyProp.setAddUser(addUser);
         applyProp.setApplyUser(strAddUser);
         applyProp.setPlayerType(playerType);
+        applyProp.setMoneyType(moneyType);
+        applyProp.setMoneyCount(moneyCount);
 
 
         int temp = applyPropDaoImpl.addApplyProp(applyProp);
@@ -130,11 +245,11 @@ public class ApplyPropServiceImpl {
 
         int temp = applyPropDaoImpl.confirmApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请通过成功");
-            re = new Result(200, "道具申请通过成功", null);
+            System.out.println("道具申请审核通过成功");
+            re = new Result(200, "道具申请审核通过成功", null);
         } else {
-            System.out.println("道具申请通过失败");
-            re = new Result(400, "道具申请通过失败", null);
+            System.out.println("道具申请审核通过失败");
+            re = new Result(400, "道具申请审核通过失败", null);
         }
         return re;
     }
@@ -153,11 +268,11 @@ public class ApplyPropServiceImpl {
 
         int temp = applyPropDaoImpl.notConfirmApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请不通过成功");
-            re = new Result(200, "道具申请不通过成功", null);
+            System.out.println("道具申请审核不通过成功");
+            re = new Result(200, "道具申请审核不通过成功", null);
         } else {
-            System.out.println("道具申请不通过失败");
-            re = new Result(400, "道具申请不通过失败", null);
+            System.out.println("道具申请审核不通过失败");
+            re = new Result(400, "道具申请审核不通过失败", null);
         }
         return re;
     }

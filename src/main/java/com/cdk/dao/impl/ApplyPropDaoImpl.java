@@ -32,6 +32,26 @@ public class ApplyPropDaoImpl {
         return JsonMap;
     }
 
+    public Map<String, Object> getMoneyTypeList(int gameId) {
+        String sql = "select * from t_prop_money_type where gameId=" + gameId;
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
+    }
+
+    public Map<String, Object> getPropQualityList(int gameId) {
+        String sql = "select * from t_prop_quality where gameId=" + gameId;
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
+    }
+
     public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize) {
         String sql =
                 "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on c.id = a.serverId join t_user as d on d.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
@@ -54,17 +74,28 @@ public class ApplyPropDaoImpl {
         return JsonMap;
     }
 
+    public int changeApplyState(int id, int state) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+
+        String sql = "UPDATE  t_prop_apply  set applyState='" + state + "' , applyDatetime = '" + addDatetime + "' where id = '" + id + "' ";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
     public int addApplyProp(ApplyProp applyProp) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
         String sql =
-                "insert into t_prop_apply (platformId,serverId,applyType,propList,releaseTitle,releaseContent,playerType,applyUser,applyReason,sendState,addUser,addDatetime,isDelete,playerAccountList,playerNameList,playerIdList) " +
+                "insert into t_prop_apply (platformId,serverId,applyType,propList,releaseTitle,releaseContent,playerType,applyUser,applyReason,confirmState,addUser,addDatetime,isDelete,playerAccountList,playerNameList,playerIdList,moneyType,moneyCount) " +
                         " values ('" + applyProp.getPlatformId() + "','" + applyProp.getServerId() + "','" + applyProp.getApplyType() + "','" +
                         applyProp.getPropList() + "','" + applyProp.getReleaseTitle() + "','" + applyProp.getReleaseContent() + "','" +
                         applyProp.getPlayerType() + "','" + applyProp.getApplyUser() + "','" + applyProp.getApplyReason() + "','0','" +
                         applyProp.getAddUser() + "','" + addDatetime + "','0','" + applyProp.getPlayerAccountList() + "','" +
-                        applyProp.getPlayerNameList() + "','" + applyProp.getPlayerIdList() + "')";
+                        applyProp.getPlayerNameList() + "','" + applyProp.getPlayerIdList() + "','" + applyProp.getMoneyType() + "','" +
+                        applyProp.getMoneyCount() + "')";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -74,8 +105,9 @@ public class ApplyPropDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
-        String sql = "UPDATE  t_prop_apply  set sendState='1' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
-                "' where id = '" + applyProp.getId() + "' ";
+        String sql =
+                "UPDATE  t_prop_apply  set confirmState='1' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
+                        "' where id = '" + applyProp.getId() + "' ";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -85,8 +117,9 @@ public class ApplyPropDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
-        String sql = "UPDATE  t_prop_apply  set sendState='2' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
-                "' where id = '" + applyProp.getId() + "' ";
+        String sql =
+                "UPDATE  t_prop_apply  set confirmState='2' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
+                        "' where id = '" + applyProp.getId() + "' ";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
