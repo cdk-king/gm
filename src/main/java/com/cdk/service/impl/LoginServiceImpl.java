@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.LoginDaoImpl;
 import com.cdk.entity.VueLoginInfoVo;
 import com.cdk.result.Result;
-import com.cdk.service.LoginService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl {
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";

@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.RightDaoImpl;
 import com.cdk.entity.Right;
 import com.cdk.result.Result;
-import com.cdk.service.RightService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class RightServiceImpl implements RightService {
+public class RightServiceImpl {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired

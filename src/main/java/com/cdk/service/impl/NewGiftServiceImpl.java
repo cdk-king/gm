@@ -1,11 +1,10 @@
 package com.cdk.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cdk.dao.impl.NewGiftDaoImpl;
 import com.cdk.entity.NewGift;
 import com.cdk.result.Result;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +32,13 @@ public class NewGiftServiceImpl {
             return re;
         }
         JSONArray jsonArray = null;
-        try {
-            platformId = Integer.parseInt(strPlatformId);
-            jsonArray = new JSONArray(strlist);
-            System.out.println(jsonArray);
-            System.out.println(jsonArray.length());
-            len = jsonArray.length();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        platformId = Integer.parseInt(strPlatformId);
+        jsonArray = JSONArray.parseArray(strlist);
+        System.out.println(jsonArray);
+        System.out.println(jsonArray.size());
+        len = jsonArray.size();
+
         int[] temp = new int[len];
         temp = newGiftDaoImpl.ImportGift(jsonArray, platformId);
         if (temp.length > 0) {

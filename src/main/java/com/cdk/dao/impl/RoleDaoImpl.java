@@ -38,9 +38,9 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Map<String, Object> getRole(Role role, String isPage, int pageNo, int pageSize) {
-        String sql =
-                "select * ,(select GROUP_CONCAT(b.rightId,\"#cdk#\",c. rightName) as info from t_role_rights as b JOIN t_right as c on b.rightId = c.id \n" +
-                        "where a.id= b.roleId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as rights";
+        // GROUP_CONCAT 默认长度1024 要炸
+        String sql = "select * ,(select GROUP_CONCAT(distinct b.rightId) as info from t_role_rights as b JOIN t_right as c on b.rightId = c.id \n" +
+                "where a.id= b.roleId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as rights";
         sql += " from t_role as a where a.isDelete != 1  ";
         if (role.getRole() != "") {
             sql += " and a.role LIKE '%" + role.getRole() + "%'";
@@ -138,7 +138,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public int[] deleteAllRole(int id, String[] roleList) {
+    public int[] deleteAllRole(String[] roleList) {
         int[] temp = new int[roleList.length];
         String sql[] = new String[roleList.length];
         String strSql = "";

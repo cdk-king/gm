@@ -1,5 +1,6 @@
 package com.cdk;
 
+import com.cdk.classLoader.ClassLoaderTest;
 import com.cdk.util.HttpRequestUtil;
 
 import org.springframework.boot.SpringApplication;
@@ -21,6 +22,9 @@ public class Main {
 
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         //httpRequestUtil.testBaiduTranslate();
-        //
+
+
+        ClassLoaderTest classLoaderTest = new ClassLoaderTest();
+        //classLoaderTest.LoaderTest();
     }
 }

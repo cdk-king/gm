@@ -23,7 +23,7 @@ public class NewPropDaoImpl implements NewPropDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public int[] ImportProp(JSONArray jsonArray, int platformId) {
+    public int[] ImportProp(JSONArray jsonArray, int platformId, int gameId) {
         String sql[] = new String[jsonArray.length()];
         String strSql = "";
         //清空数据库表
@@ -33,9 +33,9 @@ public class NewPropDaoImpl implements NewPropDao {
         for (int i = 1; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                sql[i] = "insert into t_prop_upload (id,propName,propTag,propDescribe,platformId) values ('" + jsonObject.get("propId") + "', '" +
-                        jsonObject.get("propName") + "','" + jsonObject.get("propTag") + "','" + jsonObject.get("prop_describe") + "','" +
-                        platformId + "' ) ; ";
+                sql[i] = "insert into t_prop_upload (id,propName,propType,propDescribe,platformId,gameId) values ('" + jsonObject.get("propId") +
+                        "', '" + jsonObject.get("propName") + "','" + jsonObject.get("propType") + "','" + jsonObject.get("prop_describe") + "','" +
+                        platformId + "','" + gameId + "' ) ; ";
                 strSql += sql;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -48,10 +48,21 @@ public class NewPropDaoImpl implements NewPropDao {
         return temp;
     }
 
+    public Map<String, Object> getPropTypeList(int gameId) {
+        //如果查询结果有个重复的字段，默认取后边
+        String sql = "select * from t_prop_upload_type where gameId = " + gameId;
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
+    }
+
     public Map<String, Object> getPropUplaod(NewProp newProp, String isPage, int pageNo, int pageSize, String strPlatform) {
         //如果查询结果有个重复的字段，默认取后边
-        String sql = "select a.* , b.platform  from t_prop_upload as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" +
-                strPlatform + ")  and b.isDelete != 1  ";
+        String sql =
+                "select a.*, b.platform ,c.propType as propTypeName from t_prop_upload as a join  t_gameplatform as b on a.platformId = b.id join t_prop_upload_type as c on a.propType = c.propTypeId and c.gameId = a.gameId where a.platformId IN (" +
+                        strPlatform + ")  and b.isDelete != 1  ";
         if (newProp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + newProp.getPlatformId() + "' ";
         }
@@ -59,8 +70,8 @@ public class NewPropDaoImpl implements NewPropDao {
             sql += " and a.propName LIKE '%" + newProp.getPropName() + "%'";
         }
 
-        if (newProp.getPropTag() != "") {
-            sql += " and a.propTag LIKE '%" + newProp.getPropTag() + "%'";
+        if (newProp.getPropType() != "" && !Objects.equals(newProp.getPropType(), "0")) {
+            sql += " and a.propType = '" + newProp.getPropType() + "'";
         }
 
         System.out.println("sql：" + sql);

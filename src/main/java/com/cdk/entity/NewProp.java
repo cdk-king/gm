@@ -5,10 +5,10 @@ public class NewProp {
 
     }
 
-    public NewProp(int id, String propName, String propTag, String propDescribe, int platformId) {
+    public NewProp(int id, String propName, String propType, String propDescribe, int platformId) {
         this.id = id;
         this.propName = propName;
-        this.propTag = propTag;
+        this.propType = propType;
         this.propDescribe = propDescribe;
         this.platformId = platformId;
     }
@@ -33,10 +33,10 @@ public class NewProp {
     private String propName;
 
     /**
-     * 道具标识
+     * 道具类别
      */
 
-    private String propTag;
+    private String propType;
 
     /**
      * 道具描述
@@ -72,12 +72,12 @@ public class NewProp {
         this.propName = propName;
     }
 
-    public String getPropTag() {
-        return propTag;
+    public String getPropType() {
+        return propType;
     }
 
-    public void setPropTag(String propTag) {
-        this.propTag = propTag;
+    public void setPropType(String propType) {
+        this.propType = propType;
     }
 
     public String getPropDescribe() {

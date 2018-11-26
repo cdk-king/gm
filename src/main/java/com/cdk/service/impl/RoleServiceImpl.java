@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.RoleDaoImpl;
 import com.cdk.entity.Role;
 import com.cdk.result.Result;
-import com.cdk.service.RoleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -274,7 +273,7 @@ public class RoleServiceImpl implements RoleService {
         Result re;
         int[] temp = new int[ObjectArry.length];
 
-        temp = roleDaoImpl.deleteAllRole(Integer.parseInt(id), ObjectArry);
+        temp = roleDaoImpl.deleteAllRole(ObjectArry);
         if (temp.length != 0) {
             System.out.println("角色批量删除成功");
             re = new Result(200, "角色批量删除成功", null);

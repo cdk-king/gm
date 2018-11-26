@@ -8,8 +8,9 @@ public class ApplyProp {
     }
 
     public ApplyProp(int id, int platformId, int serverId, String releaseTitle, String releaseContent, String propList, int applyType, int playerType,
-            String applyUser, String applyReason, int confirmUserId, Date confirmDatetime, int addUser, Date addDatetime, int isDelete, int sendState,
-            String playerNameList, String playerAccountList, String playerIdList) {
+            String applyUser, String applyReason, int confirmUserId, Date confirmDatetime, int addUser, Date addDatetime, int isDelete,
+            int confirmState, String playerNameList, String playerAccountList, String playerIdList, int moneyType, int moneyCount,
+            Date applyDatetime) {
         this.id = id;
         this.platformId = platformId;
         this.serverId = serverId;
@@ -22,13 +23,16 @@ public class ApplyProp {
         this.applyReason = applyReason;
         this.confirmUserId = confirmUserId;
         this.confirmDatetime = confirmDatetime;
-        this.sendState = sendState;
+        this.confirmState = confirmState;
         this.addUser = addUser;
         this.addDatetime = addDatetime;
         this.isDelete = isDelete;
         this.playerNameList = playerNameList;
         this.playerAccountList = playerAccountList;
         this.playerIdList = playerIdList;
+        this.moneyType = moneyType;
+        this.moneyCount = moneyCount;
+        this.applyDatetime = applyDatetime;
     }
 
 
@@ -124,10 +128,22 @@ public class ApplyProp {
     private int isDelete;
 
     /**
+     * 审核状态
+     */
+
+    private int confirmState;
+
+    /**
      * 发送状态
      */
 
-    private int sendState;
+    private int applyState;
+
+    /**
+     * 发送时间
+     */
+
+    private Date applyDatetime;
 
     /**
      * 玩家名字列表
@@ -146,6 +162,19 @@ public class ApplyProp {
      */
 
     private String playerIdList;
+
+    /**
+     * 货币类别
+     */
+
+    private int moneyType;
+
+    /**
+     * 货币数量
+     *
+     */
+
+    private int moneyCount;
 
 
     public int getId() {
@@ -268,12 +297,12 @@ public class ApplyProp {
         this.isDelete = isDelete;
     }
 
-    public int getSendState() {
-        return sendState;
+    public int getConfirmState() {
+        return confirmState;
     }
 
-    public void setSendState(int sendState) {
-        this.sendState = sendState;
+    public void setConfirmState(int confirmState) {
+        this.confirmState = confirmState;
     }
 
     public String getPlayerNameList() {
@@ -298,5 +327,37 @@ public class ApplyProp {
 
     public void setPlayerIdList(String playerIdList) {
         this.playerIdList = playerIdList;
+    }
+
+    public int getMoneyType() {
+        return moneyType;
+    }
+
+    public void setMoneyType(int moneyType) {
+        this.moneyType = moneyType;
+    }
+
+    public int getMoneyCount() {
+        return moneyCount;
+    }
+
+    public void setMoneyCount(int moneyCount) {
+        this.moneyCount = moneyCount;
+    }
+
+    public int getApplyState() {
+        return applyState;
+    }
+
+    public void setApplyState(int applyState) {
+        this.applyState = applyState;
+    }
+
+    public Date getApplyDatetime() {
+        return applyDatetime;
+    }
+
+    public void setApplyDatetime(Date applyDatetime) {
+        this.applyDatetime = applyDatetime;
     }
 }

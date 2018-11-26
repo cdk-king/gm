@@ -41,6 +41,28 @@ public class ApplyPropController {
         return re;
     }
 
+    @RequestMapping("/api/applyProp/confirmApply")
+    public Result confirmApply(@RequestBody Map map) {
+        Result re = applyPropServiceImpl.confirmApply(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+
+    @RequestMapping("/api/applyProp/getMoneyTypeList")
+    public Result getMoneyTypeList(@RequestBody Map map) {
+        Result re = applyPropServiceImpl.getMoneyTypeList(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @RequestMapping("/api/applyProp/getPropQualityList")
+    public Result getPropQualityList(@RequestBody Map map) {
+        Result re = applyPropServiceImpl.getPropQualityList(map);
+        System.out.println(Divider);
+        return re;
+    }
+
     @RequestMapping("/confirmApplyProp")
     public Result confirmApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.confirmApplyProp(map);

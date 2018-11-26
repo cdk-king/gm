@@ -7,7 +7,7 @@ import java.util.Map;
 public interface RoleDao {
     public int addRole(Role role);
 
-    public Map<String,Object> getRole(Role role, String isPage, int pageNo, int  pageSize);
+    public Map<String, Object> getRole(Role role, String isPage, int pageNo, int pageSize);
 
     public int editRole(Role role);
 
@@ -17,9 +17,9 @@ public interface RoleDao {
 
     public int deleteRole(Role role);
 
-    public int deleteRoleRights(int id ,String[] rightList);
+    public int deleteRoleRights(int id, String[] rightList);
 
-    public int InsertRoleRights(int id ,String[] rightList);
+    public int InsertRoleRights(int id, String[] rightList);
 
-    public int[] deleteAllRole(int id,String[] roleList);
+    public int[] deleteAllRole(String[] roleList);
 }
