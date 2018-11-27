@@ -27,15 +27,17 @@ public class NewGiftDaoImpl {
         //清空数据库表
         strSql = "truncate table t_gift_upload";
         jdbcTemplate.update(strSql);
+        strSql = "";
         int[] temp = new int[jsonArray.size()];
         for (int i = 1; i < jsonArray.size(); i++) {
 
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            sql[i] = "insert into t_gift_upload (id,giftName,giftTag,giftDescribe,giftValue,platformId) values ('" + jsonObject.get("giftId") +
-                    "', '" + jsonObject.get("giftName") + "','" + jsonObject.get("giftTag") + "','" + jsonObject.get("gift_describe") + "', '" +
-                    jsonObject.get("giftValue") + "'  ,'" + platformId + "' ) ; ";
-            strSql += sql;
+            sql[i] = "insert into t_gift_upload (giftId,limitCount,expire_time,goods_prize1,value_prize1,platformId) values ('" +
+                    jsonObject.get("giftId") + "', '" + jsonObject.get("limit") + "','" + jsonObject.get("expire_time") + "','" +
+                    jsonObject.get("goods_prize1") + "', '" + jsonObject.get("value_prize1") + "'  ,'" + platformId + "' ) ; ";
+            strSql += sql[i];
         }
+        System.out.println(strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

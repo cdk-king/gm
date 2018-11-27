@@ -9,16 +9,18 @@ package com.cdk.result;
  */
 
 public enum ResultCode {
-
-    SUCCESS(200),
-    FAIL(400),
-    UNAUTHORIZED(401),
-    NOT_FOUND(404),
-    INTERNAL_SERVER_ERROR(500);
+    //响应码	响应解释
+    //200	请求成功
+    //400	请求失败
+    //401	未经授权的
+    //403	拒绝访问
+    //404	未找到
+    //500	服务器内部错误
+    SUCCESS(200), FAIL(400), UNAUTHORIZED(401), Forbidden(403), NOT_FOUND(404), INTERNAL_SERVER_ERROR(500);
 
     public int code;
 
-    ResultCode(int code){
+    ResultCode(int code) {
         this.code = code;
     }
 

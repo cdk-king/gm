@@ -105,4 +105,10 @@ public class UtilsController {
     }
 
 
+    @RequestMapping("/api/prize/getValueTypeList")
+    public Result getValueTypeList(@RequestBody Map map) {
+        Result re = utilsServiceImpl.getValueTypeList(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

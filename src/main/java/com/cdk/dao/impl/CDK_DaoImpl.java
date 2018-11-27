@@ -11,15 +11,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class CDK_DaoImpl {
-
+    static Logger logger = Logger.getLogger("CDK_DaoImpl");
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    public CouponDaoImpl couponDaoImpl;
 
     public Map<String, Object> getCDK(CDK cdk, String isPage, int pageNo, int pageSize, String strPlatform) {
 
@@ -55,33 +58,41 @@ public class CDK_DaoImpl {
         return JsonMap;
     }
 
-    public int exchangeCDK(Map map, int platformId, String cdk) {
-        String couponId = (map.get("couponId") != null ? map.get("couponId").toString() : "");
-        String sequenceId = (map.get("sequenceId") != null ? map.get("sequenceId").toString() : "");
+    public int exchangeCDK(int couponId, int sequenceId, int platformId, String cdk) {
         String sql = "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platformId +
                 "','" + cdk + "',1)";
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    //    public int exchangeCDKByServerId(Map map, int platformId, String cdk) {
-    //        String couponId = (map.get("couponId") != null ? map.get("couponId").toString() : "");
-    //        String sequenceId = (map.get("sequenceId") != null ? map.get("sequenceId").toString() : "");
-    //        String sql =
-    //                "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platformId + "','" +
-    //                        cdk + "',1)";
-    //        int temp = jdbcTemplate.update(sql);
-    //        return temp;
-    //    }
 
-
-    public List<Map<String, Object>> checkCDK(Map map, String cdk, int platformId) {
-        String sql =
-                "select * from t_cdk where couponId = '" + map.get("couponId") + "' and sequenceId = '" + map.get("sequenceId") + "' and cdk = '" +
-                        cdk + "' and platformId = '" + platformId + "' ";
+    public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
+        String sql = "select * from t_cdk where couponId = '" + couponId + "' and sequenceId = '" + sequenceId + "' and cdk = '" + cdk +
+                "' and platformId = '" + platformId + "' ";
         System.out.println(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
+    }
+
+    public List<Map<String, Object>> checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
+        String sql = "select * from t_coupon where couponId = '" + couponId + "' and end_sequence >= '" + sequenceId + "' and start_sequence <='" +
+                sequenceId + "' and  platformId = '" + platformId + "' ";
+        System.out.println(sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        if (Objects.equals(list.size(), 0)) {
+            return null;
+        }
+        String strSalt = list.get(0).get("salt").toString();
+        int salt = Integer.parseInt(strSalt);
+
+        String s = couponDaoImpl.generate(couponId, sequenceId, salt);
+        logger.info("Origin" + cdk);
+        logger.info("generate" + s);
+        if (Objects.equals(cdk, s)) {
+            return list;
+        } else {
+            return null;
+        }
     }
 
     public List<Map<String, Object>> checkCDKByServerId(Map map, String cdk, int serverId) {

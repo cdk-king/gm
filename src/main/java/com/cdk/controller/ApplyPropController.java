@@ -41,6 +41,13 @@ public class ApplyPropController {
         return re;
     }
 
+    @RequestMapping("/api/apply/editApplyProp")
+    public Result editApplyProp(@RequestBody Map map) {
+        Result re = applyPropServiceImpl.editApplyProp(map);
+        System.out.println(Divider);
+        return re;
+    }
+
     @RequestMapping("/api/applyProp/confirmApply")
     public Result confirmApply(@RequestBody Map map) {
         Result re = applyPropServiceImpl.confirmApply(map);

@@ -23,7 +23,7 @@ public class NewGiftTableController {
     @Autowired
     private NewGiftServiceImpl newGiftServiceImpl;
 
-    @RequestMapping("/ImportGift")
+    @RequestMapping("/api/gift/ImportGift")
     public Result ImportGift(@RequestBody Map map) {
         Result re = newGiftServiceImpl.ImportGift(map);
         System.out.println(Divider);

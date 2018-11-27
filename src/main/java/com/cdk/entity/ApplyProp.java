@@ -9,8 +9,7 @@ public class ApplyProp {
 
     public ApplyProp(int id, int platformId, int serverId, String releaseTitle, String releaseContent, String propList, int applyType, int playerType,
             String applyUser, String applyReason, int confirmUserId, Date confirmDatetime, int addUser, Date addDatetime, int isDelete,
-            int confirmState, String playerNameList, String playerAccountList, String playerIdList, int moneyType, int moneyCount,
-            Date applyDatetime) {
+            int confirmState, String playerNameList, String playerAccountList, String playerIdList, String moneyList, Date applyDatetime) {
         this.id = id;
         this.platformId = platformId;
         this.serverId = serverId;
@@ -30,8 +29,7 @@ public class ApplyProp {
         this.playerNameList = playerNameList;
         this.playerAccountList = playerAccountList;
         this.playerIdList = playerIdList;
-        this.moneyType = moneyType;
-        this.moneyCount = moneyCount;
+        this.moneyList = moneyList;
         this.applyDatetime = applyDatetime;
     }
 
@@ -164,17 +162,10 @@ public class ApplyProp {
     private String playerIdList;
 
     /**
-     * 货币类别
+     * 货币列表
      */
 
-    private int moneyType;
-
-    /**
-     * 货币数量
-     *
-     */
-
-    private int moneyCount;
+    private String moneyList;
 
 
     public int getId() {
@@ -329,20 +320,12 @@ public class ApplyProp {
         this.playerIdList = playerIdList;
     }
 
-    public int getMoneyType() {
-        return moneyType;
+    public String getMoneyList() {
+        return moneyList;
     }
 
-    public void setMoneyType(int moneyType) {
-        this.moneyType = moneyType;
-    }
-
-    public int getMoneyCount() {
-        return moneyCount;
-    }
-
-    public void setMoneyCount(int moneyCount) {
-        this.moneyCount = moneyCount;
+    public void setMoneyList(String moneyList) {
+        this.moneyList = moneyList;
     }
 
     public int getApplyState() {

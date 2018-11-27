@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,13 @@ public class UtilsDaoImpl implements UtilsDao {
                 "join t_user_roles as d on c.id = d.roleId join t_user as e on d.userId = e.id " +
                 "where e.isDelete != 1 and c.isDelete!=1 and a.isDelete!=1  and  e.id = " + user.getId();
 
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
+    }
+
+    public List<Map<String, Object>> getServerUrl(String platformId) {
+        String sql = "SELECT * from t_gameserver where platformId = " + platformId + " and isDelete!=1";
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
@@ -73,5 +81,15 @@ public class UtilsDaoImpl implements UtilsDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int platformId = Integer.parseInt(list.get(0).get("platformId").toString());
         return platformId;
+    }
+
+    public Map<String, Object> getValueTypeList(int gameId, String allow) {
+        String sql = "select * from t_prize_valuetype where valueTypeId  in (" + allow + ") and gameId=" + gameId;
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        return JsonMap;
     }
 }

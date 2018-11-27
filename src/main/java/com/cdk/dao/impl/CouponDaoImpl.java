@@ -159,7 +159,7 @@ public class CouponDaoImpl {
             System.out.println(start_sequence);
             System.out.println(salt);
             for (int i = 0; i < count; i++) {
-                String s = generate(0 + giftId * 10000, start_sequence + i, salt);
+                String s = generate(0 + giftId * 1, start_sequence + i, salt);
                 //String s = "cdk国王";
                 System.out.println(s);
                 //writer.append(s);

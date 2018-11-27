@@ -8,8 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -38,10 +40,19 @@ public class CDK_TableController {
     }
 
     @CrossOrigin
-    @RequestMapping("/exchangeCDK_External")
-    public Result exchangeCDK_External(@RequestBody Map map) {
+    @RequestMapping("/api/cdk/exchangeCDK_External")
+    public String exchangeCDK_External(@RequestParam("id") String id, @RequestParam("oid") String oid, @RequestParam("sequence") String sequence,
+            @RequestParam("coupon") String coupon) {
+        Map<String, String> map = new HashMap<>();
+        map.put("cdk", coupon);
+        map.put("couponId", id);
+        map.put("sequenceId", sequence);
+        map.put("platformId", oid);
+        System.out.println(map);
+        String code = "0";
         Result re = cdkServiceImpl.exchangeCDK_External(map);
+        code = re.getData().toString();
         System.out.println(Divider);
-        return re;
+        return code;
     }
 }

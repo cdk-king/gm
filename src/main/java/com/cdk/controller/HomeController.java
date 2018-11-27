@@ -5,8 +5,13 @@ import com.cdk.service.DemoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -66,8 +71,20 @@ public class HomeController {
     @RequestMapping("/getString")
     public String getString() {
         String sql = "select * from t_user";
-        String str = jdbcTemplate.queryForObject(sql, String.class);
-        return str;
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        //String str = jdbcTemplate.queryForObject(sql, String.class);
+        //String s = String.valueOf(list);
+        return list.toString();
+    }
+
+    @RequestMapping("/testGet/{s}")
+    public String testGet1(@PathVariable("s") String s) {
+        return s;
+    }
+
+    @RequestMapping("/testGet")
+    public String testGet2(@RequestParam("name") String s) {
+        return s;
     }
 
 

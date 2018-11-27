@@ -137,18 +137,18 @@ public class PlayerDaoImpl {
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            SaveProhibitSpeakLog(player, userId);
+            //SaveProhibitSpeakLog(player, userId);
         }
         return temp;
     }
 
-    public void SaveProhibitSpeakLog(Player player, String userId) {
+    public void SaveProhibitSpeakLog(Player player, String userId, String playerId, String playerAccount) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql =
-                "insert t_player_prohibitspeak_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
-                        player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() +
-                        "','" + player.getServerId() + "','" + addDatetime + "','" + userId + "','1','" + player.getProhibitSpeakTime() + "')  ";
+                "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
+                        player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
+                        player.getServerId() + "','" + addDatetime + "','" + userId + "','1','" + player.getProhibitSpeakTime() + "')  ";
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
@@ -165,18 +165,18 @@ public class PlayerDaoImpl {
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            SaveProhibitSpeakToNormalLog(player, userId);
+            //SaveProhibitSpeakToNormalLog(player, userId);
         }
         return temp;
     }
 
-    public void SaveProhibitSpeakToNormalLog(Player player, String userId) {
+    public void SaveProhibitSpeakToNormalLog(Player player, String userId, String playerId, String playerAccount) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql =
-                "insert t_player_prohibitspeak_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
-                        player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() +
-                        "','" + player.getServerId() + "','" + addDatetime + "','" + userId + "','0','0')  ";
+                "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
+                        player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
+                        player.getServerId() + "','" + addDatetime + "','" + userId + "','0','0')  ";
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
@@ -193,17 +193,17 @@ public class PlayerDaoImpl {
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            SaveBanLog(player, userId);
+            //SaveBanLog(player, userId);
         }
         return temp;
     }
 
-    public void SaveBanLog(Player player, String userId) {
+    public void SaveBanLog(Player player, String userId, String PlayerIds, String PlayerName) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert t_player_ban_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
-                player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() + "','" +
-                player.getServerId() + "','" + addDatetime + "','" + userId + "','1','" + player.getBanTime() + "')  ";
+        String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
+                player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
+                "','" + addDatetime + "','" + userId + "','1','" + player.getBanTime() + "')  ";
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
@@ -220,17 +220,17 @@ public class PlayerDaoImpl {
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            SaveBanToNormalLog(player, userId);
+            //SaveBanToNormalLog(player, userId);
         }
         return temp;
     }
 
-    public void SaveBanToNormalLog(Player player, String userId) {
+    public void SaveBanToNormalLog(Player player, String userId, String PlayerIds, String PlayerName) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert t_player_ban_log (playerName,playerAccount,playerId,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
-                player.getPlayerName() + "','" + player.getPlayerAccount() + "','" + player.getPlayerId() + "','" + player.getPlatformId() + "','" +
-                player.getServerId() + "','" + addDatetime + "','" + userId + "','0','0')  ";
+        String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
+                player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
+                "','" + addDatetime + "','" + userId + "','0','0')  ";
         System.out.println(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {

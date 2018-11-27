@@ -319,6 +319,7 @@ public class HttpRequestUtil {
         //        }
     }
 
+    //回调示例
     public void aaa(UtilsDao a) {
 
     }

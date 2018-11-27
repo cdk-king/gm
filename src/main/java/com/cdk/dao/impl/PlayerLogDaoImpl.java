@@ -48,6 +48,7 @@ public class PlayerLogDaoImpl {
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
+        sql += "  order by a.addDatetime desc";
         if (!Objects.equals(isPage, "")) {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
@@ -86,9 +87,11 @@ public class PlayerLogDaoImpl {
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
+        sql += "  order by a.addDatetime desc";
         if (!Objects.equals(isPage, "")) {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
+
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
