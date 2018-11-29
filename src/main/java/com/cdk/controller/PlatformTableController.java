@@ -5,6 +5,7 @@ import com.cdk.service.impl.PlatformServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ public class PlatformTableController {
     @Autowired
     private PlatformServiceImpl platformServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getAllPlatform")
     public Result getAllPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllPlatform(map);
@@ -33,6 +35,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getAllGameList")
     public Result getAllGameList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllGameList(map);
@@ -40,6 +43,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getAllRoleList")
     public Result getAllRoleList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllRoleList(map);

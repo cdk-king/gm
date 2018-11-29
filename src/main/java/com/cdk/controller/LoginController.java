@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 
@@ -49,6 +51,7 @@ public class LoginController {
     }
 
     //HttpServletRequest request
+    @CrossOrigin
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result login(@RequestBody VueLoginInfoVo loginInfoVo) {
@@ -56,4 +59,63 @@ public class LoginController {
         return re;
     }
 
+    @CrossOrigin
+    @RequestMapping("/api/login/getTouristId")
+    public Result getTouristId(@RequestBody Map map) {
+        Result re = loginServiceImpl.getTouristId();
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/getTouristName")
+    public Result getTouristName(@RequestBody Map map) {
+        Result re = loginServiceImpl.getTouristName();
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/getTourist")
+    public Result getTourist(@RequestBody Map map) {
+        Result re1 = loginServiceImpl.getTouristId();
+        Result re2 = loginServiceImpl.getTouristName();
+        Result re3 = new Result(200, "游客获取成功", re1.getData().toString() + "|" + re2.getData().toString());
+        System.out.println(Divider);
+        return re3;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/setTouristId")
+    public Result setTouristId(@RequestBody Map map) {
+        Result re = loginServiceImpl.setTouristId(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/setTouristName")
+    public Result setTouristName(@RequestBody Map map) {
+        Result re = loginServiceImpl.setTouristName(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/setTourist")
+    public Result setTourist(@RequestBody Map map) {
+        Result re1 = loginServiceImpl.setTouristId(map);
+        Result re2 = loginServiceImpl.setTouristName(map);
+        Result re3 = new Result(200, "游客设置成功", "");
+        System.out.println(Divider);
+        return re3;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/login/getThisUserInfo")
+    public Result getThisUserInfo(@RequestBody Map map) {
+        Result re = loginServiceImpl.getThisUserInfo(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

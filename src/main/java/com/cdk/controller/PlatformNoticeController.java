@@ -27,6 +27,7 @@ public class PlatformNoticeController {
     private PlatformNoticeServiceImpl platformNoticeServiceImpl;
 
 
+    @CrossOrigin
     @RequestMapping("/getPlatformNotice")
     public Result getPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.getPlatformNotice(map);

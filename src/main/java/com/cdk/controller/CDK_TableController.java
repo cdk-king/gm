@@ -24,6 +24,8 @@ public class CDK_TableController {
     @Autowired
     private CDK_ServiceImpl cdkServiceImpl;
 
+
+    @CrossOrigin
     @RequestMapping("/getCDK")
     public Result getCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.getCDK(map);

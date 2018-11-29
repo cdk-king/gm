@@ -33,7 +33,7 @@ public class TestController {
         return mv;
     }
 
-    @RequestMapping("/test")
+    @RequestMapping("/")
     public String test(HttpServletRequest request) {
 
         return "cdk11";

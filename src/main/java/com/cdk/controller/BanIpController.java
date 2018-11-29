@@ -5,6 +5,7 @@ import com.cdk.service.impl.BanIpServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ public class BanIpController {
     @Autowired
     private BanIpServiceImpl banIpServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/api/ip/getBanIp")
     public Result getBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.getBanIp(map);

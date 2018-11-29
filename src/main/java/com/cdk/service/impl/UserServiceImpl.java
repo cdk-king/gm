@@ -1,17 +1,15 @@
 package com.cdk.service.impl;
 
-import com.cdk.dao.UserDao;
 import com.cdk.dao.impl.UserDaoImpl;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
 import com.cdk.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -99,6 +97,19 @@ public class UserServiceImpl implements UserService {
             System.out.println("用户信息修改失败");
             re = new Result(400, "用户信息更新失败", null);
         }
+        return re;
+    }
+
+    public Result getAllUser() {
+
+        Result re;
+        Map<String, Object> JsonMap = userDaoImpl.getAllUser();
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "用户列表获取失败", "");
+        } else {
+            re = new Result(200, "用户列表获取成功", JsonMap);
+        }
+
         return re;
     }
 

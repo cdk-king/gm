@@ -5,6 +5,7 @@ import com.cdk.service.impl.EmailServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class EmailTableController {
     @Autowired
     private EmailServiceImpl emailServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getEmail")
     public Result getEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.getEmail(map);

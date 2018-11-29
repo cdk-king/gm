@@ -5,6 +5,7 @@ import com.cdk.service.impl.NewPropServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ public class NewPropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getPropUplaod")
     public Result getPropUplaod(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropUplaod(map);

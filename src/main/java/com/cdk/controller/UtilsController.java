@@ -6,6 +6,7 @@ import com.cdk.service.impl.UtilsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,6 +54,7 @@ public class UtilsController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRight(map);
@@ -60,6 +62,7 @@ public class UtilsController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getUserAllRole")
     public Result getUserAllRole(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRole(map);
@@ -67,6 +70,7 @@ public class UtilsController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getGameListForUser")
     public Result getGameListForUser(@RequestBody Map map) {
         Result re = utilsServiceImpl.getGameListForUser(map);
@@ -74,6 +78,7 @@ public class UtilsController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getPlatformListForGameId")
     public Result getPlatformListForGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForGameId(map);
@@ -90,6 +95,7 @@ public class UtilsController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
+    @CrossOrigin
     @RequestMapping("/getPlatformListForUser")
     public Result getPlatformListForUser(@RequestBody Map map) {
         Result re = serverServiceImpl.getPlatformListForUser(map);
@@ -97,6 +103,7 @@ public class UtilsController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getPlatformListForUserIdAndGameId")
     public Result getPlatformListForUserIdAndGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForUserIdAndGameId(map);
@@ -104,7 +111,7 @@ public class UtilsController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping("/api/prize/getValueTypeList")
     public Result getValueTypeList(@RequestBody Map map) {
         Result re = utilsServiceImpl.getValueTypeList(map);
