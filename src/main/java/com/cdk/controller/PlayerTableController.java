@@ -5,6 +5,7 @@ import com.cdk.service.impl.PlayerServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class PlayerTableController {
     @Autowired
     private PlayerServiceImpl playerServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/api/player/getPlayer")
     public Result getPlayer(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayer(map);
@@ -27,6 +29,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/player/getPlayerFromServer")
     public Result getPlayerFromServer(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayerFromServer(map);
@@ -34,6 +37,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/player/getPlayerDetailInfo")
     public Result getPlayerDetailInfo(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayerDetailInfo(map);

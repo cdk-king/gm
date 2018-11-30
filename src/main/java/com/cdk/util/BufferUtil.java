@@ -161,6 +161,7 @@ public class BufferUtil {
     public static long readVarInt64(byte[] data, int index) {
         int shift = 0;
         long result = 0;
+        
         while (shift < 64) {
             final byte b = data[index++];
             result |= (long) (b & 0x7F) << shift;
@@ -169,6 +170,7 @@ public class BufferUtil {
             }
             shift += 7;
         }
+
         throw MALFORMED_VarInt;
     }
 

@@ -130,7 +130,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         } else {
             int temp = applyPropDaoImpl.changeApplyState(id, 1);
             if (temp > 0) {
-                re = new Result(200, "道具申请邮件发送成功，信息录入失败", data);
+                re = new Result(200, "道具申请邮件发送成功", data);
             } else {
                 re = new Result(200, "道具申请邮件发送成功，信息录入失败", data);
             }
@@ -155,15 +155,12 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         int pageSize = Integer.parseInt(StrPageSize);
         int platformId = Integer.parseInt(strPlatformId);
         int serverId = Integer.parseInt(strServerId);
-        //int applyType = Integer.parseInt(strApplyType);
-        //int sendState = Integer.parseInt(strSendState);
 
         Result re;
         ApplyProp applyProp = new ApplyProp();
         applyProp.setPlatformId(platformId);
         applyProp.setServerId(serverId);
-        //applyProp.setApplyType(applyType);
-        //applyProp.setSendState(sendState);
+
 
         Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
@@ -190,16 +187,13 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String strApplyUser = (map.get("applyUser") != null ? map.get("applyUser").toString() : "0");
         String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
-        String strMoneyType = (map.get("moneyType") != null ? map.get("moneyType").toString() : "0");
-        String strMoneyCount = (map.get("moneyCount") != null ? map.get("moneyCount").toString() : "0");
+        String strMoneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "0");
 
         int platformId = Integer.parseInt(strPlatformId);
         int serverId = Integer.parseInt(strServerId);
         int applyType = Integer.parseInt(strApplyType);
         int playerType = Integer.parseInt(strPlayerType);
         int addUser = Integer.parseInt(strAddUser);
-        int moneyType = Integer.parseInt(strMoneyType);
-        int moneyCount = Integer.parseInt(strMoneyCount);
 
         Result re;
         ApplyProp applyProp = new ApplyProp();
@@ -216,8 +210,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         applyProp.setAddUser(addUser);
         applyProp.setApplyUser(strAddUser);
         applyProp.setPlayerType(playerType);
-        applyProp.setMoneyType(moneyType);
-        applyProp.setMoneyCount(moneyCount);
+        applyProp.setMoneyList(strMoneyList);
 
 
         int temp = applyPropDaoImpl.addApplyProp(applyProp);
@@ -227,6 +220,62 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         } else {
             System.out.println("道具申请添加失败");
             re = new Result(400, "道具申请添加失败", null);
+        }
+        return re;
+    }
+
+    public Result editApplyProp(Map map) {
+        String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
+        String strApplyType = (map.get("applyType") != null ? map.get("applyType").toString() : "0");
+        String releaseTitle = (map.get("releaseTitle") != null ? map.get("releaseTitle").toString() : "");
+        String releaseContent = (map.get("releaseContent") != null ? map.get("releaseContent").toString() : "");
+        String propList = (map.get("propList") != null ? map.get("propList").toString() : "");
+
+        String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
+        String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
+        String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
+
+        String strPlayerType = (map.get("playerType") != null ? map.get("playerType").toString() : "0");
+        String strApplyUser = (map.get("applyUser") != null ? map.get("applyUser").toString() : "0");
+        String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
+        String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
+        String strMoneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "0");
+
+        int id = Integer.parseInt(strId);
+        int platformId = Integer.parseInt(strPlatformId);
+        int serverId = Integer.parseInt(strServerId);
+        int applyType = Integer.parseInt(strApplyType);
+        int playerType = Integer.parseInt(strPlayerType);
+        int addUser = Integer.parseInt(strAddUser);
+
+        Result re;
+        ApplyProp applyProp = new ApplyProp();
+        applyProp.setId(id);
+        applyProp.setPlatformId(platformId);
+        applyProp.setServerId(serverId);
+        applyProp.setApplyType(applyType);
+        applyProp.setPropList(propList);
+        applyProp.setPlayerAccountList(playerAccountList);
+        applyProp.setPlayerNameList(playerNameList);
+        applyProp.setPlayerIdList(playerIdList);
+        applyProp.setApplyReason(applyReason);
+        applyProp.setReleaseTitle(releaseTitle);
+        applyProp.setReleaseContent(releaseContent);
+        applyProp.setAddUser(addUser);
+        applyProp.setApplyUser(strAddUser);
+        applyProp.setPlayerType(playerType);
+        applyProp.setMoneyList(strMoneyList);
+
+
+        int temp = applyPropDaoImpl.editApplyProp(applyProp);
+        if (temp > 0) {
+            System.out.println("道具申请修改成功");
+            re = new Result(200, "道具申请修改成功", null);
+        } else {
+            System.out.println("道具申请修改失败");
+            re = new Result(400, "道具申请修改失败", null);
         }
         return re;
     }

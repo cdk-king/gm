@@ -5,6 +5,7 @@ import com.cdk.service.impl.GameServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class GameTableController {
     @Autowired
     private GameServiceImpl gameServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getAllGame")
     public Result getAllGame(@RequestBody Map map) {
         Result re = gameServiceImpl.getAllGame(map);

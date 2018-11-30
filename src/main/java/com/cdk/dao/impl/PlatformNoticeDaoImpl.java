@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,10 +66,11 @@ public class PlatformNoticeDaoImpl {
         }
         System.out.println("endDatetime:" + endDatetime);
         String sql =
-                "insert into t_platform_notice (platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete) " +
+                "insert into t_platform_notice (platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete,moneyList,propList) " +
                         " values ('" + platformNotice.getPlatformId() + "','" + platformNotice.getServerList() + "','" +
                         platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "'," + startDatetime + "," + endDatetime +
-                        ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0')";
+                        ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0','" + platformNotice.getMoneyList() + "','" +
+                        platformNotice.getPropList() + "')";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -95,7 +97,8 @@ public class PlatformNoticeDaoImpl {
                 "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +
                         "',noticeTitle='" + platformNotice.getNoticeTitle() + "',noticeContent='" + platformNotice.getNoticeContent() +
                         "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime + ",addUser='" + platformNotice.getAddUser() +
-                        "' where id = '" + platformNotice.getId() + "'";
+                        "', moneyList = '" + platformNotice.getMoneyList() + "' , propList = '" + platformNotice.getPropList() + "'  where id = '" +
+                        platformNotice.getId() + "'";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -126,6 +129,39 @@ public class PlatformNoticeDaoImpl {
         }
         System.out.println("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
+        return temp;
+    }
+
+    /**
+     * 获取最新的公告
+     * @param strPlatform
+     * @return
+     */
+    public Map<String, String> getLastNotice(String strPlatform) {
+        String sql = "select * from t_platform_notice where isDelete!=1 and   platformId=" + strPlatform + " order by startDatetime DESC LIMIT 1";
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, String> JsonMap = new HashMap();
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = simpleDateFormat.parse(list.get(0).get("startDatetime").toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        JsonMap.put("startDatetime", String.valueOf(date.getTime() / 1000L));
+        JsonMap.put("noticeTitle", list.get(0).get("noticeTitle").toString());
+        JsonMap.put("noticeContent", list.get(0).get("noticeContent").toString());
+        JsonMap.put("propList", list.get(0).get("propList").toString());
+        JsonMap.put("moneyList", list.get(0).get("moneyList").toString());
+
+        return JsonMap;
+    }
+
+    public int changeNoticeSendState(String id, String error, int state) {
+        String sql = "update t_platform_notice set sendState = " + state + ",errorList = '" + error + "' where id = " + id;
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
         return temp;
     }
 }

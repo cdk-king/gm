@@ -31,6 +31,9 @@ public class ApiHandeler {
     @Value("${api.url}")
     public String apiUrl;
 
+    public String http = "http://";
+    public String https = "https://";
+
     private static final byte[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',};
 
     public static final byte[] asHex(byte[] input) {
@@ -55,6 +58,17 @@ public class ApiHandeler {
         md5.Update(operator);
 
         return md5.asHex().toLowerCase();
+    }
+
+    public static String getParam(String platformId) {
+        long time = Math.abs(System.currentTimeMillis() / 1000);
+        String strTime = time + "";
+        String operator = platformId;
+        String key = MANAGEMENT_KEY;
+        String sign = getSign(strTime, operator, key);
+
+        String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
+        return param;
     }
 
 }

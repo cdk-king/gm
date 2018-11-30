@@ -184,8 +184,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerIds = (map.get("PlayerIds") != null ? map.get("PlayerIds").toString() : "");
         String AccountName = (map.get("AccountName") != null ? map.get("AccountName").toString() : "");
+        String PlayerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
         String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
-        String HowLong = (map.get("HowLong") != null ? map.get("HowLong").toString() : "");
+        String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
+        String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
 
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";
@@ -217,9 +219,27 @@ public class PlayerServiceImpl extends ApiHandeler {
 
         Result re;
         if (!data.isEmpty()) {
-            re = new Result(200, "玩家禁封成功", data);
+
+            Player player = new Player();
+            player.setServerId(Integer.parseInt(WorldID));
+            player.setPlatformId(Integer.parseInt(strPlatformId));
+            player.setPlayerAccount(AccountName);
+            //player.setPlayerId(Integer.parseInt(PlayerIds));
+            player.setBanTime(Integer.parseInt(HowLong));
+
+            if (Objects.equals(Remove, "0")) {
+                playerDaoImpl.SaveBanLog(player, userId, PlayerIds, PlayerName);
+                re = new Result(200, "玩家禁封成功", data);
+            } else {
+                playerDaoImpl.SaveBanToNormalLog(player, userId, PlayerIds, PlayerName);
+                re = new Result(200, "玩家解除禁封成功", data);
+            }
         } else {
-            re = new Result(400, "玩家禁封失败", data);
+            if (Objects.equals(Remove, "0")) {
+                re = new Result(400, "玩家禁封失败", data);
+            } else {
+                re = new Result(400, "玩家解除禁封失败", data);
+            }
         }
         return re;
     }
@@ -229,8 +249,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
         String PlayerName = (map.get("PlayerName") != null ? map.get("PlayerName").toString() : "");
+        String PlayerAccount = (map.get("PlayerAccount") != null ? map.get("PlayerAccount").toString() : "");
         String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
-        String HowLong = (map.get("HowLong") != null ? map.get("HowLong").toString() : "");
+        String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
+        String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
 
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";
@@ -262,9 +284,25 @@ public class PlayerServiceImpl extends ApiHandeler {
 
         Result re;
         if (!data.isEmpty()) {
-            re = new Result(200, "玩家禁言成功", data);
+            Player player = new Player();
+            player.setServerId(Integer.parseInt(WorldID));
+            player.setPlatformId(Integer.parseInt(strPlatformId));
+            player.setPlayerName(PlayerName);
+            //player.setPlayerId(Integer.parseInt(PlayerID));
+            player.setProhibitSpeakTime(Integer.parseInt(HowLong));
+            if (Objects.equals(Remove, "0")) {
+                playerDaoImpl.SaveProhibitSpeakLog(player, userId, PlayerID, PlayerAccount);
+                re = new Result(200, "玩家禁言成功", data);
+            } else {
+                playerDaoImpl.SaveProhibitSpeakToNormalLog(player, userId, PlayerID, PlayerAccount);
+                re = new Result(200, "玩家解除禁言成功", data);
+            }
         } else {
-            re = new Result(400, "玩家禁言失败", data);
+            if (Objects.equals(Remove, "0")) {
+                re = new Result(400, "玩家禁言失败", data);
+            } else {
+                re = new Result(400, "玩家解除禁言失败", data);
+            }
         }
         return re;
     }

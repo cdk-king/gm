@@ -9,7 +9,7 @@ public class PlatformNotice {
 
 
     public PlatformNotice(int id, int platformId, String serverList, Date startDatetime, Date endDatetime, String noticeTitle, String noticeContent,
-            int sendState, String addUser, Date addDatetime, int isDelete) {
+            int sendState, String addUser, Date addDatetime, int isDelete, String propList, String moneyList, String errorList) {
         this.id = id;
         this.platformId = platformId;
         this.serverList = serverList;
@@ -21,6 +21,9 @@ public class PlatformNotice {
         this.addUser = addUser;
         this.addDatetime = addDatetime;
         this.isDelete = isDelete;
+        this.propList = propList;
+        this.moneyList = moneyList;
+        this.errorList = errorList;
 
     }
 
@@ -69,6 +72,20 @@ public class PlatformNotice {
      * 添加人
      */
     private String addUser;
+
+    /**
+     * 道具列表
+     */
+    private String propList;
+
+    /**
+     * 货币列表
+     */
+    private String moneyList;
+    /**
+     * 错误列表
+     */
+    private String errorList;
 
     /**
      * 添加时间
@@ -166,5 +183,29 @@ public class PlatformNotice {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getPropList() {
+        return propList;
+    }
+
+    public void setPropList(String propList) {
+        this.propList = propList;
+    }
+
+    public String getMoneyList() {
+        return moneyList;
+    }
+
+    public void setMoneyList(String moneyList) {
+        this.moneyList = moneyList;
+    }
+
+    public String getErrorList() {
+        return errorList;
+    }
+
+    public void setErrorList(String errorList) {
+        this.errorList = errorList;
     }
 }

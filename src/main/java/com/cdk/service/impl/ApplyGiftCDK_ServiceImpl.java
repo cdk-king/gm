@@ -26,7 +26,7 @@ public class ApplyGiftCDK_ServiceImpl {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     private static String URL = "http://127.0.0.1/new_gen?";
-    public static final int GIFTID_OFFSET = 10000;
+    public static final int GIFTID_OFFSET = 1;
     private static final String SIGN_KEY = "cdk";
     private static final byte[] SIGN_KEY_BYTES = SIGN_KEY.getBytes(Charset.forName("UTF-8"));
 

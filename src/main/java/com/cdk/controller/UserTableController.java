@@ -5,6 +5,7 @@ import com.cdk.service.impl.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,11 +25,22 @@ public class UserTableController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getUser")
     public Result getUser(@RequestBody Map map) {
         Result re = userServiceImpl.getUser(map);
         System.out.println("UserData：" + re);
         System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/user/getAllUser")
+    public Result getAllUser() {
+        Result re = userServiceImpl.getAllUser();
+        System.out.println("UserData：" + re);
+        System.out.println(Divider);
+
         return re;
     }
 

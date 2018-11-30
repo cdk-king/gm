@@ -1,6 +1,7 @@
 package com.cdk.service.impl;
 
 import com.cdk.dao.impl.LoginDaoImpl;
+import com.cdk.entity.User;
 import com.cdk.entity.VueLoginInfoVo;
 import com.cdk.result.Result;
 
@@ -39,6 +40,73 @@ public class LoginServiceImpl {
 
         re = new Result(200, "登录成功", list.get(0));
         System.out.println("用户登录成功");
+        return re;
+    }
+
+    public Result getTouristId() {
+        Result re;
+        List<Map<String, Object>> list = loginDaoImpl.getTouristId();
+        System.out.println(list);
+        if (Objects.equals(list.get(0).get("configValue"), null)) {
+            re = new Result(400, "游客Id获取失败", "");
+        } else {
+            re = new Result(200, "游客Id获取成功", list.get(0).get("configValue").toString());
+        }
+        return re;
+    }
+
+    public Result getTouristName() {
+        Result re;
+        List<Map<String, Object>> list = loginDaoImpl.getTouristName();
+        System.out.println(list);
+        if (Objects.equals(list.get(0).get("configValue"), null)) {
+            re = new Result(400, "游客name获取失败", "");
+        } else {
+            re = new Result(200, "游客name获取成功", list.get(0).get("configValue").toString());
+        }
+        return re;
+    }
+
+    public Result setTouristId(Map map) {
+        String userId = (map.get("userId") != null ? map.get("userId").toString() : "0");
+        Result re;
+        int temp = loginDaoImpl.setTouristId(userId);
+        if (temp > 0) {
+
+            re = new Result(200, "游客Id设置成功", "");
+        } else {
+            re = new Result(400, "游客Id设置失败", "");
+        }
+        return re;
+    }
+
+    public Result setTouristName(Map map) {
+        String name = (map.get("name") != null ? map.get("name").toString() : "");
+        Result re;
+        int temp = loginDaoImpl.setTouristName(name);
+        if (temp > 0) {
+
+            re = new Result(200, "游客name设置成功", "");
+        } else {
+            re = new Result(400, "游客name设置失败", "");
+        }
+        return re;
+    }
+
+    public Result getThisUserInfo(Map map) {
+        String name = (map.get("name") != null ? map.get("name").toString() : "");
+        Result re;
+        if (Objects.equals(name, "")) {
+            return new Result(400, "用户名无效", "");
+        }
+        User user = new User();
+        user.setName(name);
+        List<Map<String, Object>> list = loginDaoImpl.getThisUserInfo(user);
+        if (Objects.equals(list.get(0), null)) {
+            re = new Result(400, "当前用户信息获取失败", "");
+        } else {
+            re = new Result(200, "当前用户信息获取成功", list.get(0));
+        }
         return re;
     }
 }

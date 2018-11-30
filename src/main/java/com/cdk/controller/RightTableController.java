@@ -5,6 +5,7 @@ import com.cdk.service.impl.RightServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class RightTableController {
     @Autowired
     private RightServiceImpl rightServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getRight")
     public Result getRight(@RequestBody Map map) {
         Result re = rightServiceImpl.getRight(map);

@@ -56,6 +56,22 @@ public class UserDaoImpl implements UserDao {
         return temp;
     }
 
+    public Map<String, Object> getAllUser() {
+        String sql = "select * ,(select GROUP_CONCAT(distinct b.roleId) as info from t_user_roles as b JOIN t_role as c on b.roleId = c.id\n" +
+                "where a.id= b.userId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as roles";
+        sql += " from t_user as a where a.isDelete != 1  ";
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        if (list.size() != 0) {
+            JsonMap.put("list", list);
+        } else {
+            JsonMap.put("list", 0);
+        }
+
+        return JsonMap;
+    }
+
     @Override
     public Map<String, Object> getUser(User user, int pageNo, int pageSize) {
         //distinct去重，GROUP_CONCAT合并，注意GROUP_CONCAT的默认长度是1024，所以尽量不要拼接name
