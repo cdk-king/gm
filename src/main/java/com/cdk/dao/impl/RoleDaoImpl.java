@@ -36,6 +36,14 @@ public class RoleDaoImpl implements RoleDao {
         return temp;
     }
 
+    public List<Map<String, Object>> getRoleById(String id) {
+        String sql = "select * from t_role where id='" + id + "' and isDelete != 1  ";
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+
+        return list;
+    }
+
     @Override
     public Map<String, Object> getRole(Role role, String isPage, int pageNo, int pageSize) {
         // GROUP_CONCAT 默认长度1024 要炸

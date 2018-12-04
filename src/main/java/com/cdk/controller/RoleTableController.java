@@ -33,6 +33,14 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
+    @RequestMapping("/api/role/getRoleById")
+    public Result getRoleById(@RequestBody Map map) {
+        Result re = roleServiceImpl.getRoleById(map);
+        System.out.println(Divider);
+        return re;
+    }
+
     @RequestMapping(value = "/editRole", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result editRole(@RequestBody Map map) {

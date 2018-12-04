@@ -2,6 +2,7 @@ package com.cdk;
 
 import com.cdk.classLoader.ClassLoaderTest;
 import com.cdk.util.HttpRequestUtil;
+import com.cdk.util.annotation.AnnotationTest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,11 +21,26 @@ public class Main {
 
         SpringApplication.run(Main.class, args);
 
+        /**
+         * HttpRequestUtil测试
+         */
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         //httpRequestUtil.testBaiduTranslate();
 
-
+        /**
+         * 反射调用外部Class文件
+         */
         ClassLoaderTest classLoaderTest = new ClassLoaderTest();
         //classLoaderTest.LoaderTest();
+
+        /**
+         * 自定义注解测试
+         */
+        AnnotationTest annotationTest = new AnnotationTest();
+        try {
+            annotationTest.test();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 }
