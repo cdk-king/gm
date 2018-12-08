@@ -33,6 +33,7 @@ public class RightTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/editRight", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result editRight(@RequestBody Map map) {
@@ -41,6 +42,7 @@ public class RightTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addRight")
     public Result addRight(@RequestBody Map map) {
         Result re = rightServiceImpl.addRight(map);
@@ -48,6 +50,7 @@ public class RightTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_Right", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_Right(@RequestBody Map map) {
@@ -56,6 +59,7 @@ public class RightTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToNormal_Right", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Right(@RequestBody Map map) {
@@ -64,6 +68,7 @@ public class RightTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteRight", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteRight(@RequestBody Map map) {
@@ -72,7 +77,7 @@ public class RightTableController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping(value = "/deleteAllRight", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteAllRight(@RequestBody Map<String, String> map) {

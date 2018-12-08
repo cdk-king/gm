@@ -95,6 +95,7 @@ public class NewPropServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        System.out.println(propName);
         Result re;
 
         NewProp newProp = new NewProp();

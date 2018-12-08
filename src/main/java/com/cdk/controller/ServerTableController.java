@@ -5,6 +5,7 @@ import com.cdk.service.impl.ServerServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class ServerTableController {
     @Autowired
     private ServerServiceImpl serverServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getAllServer")
     public Result getAllServer(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllServer(map);
@@ -32,6 +34,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping("/addServer")
     public Result addServer(@RequestBody Map map) {
@@ -40,6 +43,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/editServer", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -49,6 +53,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/getAllPlatformList")
     public Result getAllPlatformList(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllPlatformList(map);
@@ -56,6 +61,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToNormal_Server", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Server(@RequestBody Map map) {
@@ -64,6 +70,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_Server", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_Server(@RequestBody Map map) {
@@ -72,6 +79,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/deleteServer", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -81,6 +89,7 @@ public class ServerTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/deleteAllServer", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -100,6 +109,7 @@ public class ServerTableController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
+    @CrossOrigin
     @RequestMapping("/getServerListForPlatform")
     public Result getServerListForPlatform(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerListForPlatform(map);
@@ -116,6 +126,7 @@ public class ServerTableController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
+    @CrossOrigin
     @RequestMapping("/getServerTree")
     public Result getServerTree(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerTree(map);

@@ -210,4 +210,32 @@ public class ApplyGiftCDK_ServiceImpl {
         }
         return re;
     }
+
+    public Result getCoupon(Map map) {
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
+        System.out.println("strPlatform：" + strPlatform);
+        int pageNo = 1;
+        int pageSize = 5;
+        try {
+            pageNo = Integer.parseInt(StrPageNo);
+            pageSize = Integer.parseInt(StrPageSize);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        Result re;
+        Coupon coupon = new Coupon();
+        coupon.setPlatformId(Integer.parseInt(platformId));
+        Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, isPage, pageNo, pageSize, strPlatform);
+        System.out.println(JsonMap.get("list"));
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "列表获取失败", "");
+        } else {
+            re = new Result(200, "列表获取成功", JsonMap);
+        }
+        return re;
+    }
 }

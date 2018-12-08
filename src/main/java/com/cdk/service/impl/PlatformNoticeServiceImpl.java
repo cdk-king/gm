@@ -311,7 +311,8 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             } else {
                 return new Result(400, "公告发送失败，无效的服务器", "");
             }
-            url = http + urlList.get(i).get("url") + "/notice/sendAllNotice";
+            //暂时用配置的
+            url = apiUrl + "/notice/sendAllNotice";
             System.out.println(url);
             System.out.println(param);
 

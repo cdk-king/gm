@@ -51,6 +51,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping("/addPlatform")
     public Result addPlatform(@RequestBody Map map) {
@@ -59,6 +60,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/editPlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -68,6 +70,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/deletePlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
@@ -77,6 +80,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToNormal_Platform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Platform(@RequestBody Map map) {
@@ -85,6 +89,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_Platform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_Platform(@RequestBody Map map) {
@@ -93,6 +98,7 @@ public class PlatformTableController {
         return re;
     }
 
+    @CrossOrigin
     @Transactional
     @RequestMapping(value = "/deleteAllPlatform", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody

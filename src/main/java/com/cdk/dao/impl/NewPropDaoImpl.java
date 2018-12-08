@@ -30,7 +30,8 @@ public class NewPropDaoImpl implements NewPropDao {
         strSql = "truncate table t_prop_upload";
         jdbcTemplate.update(strSql);
         int[] temp = new int[jsonArray.length()];
-        for (int i = 1; i < jsonArray.length(); i++) {
+        System.out.println("jsonArray.length:" + jsonArray.length());
+        for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 sql[i] = "insert into t_prop_upload (id,propName,propType,propDescribe,platformId,gameId) values ('" + jsonObject.get("propId") +
@@ -78,7 +79,7 @@ public class NewPropDaoImpl implements NewPropDao {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
-            sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+            sql += " order by id limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
