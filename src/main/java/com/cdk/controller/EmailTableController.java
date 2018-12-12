@@ -29,6 +29,7 @@ public class EmailTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addEmail")
     public Result addEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.addEmail(map);
@@ -36,6 +37,7 @@ public class EmailTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/editEmail")
     public Result editEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.editEmail(map);
@@ -43,6 +45,7 @@ public class EmailTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/sendEmail")
     public Result sendEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.sendEmail(map);
@@ -50,6 +53,7 @@ public class EmailTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deleteEmail")
     public Result deleteEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.deleteEmail(map);

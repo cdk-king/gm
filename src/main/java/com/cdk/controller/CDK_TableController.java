@@ -42,6 +42,14 @@ public class CDK_TableController {
     }
 
     @CrossOrigin
+    @RequestMapping("/api/cdk/checkCDKIsUse")
+    public Result checkCDKIsUse(@RequestBody Map map) {
+        Result re = cdkServiceImpl.checkCDKIsUse(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    @CrossOrigin
     @RequestMapping("/api/cdk/exchangeCDK_External")
     public String exchangeCDK_External(@RequestParam("id") String id, @RequestParam("oid") String oid, @RequestParam("sequence") String sequence,
             @RequestParam("coupon") String coupon) {

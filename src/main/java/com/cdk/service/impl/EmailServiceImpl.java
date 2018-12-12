@@ -3,6 +3,10 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.EmailDaoImpl;
 import com.cdk.entity.Email;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class EmailServiceImpl {
+public class EmailServiceImpl extends ApiHandeler {
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";
@@ -218,13 +222,65 @@ public class EmailServiceImpl {
         Email email = new Email();
         email.setId(id);
 
-        int temp = emailDaoImpl.sendEmail(email);
-        if (temp > 0) {
-            System.out.println("邮件发送成功");
-            re = new Result(200, "邮件发送成功", null);
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strserverId = (map.get("serverId") != null ? map.get("serverId").toString() : "0");
+        String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
+        String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
+        String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
+        String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
+        String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
+
+        System.out.println("strPlatformId:" + strPlatformId);
+
+        String param = getParam(strPlatformId);
+        param += "&Content=" + emailContent;
+        if (!Objects.equals(emailTitle, "")) {
+            param += "&Title=" + emailTitle;
+        }
+        if (!Objects.equals(strserverId, "")) {
+            param += "&WorldID=" + strserverId;
+        }
+        if (!Objects.equals(playerNameList, "")) {
+            param += "&PlayerName=" + playerNameList;
+        }
+        if (!Objects.equals(playerIdList, "")) {
+            param += "&PlayerID=" + playerIdList;
+        }
+        //条件
+        if (Objects.equals(sendType, "1")) {
+            param += "&IsAllPlayer=0";
+        }
+        //角色
+        if (Objects.equals(sendType, "2")) {
+            param += "&IsAllPlayer=0";
+        }
+        //全服
+        if (Objects.equals(sendType, "3")) {
+            param += "&IsAllPlayer=1";
+        }
+
+        String url = "";
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String error = "";
+        url = apiUrl + "/UpdatePlayer/Mail";
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+        System.out.println("error:" + error);
+
+        JSONObject jb = JSONObject.fromObject(data);
+        Map resultMap = (Map) jb;
+        System.out.println(resultMap);
+        if (!Objects.equals(resultMap.get("Result"), 1)) {
+            int temp = emailDaoImpl.sendEmail(email, 2);
+            re = new Result(400, "邮件发送失败", data);
         } else {
-            System.out.println("邮件发送失败");
-            re = new Result(400, "邮件发送失败", null);
+
+            int temp = emailDaoImpl.sendEmail(email, 1);
+            if (temp > 0) {
+                re = new Result(200, "邮件发送成功", data);
+            } else {
+                re = new Result(200, "邮件发送成功，信息录入失败", data);
+            }
         }
         return re;
     }

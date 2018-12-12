@@ -129,11 +129,11 @@ public class EmailDaoImpl {
         return temp;
     }
 
-    public int sendEmail(Email email) {
+    public int sendEmail(Email email, int state) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
-        String sql = "update t_send_email SET sendState='1',sendDatetime = '" + addDatetime + "' where id= '" + email.getId() + "'";
+        String sql = "update t_send_email SET sendState='" + state + "',sendDatetime = '" + addDatetime + "' where id= '" + email.getId() + "'";
 
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);

@@ -92,6 +92,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToNormal_User", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_User(@RequestBody Map map) {
@@ -100,6 +101,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteUser(@RequestBody Map map) {
@@ -108,6 +110,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteAllUser", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteAllUser(@RequestBody Map map) {
@@ -116,6 +119,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/insertUserRoles")
     public Result insertUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.insertUserRoles(map);
@@ -123,6 +127,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteUserRoles", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteUserRoles(@RequestBody Map map) {

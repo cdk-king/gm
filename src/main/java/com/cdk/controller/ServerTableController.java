@@ -134,5 +134,59 @@ public class ServerTableController {
         return re;
     }
 
+    /***
+     * 同步服务器列表
+     * @param map
+     * @return
+     */
+    @CrossOrigin //跨域
+    @Transactional //事务
+    @RequestMapping("/api/server/SynServerList")
+    public Result SynServerList(@RequestBody Map map) {
+        Result re = serverServiceImpl.SynServerList(map);
+        System.out.println(Divider);
+        return re;
+    }
 
+    /***
+     * 设置默认服务器
+     * @param map
+     * @return
+     */
+    @CrossOrigin
+    @Transactional
+    @RequestMapping("/api/server/setDefaultServer")
+    public Result setDefaultServer(@RequestBody Map map) {
+        Result re = serverServiceImpl.setDefaultServer(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    /***
+     * 设置服务器状态
+     * @param map
+     * @return
+     */
+    @CrossOrigin
+    @Transactional
+    @RequestMapping("/api/server/ChangeState")
+    public Result ChangeState(@RequestBody Map map) {
+        Result re = serverServiceImpl.ChangeState(map);
+        System.out.println(Divider);
+        return re;
+    }
+
+    /***
+     * 平台获取服务器列表
+     * @param map
+     * @return
+     */
+    @CrossOrigin
+    @Transactional
+    @RequestMapping("/api/server/getServerList")
+    public Map<String, Object> getServerList(@RequestBody Map map) {
+        Map<String, Object> re = serverServiceImpl.getServerList(map);
+        System.out.println(Divider);
+        return re;
+    }
 }

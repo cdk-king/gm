@@ -5,6 +5,9 @@ import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,7 +34,7 @@ public class ServerDaoImpl implements ServerDao {
                 " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
 
         if (server.getServer() != "") {
-            sql += " and a.server LIKE '%" + server + "%'";
+            sql += " and a.server LIKE '%" + server.getServer() + "%'";
         }
         if (server.getServer_describe() != "") {
             sql += " and a.server_describe LIKE '%" + server.getServer_describe() + "%'";
@@ -45,13 +48,10 @@ public class ServerDaoImpl implements ServerDao {
         if (gameName != "") {
             sql += " and c.gameName LIKE '%" + gameName + "%'";
         }
-        //0：全部，1：冻结，2：未冻结
-        if (!Objects.equals(server.getState(), null) && !Objects.equals(server.getState(), 0)) {
-            if (Objects.equals(server.getState(), 1)) {
-                sql += " and a.state = 1 ";
-            } else if (Objects.equals(server.getState(), 2)) {
-                sql += " and a.state != 1 ";
-            }
+        if (!Objects.equals(server.getState(), null) && !Objects.equals(server.getState(), -1)) {
+
+            sql += " and a.state ='" + server.getState() + "' ";
+
         }
         sql += " order by a.id ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
@@ -66,6 +66,19 @@ public class ServerDaoImpl implements ServerDao {
         JsonMap.put("list", list);
         JsonMap.put("total", total);
 
+        return JsonMap;
+    }
+
+    public Map<String, Object> getServerList(String platform) {
+        String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
+                " t_gameplatform  as b on a.platformId = b.id and b.isDelete!=1  left JOIN \n" +
+                " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 and a.platformTag = '" + platform + "' ";
+        sql += " order by a.id ";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        int total = list.size();
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        JsonMap.put("total", total);
         return JsonMap;
     }
 
@@ -161,6 +174,22 @@ public class ServerDaoImpl implements ServerDao {
         return list;
     }
 
+    public int setDefaultServer(Server server) {
+        String sql = "UPDATE t_server_config SET isDefault=0 ";
+        int temp = jdbcTemplate.update(sql);
+        sql = "UPDATE t_gameserver SET isDefault=1 where id ='" + server.getId() + "'";
+        System.out.println("sql：" + sql);
+        temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int ChangeState(Server server) {
+        String sql = "UPDATE t_gameserver SET state='" + server.getState() + "' where id ='" + server.getId() + "'";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
     @Override
     public List<Map<String, Object>> getServerTree() {
         String sql =
@@ -170,5 +199,49 @@ public class ServerDaoImpl implements ServerDao {
         System.out.println("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
+    }
+
+    public int[] SynServerList(JSONArray jsonArray) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql[] = new String[jsonArray.length()];
+        String strSql = "";
+        int[] temp = null;
+        System.out.println("jsonArray.length():" + jsonArray.length());
+        if (Objects.equals(jsonArray.length(), 0)) {
+            //数据空，退出
+            return null;
+        }
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = jsonArray.getJSONObject(i);
+                String sqlSelect = "select * from t_gameserver where id = '" + jsonObject.get("sid") + "' ";
+                List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
+                if (list.size() > 0) {
+                    //存在，更新
+                    String sqlUpdate = "UPDATE t_gameserver as a SET a.server='" + jsonObject.get("sname") + "',a.server_describe = '" +
+                            jsonObject.get("sname") + "'," + "a.platformId='" + jsonObject.get("pid") + "',a.platformTag='" +
+                            jsonObject.get("pname") + "',a.openServiceTime='" + jsonObject.get("time") + "',a.addDatetime='" + addDatetime + "'," +
+                            "a.serverIp='" + jsonObject.get("domain") + "',a.area='" + jsonObject.get("area") + "' ,a.serverPort = '" +
+                            jsonObject.get("port") + "',a.addUser = 'cdk' where a.id =" + jsonObject.get("sid") + "";
+                    jdbcTemplate.update(sqlUpdate);
+                } else {
+                    //没有，新增
+                    String sqlInsert =
+                            "insert into t_gameserver (id,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime) values ('" +
+                                    jsonObject.get("sid") + "', '" + jsonObject.get("sname") + "','" + jsonObject.get("domain") + "','" +
+                                    jsonObject.get("port") + "','" + jsonObject.get("pid") + "','" + jsonObject.get("pname") + "','" +
+                                    jsonObject.get("sname") + "','0','0','cdk','" + addDatetime + "',0,'0','" + jsonObject.get("area") + "','" +
+                                    jsonObject.get("time") + "' ) ; ";
+                    jdbcTemplate.update(sqlInsert);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return temp;
     }
 }

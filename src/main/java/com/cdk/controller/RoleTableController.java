@@ -41,6 +41,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/editRole", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result editRole(@RequestBody Map map) {
@@ -49,6 +50,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addRole")
     public Result addRole(@RequestBody Map map) {
         Result re = roleServiceImpl.addRole(map);
@@ -56,6 +58,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_Role", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_Role(@RequestBody Map map) {
@@ -64,7 +67,7 @@ public class RoleTableController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToNormal_Role", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToNormal_Role(@RequestBody Map map) {
@@ -73,6 +76,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteRole", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteRole(@RequestBody Map map) {
@@ -81,6 +85,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteRoleRights", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteRoleRights(@RequestBody Map map) {
@@ -89,6 +94,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/deleteAllRole", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result deleteAllRole(@RequestBody Map<String, String> map) {
@@ -97,6 +103,7 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/InsertRoleRights")
     public Result InsertRoleRights(@RequestBody Map<String, String> map) {
         Result re = roleServiceImpl.InsertRoleRights(map);

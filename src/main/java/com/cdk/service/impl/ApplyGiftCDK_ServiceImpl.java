@@ -104,9 +104,9 @@ public class ApplyGiftCDK_ServiceImpl {
     public Map<String, Integer> analyse(String cdk) {
         System.out.println(cdk);
         Map<String, Integer> map = new HashMap();
-        //base32解码
-        byte[] data = BaseEncoding.base32().decode(cdk);
         try {
+            //base32解码
+            byte[] data = BaseEncoding.base32().decode(cdk);
             char[] strChar = cdk.toCharArray();
             String result = "";
             for (int i = 0; i < strChar.length; i++) {
@@ -123,6 +123,7 @@ public class ApplyGiftCDK_ServiceImpl {
             map.put("sequenceID", (int) b);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            return null;
         }
         return map;
         //英文数字为一字节（byte），8位（bit），汉字两字节

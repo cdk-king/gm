@@ -102,7 +102,16 @@ public class SendNoticeDaoImpl {
     public int sendNotice(String id) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "UPDATE  t_send_notice  set sendState='1' , startDatetime = '" + addDatetime + "' where id = '" + id + "' ";
+        String sql = "UPDATE  t_send_notice  set sendState='1' , sendDatetime = '" + addDatetime + "' where id = '" + id + "' ";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
+
+    public int sendNoticeToError(String id) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql = "UPDATE  t_send_notice  set sendState='2'  where id = '" + id + "' ";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
