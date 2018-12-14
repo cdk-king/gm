@@ -11,6 +11,8 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -232,6 +234,14 @@ public class EmailServiceImpl extends ApiHandeler {
 
         System.out.println("strPlatformId:" + strPlatformId);
 
+        try {
+            //中文转码
+            emailTitle = URLEncoder.encode(emailTitle, "UTF-8");
+            emailContent = URLEncoder.encode(emailContent, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         String param = getParam(strPlatformId);
         param += "&Content=" + emailContent;
         if (!Objects.equals(emailTitle, "")) {
@@ -263,6 +273,7 @@ public class EmailServiceImpl extends ApiHandeler {
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String error = "";
         url = apiUrl + "/UpdatePlayer/Mail";
+        System.out.println(url + "?" + param);
         String data = httpRequestUtil.sendGet(url, param);
         System.out.println(data);
         System.out.println("error:" + error);

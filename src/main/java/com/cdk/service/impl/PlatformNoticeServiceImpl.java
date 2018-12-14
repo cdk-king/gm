@@ -199,7 +199,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
 
         String[] serverArray = strServerList.split(",");
-
+        Long time = Math.abs(new Date().getTime() / 1000L);
         String param = getParam(strPlatformId);
 
         try {
@@ -218,10 +218,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (!Objects.equals(moneyList, "")) {
             param += "&Money=" + moneyList;
         }
-        if (!Objects.equals(startDatetime, "")) {
-            long a = Math.abs(Long.parseLong(startDatetime) / 1000L);
-            param += "&StartTime=" + a;
-        }
+        param += "&StartTime=" + time;
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
         System.out.println(urlList);
         String url = "";
@@ -248,7 +245,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         }
         if (error.length() > 0) {
             error = error.substring(0, error.length() - 1);
-            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2);
+            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
         }
         System.out.println("datas:" + datas);
         System.out.println("error:" + error);
@@ -273,9 +270,10 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         System.out.println(propList);
         System.out.println(strServerList);
         System.out.println(startDatetime);
-
+        //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        //        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String[] serverArray = strServerList.split(",");
-
+        Long time = Math.abs(new Date().getTime() / 1000L);
         String param = getParam(strPlatformId);
 
         try {
@@ -294,10 +292,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (!Objects.equals(moneyList, "")) {
             param += "&Money=" + moneyList;
         }
-        if (!Objects.equals(startDatetime, "")) {
-            long a = Math.abs(Long.parseLong(startDatetime) / 1000L);
-            param += "&StartTime=" + a;
-        }
+        param += "&StartTime=" + time;
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
         System.out.println(urlList);
         String url = "";
@@ -341,10 +336,10 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         }
         if (error.length() > 0) {
             error = error.substring(0, error.length() - 1);
-            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2);
+            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
 
         } else {
-            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, "", 1);
+            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, "", 1, time);
         }
         System.out.println("datas:" + datas);
         System.out.println("error:" + error);
