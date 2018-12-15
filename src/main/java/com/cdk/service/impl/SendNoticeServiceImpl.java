@@ -86,6 +86,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
     public Result getNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "0");
         String strNoticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "0");
@@ -113,7 +114,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         notice.setCycleTime(cycleTime);
         notice.setNoticeContent(noticeContent);
         notice.setAddUser(addUser);
-        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "公告列表获取失败", "");
         } else {
@@ -184,7 +185,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             } else {
                 return new Result(400, "广播发送失败，无效的服务器", "");
             }
-            //暂时用配置的
+            apiUrl = http + urlList.get(0).get("url").split(":")[0];
             url = apiUrl + "/notice/sendBroadcast";
             System.out.println(url);
             System.out.println(param);

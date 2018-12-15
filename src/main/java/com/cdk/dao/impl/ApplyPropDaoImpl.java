@@ -54,9 +54,10 @@ public class ApplyPropDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on c.id = a.serverId join t_user as d on d.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
+                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on c.serverId = a.serverId join t_user as d on d.id = a.addUser where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
         if (!Objects.equals(applyProp.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + applyProp.getPlatformId() + "' ";
         }

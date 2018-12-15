@@ -23,9 +23,10 @@ public class PlatformNoticeDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.id join t_user as c on c.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(platformNotice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + platformNotice.getPlatformId() + "' ";
         }

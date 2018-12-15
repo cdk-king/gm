@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -111,6 +112,8 @@ public class ApplyPropServiceImpl extends ApiHandeler {
             param += "&Money=" + Money;
         }
 
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(serverId, platformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
 
         String url = apiUrl + "/UpdatePlayer/Mail";
         System.out.println(url);
@@ -142,6 +145,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
     public Result getApplyProp(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String strPropList = (map.get("propList") != null ? map.get("propList").toString() : "");
         String releaseTitle = (map.get("releaseTitle") != null ? map.get("releaseTitle").toString() : "");
         String releaseContent = (map.get("releaseContent") != null ? map.get("releaseContent").toString() : "");
@@ -162,7 +166,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         applyProp.setServerId(serverId);
 
 
-        Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具申请列表获取失败", "");
         } else {

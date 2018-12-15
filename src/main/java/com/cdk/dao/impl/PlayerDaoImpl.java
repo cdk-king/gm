@@ -28,7 +28,7 @@ public class PlayerDaoImpl {
 
     public Map<String, Object> getPlayer(Player player, String isPage, int pageNo, int pageSize, Map searchForm) {
         String sql =
-                "select a.* , b.platform ,c.server from t_player as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id where b.isDelete != 1 and c.isDelete != 1 ";
+                "select a.* , b.platform ,c.server from t_player as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId where b.isDelete != 1 and c.isDelete != 1 ";
         if (player.getPlatformId() != 0) {
             sql += " and a.platformId ='" + player.getPlatformId() + "' ";
         }

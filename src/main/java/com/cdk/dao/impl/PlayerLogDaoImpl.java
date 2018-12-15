@@ -22,7 +22,7 @@ public class PlayerLogDaoImpl {
 
     public Map<String, Object> getPlayerBan(Player player, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.* , b.platform ,c.server,d.name as userName from t_player_ban_log as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id join t_user as d on a.userId = d.id where a.platformId IN (" +
+                "select a.* , b.platform ,c.server,d.name as userName from t_player_ban_log as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId join t_user as d on a.userId = d.id where a.platformId IN (" +
                         strPlatform + ")  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete != 1 ";
         if (player.getPlatformId() != 0) {
             sql += " and a.platformId ='" + player.getPlatformId() + "' ";
@@ -61,7 +61,7 @@ public class PlayerLogDaoImpl {
 
     public Map<String, Object> getPlayerProhibitSpeakLog(Player player, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.* , b.platform ,c.server,d.name as userName from t_player_prohibitspeak_log as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id join t_user as d on a.userId = d.id where a.platformId IN (" +
+                "select a.* , b.platform ,c.server,d.name as userName from t_player_prohibitspeak_log as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId join t_user as d on a.userId = d.id where a.platformId IN (" +
                         strPlatform + ")  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete != 1 ";
         if (player.getPlatformId() != 0) {
             sql += " and a.platformId ='" + player.getPlatformId() + "' ";

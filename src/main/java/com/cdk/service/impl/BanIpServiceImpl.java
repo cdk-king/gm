@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -125,6 +126,8 @@ public class BanIpServiceImpl extends ApiHandeler {
             param += "&Describle=" + note;
         }
 
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerId, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
 
         String url = apiUrl + "/UpdateAccount/FreezeIP";
         System.out.println(url);

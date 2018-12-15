@@ -25,9 +25,8 @@ public class PropDaoImpl implements PropDao {
     @Override
     public Map<String, Object> getProp(Prop prop, String isPage, int pageNo, int pageSize, String strPlatform) {
         //如果查询结果有个重复的字段，默认取后边
-        String sql =
-                "select a.* , b.platform  from t_prop as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ") and a.isDelete != 1  and b.isDelete != 1  ";
+        String sql = "select a.* , b.platform  from t_prop as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ") and a.isDelete != 1  and b.isDelete != 1  ";
         if (prop.getPlatformId() != 0) {
             sql += " and a.platformId ='" + prop.getPlatformId() + "' ";
         }

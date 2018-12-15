@@ -41,6 +41,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
     public Result getPlatformNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -56,7 +57,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         platformNotice.setServerList(serverName);
         platformNotice.setNoticeContent(noticeContent);
         platformNotice.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服公告列表获取失败", "");
         } else {
@@ -226,7 +227,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         String datas = "";
         String error = "";
         for (int i = 0; i < urlList.size(); i++) {
-            url = http + urlList.get(i).get("url") + "/notice/sendAllNotice";
+            url = http + urlList.get(i).get("url").split(":")[0] + "/notice/sendAllNotice";
             System.out.println(url);
             System.out.println(param);
             String data = httpRequestUtil.sendGet(url, param);
@@ -306,7 +307,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             } else {
                 return new Result(400, "公告发送失败，无效的服务器", "");
             }
-            //暂时用配置的
+            apiUrl = http + urlList.get(i).get("url").split(":")[0];
             url = apiUrl + "/notice/sendAllNotice";
             System.out.println(url);
             System.out.println(param);

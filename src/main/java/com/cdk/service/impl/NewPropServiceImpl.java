@@ -47,9 +47,8 @@ public class NewPropServiceImpl {
             e.printStackTrace();
         }
 
-        int[] temp = new int[len];
-        temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
-        if (temp.length > 0) {
+        int temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
+        if (temp > 0) {
             System.out.println("道具导入成功");
             re = new Result(200, "道具导入成功", null);
         } else {

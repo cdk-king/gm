@@ -210,9 +210,8 @@ public class CouponDaoImpl {
     }
 
     public Map<String, Object> getCoupon(Coupon coupon, String isPage, int pageNo, int pageSize, String strPlatform) {
-        String sql =
-                "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ")  and b.isDelete != 1  ";
+        String sql = "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ")  and b.isDelete != 1  ";
         if (coupon.getPlatformId() != 0) {
             sql += " and a.platformId ='" + coupon.getPlatformId() + "' ";
         }

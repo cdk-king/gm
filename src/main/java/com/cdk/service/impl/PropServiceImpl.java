@@ -66,6 +66,7 @@ public class PropServiceImpl {
     }
 
     public Result addProp(Map map) {
+        String propId = (map.get("propId") != null ? map.get("propId").toString() : "");
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
         String propTag = (map.get("propTag") != null ? map.get("propTag").toString() : "");
         String prop_describe = (map.get("prop_describe") != null ? map.get("prop_describe").toString() : "");

@@ -24,7 +24,7 @@ public class BanIpDaoImpl {
 
     public Map<String, Object> getBanIp(BanIp banIp, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id  where a.platformId IN (" +
+                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId  where a.platformId IN (" +
                         strPlatform + ")  and b.isDelete != 1 and c.isDelete != 1 and a.isDelete != 1 ";
         if (banIp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + banIp.getPlatformId() + "' ";

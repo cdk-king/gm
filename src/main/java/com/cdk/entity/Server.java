@@ -9,10 +9,11 @@ public class Server {
         //无参构造器
     }
 
-    public Server(int id, String server, String serverIp, String serverPort, int platformId, String server_describe, int state, int sort,
-            String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, Date openServiceTime) {
+    public Server(int id, int serverId, String server, String serverIp, String serverPort, int platformId, String server_describe, int state,
+            int sort, String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, Date openServiceTime) {
         //有参构造器
         this.id = id;
+        this.serverId = serverId;
         this.server = server;
         this.serverIp = serverIp;
         this.serverPort = serverPort;
@@ -31,10 +32,15 @@ public class Server {
     }
 
     /**
-     * 服务器-编号
+     * 表-编号
      */
 
     private int id;
+    /**
+     * 服务器-编号
+     */
+
+    private int serverId;
 
     /**
      * 服务器名
@@ -239,5 +245,13 @@ public class Server {
 
     public void setOpenServiceTime(Date openServiceTime) {
         this.openServiceTime = openServiceTime;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public void setServerId(int serverId) {
+        this.serverId = serverId;
     }
 }

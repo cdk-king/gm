@@ -82,7 +82,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result addServer(Map map) {
 
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String serverId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
@@ -92,7 +92,7 @@ public class ServerServiceImpl extends ApiHandeler {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
+        System.out.println("serverId：" + serverId);
         System.out.println("server：" + serverName);
         System.out.println("server_describe：" + server_describe);
         System.out.println("serverIP：" + serverIp);
@@ -102,6 +102,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
         Server server = new Server();
         server.setServer(serverName);
+        server.setServerId(Integer.parseInt(serverId));
         server.setServerIp(serverIp);
         server.setServer_describe(server_describe);
         server.setPlatformId(Integer.parseInt(platformId));
@@ -269,13 +270,13 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getServerListForPlatform(Map map) {
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
-        if (Objects.equals(id, "")) {
+        String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
+        System.out.println("platformId：" + platformId);
+        if (Objects.equals(platformId, "")) {
             return new Result(400, "渠道服务器列表获取失败", null);
         }
         Platform platform = new Platform();
-        platform.setId(Integer.parseInt(id));
+        platform.setPlatformId(Integer.parseInt(platformId));
 
         List<Map<String, Object>> list = serverDaoImpl.getServerListForPlatform(platform);
         Result re;
@@ -288,8 +289,6 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getServerTree(Map map) {
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
 
         List<Map<String, Object>> list = serverDaoImpl.getServerTree();
         System.out.println(list);
@@ -354,8 +353,10 @@ public class ServerServiceImpl extends ApiHandeler {
      */
     public Result ChangeState(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        String strState = (map.get("state") != null ? map.get("state").toString() : "");
-
+        String strState = (map.get("state") != null ? map.get("state").toString() : "0");
+        if (Objects.equals(strState, "")) {
+            strState = "0";
+        }
         int state = Integer.parseInt(strState);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
@@ -391,7 +392,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
             Map<String, Object> serverList = new HashMap<>();
             for (int i = 0; i < len; i++) {
-                String serverId = list.get(i).get("id").toString();
+                String serverId = list.get(i).get("serverId").toString();
                 String area = list.get(i).get("area").toString();
                 String state = list.get(i).get("state").toString();
                 String server = list.get(i).get("server").toString();

@@ -22,10 +22,12 @@ public class NewGiftServiceImpl {
     public Result ImportGift(Map map) {
         int len = 10;
         int platformId = 0;
+        int gameId = 0;
         Result re;
 
         String strlist = map.get("list").toString();
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
             System.out.println("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
@@ -34,14 +36,14 @@ public class NewGiftServiceImpl {
         JSONArray jsonArray = null;
 
         platformId = Integer.parseInt(strPlatformId);
+        gameId = Integer.parseInt(strGameId);
         jsonArray = JSONArray.parseArray(strlist);
         System.out.println(jsonArray);
         System.out.println(jsonArray.size());
         len = jsonArray.size();
 
-        int[] temp = new int[len];
-        temp = newGiftDaoImpl.ImportGift(jsonArray, platformId);
-        if (temp.length > 0) {
+        int temp = newGiftDaoImpl.ImportGift(jsonArray, platformId, gameId);
+        if (temp > 0) {
             System.out.println("礼包导入成功");
             re = new Result(200, "礼包导入成功", null);
         } else {
@@ -81,13 +83,6 @@ public class NewGiftServiceImpl {
             System.out.println("礼包列表获取失败");
             re = new Result(400, "礼包列表获取失败", null);
         }
-        //        (•_•)
-        //        <)  )╯
-        //        /   \
-        //
-        //        \(•_•)
-        //        (  (>
-        //        /   \
         return re;
     }
 

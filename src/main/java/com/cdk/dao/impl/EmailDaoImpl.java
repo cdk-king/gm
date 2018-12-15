@@ -22,9 +22,10 @@ public class EmailDaoImpl {
     private JdbcTemplate jdbcTemplate;
 
 
-    public Map<String, Object> getEmail(Email email, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getEmail(Email email, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform,c.name as userName,d.server from t_send_email as a  join  t_gameplatform as b on a.platformId = b.id join t_user as c on c.id = a.addUser join t_gameserver as d on d.id = a.serverId where a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete !=1 ";
+                "select a.*,b.platform,c.name as userName,d.server from t_send_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_gameserver as d on d.serverId = a.serverId where a.platformId IN (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete !=1 ";
         if (!Objects.equals(email.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + email.getPlatformId() + "' ";
         }

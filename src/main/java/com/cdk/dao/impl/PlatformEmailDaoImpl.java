@@ -23,9 +23,10 @@ public class PlatformEmailDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getPlatformEmail(PlatformEmail platformEmail, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getPlatformEmail(PlatformEmail platformEmail, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform,c.name as userName from t_platform_email as a  join  t_gameplatform as b on a.platformId = b.id join t_user as c on c.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform,c.name as userName from t_platform_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(platformEmail.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + platformEmail.getPlatformId() + "' ";
         }
@@ -105,9 +106,11 @@ public class PlatformEmailDaoImpl {
         return temp;
     }
 
-    public int sendPlatformEmail(PlatformEmail platformEmail, int state, String error) {
-        String sql =
-                "UPDATE  t_platform_email  set sendState = '" + state + "',errorList = '" + error + "' where id = '" + platformEmail.getId() + "'";
+    public int sendPlatformEmail(PlatformEmail platformEmail, int state, String error, long time) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(time * 1000);// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql = "UPDATE  t_platform_email  set sendState = '" + state + "',errorList = '" + error + "' ,startDatetime='" + addDatetime +
+                "' where id = '" + platformEmail.getId() + "'";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

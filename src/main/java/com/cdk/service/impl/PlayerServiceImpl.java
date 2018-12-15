@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -48,6 +49,9 @@ public class PlayerServiceImpl extends ApiHandeler {
             param += "&PlayerID=" + PlayerID;
         }
 
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
         System.out.println(url);
         System.out.println(param);
@@ -67,7 +71,7 @@ public class PlayerServiceImpl extends ApiHandeler {
 
     public Result getPlayerFromServer(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String strServerId = ((map.get("WorldID") != null && map.get("WorldID") != "") ? map.get("WorldID").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -118,6 +122,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(TalkBan, "")) {
             param += "&TalkBan=" + TalkBan;
         }
+
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerId, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+
         String url = apiUrl + "/QueryPlayer/PlayerList";
         System.out.println(url);
         System.out.println(param);
@@ -209,6 +217,8 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
 
         String url = apiUrl + "/UpdateAccount/FreezeAccount";
         System.out.println(url);
@@ -274,6 +284,8 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
 
         String url = apiUrl + "/UpdatePlayer/GagPlayer";
         System.out.println(url);

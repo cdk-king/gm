@@ -100,6 +100,7 @@ public class PlatformServiceImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         String roleId = (map.get("roleId") != null ? map.get("roleId").toString() : "");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
@@ -110,16 +111,6 @@ public class PlatformServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("platform：" + platformName);
-        System.out.println("platform_describe：" + platform_describe);
-        System.out.println("platformTag：" + platformTag);
-        System.out.println("gameId：" + gameId);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("addDatetime：" + addDatetime);
-        System.out.println("state：" + state);
-
         Platform platform = new Platform();
         platform.setPlatform(platformName);
         platform.setPlatformTag(platformTag);
@@ -127,6 +118,7 @@ public class PlatformServiceImpl {
         platform.setGameId(Integer.parseInt(gameId));
         platform.setRoleId(Integer.parseInt(roleId));
         platform.setAddUser(addUser);
+        platform.setPlatformId(Integer.parseInt(platformId));
 
         Result re;
         int temp = platformDaoImpl.addPlatform(platform);
@@ -142,6 +134,7 @@ public class PlatformServiceImpl {
 
     public Result editPlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
@@ -153,16 +146,6 @@ public class PlatformServiceImpl {
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("platform：" + platformName);
-        System.out.println("platform_describe：" + platform_describe);
-        System.out.println("platformTag：" + platformTag);
-        System.out.println("ParentId：" + ParentId);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("addDatetime：" + addDatetime);
-        System.out.println("state：" + state);
-
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
         platform.setPlatform(platformName);
@@ -171,6 +154,7 @@ public class PlatformServiceImpl {
         platform.setAddUser(addUser);
         platform.setGameId(Integer.parseInt(gameId));
         platform.setRoleId(Integer.parseInt(roleId));
+        platform.setPlatformId(Integer.parseInt(platformId));
 
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
@@ -214,11 +198,11 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.changeStateToNormal_Platform(platform);
         if (temp > 0) {
-            System.out.println("游戏解冻成功");
-            re = new Result(200, "游戏解冻成功", null);
+            System.out.println("平台解冻成功");
+            re = new Result(200, "平台解冻成功", null);
         } else {
-            System.out.println("游戏解冻失败");
-            re = new Result(400, "游戏解冻失败", null);
+            System.out.println("平台解冻失败");
+            re = new Result(400, "平台解冻失败", null);
         }
         return re;
     }

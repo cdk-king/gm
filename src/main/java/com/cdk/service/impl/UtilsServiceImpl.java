@@ -22,9 +22,10 @@ public class UtilsServiceImpl {
     @Autowired
     public UtilsDaoImpl utilsDaoImpl;
 
-    public List<Map<String, String>> getServerUrl(String serverId, String platformId) {
-        System.out.println(serverId);
-        String[] serverIdArray = serverId.split(",");
+    public List<Map<String, String>> getServerUrl(String serverIdList, String platformId) {
+        System.out.println(serverIdList);
+        System.out.println(platformId);
+        String[] serverIdArray = serverIdList.split(",");
 
         List<Map<String, Object>> list = utilsDaoImpl.getServerUrl(platformId);
         System.out.println(list);
@@ -32,8 +33,8 @@ public class UtilsServiceImpl {
         Map<String, String> map = new HashMap();
         for (int j = 0; j < serverIdArray.length; j++) {
             for (int i = 0; i < list.size(); i++) {
-                if (Objects.equals(serverIdArray[j], list.get(i).get("id").toString())) {
-                    map.put("id", serverIdArray[j]);
+                if (Objects.equals(serverIdArray[j], list.get(i).get("serverId").toString())) {
+                    map.put("serverId", serverIdArray[j]);
                     map.put("url", list.get(i).get("serverIp").toString() + ":" + list.get(i).get("serverPort").toString());
                     urlList.add(map);
                     map = new HashMap();

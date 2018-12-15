@@ -16,6 +16,7 @@ import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class EmailServiceImpl extends ApiHandeler {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String emailContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
-
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -47,7 +48,7 @@ public class EmailServiceImpl extends ApiHandeler {
         email.setServerId(serverId);
         email.setEmailContent(emailContent);
         email.setAddUser(addUser);
-        Map<String, Object> JsonMap = emailDaoImpl.getEmail(email, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = emailDaoImpl.getEmail(email, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "邮件列表获取失败", "");
         } else {
@@ -272,6 +273,9 @@ public class EmailServiceImpl extends ApiHandeler {
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String error = "";
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strserverId, strPlatformId);
+        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+
         url = apiUrl + "/UpdatePlayer/Mail";
         System.out.println(url + "?" + param);
         String data = httpRequestUtil.sendGet(url, param);

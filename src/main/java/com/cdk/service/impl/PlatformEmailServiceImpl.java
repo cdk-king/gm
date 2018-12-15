@@ -17,6 +17,7 @@ import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
     public Result getPlatformEmail(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -46,7 +48,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         platformEmail.setServerList(serverName);
         platformEmail.setEmailContent(emailContent);
         platformEmail.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服邮件列表获取失败", "");
         } else {
@@ -197,11 +199,17 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String url = "";
 
         String error = "";
-        url = apiUrl + "/UpdatePlayer/Mail";
+
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+
 
         for (int i = 0; i < ServerList.length; i++) {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
             System.out.println(param + "&WorldID=" + ServerList[i]);
+
+            apiUrl = http + serverUrl.get(i).get("url").split(":")[0];
+            url = apiUrl + "/UpdatePlayer/Mail";
+
             String data = httpRequestUtil.sendGet(url, param + "&WorldID=" + ServerList[i]);
             System.out.println(data);
             JSONObject jb = JSONObject.fromObject(data);
@@ -211,13 +219,13 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
             }
         }
         System.out.println("error:" + error);
-
+        Long time = Math.abs(new Date().getTime() / 1000L);
         if (!Objects.equals(error.length(), 0)) {
-            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error);
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error, time);
             re = new Result(400, "全服邮件发送失败", error);
         } else {
 
-            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error);
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error, time);
             if (temp > 0) {
                 re = new Result(200, "全服邮件发送成功", error);
             } else {

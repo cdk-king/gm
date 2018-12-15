@@ -56,9 +56,10 @@ public class SendNoticeDaoImpl {
         return temp;
     }
 
-    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.id  where a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.platformId  where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(notice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + notice.getPlatformId() + "' ";
         }

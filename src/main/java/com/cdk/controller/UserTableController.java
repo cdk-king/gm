@@ -68,6 +68,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addUser")
     public Result addUser(@RequestBody Map map) {
         Result re = userServiceImpl.addUser(map);
@@ -84,6 +85,7 @@ public class UserTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_User", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_User(@RequestBody Map map) {

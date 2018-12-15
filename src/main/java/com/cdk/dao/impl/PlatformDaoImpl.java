@@ -84,9 +84,11 @@ public class PlatformDaoImpl implements PlatformDao {
     public int addPlatform(Platform platform) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert into t_gameplatform (platform,platformTag,platform_describe,gameId,roleId,sort,addUser,addDatetime,state,isDelete) " +
-                " values ('" + platform.getPlatform() + "','" + platform.getPlatformTag() + "','" + platform.getPlatform_describe() + "','" +
-                platform.getGameId() + "','" + platform.getRoleId() + "','0','" + platform.getAddUser() + "','" + addDatetime + "','0','0')";
+        String sql =
+                "insert into t_gameplatform (platformId,platform,platformTag,platform_describe,gameId,roleId,sort,addUser,addDatetime,state,isDelete) " +
+                        " values ('" + platform.getPlatformId() + "','" + platform.getPlatform() + "','" + platform.getPlatformTag() + "','" +
+                        platform.getPlatform_describe() + "','" + platform.getGameId() + "','" + platform.getRoleId() + "','0','" +
+                        platform.getAddUser() + "','" + addDatetime + "','0','0')";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -94,9 +96,10 @@ public class PlatformDaoImpl implements PlatformDao {
 
     @Override
     public int editPlatform(Platform platform) {
-        String sql = "UPDATE t_gameplatform as a SET a.platform='" + platform.getPlatform() + "',a.platform_describe = '" +
-                platform.getPlatform_describe() + "'," + "a.gameId='" + platform.getGameId() + "',a.roleId='" + platform.getRoleId() + "'," +
-                "a.platformTag='" + platform.getPlatformTag() + "' ,a.addUser = '" + platform.getAddUser() + "' where a.id =" + platform.getId() + "";
+        String sql = "UPDATE t_gameplatform as a SET a.platformId = '" + platform.getPlatformId() + "' , a.platform='" + platform.getPlatform() +
+                "',a.platform_describe = '" + platform.getPlatform_describe() + "'," + "a.gameId='" + platform.getGameId() + "',a.roleId='" +
+                platform.getRoleId() + "'," + "a.platformTag='" + platform.getPlatformTag() + "' ,a.addUser = '" + platform.getAddUser() +
+                "' where a.id =" + platform.getId() + "";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

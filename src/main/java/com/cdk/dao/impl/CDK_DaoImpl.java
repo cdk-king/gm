@@ -26,9 +26,8 @@ public class CDK_DaoImpl {
 
     public Map<String, Object> getCDK(CDK cdk, String isPage, int pageNo, int pageSize, String strPlatform) {
 
-        String sql =
-                "select a.* , b.platform  from t_cdk as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ")  and b.isDelete != 1  ";
+        String sql = "select a.* , b.platform  from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ")  and b.isDelete != 1  ";
         if (cdk.getPlatformId() != 0) {
             sql += " and a.platformId ='" + cdk.getPlatformId() + "' ";
         }
