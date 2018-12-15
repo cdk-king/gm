@@ -72,6 +72,21 @@ public class UserDaoImpl implements UserDao {
         return JsonMap;
     }
 
+    public Map<String, Object> getUserById(User user) {
+
+        String sql = "select *  from t_user  where id='" + user.getId() + "' and isDelete != 1  ";
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        if (list.size() != 0) {
+            JsonMap.put("list", list);
+        } else {
+            JsonMap.put("list", 0);
+        }
+
+        return JsonMap;
+    }
+
     @Override
     public Map<String, Object> getUser(User user, int pageNo, int pageSize) {
         //distinct去重，GROUP_CONCAT合并，注意GROUP_CONCAT的默认长度是1024，所以尽量不要拼接name
@@ -118,6 +133,13 @@ public class UserDaoImpl implements UserDao {
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
+        return temp;
+    }
+
+    public int checkSameUserName(User user) {
+        String sql = "select * from t_user where name='" + user.getName() + "' and isDelete!=1";
+        System.out.println("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
         return temp;
     }
 

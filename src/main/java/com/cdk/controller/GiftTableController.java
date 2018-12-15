@@ -32,6 +32,7 @@ public class GiftTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addGift")
     public Result addGift(@RequestBody Map map) {
         Result re = giftServiceImpl.addGift(map);

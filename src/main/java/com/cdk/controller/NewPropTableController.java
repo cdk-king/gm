@@ -22,6 +22,7 @@ public class NewPropTableController {
     @Autowired
     private NewPropServiceImpl newPropServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/ImportProp")
     public Result ImportProp(@RequestBody Map map) {
         Result re = newPropServiceImpl.ImportProp(map);
@@ -37,6 +38,7 @@ public class NewPropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/newProp/getPropTypeList")
     public Result getPropTypeList(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropTypeList(map);

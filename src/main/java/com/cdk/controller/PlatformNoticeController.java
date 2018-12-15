@@ -35,6 +35,7 @@ public class PlatformNoticeController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addPlatformNotice")
     public Result addPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.addPlatformNotice(map);
@@ -42,6 +43,7 @@ public class PlatformNoticeController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/editPlatformNotice")
     public Result editPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.editPlatformNotice(map);
@@ -49,6 +51,7 @@ public class PlatformNoticeController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deletePlatformNotice")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deletePlatformNotice(map);
@@ -56,6 +59,7 @@ public class PlatformNoticeController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/notice/sendNotice")
     public Result sendPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
@@ -63,6 +67,7 @@ public class PlatformNoticeController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/notice/reSendNotice")
     public Result reSendNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
@@ -70,7 +75,7 @@ public class PlatformNoticeController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping("/deleteAllPlatformNotice")
     public Result deleteAllPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deleteAllPlatformNotice(map);

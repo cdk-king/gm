@@ -4,10 +4,16 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.PlatformEmailDaoImpl;
 import com.cdk.entity.PlatformEmail;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
+
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class PlatformEmailServiceImpl {
+public class PlatformEmailServiceImpl extends ApiHandeler {
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";
@@ -159,21 +165,68 @@ public class PlatformEmailServiceImpl {
     public Result sendPlatformEmail(Map map) {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
         int id = Integer.parseInt(strId);
-
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
         platformEmail.setId(id);
 
-        int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail);
-        if (temp > 0) {
-            System.out.println("全服邮件发送成功");
-            re = new Result(200, "全服邮件发送成功", null);
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
+        String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
+        String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
+
+        System.out.println("strServerList:" + strServerList);
+
+        String[] ServerList = strServerList.split("-");
+
+        try {
+            //中文转码
+            emailTitle = URLEncoder.encode(emailTitle, "UTF-8");
+            emailContent = URLEncoder.encode(emailContent, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        String param = getParam(strPlatformId);
+        param += "&Content=" + emailContent;
+        if (!Objects.equals(emailTitle, "")) {
+            param += "&Title=" + emailTitle;
+        }
+
+        param += "&IsAllPlayer=1";
+
+        String url = "";
+
+        String error = "";
+        url = apiUrl + "/UpdatePlayer/Mail";
+
+        for (int i = 0; i < ServerList.length; i++) {
+            HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+            System.out.println(param + "&WorldID=" + ServerList[i]);
+            String data = httpRequestUtil.sendGet(url, param + "&WorldID=" + ServerList[i]);
+            System.out.println(data);
+            JSONObject jb = JSONObject.fromObject(data);
+            Map resultMap = (Map) jb;
+            if (!Objects.equals(resultMap.get("Result"), 1)) {
+                error += ServerList[i];
+            }
+        }
+        System.out.println("error:" + error);
+
+        if (!Objects.equals(error.length(), 0)) {
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error);
+            re = new Result(400, "全服邮件发送失败", error);
         } else {
-            System.out.println("全服邮件发送失败");
-            re = new Result(400, "全服邮件发送失败", null);
+
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error);
+            if (temp > 0) {
+                re = new Result(200, "全服邮件发送成功", error);
+            } else {
+                re = new Result(200, "全服邮件发送成功，信息录入失败", error);
+            }
         }
         return re;
     }
+
 
     public Result deleteAllPlatformEmail(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");

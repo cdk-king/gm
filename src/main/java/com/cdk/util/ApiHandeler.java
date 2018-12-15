@@ -1,12 +1,17 @@
 package com.cdk.util;
 
+import com.cdk.service.impl.UtilsServiceImpl;
 import com.twmacinta.util.MD5;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.Charset;
 
 public class ApiHandeler {
+
+    @Autowired
+    public UtilsServiceImpl utilsServiceImpl;
 
     public static final String UTF_8_NAME = "UTF-8";
     public static final Charset UTF_8 = Charset.forName("UTF-8");

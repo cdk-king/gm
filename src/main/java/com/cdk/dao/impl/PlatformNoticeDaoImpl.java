@@ -158,8 +158,12 @@ public class PlatformNoticeDaoImpl {
         return JsonMap;
     }
 
-    public int changeNoticeSendState(String id, String error, int state) {
-        String sql = "update t_platform_notice set sendState = " + state + ",errorList = '" + error + "' where id = " + id;
+    public int changeNoticeSendState(String id, String error, int state, long time) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        String addDatetime = df.format(time * 1000);// new Date()为获取当前系统时间，也可使用当前时间戳
+        String sql =
+                "update t_platform_notice set sendState = " + state + ",errorList = '" + error + "',startDatetime='" + addDatetime + "' where id = " +
+                        id;
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

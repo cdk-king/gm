@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
         user.setPhone(phone);
         user.setEmail(email);
         user.setType(type);
-
         int temp = userDaoImpl.editUser(user);
         Result re;
         if (temp > 0) {
@@ -111,6 +110,22 @@ public class UserServiceImpl implements UserService {
         }
 
         return re;
+    }
+
+    public Result getUserById(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        Result re;
+        User user = new User();
+        user.setId(Integer.parseInt(id));
+        Map<String, Object> JsonMap = userDaoImpl.getUserById(user);
+        if (Objects.equals(JsonMap.get("list"), 0)) {
+            re = new Result(400, "用户获取失败", "");
+        } else {
+            re = new Result(200, "用户获取成功", JsonMap);
+        }
+
+        return re;
+
     }
 
     public Result getUser(Map map) {

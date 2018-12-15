@@ -1,24 +1,30 @@
 package com.cdk.service.impl;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdk.dao.impl.SendNoticeDaoImpl;
 import com.cdk.entity.Notice;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
-public class SendNoticeServiceImpl {
-
+public class SendNoticeServiceImpl extends ApiHandeler {
+    Logger logger = Logger.getLogger("SendNoticeServiceImpl");
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
     @Autowired
     public SendNoticeDaoImpl sendNoticeDaoImpl;
+
 
     public Result getSendNoticeSendType() {
         Result re;
@@ -145,16 +151,89 @@ public class SendNoticeServiceImpl {
 
     public Result sendNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "0");
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
+        String Content = (map.get("Content") != null ? map.get("Content").toString() : "");
+        String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
+        String noticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "");
 
+
+        System.out.println("strPlatformId:" + strPlatformId);
+        System.out.println("strServerList:" + strServerList);
+        String[] serverArray = strServerList.split(",");
+
+        String param = getParam(strPlatformId);
+        param += "&Content=" + Content;
+
+        if (!Objects.equals(sendType, "")) {
+            param += "&sendType=" + sendType;
+        }
+        if (!Objects.equals(noticeType, "")) {
+            param += "&noticeType=" + noticeType;
+        }
+        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+        System.out.println(urlList);
+        String url = "";
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String datas = "";
+        String error = "";
+        //循环服务器列表
+        for (int i = 0; i < urlList.size(); i++) {
+            if (!Objects.equals(serverArray[i], "")) {
+                param += "&WorldID=" + serverArray[i];
+            } else {
+                return new Result(400, "广播发送失败，无效的服务器", "");
+            }
+            //暂时用配置的
+            url = apiUrl + "/notice/sendBroadcast";
+            System.out.println(url);
+            System.out.println(param);
+
+
+            String data = httpRequestUtil.sendGet(url, param);
+            //返回结果判空处理
+            if (!Objects.equals(data, null)) {
+                JSONObject jo = JSONObject.parseObject(data);
+                if (data.indexOf("Result") > 0) {
+                    data = jo.getString("Result");
+                } else {
+                    data = "-1";
+                }
+            } else {
+                data = "-1";
+            }
+            //除了1，都是失败
+            datas += data + ",";
+            if (!Objects.equals(data, "1")) {
+                //记录错误服务器id
+                error += serverArray[i] + ",";
+            }
+        }
+
+        if (datas.length() > 0) {
+            datas = datas.substring(0, datas.length() - 1);
+
+        }
+        System.out.println("data:" + datas);
+        if (error.length() > 0) {
+            error = error.substring(0, error.length() - 1);
+
+        }
+        System.out.println("error:" + error);
         Result re;
-        int temp = sendNoticeDaoImpl.sendNotice(id);
-        if (temp > 0) {
-            System.out.println("公告发送成功");
-            re = new Result(200, "公告发送成功", null);
+
+        if (error.length() > 0 || datas.length() == 0) {
+            int temp = sendNoticeDaoImpl.sendNoticeToError(id);
+            System.out.println("广播发送失败");
+            re = new Result(400, "广播发送失败", error);
+
         } else {
-            System.out.println("公告发送失败");
-            re = new Result(400, "公告发送失败", null);
+            int temp = sendNoticeDaoImpl.sendNotice(id);
+            System.out.println("广播发送成功");
+            re = new Result(200, "广播发送成功", datas);
         }
         return re;
     }
+
+
 }

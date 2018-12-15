@@ -29,7 +29,7 @@ public class NewGiftDaoImpl {
         jdbcTemplate.update(strSql);
         strSql = "";
         int[] temp = new int[jsonArray.size()];
-        for (int i = 1; i < jsonArray.size(); i++) {
+        for (int i = 0; i < jsonArray.size(); i++) {
 
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             sql[i] = "insert into t_gift_upload (giftId,limitCount,expire_time,goods_prize1,value_prize1,platformId) values ('" +
@@ -61,7 +61,7 @@ public class NewGiftDaoImpl {
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
-            sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+            sql += " order by id limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
         list = jdbcTemplate.queryForList(sql);

@@ -121,7 +121,8 @@ public class PlatformServiceImpl {
         System.out.println("state：" + state);
 
         Platform platform = new Platform();
-        platform.setPlatformTag(platformName);
+        platform.setPlatform(platformName);
+        platform.setPlatformTag(platformTag);
         platform.setPlatform_describe(platform_describe);
         platform.setGameId(Integer.parseInt(gameId));
         platform.setRoleId(Integer.parseInt(roleId));

@@ -30,6 +30,7 @@ public class BanIpController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/ip/addBanIp")
     public Result addBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.addBanIp(map);
@@ -37,6 +38,7 @@ public class BanIpController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/ip/banIp")
     public Result banIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.banIp(map);
@@ -44,6 +46,7 @@ public class BanIpController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/ip/deleteBanIp")
     public Result deleteBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteBanIp(map);
@@ -51,6 +54,7 @@ public class BanIpController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/ip/deleteAllBanIp")
     public Result deleteAllBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteAllBanIp(map);

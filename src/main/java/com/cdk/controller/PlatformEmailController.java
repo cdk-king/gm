@@ -5,6 +5,7 @@ import com.cdk.service.impl.PlatformEmailServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +21,7 @@ public class PlatformEmailController {
     @Autowired
     private PlatformEmailServiceImpl platformEmailServiceImpl;
 
-
+    @CrossOrigin
     @RequestMapping("/getPlatformEmail")
     public Result getPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.getPlatformEmail(map);
@@ -28,6 +29,7 @@ public class PlatformEmailController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/editPlatformEmail")
     public Result editPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.editPlatformEmail(map);
@@ -35,7 +37,7 @@ public class PlatformEmailController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping("/addPlatformEmail")
     public Result addPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.addPlatformEmail(map);
@@ -43,6 +45,7 @@ public class PlatformEmailController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deletePlatformEmail")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deletePlatformEmail(map);
@@ -50,6 +53,7 @@ public class PlatformEmailController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/sendPlatformEmail")
     public Result sendPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.sendPlatformEmail(map);
@@ -57,6 +61,7 @@ public class PlatformEmailController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deleteAllPlatformEmail")
     public Result deleteAllPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deleteAllPlatformEmail(map);

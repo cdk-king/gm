@@ -105,8 +105,9 @@ public class PlatformEmailDaoImpl {
         return temp;
     }
 
-    public int sendPlatformEmail(PlatformEmail platformEmail) {
-        String sql = "UPDATE  t_platform_email  set sendState = 1 where id = '" + platformEmail.getId() + "'";
+    public int sendPlatformEmail(PlatformEmail platformEmail, int state, String error) {
+        String sql =
+                "UPDATE  t_platform_email  set sendState = '" + state + "',errorList = '" + error + "' where id = '" + platformEmail.getId() + "'";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

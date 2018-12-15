@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,6 +48,20 @@ public class RoleServiceImpl {
         } else {
             System.out.println("角色添加失败");
             re = new Result(400, "角色添加失败", null);
+        }
+        return re;
+    }
+
+    public Result getRoleById(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        Result re;
+        List<Map<String, Object>> list = roleDaoImpl.getRoleById(id);
+        if (list.size() > 0) {
+            System.out.println("角色信息获取成功");
+            re = new Result(200, "角色信息获取成功", list);
+        } else {
+            System.out.println("角色信息获取失败");
+            re = new Result(400, "角色信息获取失败", list);
         }
         return re;
     }

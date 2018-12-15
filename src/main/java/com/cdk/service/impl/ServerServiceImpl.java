@@ -5,16 +5,21 @@ import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
+import com.cdk.util.ApiHandeler;
+import com.cdk.util.HttpRequestUtil;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @Service
-public class ServerServiceImpl {
+public class ServerServiceImpl extends ApiHandeler {
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -32,7 +37,7 @@ public class ServerServiceImpl {
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
-            state = "0";
+            state = "-1";
         }
         System.out.println("server：" + serverName);
         System.out.println("serverIp：" + serverIp);
@@ -296,5 +301,129 @@ public class ServerServiceImpl {
         }
         return re;
     }
-}
 
+    public Result SynServerList(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        String param = "";
+
+        String url = "http://123.207.115.217:20000/serversByJson";
+        System.out.println(url);
+        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
+        String data = httpRequestUtil.sendGet(url, param);
+        System.out.println(data);
+        Result re;
+        if (data.length() != 0) {
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(data);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                re = new Result(400, "服务器列表数据解析失败", data);
+            }
+            int[] temp = serverDaoImpl.SynServerList(jsonArray);
+
+            re = new Result(200, "服务器列表获取成功", data);
+        } else {
+            re = new Result(400, "服务器列表获取失败", data);
+        }
+        return re;
+    }
+
+    public Result setDefaultServer(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        System.out.println("id：" + id);
+        Server server = new Server();
+        server.setId(Integer.parseInt(id));
+        Result re;
+        int temp = serverDaoImpl.setDefaultServer(server);
+        if (temp > 0) {
+            System.out.println("默认服务器设置成功");
+            re = new Result(200, "默认服务器设置成功", null);
+        } else {
+            System.out.println("默认服务器设置失败");
+            re = new Result(400, "默认服务器设置失败", null);
+        }
+        return re;
+    }
+
+    /***
+     * 状态（{0  未开启,  1维护，2新服，3良好，4爆满}）
+     * @param map
+     * @return
+     */
+    public Result ChangeState(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String strState = (map.get("state") != null ? map.get("state").toString() : "");
+
+        int state = Integer.parseInt(strState);
+        Server server = new Server();
+        server.setId(Integer.parseInt(id));
+        server.setState(state);
+        int temp = serverDaoImpl.ChangeState(server);
+        Result re;
+        if (temp > 0) {
+            System.out.println("服务器状态设置成功");
+            re = new Result(200, "服务器状态设置成功", null);
+        } else {
+            System.out.println("服务器状态设置失败");
+            re = new Result(400, "服务器状态设置失败", null);
+        }
+        return re;
+    }
+
+    /***
+     *
+     * @param map
+     * @return
+     */
+    public Map<String, Object> getServerList(Map map) {
+        Result re;
+        int def = 0;
+        String platform = (map.get("platform") != null ? map.get("platform").toString() : "");
+        String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
+        String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
+        Map<String, Object> JsonMap = serverDaoImpl.getServerList(platform);
+        List<Map<String, Object>> list = (List<Map<String, Object>>) JsonMap.get("list");
+        int len = list.size();
+        Map<String, Object> all = new HashMap<>();
+        if (len > 0) {
+
+            Map<String, Object> serverList = new HashMap<>();
+            for (int i = 0; i < len; i++) {
+                String serverId = list.get(i).get("id").toString();
+                String area = list.get(i).get("area").toString();
+                String state = list.get(i).get("state").toString();
+                String server = list.get(i).get("server").toString();
+                String ip = list.get(i).get("serverIp").toString();
+                String port = list.get(i).get("serverPort").toString();
+                Map<String, Object> ServerItem = new HashMap<>();
+                ServerItem.put("real", serverId);
+                ServerItem.put("area", area);
+                ServerItem.put("show", serverId);
+                ServerItem.put("status", state);
+                ServerItem.put("name", server);
+                ServerItem.put("ip", ip + ":" + port);
+                ServerItem.put("platform", platform);
+                serverList.put(serverId, ServerItem);
+                if (Objects.equals(list.get(i).get("isDefault").toString(), "1")) {
+                    def = Integer.parseInt(list.get(i).get("isDefault").toString());
+                }
+            }
+            all.put("servers", serverList);
+            Map<String, Object> area = new HashMap<>();
+            int arealen = Integer.parseInt(JsonMap.get("total").toString());
+            int count = 1;
+            while (arealen > 0) {
+                area.put(count + "", count + "" + "-50服");
+                arealen = arealen - 50;
+                count++;
+            }
+            all.put("area", area);
+            all.put("default", def);
+
+        }
+
+        return all;
+    }
+}

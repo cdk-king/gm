@@ -5,6 +5,7 @@ import com.cdk.service.impl.PropServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class PropTableController {
     @Autowired
     private PropServiceImpl propServiceImpl;
 
+    @CrossOrigin
     @RequestMapping("/getProp")
     public Result getProp(@RequestBody Map map) {
         Result re = propServiceImpl.getProp(map);
@@ -31,6 +33,7 @@ public class PropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addProp")
     public Result addProp(@RequestBody Map map) {
         Result re = propServiceImpl.addProp(map);
@@ -38,6 +41,7 @@ public class PropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/editProp")
     public Result editProp(@RequestBody Map map) {
         Result re = propServiceImpl.editProp(map);
@@ -45,6 +49,7 @@ public class PropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deleteProp")
     public Result deleteProp(@RequestBody Map map) {
         Result re = propServiceImpl.deleteProp(map);
@@ -60,6 +65,7 @@ public class PropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_Prop", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_Game(@RequestBody Map map) {
@@ -68,6 +74,7 @@ public class PropTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/deleteAllProp")
     public Result deleteAllProp(@RequestBody Map map) {
         Result re = propServiceImpl.deleteAllProp(map);

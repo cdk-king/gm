@@ -45,6 +45,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/player/talkBan")
     public Result talkBan(@RequestBody Map map) {
         Result re = playerServiceImpl.talkBan(map);
@@ -52,6 +53,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/api/player/Ban")
     public Result Ban(@RequestBody Map map) {
         Result re = playerServiceImpl.Ban(map);
@@ -59,6 +61,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/ChangeToProhibitSpeak")
     public Result ChangeToProhibitSpeak(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeToProhibitSpeak(map);
@@ -66,7 +69,7 @@ public class PlayerTableController {
         return re;
     }
 
-
+    @CrossOrigin
     @RequestMapping("/ImportPlayer")
     public Result ImportPlayer(@RequestBody Map map) {
         Result re = playerServiceImpl.ImportPlayer(map);
@@ -74,6 +77,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/ChangeProhibitSpeakToNormal")
     public Result ChangeProhibitSpeakToNormal(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeProhibitSpeakToNormal(map);
@@ -81,6 +85,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/ChangeToBan")
     public Result ChangeToBan(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeToBan(map);
@@ -88,6 +93,7 @@ public class PlayerTableController {
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/ChangeBanToNormal")
     public Result ChangeBanToNormal(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeBanToNormal(map);

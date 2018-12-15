@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -58,26 +59,22 @@ public class CouponDaoImpl {
         System.out.println("starDatetime" + coupon.getStartDatetime());
         System.out.println("endDatetime" + coupon.getEndDatetime());
         System.out.println("addDatetime" + addDatetime);
-
+        long int2Long = CDKUtil.int2Long(start_sequence, salt);
+        String fileUrl =
+                "/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
 
         String sql = "insert into t_coupon (giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
-                "start_sequence,end_sequence,salt,addUser,addDatetime) " + " values ('" + coupon.getGiftId() + "','" + coupon.getCouponId() + "','" +
-                coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" + coupon.getCoupon_describe() + "','" + coupon.getPlatformId() +
-                "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" + coupon.getAddUser() + "','" + addDatetime + "' )";
+                "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl) " + " values ('" + coupon.getGiftId() + "','" + coupon.getCouponId() +
+                "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" + coupon.getCoupon_describe() + "','" +
+                coupon.getPlatformId() + "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" + coupon.getAddUser() + "','" +
+                addDatetime + "','" + fileUrl + "' )";
         System.out.println("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         String[] resultList = new String[coupon.getCouponCount()];
         if (temp > 0) {
-            long int2Long = CDKUtil.int2Long(start_sequence, salt);
+
             resultList = generateCDK(start_sequence, salt, int2Long, coupon.getCouponCount(), coupon.getCouponId(), coupon.getPlatformId(),
                     coupon.getGiftId());
-            //            try {
-            //                resultList =
-            //                        Redeem.test(coupon.getCouponId(), coupon.getCouponCount(), 12, String.valueOf(salt), start_sequence, coupon.getPlatformId(),
-            //                                coupon.getGiftId());
-            //            } catch (Exception e) {
-            //                e.printStackTrace();
-            //            }
         } else {
             return null;
         }
@@ -210,5 +207,26 @@ public class CouponDaoImpl {
         System.out.print("Base64:");
         System.out.println(encoded);
         return encoding.encode(data);
+    }
+
+    public Map<String, Object> getCoupon(Coupon coupon, String isPage, int pageNo, int pageSize, String strPlatform) {
+        String sql =
+                "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
+                        ")  and b.isDelete != 1  ";
+        if (coupon.getPlatformId() != 0) {
+            sql += " and a.platformId ='" + coupon.getPlatformId() + "' ";
+        }
+
+        System.out.println("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        int total = list.size();
+        if (!Objects.equals(isPage, "")) {
+            sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+        }
+        list = jdbcTemplate.queryForList(sql);
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        JsonMap.put("total", total);
+        return JsonMap;
     }
 }

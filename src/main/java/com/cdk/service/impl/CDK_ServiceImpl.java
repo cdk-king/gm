@@ -30,6 +30,11 @@ public class CDK_ServiceImpl {
     @Autowired
     public UtilsDaoImpl utilDaoImpl;
 
+    /***
+     * 获取cdk表格信息
+     * @param map
+     * @return
+     */
     public Result getCDK(Map map) {
         String couponId = ((map.get("couponId") != null && map.get("couponId") != "") ? map.get("couponId").toString() : "0");
         String sequenceId = ((map.get("sequenceId") != null && map.get("sequenceId") != "") ? map.get("sequenceId").toString() : "0");
@@ -115,6 +120,10 @@ public class CDK_ServiceImpl {
         int platformId = Integer.parseInt(strPlatformId);
 
         Map<String, Integer> temp = analyse(cdk);
+        if (Objects.equals(temp, null)) {
+            re = new Result(400, "CDK校验不通过", "-1");
+            return re;
+        }
         int couponId = Integer.parseInt(temp.get("couponId").toString());
         int sequenceId = Integer.parseInt(temp.get("sequenceId").toString());
         if (couponId > 0) {
@@ -141,6 +150,47 @@ public class CDK_ServiceImpl {
         return re;
     }
 
+    /***
+     *检验当前cdk是否有效
+     * @param map
+     * @return
+     */
+    public Result checkCDKIsUse(Map map) {
+        Result re;
+        String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        int platformId = Integer.parseInt(strPlatformId);
+
+        Map<String, Integer> temp = analyse(cdk);
+        int couponId = Integer.parseInt(temp.get("couponId").toString());
+        int sequenceId = Integer.parseInt(temp.get("sequenceId").toString());
+        if (couponId > 0) {
+            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
+            int check = checkCDK(couponId, sequenceId, cdk, platformId);
+            logger.info("checkIsUsed" + checkIsUsed + "|check:" + check);
+            if (checkIsUsed == 1) {
+                re = new Result(400, "当前CDK已被使用或者激活", "-4");
+                return re;
+            }
+            if (check == 0) {
+                re = new Result(400, "CDK校验不通过", "-1");
+                return re;
+            }
+            re = new Result(200, "CDK校验通过", "1");
+        } else {
+            re = new Result(400, "CDK校验不通过", "-1");
+        }
+        return re;
+    }
+
+    /***
+     * 检验当前cdk是否已经用过
+     * @param couponId
+     * @param sequenceId
+     * @param cdk
+     * @param platformId
+     * @return
+     */
     public int checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
         List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
         System.out.println(list);
@@ -151,16 +201,15 @@ public class CDK_ServiceImpl {
         return 1;
     }
 
-    public int checkIsUsedCDK_External(int couponId, int sequenceId, String cdk, int platformId) {
-        List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-        System.out.println(list);
-        System.out.println(list.size());
-        if (null == list || list.size() == 0) {
-            return 0;
-        }
-        return 1;
-    }
 
+    /***
+     * 检验cdk和本地生成的cdk是否一致
+     * @param couponId
+     * @param sequenceId
+     * @param cdk
+     * @param platformId
+     * @return
+     */
     public int checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
 
         List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId);
@@ -172,33 +221,18 @@ public class CDK_ServiceImpl {
         return 1;
     }
 
-    public int checkCDK_External(int couponId, int sequenceId, String cdk, int platformId) {
 
-        List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId);
-        System.out.println(list);
-        if (null == list || list.size() == 0) {
-            //失败
-            return 0;
-        }
-        return 1;
-    }
-
-    public int checkCDKByServerId(Map map, String cdk, int serverId) {
-        List<Map<String, Object>> list = cdkDaoImpl.checkCDKByServerId(map, cdk, serverId);
-        System.out.println(list);
-        System.out.println(list.size());
-        if (null == list || list.size() == 0) {
-            return 0;
-        }
-        return 1;
-    }
-
+    /**
+     * 解析cdk获取couponId、couponId
+     * @param cdk
+     * @return
+     */
     public Map<String, Integer> analyse(String cdk) {
         System.out.println(cdk);
         Map<String, Integer> map = new HashMap();
         //base32解码
-        byte[] data = BaseEncoding.base32().decode(cdk);
         try {
+            byte[] data = BaseEncoding.base32().decode(cdk);
             char[] strChar = cdk.toCharArray();
             String result = "";
             for (int i = 0; i < strChar.length; i++) {

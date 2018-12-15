@@ -10,7 +10,7 @@ public class Server {
     }
 
     public Server(int id, String server, String serverIp, String serverPort, int platformId, String server_describe, int state, int sort,
-            String addUser, Date addDatetime, int isDelete) {
+            String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, Date openServiceTime) {
         //有参构造器
         this.id = id;
         this.server = server;
@@ -23,6 +23,11 @@ public class Server {
         this.addUser = addUser;
         this.addDatetime = addDatetime;
         this.isDelete = isDelete;
+        this.isDefault = isDefault;
+        this.platformTag = platformTag;
+        this.area = area;
+        this.openServiceTime = openServiceTime;
+
     }
 
     /**
@@ -90,6 +95,31 @@ public class Server {
      */
 
     private int isDelete;
+
+    /**
+     * 是否默认服务器
+     */
+
+    private int isDefault;
+
+    /**
+     * 服务器标识
+     */
+
+    private String platformTag;
+
+
+    /**
+     * 区域
+     */
+
+    private String area;
+
+    /**
+     * 开服时间
+     */
+
+    private Date openServiceTime;
 
     public int getId() {
         return id;
@@ -177,5 +207,37 @@ public class Server {
 
     public void setServerPort(String serverPort) {
         this.serverPort = serverPort;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    public String getPlatformTag() {
+        return platformTag;
+    }
+
+    public void setPlatformTag(String platformTag) {
+        this.platformTag = platformTag;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public Date getOpenServiceTime() {
+        return openServiceTime;
+    }
+
+    public void setOpenServiceTime(Date openServiceTime) {
+        this.openServiceTime = openServiceTime;
     }
 }
