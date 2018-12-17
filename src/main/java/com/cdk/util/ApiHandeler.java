@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
 
 public class ApiHandeler {
 
@@ -78,6 +80,46 @@ public class ApiHandeler {
 
         String param = TIME_KEY + time + OPERATOR_KEY + operator + "&sign=" + sign;
         return param;
+    }
+
+    public String getApiUrl(String platformId, String serverId) {
+        String apiUrl = "";
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(serverId, platformId);
+        if (serverUrl.get(0).get("url").matches(".*[a-zA-z].*")) {
+            if (serverUrl.get(0).get("url").indexOf("http") != -1) {
+                apiUrl = serverUrl.get(0).get("url").split(":")[0];
+            } else {
+                apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+            }
+        } else {
+            if (serverUrl.get(0).get("url").indexOf("http") != -1) {
+                apiUrl = serverUrl.get(0).get("url").split(":")[0] + ":" + serverUrl.get(0).get("url").split(":")[1];
+            } else {
+                apiUrl = http + serverUrl.get(0).get("url").split(":")[0] + ":" + serverUrl.get(0).get("url").split(":")[1];
+            }
+        }
+        return apiUrl;
+    }
+
+    public String getApiUrl(Map<String, String> serverUrl) {
+        String apiUrl = "";
+        System.out.println(serverUrl);
+        if (serverUrl.get("url").matches(".*[a-zA-z].*")) {
+            System.out.println(serverUrl.get("url").matches(".*[a-zA-z].*"));
+            if (serverUrl.get("url").indexOf("http") != -1) {
+                apiUrl = serverUrl.get("url").split(":")[0];
+            } else {
+                apiUrl = http + serverUrl.get("url").split(":")[0];
+            }
+        } else {
+            System.out.println(serverUrl.get("url").indexOf("http"));
+            if (serverUrl.get("url").indexOf("http") != -1) {
+                apiUrl = serverUrl.get("url").split(":")[0] + ":" + serverUrl.get("url").split(":")[1];
+            } else {
+                apiUrl = http + serverUrl.get("url").split(":")[0] + ":" + serverUrl.get("url").split(":")[1];
+            }
+        }
+        return apiUrl;
     }
 
 }

@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.transaction.Transactional;
 
 @RestController
 public class ServerTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(ServerTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -30,7 +31,7 @@ public class ServerTableController {
     @RequestMapping("/getAllServer")
     public Result getAllServer(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -39,7 +40,7 @@ public class ServerTableController {
     @RequestMapping("/addServer")
     public Result addServer(@RequestBody Map map) {
         Result re = serverServiceImpl.addServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -49,7 +50,7 @@ public class ServerTableController {
     @ResponseBody
     public Result editServer(@RequestBody Map map) {
         Result re = serverServiceImpl.editServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +58,7 @@ public class ServerTableController {
     @RequestMapping("/getAllPlatformList")
     public Result getAllPlatformList(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllPlatformList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -66,7 +67,7 @@ public class ServerTableController {
     @ResponseBody
     public Result changeStateToNormal_Server(@RequestBody Map map) {
         Result re = serverServiceImpl.changeStateToNormal_Server(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -75,7 +76,7 @@ public class ServerTableController {
     @ResponseBody
     public Result changeStateToFrozen_Server(@RequestBody Map map) {
         Result re = serverServiceImpl.changeStateToFrozen_Server(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -85,7 +86,7 @@ public class ServerTableController {
     @ResponseBody
     public Result deleteServer(@RequestBody Map map) {
         Result re = serverServiceImpl.deleteServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -95,7 +96,7 @@ public class ServerTableController {
     @ResponseBody
     public Result deleteAllServer(@RequestBody Map<String, String> map) {
         Result re = serverServiceImpl.deleteAllServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -113,7 +114,7 @@ public class ServerTableController {
     @RequestMapping("/getServerListForPlatform")
     public Result getServerListForPlatform(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerListForPlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -130,7 +131,7 @@ public class ServerTableController {
     @RequestMapping("/getServerTree")
     public Result getServerTree(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerTree(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -144,7 +145,7 @@ public class ServerTableController {
     @RequestMapping("/api/server/SynServerList")
     public Result SynServerList(@RequestBody Map map) {
         Result re = serverServiceImpl.SynServerList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -158,7 +159,7 @@ public class ServerTableController {
     @RequestMapping("/api/server/setDefaultServer")
     public Result setDefaultServer(@RequestBody Map map) {
         Result re = serverServiceImpl.setDefaultServer(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -172,9 +173,10 @@ public class ServerTableController {
     @RequestMapping("/api/server/ChangeState")
     public Result ChangeState(@RequestBody Map map) {
         Result re = serverServiceImpl.ChangeState(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
+
 
     /***
      * 平台获取服务器列表
@@ -186,7 +188,7 @@ public class ServerTableController {
     @RequestMapping("/api/server/getServerList")
     public Map<String, Object> getServerList(@RequestBody Map map) {
         Map<String, Object> re = serverServiceImpl.getServerList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

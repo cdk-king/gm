@@ -17,10 +17,11 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class BanIpServiceImpl extends ApiHandeler {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(BanIpServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -34,7 +35,7 @@ public class BanIpServiceImpl extends ApiHandeler {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -130,12 +131,12 @@ public class BanIpServiceImpl extends ApiHandeler {
         apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
 
         String url = apiUrl + "/UpdateAccount/FreezeIP";
-        System.out.println(url);
+        logger.info(url);
 
-        System.out.println(param);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
         Result re;
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
@@ -181,25 +182,25 @@ public class BanIpServiceImpl extends ApiHandeler {
 
     public Result deleteAllBanIp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = banIpDaoImpl.deleteAllBanIp(objectArry);
         if (temp.length != 0) {
-            System.out.println("批量删除成功");
+            logger.info("批量删除成功");
             re = new Result(200, "批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("批量删除失败");
+            logger.info("批量删除失败");
             re = new Result(400, "批量删除失败", null);
         }
         return re;

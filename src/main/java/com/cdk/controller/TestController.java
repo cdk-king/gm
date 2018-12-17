@@ -7,11 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class TestController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(TestController.class));
     public static final String Divider = "############################";
 
     @Autowired

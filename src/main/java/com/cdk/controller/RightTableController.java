@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class RightTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(RightTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -29,7 +30,7 @@ public class RightTableController {
     @RequestMapping("/getRight")
     public Result getRight(@RequestBody Map map) {
         Result re = rightServiceImpl.getRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -38,7 +39,7 @@ public class RightTableController {
     @ResponseBody
     public Result editRight(@RequestBody Map map) {
         Result re = rightServiceImpl.editRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -46,7 +47,7 @@ public class RightTableController {
     @RequestMapping("/addRight")
     public Result addRight(@RequestBody Map map) {
         Result re = rightServiceImpl.addRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -55,7 +56,7 @@ public class RightTableController {
     @ResponseBody
     public Result changeStateToFrozen_Right(@RequestBody Map map) {
         Result re = rightServiceImpl.changeStateToFrozen_Right(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -64,7 +65,7 @@ public class RightTableController {
     @ResponseBody
     public Result changeStateToNormal_Right(@RequestBody Map map) {
         Result re = rightServiceImpl.changeStateToNormal_Right(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -73,7 +74,7 @@ public class RightTableController {
     @ResponseBody
     public Result deleteRight(@RequestBody Map map) {
         Result re = rightServiceImpl.deleteRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -82,7 +83,7 @@ public class RightTableController {
     @ResponseBody
     public Result deleteAllRight(@RequestBody Map<String, String> map) {
         Result re = rightServiceImpl.deleteAllRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 

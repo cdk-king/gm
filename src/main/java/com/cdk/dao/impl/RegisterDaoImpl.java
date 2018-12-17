@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Repository
 public class RegisterDaoImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(RegisterDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -23,14 +25,14 @@ public class RegisterDaoImpl {
         String sql = "insert into t_user (name,account,password,nick,phone,email,state,addDatetime,lastDatetime,isDelete) " + " values ('" +
                 user.getName() + "','" + user.getName() + "','" + user.getPassword() + "','" + user.getName() + "','" + user.getPhone() + "'" +
                 ",'','0','" + addDatetime + "','" + addDatetime + "','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int checkRegisterUser(User user) {
         String sql = "select * from t_user where name='" + user.getName() + "' and isDelete!=1";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }

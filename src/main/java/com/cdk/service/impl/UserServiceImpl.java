@@ -3,7 +3,6 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.UserDaoImpl;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
-import com.cdk.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
-public class UserServiceImpl implements UserService {
-
+public class UserServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(UserServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -34,14 +34,14 @@ public class UserServiceImpl implements UserService {
         String email = (map.get("email") != null ? map.get("email").toString() : "");
         String type = (map.get("type") != null ? map.get("type").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("account：" + account);
-        System.out.println("password：" + password);
-        System.out.println("name：" + name);
-        System.out.println("phone：" + phone);
-        System.out.println("email：" + email);
-        System.out.println("type：" + type);
-        System.out.println("addDatatime：" + addDatetime);
+        logger.info("id：" + id);
+        logger.info("account：" + account);
+        logger.info("password：" + password);
+        logger.info("name：" + name);
+        logger.info("phone：" + phone);
+        logger.info("email：" + email);
+        logger.info("type：" + type);
+        logger.info("addDatatime：" + addDatetime);
 
         User user = new User();
         user.setAccount(account);
@@ -55,10 +55,10 @@ public class UserServiceImpl implements UserService {
         int temp = userDaoImpl.addUser(user);
         Result re;
         if (temp > 0) {
-            System.out.println("用户添加成功");
+            logger.info("用户添加成功");
             re = new Result(200, "用户添加成功", null);
         } else {
-            System.out.println("用户添加失败");
+            logger.info("用户添加失败");
             re = new Result(400, "用户添加失败", null);
 
         }
@@ -73,12 +73,12 @@ public class UserServiceImpl implements UserService {
         String phone = (map.get("phone") != null ? map.get("phone").toString() : "");
         String email = (map.get("email") != null ? map.get("email").toString() : "");
         String type = (map.get("type") != null ? map.get("type").toString() : "");
-        System.out.println("id：" + id);
-        System.out.println("account：" + account);
-        System.out.println("name：" + name);
-        System.out.println("phone：" + phone);
-        System.out.println("email：" + email);
-        System.out.println("type：" + type);
+        logger.info("id：" + id);
+        logger.info("account：" + account);
+        logger.info("name：" + name);
+        logger.info("phone：" + phone);
+        logger.info("email：" + email);
+        logger.info("type：" + type);
 
         User user = new User();
         user.setId(Integer.parseInt(id));
@@ -90,10 +90,10 @@ public class UserServiceImpl implements UserService {
         int temp = userDaoImpl.editUser(user);
         Result re;
         if (temp > 0) {
-            System.out.println("用户信息修改成功");
+            logger.info("用户信息修改成功");
             re = new Result(200, "用户信息更新成功", null);
         } else {
-            System.out.println("用户信息修改失败");
+            logger.info("用户信息修改失败");
             re = new Result(400, "用户信息更新失败", null);
         }
         return re;
@@ -144,17 +144,17 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setState(Integer.parseInt(state));
 
-        System.out.println("account：" + account);
-        System.out.println("name：" + name);
-        System.out.println("phone：" + phone);
-        System.out.println("email：" + email);
-        System.out.println("state：" + state);
+        logger.info("account：" + account);
+        logger.info("name：" + name);
+        logger.info("phone：" + phone);
+        logger.info("email：" + email);
+        logger.info("state：" + state);
 
         //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-        System.out.println("pageNo：" + StrPageNo);
-        System.out.println("pageSize：" + StrPageSize);
+        logger.info("pageNo：" + StrPageNo);
+        logger.info("pageSize：" + StrPageSize);
         //设置缺省值
         int pageNo = 1;
         int pageSize = 5;
@@ -179,8 +179,8 @@ public class UserServiceImpl implements UserService {
     public Result editPassword(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String password = (map.get("password") != null ? map.get("password").toString() : "");
-        System.out.println("id：" + id);
-        System.out.println("password：" + password);
+        logger.info("id：" + id);
+        logger.info("password：" + password);
 
         User user = new User();
         user.setId(Integer.parseInt(id));
@@ -188,10 +188,10 @@ public class UserServiceImpl implements UserService {
         Result re;
         int temp = userDaoImpl.editPassword(user);
         if (temp > 0) {
-            System.out.println("密码修改成功");
+            logger.info("密码修改成功");
             re = new Result(200, "用户密码修改成功", null);
         } else {
-            System.out.println("密码修改失败");
+            logger.info("密码修改失败");
             re = new Result(400, "用户密码修改失败", null);
         }
         return re;
@@ -199,17 +199,17 @@ public class UserServiceImpl implements UserService {
 
     public Result changeStateToFrozen_User(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
 
         Result re;
         int temp = userDaoImpl.changeStateToFrozen_User(user);
         if (temp > 0) {
-            System.out.println("用户冻结成功");
+            logger.info("用户冻结成功");
             re = new Result(200, "用户冻结成功", null);
         } else {
-            System.out.println("用户冻结失败");
+            logger.info("用户冻结失败");
             re = new Result(400, "用户冻结失败", null);
         }
         return re;
@@ -217,17 +217,17 @@ public class UserServiceImpl implements UserService {
 
     public Result changeStateToNormal_User(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
 
         Result re;
         int temp = userDaoImpl.changeStateToNormal_User(user);
         if (temp > 0) {
-            System.out.println("用户解冻成功");
+            logger.info("用户解冻成功");
             re = new Result(200, "用户解冻成功", null);
         } else {
-            System.out.println("用户解冻失败");
+            logger.info("用户解冻失败");
             re = new Result(400, "用户解冻失败", null);
         }
         return re;
@@ -235,17 +235,17 @@ public class UserServiceImpl implements UserService {
 
     public Result deleteUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
 
         Result re;
         int temp = userDaoImpl.deleteUser(user);
         if (temp > 0) {
-            System.out.println("用户删除成功");
+            logger.info("用户删除成功");
             re = new Result(200, "用户删除成功", null);
         } else {
-            System.out.println("用户删除失败");
+            logger.info("用户删除失败");
             re = new Result(400, "用户删除失败", null);
         }
         return re;
@@ -253,25 +253,25 @@ public class UserServiceImpl implements UserService {
 
     public Result deleteAllUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = userDaoImpl.deleteAllUser(objectArry);
         if (temp.length != 0) {
-            System.out.println("用户批量删除成功");
+            logger.info("用户批量删除成功");
             re = new Result(200, "用户批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("用户批量删除失败");
+            logger.info("用户批量删除失败");
             re = new Result(400, "用户批量删除失败", null);
         }
         return re;
@@ -281,7 +281,7 @@ public class UserServiceImpl implements UserService {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String InsertUserRoles = map.get("InsertUserRoles").toString();
         if (Objects.equals(InsertUserRoles, "")) {
-            System.out.println("无任何添加操作");
+            logger.info("无任何添加操作");
             return new Result(200, "无任何添加操作", null);
         }
 
@@ -290,13 +290,13 @@ public class UserServiceImpl implements UserService {
         int temp = 99;
         temp = userDaoImpl.insertUserRoles(id, ObjectArry);
         if (temp > 0 && temp != 99) {
-            System.out.println("用户角色添加成功");
+            logger.info("用户角色添加成功");
             re = new Result(200, "用户角色添加成功", null);
         } else if (temp == 99) {
-            System.out.println("无任何添加操作");
+            logger.info("无任何添加操作");
             re = new Result(200, "无任何添加操作", null);
         } else {
-            System.out.println("用户角色添加失败");
+            logger.info("用户角色添加失败");
             re = new Result(400, "用户角色添加失败", null);
         }
         return re;
@@ -306,7 +306,7 @@ public class UserServiceImpl implements UserService {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String deleteUserRoles = map.get("deleteUserRoles").toString();
         if (Objects.equals(deleteUserRoles, "")) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             return new Result(400, "无任何删除操作", null);
         }
 
@@ -315,13 +315,13 @@ public class UserServiceImpl implements UserService {
         int temp = 99;
         temp = userDaoImpl.deleteUserRoles(id, ObjectArry);
         if (temp > 0 && temp != 99) {
-            System.out.println("用户角色删除成功");
+            logger.info("用户角色删除成功");
             re = new Result(200, "用户角色删除成功", null);
         } else if (temp == 99) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("用户角色删除失败");
+            logger.info("用户角色删除失败");
             re = new Result(400, "用户角色删除失败", null);
         }
         return re;

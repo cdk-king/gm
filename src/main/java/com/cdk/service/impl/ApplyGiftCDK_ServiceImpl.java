@@ -19,13 +19,13 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class ApplyGiftCDK_ServiceImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(ApplyGiftCDK_ServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
-    private static String URL = "http://127.0.0.1/new_gen?";
     public static final int GIFTID_OFFSET = 1;
     private static final String SIGN_KEY = "cdk";
     private static final byte[] SIGN_KEY_BYTES = SIGN_KEY.getBytes(Charset.forName("UTF-8"));
@@ -48,10 +48,8 @@ public class ApplyGiftCDK_ServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println(startDatetime);
-        System.out.println(endDatetime);
-        //startDatetime = sdf.format(startDatetime);
-
+        logger.info(startDatetime);
+        logger.info(endDatetime);
 
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
@@ -69,11 +67,9 @@ public class ApplyGiftCDK_ServiceImpl {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        //int type = giftDaoImpl.getGiftType(coupon.getGiftId());
         int type = 0;
         String expectedSign = getSign(type, coupon.getGiftId(), coupon.getPlatformId(), coupon.getCouponCount());
-        System.out.println(sign);
+        logger.info(sign);
         if (!expectedSign.equals(sign)) {
             return new Result(400, "CDK生成失败", "");
         }
@@ -102,7 +98,7 @@ public class ApplyGiftCDK_ServiceImpl {
     }
 
     public Map<String, Integer> analyse(String cdk) {
-        System.out.println(cdk);
+        logger.info(cdk);
         Map<String, Integer> map = new HashMap();
         try {
             //base32解码
@@ -112,12 +108,12 @@ public class ApplyGiftCDK_ServiceImpl {
             for (int i = 0; i < strChar.length; i++) {
                 result += Integer.toBinaryString(strChar[i]) + " ";
             }
-            System.out.println(result);
+            logger.info(result);
             int a = BufferUtil.readVarInt32(data, 2);
             int length = BufferUtil.computeVarInt32Size(a) + 2;
-            System.out.println(a);
+            logger.info(a + "");
             long b = BufferUtil.readVarInt64(data, length);
-            System.out.println(b);
+            logger.info(b + "");
 
             map.put("couponID", a);
             map.put("sequenceID", (int) b);
@@ -144,7 +140,7 @@ public class ApplyGiftCDK_ServiceImpl {
         //
         //        String encoded = Base64.getEncoder().encodeToString(data);
         //        System.out.print("Base64:");
-        //        System.out.println(encoded);
+        //        logger.info(encoded);
         //        return encoding.encode(data);
     }
 
@@ -153,15 +149,15 @@ public class ApplyGiftCDK_ServiceImpl {
         String strCouponID = String.valueOf(CouponId);
         String strOperator = String.valueOf(platformId);
         String strCount = String.valueOf(count);
-        System.out.println(SIGN_KEY_BYTES);
+        logger.info(SIGN_KEY_BYTES + "");
         //输出的是byte对象的内存地址
         //都是英文，所以结果相同
 
         //        for (int i = 0; i < SIGN_KEY_BYTES.length; i++) {
-        //            System.out.println(SIGN_KEY_BYTES[i]);
+        //            logger.info(SIGN_KEY_BYTES[i]);
         //        }
         //        for (int i = 0; i < cdk.getBytes().length; i++) {
-        //            System.out.println(cdk.getBytes()[i]);
+        //            logger.info(cdk.getBytes()[i]);
         //        }
         MD5 md5 = new MD5();
         md5.Update(strCouponID);
@@ -171,10 +167,7 @@ public class ApplyGiftCDK_ServiceImpl {
         //32位
         //http://127.0.0.1/new_gen?coupon_id=20000&operator_id=2&count=2&sign=7ce2e9a150208521446c576f7592d7bc
         String sign = md5.asHex();
-        System.out.println(sign);
-        //        String request = new StringBuilder(128).append(URL).append("coupon_id=").append(strCouponID).append("&operator_id=").append(strOperator)
-        //                .append("&count=").append(strCount).append("&sign=").append(sign).toString();
-        //        System.out.println(request);
+        logger.info(sign);
         return sign;
     }
 
@@ -218,7 +211,7 @@ public class ApplyGiftCDK_ServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -231,7 +224,7 @@ public class ApplyGiftCDK_ServiceImpl {
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
         Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, isPage, pageNo, pageSize, strPlatform);
-        System.out.println(JsonMap.get("list"));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "列表获取失败", "");
         } else {

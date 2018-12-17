@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class RoleTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(RoleTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -29,7 +30,7 @@ public class RoleTableController {
     @RequestMapping("/getRole")
     public Result getRole(@RequestBody Map map) {
         Result re = roleServiceImpl.getRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -37,7 +38,7 @@ public class RoleTableController {
     @RequestMapping("/api/role/getRoleById")
     public Result getRoleById(@RequestBody Map map) {
         Result re = roleServiceImpl.getRoleById(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -46,7 +47,7 @@ public class RoleTableController {
     @ResponseBody
     public Result editRole(@RequestBody Map map) {
         Result re = roleServiceImpl.editRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -54,7 +55,7 @@ public class RoleTableController {
     @RequestMapping("/addRole")
     public Result addRole(@RequestBody Map map) {
         Result re = roleServiceImpl.addRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -63,7 +64,7 @@ public class RoleTableController {
     @ResponseBody
     public Result changeStateToFrozen_Role(@RequestBody Map map) {
         Result re = roleServiceImpl.changeStateToFrozen_Role(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -72,7 +73,7 @@ public class RoleTableController {
     @ResponseBody
     public Result changeStateToNormal_Role(@RequestBody Map map) {
         Result re = roleServiceImpl.changeStateToNormal_Role(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -81,7 +82,7 @@ public class RoleTableController {
     @ResponseBody
     public Result deleteRole(@RequestBody Map map) {
         Result re = roleServiceImpl.deleteRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -90,7 +91,7 @@ public class RoleTableController {
     @ResponseBody
     public Result deleteRoleRights(@RequestBody Map map) {
         Result re = roleServiceImpl.deleteRoleRights(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -99,7 +100,7 @@ public class RoleTableController {
     @ResponseBody
     public Result deleteAllRole(@RequestBody Map<String, String> map) {
         Result re = roleServiceImpl.deleteAllRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -107,7 +108,7 @@ public class RoleTableController {
     @RequestMapping("/InsertRoleRights")
     public Result InsertRoleRights(@RequestBody Map<String, String> map) {
         Result re = roleServiceImpl.InsertRoleRights(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 

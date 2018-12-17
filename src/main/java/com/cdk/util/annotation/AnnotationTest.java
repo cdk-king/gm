@@ -25,14 +25,14 @@ public class AnnotationTest {
             System.out.println(annotation.hello());
             System.out.println(annotation.world());
         }
-        System.out.println("----------------------------------");
+
         // 获得所有注解。必须是runtime类型的
         Annotation[] annotations = method.getAnnotations();
         for (Annotation annotation : annotations) {
             // 遍历所有注解的名字
             System.out.println(annotation.annotationType().getName());
         }
-
+        System.out.println("----------------------------------");
     }
 
 }

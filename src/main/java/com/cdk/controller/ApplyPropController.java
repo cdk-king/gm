@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class ApplyPropController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(ApplyPropController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,7 +26,7 @@ public class ApplyPropController {
     @RequestMapping("/getPlayerTypeList")
     public Result getPlayerTypeList(@RequestBody Map map) {
         Result re = applyPropServiceImpl.getPlayerTypeList();
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -33,7 +34,7 @@ public class ApplyPropController {
     @RequestMapping("/getApplyProp")
     public Result getApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.getApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -41,7 +42,7 @@ public class ApplyPropController {
     @RequestMapping("/addApplyProp")
     public Result addApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.addApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -49,7 +50,7 @@ public class ApplyPropController {
     @RequestMapping("/api/apply/editApplyProp")
     public Result editApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.editApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +58,7 @@ public class ApplyPropController {
     @RequestMapping("/api/applyProp/confirmApply")
     public Result confirmApply(@RequestBody Map map) {
         Result re = applyPropServiceImpl.confirmApply(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -65,7 +66,7 @@ public class ApplyPropController {
     @RequestMapping("/api/applyProp/getMoneyTypeList")
     public Result getMoneyTypeList(@RequestBody Map map) {
         Result re = applyPropServiceImpl.getMoneyTypeList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -73,7 +74,7 @@ public class ApplyPropController {
     @RequestMapping("/api/applyProp/getPropQualityList")
     public Result getPropQualityList(@RequestBody Map map) {
         Result re = applyPropServiceImpl.getPropQualityList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -81,7 +82,7 @@ public class ApplyPropController {
     @RequestMapping("/confirmApplyProp")
     public Result confirmApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.confirmApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -89,7 +90,7 @@ public class ApplyPropController {
     @RequestMapping("/notConfirmApplyProp")
     public Result notConfirmApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.notConfirmApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -97,7 +98,7 @@ public class ApplyPropController {
     @RequestMapping("/deleteApplyProp")
     public Result deleteApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.deleteApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -105,7 +106,7 @@ public class ApplyPropController {
     @RequestMapping("/deleteAllApplyProp")
     public Result deleteAllApplyProp(@RequestBody Map map) {
         Result re = applyPropServiceImpl.deleteAllApplyProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

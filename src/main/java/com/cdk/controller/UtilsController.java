@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +22,7 @@ import static com.cdk.util.MD5Util.string2MD5;
 
 @RestController
 public class UtilsController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(UtilsController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -45,11 +46,11 @@ public class UtilsController {
     @RequestMapping("/md5")
     public String md5(HttpServletRequest request) {
         String s = request.getParameter("psw");
-        System.out.println(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
-        System.out.println("原始：" + s);
-        System.out.println("MD5后：" + string2MD5(s));
-        System.out.println("加密的：" + convertMD5(s));
-        System.out.println("解密的：" + convertMD5(convertMD5(s)));
+        logger.info(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
+        logger.info("原始：" + s);
+        logger.info("MD5后：" + string2MD5(s));
+        logger.info("加密的：" + convertMD5(s));
+        logger.info("解密的：" + convertMD5(convertMD5(s)));
         String re = "原始：" + s + "<br/>" + "MD5后：" + string2MD5(s) + "<br/>" + "加密的：" + convertMD5(s) + "<br/>" + "解密的：" + convertMD5(convertMD5(s));
         return re;
     }
@@ -58,7 +59,7 @@ public class UtilsController {
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRight(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -66,7 +67,7 @@ public class UtilsController {
     @RequestMapping("/getUserAllRole")
     public Result getUserAllRole(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRole(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -74,7 +75,7 @@ public class UtilsController {
     @RequestMapping("/getGameListForUser")
     public Result getGameListForUser(@RequestBody Map map) {
         Result re = utilsServiceImpl.getGameListForUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -82,7 +83,7 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForGameId")
     public Result getPlatformListForGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForGameId(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -99,7 +100,7 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForUser")
     public Result getPlatformListForUser(@RequestBody Map map) {
         Result re = serverServiceImpl.getPlatformListForUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -107,7 +108,7 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForUserIdAndGameId")
     public Result getPlatformListForUserIdAndGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForUserIdAndGameId(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -115,7 +116,7 @@ public class UtilsController {
     @RequestMapping("/api/prize/getValueTypeList")
     public Result getValueTypeList(@RequestBody Map map) {
         Result re = utilsServiceImpl.getValueTypeList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

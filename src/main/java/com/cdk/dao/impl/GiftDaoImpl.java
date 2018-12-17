@@ -14,9 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class GiftDaoImpl implements GiftDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(GiftDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -46,7 +48,7 @@ public class GiftDaoImpl implements GiftDao {
                 sql += " and a.state != 1 ";
             }
         }
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -75,7 +77,7 @@ public class GiftDaoImpl implements GiftDao {
     @Override
     public Map<String, Object> getGiftListForPlatformId(Gift gift) {
         String sql = "select * from t_gift where platformId = " + gift.getPlatformId() + "  and isDelete!=1 ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -84,7 +86,7 @@ public class GiftDaoImpl implements GiftDao {
 
     public Map<String, Object> getNewGiftListForPlatformId(Gift gift) {
         String sql = "select *  from t_gift_upload where platformId = " + gift.getPlatformId() + " ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);

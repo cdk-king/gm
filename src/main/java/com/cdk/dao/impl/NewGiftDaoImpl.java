@@ -12,9 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class NewGiftDaoImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(NewGiftDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -67,7 +69,7 @@ public class NewGiftDaoImpl {
             sql += " and a.giftTag LIKE '%" + newGift.getGiftTag() + "%'";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {

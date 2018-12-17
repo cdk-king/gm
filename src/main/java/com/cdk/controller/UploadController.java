@@ -20,8 +20,7 @@ import java.util.Map;
 
 @Controller
 public class UploadController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     //    @CrossOrigin
     //    @GetMapping("/upload")
@@ -42,10 +41,10 @@ public class UploadController {
         File dest = new File(filePath + fileName);
         try {
             file.transferTo(dest);//保存文件
-            LOGGER.info("上传成功");
+            logger.info("上传成功");
             return "上传成功";
         } catch (IOException e) {
-            LOGGER.error(e.toString(), e);
+            logger.error(e.toString(), e);
         }
         return "上传失败！";
     }
@@ -63,7 +62,7 @@ public class UploadController {
         }
         String fileName = file.getOriginalFilename();
         int size = (int) file.getSize();
-        System.out.println(fileName + "-->" + size);
+        logger.info(fileName + "-->" + size);
 
         String path = "f:/file";
         File dest = new File(path + "/" + fileName);
@@ -110,11 +109,11 @@ public class UploadController {
                     System.out.print(" ");
                 }
                 // 只输出文件名字
-                System.out.println(array[i].getName());
+                logger.info(array[i].getName());
                 // 输出当前文件的完整路径
-                System.out.println("#####" + array[i]);
+                logger.info("#####" + array[i]);
                 // 同样输出当前文件的完整路径   大家可以去掉注释 测试一下
-                System.out.println(array[i].getPath());
+                logger.info(array[i].getPath());
             } else if (array[i].isDirectory())//如果是文件夹
             {
                 for (int j = 0; j < deep; j++)//输出前置空格
@@ -122,8 +121,8 @@ public class UploadController {
                     System.out.print(" ");
                 }
 
-                System.out.println(array[i].getName());
-                //System.out.println(array[i].getPath());
+                logger.info(array[i].getName());
+                //logger.info(array[i].getPath());
                 //文件夹需要调用递归 ，深度+1
                 //getFile(array[i].getPath(), deep + 1);
             }

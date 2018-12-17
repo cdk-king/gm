@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class RegisterController {
+    private static Logger logger = Logger.getLogger(String.valueOf(RegisterController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -24,7 +26,7 @@ public class RegisterController {
     @RequestMapping("/api/register/addRegisterUser")
     public Result addRegisterUser(@RequestBody Map map) {
         Result re = RegisterServiceImpl.addRegisterUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

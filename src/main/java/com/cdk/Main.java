@@ -1,6 +1,9 @@
 package com.cdk;
 
+import com.cdk.cache.CacheListener;
+import com.cdk.cache.CacheManagerImpl;
 import com.cdk.classLoader.ClassLoaderTest;
+import com.cdk.configLoader.ConfigLoader_cdk;
 import com.cdk.util.HttpRequestUtil;
 import com.cdk.util.annotation.AnnotationTest;
 
@@ -14,10 +17,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "com.cdk")// 扫描该包路径下的所有spring组件
-@EnableJpaRepositories("com.cdk.dao") // JPA扫描该包路径下的Repositorie
+@EnableJpaRepositories("com.cdk") // JPA扫描该包路径下的Repositorie
 @EntityScan("com.cdk.entity") // 扫描实体类
 public class Main {
+    /**
+     * 无法注入
+     */
+
     public static void main(String[] args) {
+        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
+        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
+        cacheListener.startAllListenUseThread();
+        cacheListener.cacheManagerImpl.putCache("CDK", "CDK", 30000);
+
 
         SpringApplication.run(Main.class, args);
 
@@ -42,5 +54,11 @@ public class Main {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+
+        /**
+         *
+         */
+        ConfigLoader_cdk configLoader = new ConfigLoader_cdk();
+        configLoader.loadTxt("info.txt");
     }
 }

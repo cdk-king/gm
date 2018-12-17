@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PropServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(PropServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -28,7 +30,7 @@ public class PropServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -53,9 +55,7 @@ public class PropServiceImpl {
         prop.setState(Integer.parseInt(state));
 
         Map<String, Object> JsonMap = propDaoImpl.getProp(prop, isPage, pageNo, pageSize, strPlatform);
-        System.out.println(JsonMap.get("list"));
-        //System.out.println(Objects.equals(JsonMap.get("list"), 0));
-        //System.out.println(Objects.equals(JsonMap.get("list"), null));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具列表获取失败", "");
         } else {
@@ -85,10 +85,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.addProp(prop);
         if (temp > 0) {
-            System.out.println("道具添加成功");
+            logger.info("道具添加成功");
             re = new Result(200, "道具添加成功", null);
         } else {
-            System.out.println("道具添加失败");
+            logger.info("道具添加失败");
             re = new Result(400, "道具添加失败", null);
         }
         return re;
@@ -112,10 +112,10 @@ public class PropServiceImpl {
 
         int temp = propDaoImpl.editProp(prop);
         if (temp > 0) {
-            System.out.println("道具编辑成功");
+            logger.info("道具编辑成功");
             re = new Result(200, "道具编辑成功", null);
         } else {
-            System.out.println("道具编辑失败");
+            logger.info("道具编辑失败");
             re = new Result(400, "道具编辑失败", null);
         }
         return re;
@@ -128,10 +128,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.deleteProp(prop);
         if (temp > 0) {
-            System.out.println("道具删除成功");
+            logger.info("道具删除成功");
             re = new Result(200, "道具删除成功", null);
         } else {
-            System.out.println("道具删除失败");
+            logger.info("道具删除失败");
             re = new Result(400, "道具删除失败", null);
         }
         return re;
@@ -144,10 +144,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.changeStateToNormal_Game(prop);
         if (temp > 0) {
-            System.out.println("道具解冻成功");
+            logger.info("道具解冻成功");
             re = new Result(200, "道具解冻成功", null);
         } else {
-            System.out.println("道具解冻失败");
+            logger.info("道具解冻失败");
             re = new Result(400, "道具解冻失败", null);
         }
         return re;
@@ -160,10 +160,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.changeStateToFrozen_Game(prop);
         if (temp > 0) {
-            System.out.println("道具冻结成功");
+            logger.info("道具冻结成功");
             re = new Result(200, "道具冻结成功", null);
         } else {
-            System.out.println("道具冻结失败");
+            logger.info("道具冻结失败");
             re = new Result(400, "道具冻结失败", null);
         }
         return re;
@@ -171,26 +171,26 @@ public class PropServiceImpl {
 
     public Result deleteAllProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] ObjectArry = id.split(",");
-        System.out.println("ObjectArry：" + ObjectArry);
+        logger.info("ObjectArry：" + ObjectArry);
 
         Result re;
         int[] temp = propDaoImpl.deleteAllProp(ObjectArry);
 
         if (temp.length != 0) {
-            System.out.println("游戏批量删除成功");
+            logger.info("游戏批量删除成功");
             re = new Result(200, "游戏批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("游戏批量删除失败");
+            logger.info("游戏批量删除失败");
             re = new Result(400, "游戏批量删除失败", null);
         }
         return re;

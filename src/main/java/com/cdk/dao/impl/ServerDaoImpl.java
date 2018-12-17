@@ -18,9 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class ServerDaoImpl implements ServerDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(ServerDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -60,7 +62,7 @@ public class ServerDaoImpl implements ServerDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -96,7 +98,7 @@ public class ServerDaoImpl implements ServerDao {
                         " values ('" + server.getServerId() + "','" + server.getServer() + "','" + server.getServerIp() + "','" +
                         server.getServerPort() + "','" + server.getServer_describe() + "','" + server.getPlatformId() + "','0','" +
                         server.getAddUser() + "','" + addDatetime + "','0','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -107,7 +109,7 @@ public class ServerDaoImpl implements ServerDao {
                 "',a.server_describe = '" + server.getServer_describe() + "'," + "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" +
                 server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" + server.getAddUser() + "' where a.id =" +
                 server.getId() + "";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -116,14 +118,14 @@ public class ServerDaoImpl implements ServerDao {
     public List<Map<String, Object>> getAllPlatformList() {
         String sql = "select * from t_gameplatform where isDelete != 1 ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         return list;
     }
 
     @Override
     public int changeStateToNormal_Server(Server server) {
         String sql = "UPDATE t_gameserver SET state='0' where id ='" + server.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -131,7 +133,7 @@ public class ServerDaoImpl implements ServerDao {
     @Override
     public int changeStateToFrozen_Server(Server server) {
         String sql = "UPDATE t_gameserver SET state='1' where id ='" + server.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -139,7 +141,7 @@ public class ServerDaoImpl implements ServerDao {
     @Override
     public int deleteServer(Server server) {
         String sql = "UPDATE t_gameserver SET isDelete='1' where id ='" + server.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -156,7 +158,7 @@ public class ServerDaoImpl implements ServerDao {
             sql[i] = "UPDATE  t_gameserver  set isDelete='1' where id = '" + serverList[i] + "'; ";
             strSql += sql;
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
@@ -167,7 +169,7 @@ public class ServerDaoImpl implements ServerDao {
                 "join t_user_roles as b on a.id = b.userId \n" + "join t_role as c on b.roleId = c.id \n" +
                 "join t_gameplatform as d on c.id = d.roleId  \n" + "where a.isDelete != 1 and c.isDelete!=1 and d.isDelete!=1 and  a.id =" +
                 user.getId();
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 
         return list;
@@ -179,7 +181,7 @@ public class ServerDaoImpl implements ServerDao {
                 "join t_gameplatform as b on a.platformId = b.platformId \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.platformId =" +
                 platform.getPlatformId();
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -188,14 +190,14 @@ public class ServerDaoImpl implements ServerDao {
         String sql = "UPDATE t_server_config SET isDefault=0 ";
         int temp = jdbcTemplate.update(sql);
         sql = "UPDATE t_gameserver SET isDefault=1 where id ='" + server.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int ChangeState(Server server) {
         String sql = "UPDATE t_gameserver SET state='" + server.getState() + "' where id ='" + server.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -206,7 +208,7 @@ public class ServerDaoImpl implements ServerDao {
                 "SELECT a.id as gameId ,b.platformId as platformId,c.serverId as serverId,a.gameName,b.platform,c.server FROM t_game as a join t_gameplatform as b on a.id = b.gameId \n" +
                         "join t_gameserver as c on b.platformId = c.platformId where a.isDelete!=1 and b.isDelete!=1 and c.isDelete !=1 ORDER BY a.id ,b.id,c.id";
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -217,7 +219,7 @@ public class ServerDaoImpl implements ServerDao {
         String sql[] = new String[jsonArray.length()];
         String strSql = "";
         int[] temp = null;
-        System.out.println("jsonArray.length():" + jsonArray.length());
+        logger.info("jsonArray.length():" + jsonArray.length());
         if (Objects.equals(jsonArray.length(), 0)) {
             //数据空，退出
             return null;

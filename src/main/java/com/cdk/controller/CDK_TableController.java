@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class CDK_TableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(CDK_TableController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -29,7 +30,7 @@ public class CDK_TableController {
     @RequestMapping("/getCDK")
     public Result getCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.getCDK(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -37,7 +38,7 @@ public class CDK_TableController {
     @RequestMapping("/exchangeCDK")
     public Result exchangeCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.exchangeCDK(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -45,7 +46,7 @@ public class CDK_TableController {
     @RequestMapping("/api/cdk/checkCDKIsUse")
     public Result checkCDKIsUse(@RequestBody Map map) {
         Result re = cdkServiceImpl.checkCDKIsUse(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -58,11 +59,10 @@ public class CDK_TableController {
         map.put("couponId", id);
         map.put("sequenceId", sequence);
         map.put("platformId", oid);
-        System.out.println(map);
         String code = "0";
         Result re = cdkServiceImpl.exchangeCDK_External(map);
         code = re.getData().toString();
-        System.out.println(Divider);
+        logger.info(Divider);
         return code;
     }
 }

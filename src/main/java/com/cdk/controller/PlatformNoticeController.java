@@ -1,6 +1,7 @@
 package com.cdk.controller;
 
 import com.alibaba.fastjson.JSONException;
+import com.cdk.cache.CacheManagerImpl;
 import com.cdk.result.Result;
 import com.cdk.service.impl.PlatformNoticeServiceImpl;
 
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class PlatformNoticeController {
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,7 +34,7 @@ public class PlatformNoticeController {
     @RequestMapping("/getPlatformNotice")
     public Result getPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.getPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -39,7 +42,7 @@ public class PlatformNoticeController {
     @RequestMapping("/addPlatformNotice")
     public Result addPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.addPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -47,7 +50,7 @@ public class PlatformNoticeController {
     @RequestMapping("/editPlatformNotice")
     public Result editPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.editPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -55,7 +58,7 @@ public class PlatformNoticeController {
     @RequestMapping("/deletePlatformNotice")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deletePlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -63,7 +66,7 @@ public class PlatformNoticeController {
     @RequestMapping("/api/notice/sendNotice")
     public Result sendPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -71,7 +74,7 @@ public class PlatformNoticeController {
     @RequestMapping("/api/notice/reSendNotice")
     public Result reSendNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -79,28 +82,44 @@ public class PlatformNoticeController {
     @RequestMapping("/deleteAllPlatformNotice")
     public Result deleteAllPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deleteAllPlatformNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
+
+
+    @Autowired
+    private CacheManagerImpl cacheManagerImpl;
+    Logger logger2 = Logger.getLogger("getLastNotice");
 
     @CrossOrigin
     @RequestMapping("/api/notice/getLastNotice")
     public String getLastNotice(@RequestParam("oid") String oid) {
         Map<String, String> map = new HashMap<>();
         map.put("platformId", oid);
-        System.out.println(map);
-        String code = "公告获取测试";
-        Result re = platformNoticeServiceImpl.getLastNotice(map);
+        String platform = oid;
+        Result re;
+
+        //设置缓存
+        if (cacheManagerImpl.isContains("LastNotice-" + platform)) {
+            re = (Result) cacheManagerImpl.getCacheByKey("LastNotice-" + platform).getDatas();
+            logger2.info("已找到缓存" + "LastNotice-" + platform);
+            logger2.info(re.toString());
+        } else {
+            logger2.info("未找到缓存" + "LastNotice-" + platform);
+            re = platformNoticeServiceImpl.getLastNotice(map);
+            int timeOut = 60 * 1000;
+            cacheManagerImpl.putCache("LastNotice-" + platform, re, timeOut);
+            logger2.info("已设置缓存，缓存时间" + Math.floor(timeOut / 1000L) + "秒");
+            logger2.info(re.toString());
+        }
+
         JSONObject jsonObject = null;
         try {
-            System.out.println(jsonObject);
             jsonObject = JSONObject.fromObject(re.getData());
-            System.out.println(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //code = re.getData().toString();
-        System.out.println(Divider);
+        logger.info(Divider);
         return jsonObject.toString();
     }
 }

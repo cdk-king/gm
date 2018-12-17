@@ -14,9 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class NewPropDaoImpl implements NewPropDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(NewPropDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -27,7 +29,7 @@ public class NewPropDaoImpl implements NewPropDao {
         String sql[] = new String[jsonArray.length()];
         String strSql = "";
         int temp = 1;
-        System.out.println("jsonArray.length:" + jsonArray.length());
+        logger.info("jsonArray.length:" + jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 int index = i;
@@ -61,7 +63,7 @@ public class NewPropDaoImpl implements NewPropDao {
     public Map<String, Object> getPropTypeList(int gameId) {
         //如果查询结果有个重复的字段，默认取后边
         String sql = "select * from t_prop_upload_type where gameId = " + gameId;
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -84,7 +86,7 @@ public class NewPropDaoImpl implements NewPropDao {
             sql += " and a.propType = '" + newProp.getPropType() + "'";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {

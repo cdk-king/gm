@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.annotation.Resource;
 
@@ -28,7 +29,7 @@ import javax.annotation.Resource;
 @RestController
 //@RestController注解相当于@ResponseBody ＋ @Controller
 public class HomeController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(HomeController.class));
     public static final String Divider = "############################";
 
     @Autowired

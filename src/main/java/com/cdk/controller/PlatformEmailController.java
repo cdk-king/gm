@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class PlatformEmailController {
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformEmailController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,7 +27,7 @@ public class PlatformEmailController {
     @RequestMapping("/getPlatformEmail")
     public Result getPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.getPlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -33,7 +35,7 @@ public class PlatformEmailController {
     @RequestMapping("/editPlatformEmail")
     public Result editPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.editPlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -41,7 +43,7 @@ public class PlatformEmailController {
     @RequestMapping("/addPlatformEmail")
     public Result addPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.addPlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -49,7 +51,7 @@ public class PlatformEmailController {
     @RequestMapping("/deletePlatformEmail")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deletePlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +59,7 @@ public class PlatformEmailController {
     @RequestMapping("/sendPlatformEmail")
     public Result sendPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.sendPlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -65,7 +67,7 @@ public class PlatformEmailController {
     @RequestMapping("/deleteAllPlatformEmail")
     public Result deleteAllPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deleteAllPlatformEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

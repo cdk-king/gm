@@ -13,12 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class ApplyPropServiceImpl extends ApiHandeler {
+    private static Logger logger = Logger.getLogger(String.valueOf(ApplyPropServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -74,8 +75,8 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String Content = ((map.get("Content") != null) ? map.get("Content").toString() : "");
         String ItemList = ((map.get("ItemList") != null) ? map.get("ItemList").toString() : "");
         String Money = ((map.get("Money") != null) ? map.get("Money").toString() : "");
-        System.out.println(ItemList);
-        System.out.println(Money);
+        logger.info(ItemList);
+        logger.info(Money);
         int id = Integer.parseInt(strId);
 
         long time = Math.abs(System.currentTimeMillis() / 1000);
@@ -112,21 +113,20 @@ public class ApplyPropServiceImpl extends ApiHandeler {
             param += "&Money=" + Money;
         }
 
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(serverId, platformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        apiUrl = getApiUrl(platformId, serverId);
 
         String url = apiUrl + "/UpdatePlayer/Mail";
-        System.out.println(url);
+        logger.info(url);
 
-        System.out.println(param);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
 
         Result re;
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
-        System.out.println(resultMap);
+        logger.info(resultMap.toString());
         if (!Objects.equals(resultMap.get("Result"), 1)) {
             int temp = applyPropDaoImpl.changeApplyState(id, 2);
             re = new Result(400, "道具申请邮件发送失败", data);
@@ -219,10 +219,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.addApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请添加成功");
+            logger.info("道具申请添加成功");
             re = new Result(200, "道具申请添加成功", null);
         } else {
-            System.out.println("道具申请添加失败");
+            logger.info("道具申请添加失败");
             re = new Result(400, "道具申请添加失败", null);
         }
         return re;
@@ -275,10 +275,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.editApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请修改成功");
+            logger.info("道具申请修改成功");
             re = new Result(200, "道具申请修改成功", null);
         } else {
-            System.out.println("道具申请修改失败");
+            logger.info("道具申请修改失败");
             re = new Result(400, "道具申请修改失败", null);
         }
         return re;
@@ -298,10 +298,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.confirmApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请审核通过成功");
+            logger.info("道具申请审核通过成功");
             re = new Result(200, "道具申请审核通过成功", null);
         } else {
-            System.out.println("道具申请审核通过失败");
+            logger.info("道具申请审核通过失败");
             re = new Result(400, "道具申请审核通过失败", null);
         }
         return re;
@@ -321,10 +321,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.notConfirmApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请审核不通过成功");
+            logger.info("道具申请审核不通过成功");
             re = new Result(200, "道具申请审核不通过成功", null);
         } else {
-            System.out.println("道具申请审核不通过失败");
+            logger.info("道具申请审核不通过失败");
             re = new Result(400, "道具申请审核不通过失败", null);
         }
         return re;
@@ -341,10 +341,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.deleteApplyProp(applyProp);
         if (temp > 0) {
-            System.out.println("道具申请删除成功");
+            logger.info("道具申请删除成功");
             re = new Result(200, "道具申请删除成功", null);
         } else {
-            System.out.println("道具申请删除失败");
+            logger.info("道具申请删除失败");
             re = new Result(400, "道具申请删除失败", null);
         }
         return re;
@@ -352,25 +352,25 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
     public Result deleteAllApplyProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = applyPropDaoImpl.deleteAllApplyProp(objectArry);
         if (temp.length != 0) {
-            System.out.println("道具申请批量删除成功");
+            logger.info("道具申请批量删除成功");
             re = new Result(200, "道具申请批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("道具申请批量删除失败");
+            logger.info("道具申请批量删除失败");
             re = new Result(400, "道具申请批量删除失败", null);
         }
         return re;

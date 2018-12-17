@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class GiftTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(GiftTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -28,7 +29,7 @@ public class GiftTableController {
     @RequestMapping("/getGift")
     public Result getGift(@RequestBody Map map) {
         Result re = giftServiceImpl.getGift(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -36,7 +37,7 @@ public class GiftTableController {
     @RequestMapping("/addGift")
     public Result addGift(@RequestBody Map map) {
         Result re = giftServiceImpl.addGift(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

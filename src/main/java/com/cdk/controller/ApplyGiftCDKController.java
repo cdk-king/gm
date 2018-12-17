@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class ApplyGiftCDKController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(ApplyGiftCDKController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,7 +26,7 @@ public class ApplyGiftCDKController {
     @RequestMapping("/generateCDK")
     public Result generateCDK(@RequestBody Map map) {
         Result re = applyGiftCDK_ServiceImpl.generateCDK(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -33,7 +34,7 @@ public class ApplyGiftCDKController {
     @RequestMapping("/analyseCDK")
     public Result analyseCDK(@RequestBody Map map) {
         Result re = applyGiftCDK_ServiceImpl.analyseCDK(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -41,7 +42,7 @@ public class ApplyGiftCDKController {
     @RequestMapping("/getGiftListForPlatformId")
     public Result getGiftListForPlatformId(@RequestBody Map map) {
         Result re = applyGiftCDK_ServiceImpl.getGiftListForPlatformId(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -49,7 +50,7 @@ public class ApplyGiftCDKController {
     @RequestMapping("/getNewGiftListForPlatformId")
     public Result getNewGiftListForPlatformId(@RequestBody Map map) {
         Result re = applyGiftCDK_ServiceImpl.getNewGiftListForPlatformId(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +58,7 @@ public class ApplyGiftCDKController {
     @RequestMapping("/api/cdk/getCoupon")
     public Result getCoupon(@RequestBody Map map) {
         Result re = applyGiftCDK_ServiceImpl.getCoupon(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 

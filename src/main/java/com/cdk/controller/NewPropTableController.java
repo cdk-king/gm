@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class NewPropTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(NewPropTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -26,7 +27,7 @@ public class NewPropTableController {
     @RequestMapping("/ImportProp")
     public Result ImportProp(@RequestBody Map map) {
         Result re = newPropServiceImpl.ImportProp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -34,7 +35,7 @@ public class NewPropTableController {
     @RequestMapping("/getPropUplaod")
     public Result getPropUplaod(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropUplaod(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -42,7 +43,7 @@ public class NewPropTableController {
     @RequestMapping("/api/newProp/getPropTypeList")
     public Result getPropTypeList(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropTypeList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 

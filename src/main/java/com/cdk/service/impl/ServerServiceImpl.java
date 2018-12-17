@@ -1,5 +1,6 @@
 package com.cdk.service.impl;
 
+import com.cdk.cache.CacheManagerImpl;
 import com.cdk.dao.impl.ServerDaoImpl;
 import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
@@ -17,9 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class ServerServiceImpl extends ApiHandeler {
+    private static Logger logger = Logger.getLogger(String.valueOf(ServerServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -39,19 +42,19 @@ public class ServerServiceImpl extends ApiHandeler {
         if (state == "") {
             state = "-1";
         }
-        System.out.println("server：" + serverName);
-        System.out.println("serverIp：" + serverIp);
-        System.out.println("platformName：" + platformName);
-        System.out.println("server_describe：" + server_describe);
-        System.out.println("addUser：" + addUser);
-        System.out.println("addDatetime：" + addDatetime);
-        System.out.println("state：" + state);
+        logger.info("server：" + serverName);
+        logger.info("serverIp：" + serverIp);
+        logger.info("platformName：" + platformName);
+        logger.info("server_describe：" + server_describe);
+        logger.info("addUser：" + addUser);
+        logger.info("addDatetime：" + addDatetime);
+        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
 
-        System.out.println("pageNo：" + StrPageNo);
-        System.out.println("pageSize：" + StrPageSize);
+        logger.info("pageNo：" + StrPageNo);
+        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -92,13 +95,13 @@ public class ServerServiceImpl extends ApiHandeler {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("serverId：" + serverId);
-        System.out.println("server：" + serverName);
-        System.out.println("server_describe：" + server_describe);
-        System.out.println("serverIP：" + serverIp);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("state：" + state);
+        logger.info("serverId：" + serverId);
+        logger.info("server：" + serverName);
+        logger.info("server_describe：" + server_describe);
+        logger.info("serverIP：" + serverIp);
+        logger.info("sort：" + sort);
+        logger.info("addUser：" + addUser);
+        logger.info("state：" + state);
 
         Server server = new Server();
         server.setServer(serverName);
@@ -112,10 +115,10 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.addServer(server);
         if (temp > 0) {
-            System.out.println("服务器添加成功");
+            logger.info("服务器添加成功");
             re = new Result(200, "服务器添加成功", null);
         } else {
-            System.out.println("服务器添加失败");
+            logger.info("服务器添加失败");
             re = new Result(400, "服务器添加失败", null);
         }
         return re;
@@ -134,13 +137,13 @@ public class ServerServiceImpl extends ApiHandeler {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("server：" + serverName);
-        System.out.println("server_describe：" + server_describe);
-        System.out.println("serverIP：" + serverIp);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("state：" + state);
+        logger.info("id：" + id);
+        logger.info("server：" + serverName);
+        logger.info("server_describe：" + server_describe);
+        logger.info("serverIP：" + serverIp);
+        logger.info("sort：" + sort);
+        logger.info("addUser：" + addUser);
+        logger.info("state：" + state);
 
         Server server = new Server();
         server.setId(Integer.parseInt(id));
@@ -154,10 +157,10 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.editServer(server);
         if (temp > 0) {
-            System.out.println("服务器信息修改成功");
+            logger.info("服务器信息修改成功");
             re = new Result(200, "服务器信息更新成功", null);
         } else {
-            System.out.println("服务器信息修改失败");
+            logger.info("服务器信息修改失败");
             re = new Result(400, "服务器信息更新失败", null);
         }
         return re;
@@ -167,10 +170,10 @@ public class ServerServiceImpl extends ApiHandeler {
         List<Map<String, Object>> list = serverDaoImpl.getAllPlatformList();
         Result re;
         if (list.size() > 0) {
-            System.out.println("渠道列表获取成功");
+            logger.info("渠道列表获取成功");
             re = new Result(200, "渠道列表获取成功", list);
         } else {
-            System.out.println("渠道列表获取失败");
+            logger.info("渠道列表获取失败");
             re = new Result(400, "渠道列表获取失败", list);
         }
         return re;
@@ -178,16 +181,16 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result changeStateToNormal_Server(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
         int temp = serverDaoImpl.changeStateToNormal_Server(server);
         if (temp > 0) {
-            System.out.println("服务器解冻成功");
+            logger.info("服务器解冻成功");
             re = new Result(200, "服务器解冻成功", null);
         } else {
-            System.out.println("服务器解冻失败");
+            logger.info("服务器解冻失败");
             re = new Result(400, "服务器解冻失败", null);
         }
         return re;
@@ -195,16 +198,16 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result changeStateToFrozen_Server(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
         int temp = serverDaoImpl.changeStateToFrozen_Server(server);
         if (temp > 0) {
-            System.out.println("服务器冻结成功");
+            logger.info("服务器冻结成功");
             re = new Result(200, "服务器冻结成功", null);
         } else {
-            System.out.println("服务器冻结失败");
+            logger.info("服务器冻结失败");
             re = new Result(400, "服务器冻结失败", null);
         }
         return re;
@@ -212,17 +215,17 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result deleteServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
 
         Result re;
         int temp = serverDaoImpl.deleteServer(server);
         if (temp > 0) {
-            System.out.println("服务器删除成功");
+            logger.info("服务器删除成功");
             re = new Result(200, "服务器删除成功", null);
         } else {
-            System.out.println("服务器删除失败");
+            logger.info("服务器删除失败");
             re = new Result(400, "服务器删除失败", null);
         }
         return re;
@@ -230,24 +233,24 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result deleteAllServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
-        System.out.println("ObjectArry：" + ObjectArry);
+        logger.info("ObjectArry：" + ObjectArry);
         int[] temp = new int[ObjectArry.length];
         Result re;
         temp = serverDaoImpl.deleteAllServer(ObjectArry);
         if (temp.length != 0) {
-            System.out.println("服务器批量删除成功");
+            logger.info("服务器批量删除成功");
             re = new Result(200, "服务器批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("服务器批量删除失败");
+            logger.info("服务器批量删除失败");
             re = new Result(400, "服务器批量删除失败", null);
         }
         return re;
@@ -255,7 +258,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result getPlatformListForUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
 
@@ -271,7 +274,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result getServerListForPlatform(Map map) {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
-        System.out.println("platformId：" + platformId);
+        logger.info("platformId：" + platformId);
         if (Objects.equals(platformId, "")) {
             return new Result(400, "渠道服务器列表获取失败", null);
         }
@@ -291,7 +294,7 @@ public class ServerServiceImpl extends ApiHandeler {
     public Result getServerTree(Map map) {
 
         List<Map<String, Object>> list = serverDaoImpl.getServerTree();
-        System.out.println(list);
+        logger.info(list.toString());
         Result re;
         if (list.size() != 0) {
             re = new Result(200, "服务器树状结构获取成功", list);
@@ -303,14 +306,14 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result SynServerList(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         String param = "";
 
         String url = "http://123.207.115.217:20000/serversByJson";
-        System.out.println(url);
+        logger.info(url);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
         Result re;
         if (data.length() != 0) {
             JSONArray jsonArray = null;
@@ -331,16 +334,16 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result setDefaultServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
         int temp = serverDaoImpl.setDefaultServer(server);
         if (temp > 0) {
-            System.out.println("默认服务器设置成功");
+            logger.info("默认服务器设置成功");
             re = new Result(200, "默认服务器设置成功", null);
         } else {
-            System.out.println("默认服务器设置失败");
+            logger.info("默认服务器设置失败");
             re = new Result(400, "默认服务器设置失败", null);
         }
         return re;
@@ -364,14 +367,20 @@ public class ServerServiceImpl extends ApiHandeler {
         int temp = serverDaoImpl.ChangeState(server);
         Result re;
         if (temp > 0) {
-            System.out.println("服务器状态设置成功");
+            logger.info("服务器状态设置成功");
             re = new Result(200, "服务器状态设置成功", null);
         } else {
-            System.out.println("服务器状态设置失败");
+            logger.info("服务器状态设置失败");
             re = new Result(400, "服务器状态设置失败", null);
         }
         return re;
     }
+
+    @Autowired
+    private CacheManagerImpl cacheManagerImpl;
+
+
+    Logger logger2 = Logger.getLogger("getServerListLog");
 
     /***
      *
@@ -384,7 +393,21 @@ public class ServerServiceImpl extends ApiHandeler {
         String platform = (map.get("platform") != null ? map.get("platform").toString() : "");
         String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
         String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
-        Map<String, Object> JsonMap = serverDaoImpl.getServerList(platform);
+        Map<String, Object> JsonMap = new HashMap<>();
+        if (cacheManagerImpl.isContains("ServerList-" + platform)) {
+            JsonMap = (Map<String, Object>) cacheManagerImpl.getCacheByKey("ServerList-" + platform).getDatas();
+            logger2.info("已找到缓存" + "ServerList-" + platform);
+            logger2.info(JsonMap.toString());
+        } else {
+            logger2.info("未找到缓存" + "ServerList-" + platform);
+            JsonMap = serverDaoImpl.getServerList(platform);
+            int timeOut = 60 * 1000;
+            cacheManagerImpl.putCache("ServerList-" + platform, JsonMap, timeOut);
+            logger2.info("已设置缓存，缓存时间" + Math.floor(timeOut / 1000L) + "秒");
+            logger2.info(JsonMap.toString());
+        }
+
+
         List<Map<String, Object>> list = (List<Map<String, Object>>) JsonMap.get("list");
         int len = list.size();
         Map<String, Object> all = new HashMap<>();

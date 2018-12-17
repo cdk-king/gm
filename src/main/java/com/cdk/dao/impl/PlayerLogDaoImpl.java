@@ -10,10 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class PlayerLogDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -45,7 +46,7 @@ public class PlayerLogDaoImpl {
             sql += " and a.isToBan = '1'";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += "  order by a.addDatetime desc";
@@ -84,7 +85,7 @@ public class PlayerLogDaoImpl {
             sql += " and a.isToProhibitSpeak = '1'";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += "  order by a.addDatetime desc";

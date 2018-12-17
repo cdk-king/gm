@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class NewGiftServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(NewGiftServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -29,7 +31,7 @@ public class NewGiftServiceImpl {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            System.out.println("礼包导入失败");
+            logger.info("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
             return re;
         }
@@ -38,16 +40,15 @@ public class NewGiftServiceImpl {
         platformId = Integer.parseInt(strPlatformId);
         gameId = Integer.parseInt(strGameId);
         jsonArray = JSONArray.parseArray(strlist);
-        System.out.println(jsonArray);
-        System.out.println(jsonArray.size());
+        logger.info(jsonArray.toString());
         len = jsonArray.size();
 
         int temp = newGiftDaoImpl.ImportGift(jsonArray, platformId, gameId);
         if (temp > 0) {
-            System.out.println("礼包导入成功");
+            logger.info("礼包导入成功");
             re = new Result(200, "礼包导入成功", null);
         } else {
-            System.out.println("礼包导入失败");
+            logger.info("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
         }
         return re;
@@ -77,10 +78,10 @@ public class NewGiftServiceImpl {
 
         Map<String, Object> JsonMap = newGiftDaoImpl.getGiftUpload(newGift, isPage, pageNo, pageSize, strPlatform);
         if (!Objects.equals(JsonMap.get("list"), 0)) {
-            System.out.println("礼包列表获取成功");
+            logger.info("礼包列表获取成功");
             re = new Result(200, "礼包列表获取成功", JsonMap);
         } else {
-            System.out.println("礼包列表获取失败");
+            logger.info("礼包列表获取失败");
             re = new Result(400, "礼包列表获取失败", null);
         }
         return re;

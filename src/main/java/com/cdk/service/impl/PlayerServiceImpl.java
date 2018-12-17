@@ -13,12 +13,13 @@ import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PlayerServiceImpl extends ApiHandeler {
+    private static Logger logger = Logger.getLogger(String.valueOf(PlayerServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -49,15 +50,15 @@ public class PlayerServiceImpl extends ApiHandeler {
             param += "&PlayerID=" + PlayerID;
         }
 
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+
+        apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
-        System.out.println(url);
-        System.out.println(param);
+        logger.info(url);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -123,15 +124,14 @@ public class PlayerServiceImpl extends ApiHandeler {
             param += "&TalkBan=" + TalkBan;
         }
 
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerId, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        apiUrl = getApiUrl(strPlatformId, strServerId);
 
         String url = apiUrl + "/QueryPlayer/PlayerList";
-        System.out.println(url);
-        System.out.println(param);
+        logger.info(url);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -152,7 +152,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         String strSearchForm = (map.get("searchForm") != null ? map.get("searchForm").toString() : "");
 
         //strSearchForm = JSON.toJSONString(strSearchForm);
-        System.out.println(strSearchForm);
+        logger.info(strSearchForm);
         JSONObject jsonObject = JSON.parseObject(strSearchForm);
         //将jsonObj转换成Map
         Map<String, Object> searchForm = JSONObject.toJavaObject(jsonObject, Map.class);
@@ -217,15 +217,14 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/UpdateAccount/FreezeAccount";
-        System.out.println(url);
-        System.out.println(param);
+        logger.info(url);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -284,15 +283,14 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(WorldID, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/UpdatePlayer/GagPlayer";
-        System.out.println(url);
-        System.out.println(param);
+        logger.info(url);
+        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
+        logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -338,10 +336,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeToProhibitSpeak(player, userId);
         if (temp > 0) {
-            System.out.println("玩家禁言成功");
+            logger.info("玩家禁言成功");
             re = new Result(200, "玩家禁言成功", null);
         } else {
-            System.out.println("玩家禁言失败");
+            logger.info("玩家禁言失败");
             re = new Result(400, "玩家禁言失败", null);
         }
         return re;
@@ -363,10 +361,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeProhibitSpeakToNormal(player, userId);
         if (temp > 0) {
-            System.out.println("玩家解除禁言成功");
+            logger.info("玩家解除禁言成功");
             re = new Result(200, "玩家解除禁言成功", null);
         } else {
-            System.out.println("玩家解除禁言失败");
+            logger.info("玩家解除禁言失败");
             re = new Result(400, "玩家解除禁言失败", null);
         }
         return re;
@@ -391,10 +389,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeToBan(player, userId);
         if (temp > 0) {
-            System.out.println("玩家禁封成功");
+            logger.info("玩家禁封成功");
             re = new Result(200, "玩家禁封成功", null);
         } else {
-            System.out.println("玩家禁封失败");
+            logger.info("玩家禁封失败");
             re = new Result(400, "玩家禁封失败", null);
         }
         return re;
@@ -416,10 +414,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeBanToNormal(player, userId);
         if (temp > 0) {
-            System.out.println("玩家解除禁封成功");
+            logger.info("玩家解除禁封成功");
             re = new Result(200, "玩家解除禁封成功", null);
         } else {
-            System.out.println("玩家解除禁封失败");
+            logger.info("玩家解除禁封失败");
             re = new Result(400, "玩家解除禁封失败", null);
         }
         return re;
@@ -435,7 +433,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            System.out.println("礼包导入失败");
+            logger.info("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
             return re;
         }
@@ -444,8 +442,7 @@ public class PlayerServiceImpl extends ApiHandeler {
             platformId = Integer.parseInt(strPlatformId);
             serverId = Integer.parseInt(strServerId);
             jsonArray = new JSONArray(strlist);
-            System.out.println(jsonArray);
-            System.out.println(jsonArray.length());
+            logger.info(jsonArray.toString());
             len = jsonArray.length();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -453,10 +450,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         int[] temp = new int[len];
         temp = playerDaoImpl.ImportPlayer(jsonArray, platformId, serverId);
         if (temp.length > 0) {
-            System.out.println("玩家导入成功");
+            logger.info("玩家导入成功");
             re = new Result(200, "玩家导入成功", null);
         } else {
-            System.out.println("玩家导入失败");
+            logger.info("玩家导入失败");
             re = new Result(400, "玩家导入失败", null);
         }
         return re;

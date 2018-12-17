@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class BanIpController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(BanIpController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -26,7 +27,7 @@ public class BanIpController {
     @RequestMapping("/api/ip/getBanIp")
     public Result getBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.getBanIp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -34,7 +35,7 @@ public class BanIpController {
     @RequestMapping("/api/ip/addBanIp")
     public Result addBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.addBanIp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -42,7 +43,7 @@ public class BanIpController {
     @RequestMapping("/api/ip/banIp")
     public Result banIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.banIp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -50,7 +51,7 @@ public class BanIpController {
     @RequestMapping("/api/ip/deleteBanIp")
     public Result deleteBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteBanIp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -58,7 +59,7 @@ public class BanIpController {
     @RequestMapping("/api/ip/deleteAllBanIp")
     public Result deleteAllBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteAllBanIp(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

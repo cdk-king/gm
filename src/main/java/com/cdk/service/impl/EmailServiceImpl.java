@@ -16,13 +16,13 @@ import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class EmailServiceImpl extends ApiHandeler {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(EmailServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -127,10 +127,10 @@ public class EmailServiceImpl extends ApiHandeler {
 
         int temp = emailDaoImpl.addEmail(email);
         if (temp > 0) {
-            System.out.println("邮件添加成功");
+            logger.info("邮件添加成功");
             re = new Result(200, "邮件添加成功", null);
         } else {
-            System.out.println("邮件添加失败");
+            logger.info("邮件添加失败");
             re = new Result(400, "邮件添加失败", null);
         }
         return re;
@@ -209,10 +209,10 @@ public class EmailServiceImpl extends ApiHandeler {
 
         int temp = emailDaoImpl.editEmail(email);
         if (temp > 0) {
-            System.out.println("邮件编辑成功");
+            logger.info("邮件编辑成功");
             re = new Result(200, "邮件编辑成功", null);
         } else {
-            System.out.println("邮件编辑失败");
+            logger.info("邮件编辑失败");
             re = new Result(400, "邮件编辑失败", null);
         }
         return re;
@@ -233,7 +233,7 @@ public class EmailServiceImpl extends ApiHandeler {
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
 
-        System.out.println("strPlatformId:" + strPlatformId);
+        logger.info("strPlatformId:" + strPlatformId);
 
         try {
             //中文转码
@@ -273,18 +273,17 @@ public class EmailServiceImpl extends ApiHandeler {
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String error = "";
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strserverId, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        apiUrl = getApiUrl(strPlatformId, strserverId);
 
         url = apiUrl + "/UpdatePlayer/Mail";
-        System.out.println(url + "?" + param);
+        logger.info(url + "?" + param);
         String data = httpRequestUtil.sendGet(url, param);
-        System.out.println(data);
-        System.out.println("error:" + error);
+        logger.info(data);
+        logger.info("error:" + error);
 
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
-        System.out.println(resultMap);
+        logger.info(resultMap.toString());
         if (!Objects.equals(resultMap.get("Result"), 1)) {
             int temp = emailDaoImpl.sendEmail(email, 2);
             re = new Result(400, "邮件发送失败", data);
@@ -309,10 +308,10 @@ public class EmailServiceImpl extends ApiHandeler {
 
         int temp = emailDaoImpl.deleteEmail(email);
         if (temp > 0) {
-            System.out.println("邮件删除成功");
+            logger.info("邮件删除成功");
             re = new Result(200, "邮件删除成功", null);
         } else {
-            System.out.println("邮件删除失败");
+            logger.info("邮件删除失败");
             re = new Result(400, "邮件删除失败", null);
         }
         return re;

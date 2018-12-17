@@ -12,9 +12,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PlatformServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -32,17 +34,17 @@ public class PlatformServiceImpl {
         if (state == "") {
             state = "0";
         }
-        System.out.println("platformName：" + platformName);
-        System.out.println("platform_describe：" + platform_describe);
-        System.out.println("addUser：" + addUser);
-        System.out.println("addDatetime：" + addDatetime);
-        System.out.println("state：" + state);
+        logger.info("platformName：" + platformName);
+        logger.info("platform_describe：" + platform_describe);
+        logger.info("addUser：" + addUser);
+        logger.info("addDatetime：" + addDatetime);
+        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
 
-        System.out.println("pageNo：" + StrPageNo);
-        System.out.println("pageSize：" + StrPageSize);
+        logger.info("pageNo：" + StrPageNo);
+        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -74,10 +76,10 @@ public class PlatformServiceImpl {
         Result re;
         List<Map<String, Object>> list = platformDaoImpl.getAllGameList();
         if (list.size() > 0) {
-            System.out.println("游戏列表获取成功");
+            logger.info("游戏列表获取成功");
             re = new Result(200, "游戏列表获取成功", list);
         } else {
-            System.out.println("游戏列表获取失败");
+            logger.info("游戏列表获取失败");
             re = new Result(400, "游戏列表获取失败", list);
         }
         return re;
@@ -87,10 +89,10 @@ public class PlatformServiceImpl {
         Result re;
         List<Map<String, Object>> list = platformDaoImpl.getAllRoleList();
         if (list.size() > 0) {
-            System.out.println("角色列表获取成功");
+            logger.info("角色列表获取成功");
             re = new Result(200, "角色列表获取成功", list);
         } else {
-            System.out.println("角色列表获取失败");
+            logger.info("角色列表获取失败");
             re = new Result(400, "角色列表获取失败", list);
         }
         return re;
@@ -123,10 +125,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.addPlatform(platform);
         if (temp > 0) {
-            System.out.println("权限添加成功");
+            logger.info("权限添加成功");
             re = new Result(200, "权限添加成功", null);
         } else {
-            System.out.println("权限添加失败");
+            logger.info("权限添加失败");
             re = new Result(400, "权限添加失败", null);
         }
         return re;
@@ -159,10 +161,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
         if (temp > 0) {
-            System.out.println("平台信息修改成功");
+            logger.info("平台信息修改成功");
             re = new Result(200, "平台信息更新成功", null);
         } else {
-            System.out.println("平台信息修改失败");
+            logger.info("平台信息修改失败");
             re = new Result(400, "平台信息更新失败", null);
         }
         return re;
@@ -170,7 +172,7 @@ public class PlatformServiceImpl {
 
     public Result deletePlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
 
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
@@ -178,10 +180,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
         if (temp > 0) {
-            System.out.println("平台删除成功");
+            logger.info("平台删除成功");
             re = new Result(200, "平台删除成功", null);
         } else {
-            System.out.println("平台删除失败");
+            logger.info("平台删除失败");
             re = new Result(400, "平台删除失败", null);
 
         }
@@ -190,7 +192,7 @@ public class PlatformServiceImpl {
 
     public Result changeStateToNormal_Platform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
 
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
@@ -198,10 +200,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.changeStateToNormal_Platform(platform);
         if (temp > 0) {
-            System.out.println("平台解冻成功");
+            logger.info("平台解冻成功");
             re = new Result(200, "平台解冻成功", null);
         } else {
-            System.out.println("平台解冻失败");
+            logger.info("平台解冻失败");
             re = new Result(400, "平台解冻失败", null);
         }
         return re;
@@ -209,17 +211,17 @@ public class PlatformServiceImpl {
 
     public Result changeStateToFrozen_Platform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
 
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
         Result re;
         int temp = platformDaoImpl.changeStateToFrozen_Platform(platform);
         if (temp > 0) {
-            System.out.println("平台冻结成功");
+            logger.info("平台冻结成功");
             re = new Result(200, "平台冻结成功", null);
         } else {
-            System.out.println("平台冻结失败");
+            logger.info("平台冻结失败");
             re = new Result(400, "平台冻结失败", null);
         }
         return re;
@@ -228,26 +230,26 @@ public class PlatformServiceImpl {
     public Result deleteAllPlatform(Map map) {
 
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] ObjectArry = id.split(",");
-        System.out.println("ObjectArry：" + ObjectArry);
+        logger.info("ObjectArry：" + ObjectArry);
 
         Result re;
         int[] temp = new int[ObjectArry.length];
         temp = platformDaoImpl.deleteAllPlatform(ObjectArry);
         if (temp.length != 0) {
-            System.out.println("平台批量删除成功");
+            logger.info("平台批量删除成功");
             re = new Result(200, "平台批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("平台批量删除失败");
+            logger.info("平台批量删除失败");
             re = new Result(400, "平台批量删除失败", null);
         }
         return re;

@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PlayerLogServiceImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -32,7 +33,7 @@ public class PlayerLogServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -76,7 +77,7 @@ public class PlayerLogServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
