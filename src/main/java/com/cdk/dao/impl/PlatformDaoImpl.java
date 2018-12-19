@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class PlatformDaoImpl implements PlatformDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -52,7 +54,7 @@ public class PlatformDaoImpl implements PlatformDao {
 
         sql += " order by a.id ";
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -84,20 +86,23 @@ public class PlatformDaoImpl implements PlatformDao {
     public int addPlatform(Platform platform) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert into t_gameplatform (platform,platformTag,platform_describe,gameId,roleId,sort,addUser,addDatetime,state,isDelete) " +
-                " values ('" + platform.getPlatform() + "','" + platform.getPlatformTag() + "','" + platform.getPlatform_describe() + "','" +
-                platform.getGameId() + "','" + platform.getRoleId() + "','0','" + platform.getAddUser() + "','" + addDatetime + "','0','0')";
-        System.out.println("sql：" + sql);
+        String sql =
+                "insert into t_gameplatform (platformId,platform,platformTag,platform_describe,gameId,roleId,sort,addUser,addDatetime,state,isDelete) " +
+                        " values ('" + platform.getPlatformId() + "','" + platform.getPlatform() + "','" + platform.getPlatformTag() + "','" +
+                        platform.getPlatform_describe() + "','" + platform.getGameId() + "','" + platform.getRoleId() + "','0','" +
+                        platform.getAddUser() + "','" + addDatetime + "','0','0')";
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     @Override
     public int editPlatform(Platform platform) {
-        String sql = "UPDATE t_gameplatform as a SET a.platform='" + platform.getPlatform() + "',a.platform_describe = '" +
-                platform.getPlatform_describe() + "'," + "a.gameId='" + platform.getGameId() + "',a.roleId='" + platform.getRoleId() + "'," +
-                "a.platformTag='" + platform.getPlatformTag() + "' ,a.addUser = '" + platform.getAddUser() + "' where a.id =" + platform.getId() + "";
-        System.out.println("sql：" + sql);
+        String sql = "UPDATE t_gameplatform as a SET a.platformId = '" + platform.getPlatformId() + "' , a.platform='" + platform.getPlatform() +
+                "',a.platform_describe = '" + platform.getPlatform_describe() + "'," + "a.gameId='" + platform.getGameId() + "',a.roleId='" +
+                platform.getRoleId() + "'," + "a.platformTag='" + platform.getPlatformTag() + "' ,a.addUser = '" + platform.getAddUser() +
+                "' where a.id =" + platform.getId() + "";
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -105,7 +110,7 @@ public class PlatformDaoImpl implements PlatformDao {
     @Override
     public int deletePlatform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET isDelete='1' where id ='" + platform.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -113,7 +118,7 @@ public class PlatformDaoImpl implements PlatformDao {
     @Override
     public int changeStateToNormal_Platform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET state='0' where id ='" + platform.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -121,7 +126,7 @@ public class PlatformDaoImpl implements PlatformDao {
     @Override
     public int changeStateToFrozen_Platform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET state='1' where id ='" + platform.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -139,7 +144,7 @@ public class PlatformDaoImpl implements PlatformDao {
             sql[i] = "UPDATE  t_gameplatform  set isDelete='1' where id = '" + platformList[i] + "'; ";
             strSql += sql;
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

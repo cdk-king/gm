@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class UserTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(UserTableController.class));
     public static final String Divider = "############################";
 
     //1、@Autowired是spring自带的，@Inject是JSR330规范实现的，@Resource是JSR250规范实现的，需要导入不同的包
@@ -37,8 +38,8 @@ public class UserTableController {
     @RequestMapping("/getUser")
     public Result getUser(@RequestBody Map map) {
         Result re = userServiceImpl.getUser(map);
-        System.out.println("UserData：" + re);
-        System.out.println(Divider);
+        logger.info("UserData：" + re);
+        logger.info(Divider);
         return re;
     }
 
@@ -46,7 +47,7 @@ public class UserTableController {
     @RequestMapping("/api/user/getAllUser")
     public Result getAllUser() {
         Result re = userServiceImpl.getAllUser();
-        System.out.println(Divider);
+        logger.info(Divider);
 
         return re;
     }
@@ -55,7 +56,7 @@ public class UserTableController {
     @RequestMapping("/api/user/getUserById")
     public Result getUserById(@RequestBody Map map) {
         Result re = userServiceImpl.getUserById(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -64,14 +65,15 @@ public class UserTableController {
     @ResponseBody
     public Result editUser(@RequestBody Map map) {
         Result re = userServiceImpl.editUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping("/addUser")
     public Result addUser(@RequestBody Map map) {
         Result re = userServiceImpl.addUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -80,15 +82,16 @@ public class UserTableController {
     @ResponseBody
     public Result editpassword(@RequestBody Map map) {
         Result re = userServiceImpl.editPassword(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/changeStateToFrozen_User", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Result changeStateToFrozen_User(@RequestBody Map map) {
         Result re = userServiceImpl.changeStateToFrozen_User(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -97,7 +100,7 @@ public class UserTableController {
     @ResponseBody
     public Result changeStateToNormal_User(@RequestBody Map map) {
         Result re = userServiceImpl.changeStateToNormal_User(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -106,7 +109,7 @@ public class UserTableController {
     @ResponseBody
     public Result deleteUser(@RequestBody Map map) {
         Result re = userServiceImpl.deleteUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -115,7 +118,7 @@ public class UserTableController {
     @ResponseBody
     public Result deleteAllUser(@RequestBody Map map) {
         Result re = userServiceImpl.deleteAllUser(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -123,7 +126,7 @@ public class UserTableController {
     @RequestMapping("/insertUserRoles")
     public Result insertUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.insertUserRoles(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -132,7 +135,7 @@ public class UserTableController {
     @ResponseBody
     public Result deleteUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.deleteUserRoles(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

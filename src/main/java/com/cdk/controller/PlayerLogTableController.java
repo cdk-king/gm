@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class PlayerLogTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogTableController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -26,7 +27,7 @@ public class PlayerLogTableController {
     @RequestMapping("/getPlayerProhibitSpeakLog")
     public Result getPlayerProhibitSpeakLog(@RequestBody Map map) {
         Result re = playerLogServiceImpl.getPlayerProhibitSpeakLog(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -34,7 +35,7 @@ public class PlayerLogTableController {
     @RequestMapping("/getPlayerBan")
     public Result getPlayerBan(@RequestBody Map map) {
         Result re = playerLogServiceImpl.getPlayerBan(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

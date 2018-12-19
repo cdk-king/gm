@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.transaction.Transactional;
 
 @RestController
 public class PlatformTableController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformTableController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -31,7 +32,7 @@ public class PlatformTableController {
     @RequestMapping("/getAllPlatform")
     public Result getAllPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllPlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -39,7 +40,7 @@ public class PlatformTableController {
     @RequestMapping("/getAllGameList")
     public Result getAllGameList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllGameList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -47,7 +48,7 @@ public class PlatformTableController {
     @RequestMapping("/getAllRoleList")
     public Result getAllRoleList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllRoleList(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -56,7 +57,7 @@ public class PlatformTableController {
     @RequestMapping("/addPlatform")
     public Result addPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.addPlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -66,7 +67,7 @@ public class PlatformTableController {
     @ResponseBody
     public Result editPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.editPlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -76,7 +77,7 @@ public class PlatformTableController {
     @ResponseBody
     public Result deletePlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.deletePlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -85,7 +86,7 @@ public class PlatformTableController {
     @ResponseBody
     public Result changeStateToNormal_Platform(@RequestBody Map map) {
         Result re = platformServiceImpl.changeStateToNormal_Platform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -94,7 +95,7 @@ public class PlatformTableController {
     @ResponseBody
     public Result changeStateToFrozen_Platform(@RequestBody Map map) {
         Result re = platformServiceImpl.changeStateToFrozen_Platform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -104,7 +105,7 @@ public class PlatformTableController {
     @ResponseBody
     public Result deleteAllPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.deleteAllPlatform(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 

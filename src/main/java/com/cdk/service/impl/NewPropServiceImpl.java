@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class NewPropServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(NewPropServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -31,7 +33,7 @@ public class NewPropServiceImpl {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            System.out.println("道具导入失败");
+            logger.info("道具导入失败");
             re = new Result(400, "道具导入失败", null);
             return re;
         }
@@ -40,20 +42,18 @@ public class NewPropServiceImpl {
             platformId = Integer.parseInt(strPlatformId);
             gameId = Integer.parseInt(strGameId);
             jsonArray = new JSONArray(strlist);
-            System.out.println(jsonArray);
-            System.out.println(jsonArray.length());
+            logger.info(jsonArray.toString());
             len = jsonArray.length();
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        int[] temp = new int[len];
-        temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
-        if (temp.length > 0) {
-            System.out.println("道具导入成功");
+        int temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
+        if (temp > 0) {
+            logger.info("道具导入成功");
             re = new Result(200, "道具导入成功", null);
         } else {
-            System.out.println("道具导入失败");
+            logger.info("道具导入失败");
             re = new Result(400, "道具导入失败", null);
         }
         return re;
@@ -66,7 +66,7 @@ public class NewPropServiceImpl {
         int gameId = Integer.parseInt(strGameId);
 
         Map<String, Object> JsonMap = newPropDaoImpl.getPropTypeList(gameId);
-        System.out.println(JsonMap.get("list"));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具类别列表获取失败", "");
         } else {
@@ -85,7 +85,7 @@ public class NewPropServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -95,7 +95,7 @@ public class NewPropServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        System.out.println(propName);
+        logger.info(propName);
         Result re;
 
         NewProp newProp = new NewProp();
@@ -104,7 +104,7 @@ public class NewPropServiceImpl {
         newProp.setPlatformId(Integer.parseInt(platformId));
 
         Map<String, Object> JsonMap = newPropDaoImpl.getPropUplaod(newProp, isPage, pageNo, pageSize, strPlatform);
-        System.out.println(JsonMap.get("list"));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具列表获取失败", "");
         } else {

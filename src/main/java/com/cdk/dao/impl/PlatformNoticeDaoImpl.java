@@ -13,19 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class PlatformNoticeDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.id join t_user as c on c.id = a.addUser where a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(platformNotice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + platformNotice.getPlatformId() + "' ";
         }
@@ -35,7 +37,7 @@ public class PlatformNoticeDaoImpl {
         if (!Objects.equals(platformNotice.getNoticeContent(), "")) {
             sql += " and a.noticeContent LIKE '%" + platformNotice.getNoticeContent() + "%' ";
         }
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -59,19 +61,19 @@ public class PlatformNoticeDaoImpl {
         if (!Objects.equals(platformNotice.getStartDatetime(), null)) {
             startDatetime = "'" + formatter.format(platformNotice.getStartDatetime()) + "'";
         }
-        System.out.println("startDatetime:" + startDatetime);
+        logger.info("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(platformNotice.getEndDatetime(), null)) {
             endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
         }
-        System.out.println("endDatetime:" + endDatetime);
+        logger.info("endDatetime:" + endDatetime);
         String sql =
                 "insert into t_platform_notice (platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete,moneyList,propList) " +
                         " values ('" + platformNotice.getPlatformId() + "','" + platformNotice.getServerList() + "','" +
                         platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "'," + startDatetime + "," + endDatetime +
                         ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0','" + platformNotice.getMoneyList() + "','" +
                         platformNotice.getPropList() + "')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -86,12 +88,12 @@ public class PlatformNoticeDaoImpl {
         if (!Objects.equals(platformNotice.getStartDatetime(), null)) {
             startDatetime = "'" + formatter.format(platformNotice.getStartDatetime()) + "'";
         }
-        System.out.println("startDatetime:" + startDatetime);
+        logger.info("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(platformNotice.getEndDatetime(), null)) {
             endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
         }
-        System.out.println("endDatetime:" + endDatetime);
+        logger.info("endDatetime:" + endDatetime);
 
         String sql =
                 "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +
@@ -99,21 +101,21 @@ public class PlatformNoticeDaoImpl {
                         "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime + ",addUser='" + platformNotice.getAddUser() +
                         "', moneyList = '" + platformNotice.getMoneyList() + "' , propList = '" + platformNotice.getPropList() + "'  where id = '" +
                         platformNotice.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deletePlatformNotice(PlatformNotice platformNotice) {
         String sql = "UPDATE  t_platform_notice  set isDelete = 1 where id = '" + platformNotice.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int sendPlatformNotice(PlatformNotice platformNotice) {
         String sql = "UPDATE  t_platform_notice  set sendState = 1 where id = '" + platformNotice.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -127,7 +129,7 @@ public class PlatformNoticeDaoImpl {
             sql[i] = "UPDATE  t_platform_notice  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
@@ -139,7 +141,7 @@ public class PlatformNoticeDaoImpl {
      */
     public Map<String, String> getLastNotice(String strPlatform) {
         String sql = "select * from t_platform_notice where isDelete!=1 and   platformId=" + strPlatform + " order by startDatetime DESC LIMIT 1";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, String> JsonMap = new HashMap();
         Date date = new Date();
@@ -164,7 +166,7 @@ public class PlatformNoticeDaoImpl {
         String sql =
                 "update t_platform_notice set sendState = " + state + ",errorList = '" + error + "',startDatetime='" + addDatetime + "' where id = " +
                         id;
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }

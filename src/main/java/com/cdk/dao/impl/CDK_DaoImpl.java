@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 @Repository
 public class CDK_DaoImpl {
-    static Logger logger = Logger.getLogger("CDK_DaoImpl");
+    private static Logger logger = Logger.getLogger(String.valueOf(BanIpDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -26,9 +26,8 @@ public class CDK_DaoImpl {
 
     public Map<String, Object> getCDK(CDK cdk, String isPage, int pageNo, int pageSize, String strPlatform) {
 
-        String sql =
-                "select a.* , b.platform  from t_cdk as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ")  and b.isDelete != 1  ";
+        String sql = "select a.* , b.platform  from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ")  and b.isDelete != 1  ";
         if (cdk.getPlatformId() != 0) {
             sql += " and a.platformId ='" + cdk.getPlatformId() + "' ";
         }
@@ -44,7 +43,7 @@ public class CDK_DaoImpl {
             sql += " and a.cdk LIKE '%" + cdk.getCdk() + "%'";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -69,7 +68,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
         String sql = "select * from t_cdk where couponId = '" + couponId + "' and sequenceId = '" + sequenceId + "' and cdk = '" + cdk +
                 "' and platformId = '" + platformId + "' ";
-        System.out.println(sql);
+        logger.info(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -77,7 +76,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
         String sql = "select * from t_coupon where couponId = '" + couponId + "' and end_sequence >= '" + sequenceId + "' and start_sequence <='" +
                 sequenceId + "' and  platformId = '" + platformId + "' ";
-        System.out.println(sql);
+        logger.info(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if (Objects.equals(list.size(), 0)) {
             return null;
@@ -98,7 +97,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkCDKByServerId(Map map, String cdk, int serverId) {
         String sql = "select * from t_cdk as a join t_gameserver as b on a.platformId = b.platformId where a.couponId = '" + map.get("couponId") +
                 "' and a.sequenceId = '" + map.get("sequenceId") + "' and a.cdk = '" + cdk + "' and b.Id = " + serverId;
-        System.out.println(sql);
+        logger.info(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }

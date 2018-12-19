@@ -8,10 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Service
 public class RegisterServiceImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(RegisterServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired

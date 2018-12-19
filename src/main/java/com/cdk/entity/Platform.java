@@ -8,9 +8,10 @@ public class Platform {
         //无参构造器
     }
 
-    public Platform(int id, String platform, int gameId, int roleId, String platformTag, String platform_describe, int parentId, int state, int sort,
-            String addUser, Date addDatetime, int isDelete) {
+    public Platform(int id, int platformId, String platform, int gameId, int roleId, String platformTag, String platform_describe, int parentId,
+            int state, int sort, String addUser, Date addDatetime, int isDelete) {
         this.id = id;
+        this.platformId = platformId;
         this.platform = platform;
         this.gameId = gameId;
         this.roleId = roleId;
@@ -25,10 +26,15 @@ public class Platform {
     }
 
     /**
-     * 平台-编号
+     * 表-编号
      */
 
     private int id;
+    /**
+     * 平台-编号
+     */
+
+    private int platformId;
 
     /**
      * 平台名
@@ -180,5 +186,13 @@ public class Platform {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getPlatformId() {
+        return platformId;
+    }
+
+    public void setPlatformId(int platformId) {
+        this.platformId = platformId;
     }
 }

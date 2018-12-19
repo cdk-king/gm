@@ -14,10 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(UserDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -50,7 +51,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "insert into t_user (name,account,password,nick,phone,email,state,addDatetime,lastDatetime,isDelete) " + " values ('" +
                 user.getName() + "','" + user.getAccount() + "','" + user.getPassword() + "','" + user.getName() + "','" + user.getPhone() + "'" +
                 ",'" + user.getEmail() + "','0','" + addDatetime + "','" + addDatetime + "','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
@@ -60,7 +61,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "select * ,(select GROUP_CONCAT(distinct b.roleId) as info from t_user_roles as b JOIN t_role as c on b.roleId = c.id\n" +
                 "where a.id= b.userId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as roles";
         sql += " from t_user as a where a.isDelete != 1  ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -75,7 +76,7 @@ public class UserDaoImpl implements UserDao {
     public Map<String, Object> getUserById(User user) {
 
         String sql = "select *  from t_user  where id='" + user.getId() + "' and isDelete != 1  ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -99,8 +100,8 @@ public class UserDaoImpl implements UserDao {
         if (user.getAccount() != "") {
             sql += " and a.account LIKE '%" + user.getAccount() + "%'";
         }
-        System.out.println("user.getState():" + user.getState());
-        System.out.println(Split);
+        logger.info("user.getState():" + user.getState());
+        logger.info(Split);
         if (!Objects.equals(user.getState(), null) && !Objects.equals(user.getState(), 0)) {
             if (Objects.equals(user.getState(), 1)) {
                 sql += " and state = 1 ";
@@ -111,7 +112,7 @@ public class UserDaoImpl implements UserDao {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -130,7 +131,7 @@ public class UserDaoImpl implements UserDao {
         String sql =
                 "UPDATE t_user SET account='" + user.getAccount() + "',name = '" + user.getName() + "',phone = '" + user.getPhone() + "',email = '" +
                         user.getEmail() + "' where id ='" + user.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
@@ -138,7 +139,7 @@ public class UserDaoImpl implements UserDao {
 
     public int checkSameUserName(User user) {
         String sql = "select * from t_user where name='" + user.getName() + "' and isDelete!=1";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -147,7 +148,7 @@ public class UserDaoImpl implements UserDao {
     public int editPassword(User user) {
 
         String sql = "UPDATE t_user SET password='" + user.getPassword() + "' where id ='" + user.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -156,7 +157,7 @@ public class UserDaoImpl implements UserDao {
     public int changeStateToFrozen_User(User user) {
 
         String sql = "UPDATE t_user SET state='1' where id ='" + user.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -165,7 +166,7 @@ public class UserDaoImpl implements UserDao {
     public int changeStateToNormal_User(User user) {
 
         String sql = "UPDATE t_user SET state='0' where id ='" + user.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -174,7 +175,7 @@ public class UserDaoImpl implements UserDao {
     public int deleteUser(User user) {
 
         String sql = "UPDATE t_user SET isDelete='1' where id ='" + user.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -193,7 +194,7 @@ public class UserDaoImpl implements UserDao {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

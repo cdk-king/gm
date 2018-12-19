@@ -12,10 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class SendNoticeDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -24,7 +25,7 @@ public class SendNoticeDaoImpl {
 
     public Map<String, Object> getSendNoticeSendType() {
         String sql = "select * from t_send_notice_sendtype";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -34,7 +35,7 @@ public class SendNoticeDaoImpl {
 
     public Map<String, Object> getSendNoticeNoticeType() {
         String sql = "select * from t_send_notice_noticetype";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -51,14 +52,15 @@ public class SendNoticeDaoImpl {
                         " values ('" + notice.getPlatformId() + "','" + notice.getServerList() + "','" + notice.getSendType() + "','" +
                         notice.getNoticeType() + "','" + notice.getTimeInterval() + "','" + notice.getCycleTime() + "','" +
                         notice.getNoticeContent() + "','0','" + notice.getAddUser() + "','" + addDatetime + "','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.id  where a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.platformId  where a.platformId in (" +
+                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(notice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + notice.getPlatformId() + "' ";
         }
@@ -68,7 +70,7 @@ public class SendNoticeDaoImpl {
         if (!Objects.equals(notice.getNoticeContent(), "")) {
             sql += " and a.noticeContent LIKE '%" + notice.getNoticeContent() + "%' ";
         }
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -94,7 +96,7 @@ public class SendNoticeDaoImpl {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
@@ -103,7 +105,7 @@ public class SendNoticeDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql = "UPDATE  t_send_notice  set sendState='1' , sendDatetime = '" + addDatetime + "' where id = '" + id + "' ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -112,7 +114,7 @@ public class SendNoticeDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql = "UPDATE  t_send_notice  set sendState='2'  where id = '" + id + "' ";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }

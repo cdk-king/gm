@@ -12,10 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class BanIpDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(BanIpDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -24,7 +25,7 @@ public class BanIpDaoImpl {
 
     public Map<String, Object> getBanIp(BanIp banIp, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
-                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id  where a.platformId IN (" +
+                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId  where a.platformId IN (" +
                         strPlatform + ")  and b.isDelete != 1 and c.isDelete != 1 and a.isDelete != 1 ";
         if (banIp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + banIp.getPlatformId() + "' ";
@@ -33,7 +34,7 @@ public class BanIpDaoImpl {
             sql += " and a.serverId ='" + banIp.getServerId() + "' ";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         //sql += "  order by a.addDatetime desc";
@@ -53,7 +54,7 @@ public class BanIpDaoImpl {
         String sql = "insert t_ban_ip (platformId,serverId,ip,banLong,note,addUser,isDelete,addDatetime,banState) values ('" + banIp.getPlatformId() +
                 "','" + banIp.getServerId() + "','" + banIp.getIp() + "','" + banIp.getBanLong() + "','" + banIp.getNote() + "','" +
                 banIp.getAddUser() + "','0','" + addDatetime + "',0)";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -67,7 +68,7 @@ public class BanIpDaoImpl {
         } else {
             sql = "update t_ban_ip set banState = '" + banState + "' where id = " + id;
         }
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -76,7 +77,7 @@ public class BanIpDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql = "update t_ban_ip set isDelete = '1' where id = " + id;
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
 
@@ -91,7 +92,7 @@ public class BanIpDaoImpl {
             sql[i] = "UPDATE  t_ban_ip  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

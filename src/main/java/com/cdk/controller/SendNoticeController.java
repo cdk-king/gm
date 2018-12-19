@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 @RestController
 public class SendNoticeController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeController.class));
 
     public static final String Divider = "############################";
     @Autowired
@@ -28,7 +28,7 @@ public class SendNoticeController {
     @RequestMapping("/getSendNoticeSendType")
     public Result getSendNoticeSendType(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getSendNoticeSendType();
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -36,7 +36,7 @@ public class SendNoticeController {
     @RequestMapping("/getSendNoticeNoticeType")
     public Result getSendNoticeNoticeType(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getSendNoticeNoticeType();
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -44,7 +44,7 @@ public class SendNoticeController {
     @RequestMapping("/addNotice")
     public Result addNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.addNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -52,7 +52,7 @@ public class SendNoticeController {
     @RequestMapping("/getNotice")
     public Result getNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -60,7 +60,7 @@ public class SendNoticeController {
     @RequestMapping("/deleteAllNotice")
     public Result deleteAllNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.deleteAllNotice(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -72,11 +72,11 @@ public class SendNoticeController {
         int timeInterval = Integer.parseInt(strTimeInterval);
         int cycleTime = Integer.parseInt(strCycleTime);
         sendNotice(timeInterval, cycleTime, map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return null;
     }
 
-    Logger logger = Logger.getLogger("sendNotice");
+    Logger logger2 = Logger.getLogger("sendNotice");
 
     public void sendNotice(int timeInterval, int cycleTime, Map map) {
         new Thread() {
@@ -84,14 +84,14 @@ public class SendNoticeController {
                 long a = System.currentTimeMillis();
                 int c = 0;
                 Boolean isContinue = true;
-                logger.info("startSendNotice");
+                logger2.info("startSendNotice");
                 while (isContinue) {
                     long b = System.currentTimeMillis();
                     if ((b - a) > (1000 * timeInterval)) {
                         c++;
                         a = System.currentTimeMillis();
                         Result re = sendNoticeServiceImpl.sendNotice(map);
-                        logger.info(c + "-SendNoticeResult:" + re);
+                        logger2.info(c + "-SendNoticeResult:" + re);
                     }
                     if (c >= cycleTime) {
                         isContinue = false;

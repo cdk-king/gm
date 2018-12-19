@@ -15,10 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class PlayerDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlayerDaoImpl.class));
 
     public static final String Divider = "############################";
     public static final String Split = "----------------";
@@ -28,7 +29,7 @@ public class PlayerDaoImpl {
 
     public Map<String, Object> getPlayer(Player player, String isPage, int pageNo, int pageSize, Map searchForm) {
         String sql =
-                "select a.* , b.platform ,c.server from t_player as a join  t_gameplatform as b on a.platformId = b.id join t_gameserver as c on a.serverId = c.id where b.isDelete != 1 and c.isDelete != 1 ";
+                "select a.* , b.platform ,c.server from t_player as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId where b.isDelete != 1 and c.isDelete != 1 ";
         if (player.getPlatformId() != 0) {
             sql += " and a.platformId ='" + player.getPlatformId() + "' ";
         }
@@ -101,7 +102,7 @@ public class PlayerDaoImpl {
         if (!Objects.equals(searchForm.get("maxLevel"), "") && !Objects.equals(searchForm.get("maxLevel"), null)) {
             sql += " and a.level<='" + searchForm.get("maxLevel") + "' ";
         }
-        System.out.println(searchForm.get("minRegistrationTime"));
+        logger.info(searchForm.get("minRegistrationTime") + "");
         if (!Objects.equals(searchForm.get("minRegistrationTime"), "") && !Objects.equals(searchForm.get("minRegistrationTime"), null)) {
             sql += " and a.registrationTime>='" + searchForm.get("minRegistrationTime") + "' ";
         }
@@ -116,7 +117,7 @@ public class PlayerDaoImpl {
             sql += " and a.combatPower<='" + searchForm.get("maxCombatPower") + "' ";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -134,7 +135,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isProhibitSpeak='1',prohibitSpeakTime = '" + player.getProhibitSpeakTime() + "'  where playerName ='" +
                 player.getPlayerName() + "' and  playerAccount = '" + player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() +
                 "' and  platformId = '" + player.getPlatformId() + "' and serverId = '" + player.getServerId() + "' ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             //SaveProhibitSpeakLog(player, userId);
@@ -149,12 +150,12 @@ public class PlayerDaoImpl {
                 "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
                         player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
                         player.getServerId() + "','" + addDatetime + "','" + userId + "','1','" + player.getProhibitSpeakTime() + "')  ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            System.out.println("禁言日志保存成功");
+            logger.info("禁言日志保存成功");
         } else {
-            System.out.println("禁言日志保存失败");
+            logger.info("禁言日志保存失败");
         }
     }
 
@@ -162,7 +163,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isProhibitSpeak='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
                 player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
                 "' and serverId = '" + player.getServerId() + "' ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             //SaveProhibitSpeakToNormalLog(player, userId);
@@ -177,12 +178,12 @@ public class PlayerDaoImpl {
                 "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
                         player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
                         player.getServerId() + "','" + addDatetime + "','" + userId + "','0','0')  ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            System.out.println("解除禁言日志保存成功");
+            logger.info("解除禁言日志保存成功");
         } else {
-            System.out.println("解除禁言日志保存失败");
+            logger.info("解除禁言日志保存失败");
         }
     }
 
@@ -190,7 +191,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isBan='1',banTime = '" + player.getBanTime() + "'  where playerName ='" + player.getPlayerName() +
                 "' and  playerAccount = '" + player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" +
                 player.getPlatformId() + "' and serverId = '" + player.getServerId() + "'   ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             //SaveBanLog(player, userId);
@@ -204,12 +205,12 @@ public class PlayerDaoImpl {
         String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
                 player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
                 "','" + addDatetime + "','" + userId + "','1','" + player.getBanTime() + "')  ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            System.out.println("禁封日志保存成功");
+            logger.info("禁封日志保存成功");
         } else {
-            System.out.println("禁封日志保存失败");
+            logger.info("禁封日志保存失败");
         }
     }
 
@@ -217,7 +218,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isBan='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
                 player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
                 "' and serverId = '" + player.getServerId() + "' ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             //SaveBanToNormalLog(player, userId);
@@ -231,12 +232,12 @@ public class PlayerDaoImpl {
         String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
                 player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
                 "','" + addDatetime + "','" + userId + "','0','0')  ";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            System.out.println("解除禁封日志保存成功");
+            logger.info("解除禁封日志保存成功");
         } else {
-            System.out.println("解除禁封日志保存失败");
+            logger.info("解除禁封日志保存失败");
         }
     }
 

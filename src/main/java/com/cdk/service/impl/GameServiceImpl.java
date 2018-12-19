@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class GameServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(GameServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -27,16 +29,12 @@ public class GameServiceImpl {
         if (state == "") {
             state = "0";
         }
-        System.out.println("gameName：" + gameName);
-        System.out.println("game_describe：" + game_describe);
-        System.out.println("addUser：" + addUser);
-        System.out.println("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
 
-        System.out.println("pageNo：" + StrPageNo);
-        System.out.println("pageSize：" + StrPageSize);
+        logger.info("pageNo：" + StrPageNo);
+        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -75,14 +73,6 @@ public class GameServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("gameName：" + gameName);
-        System.out.println("game_describe：" + game_describe);
-        System.out.println("gameTag：" + gameTag);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("state：" + state);
-
         Result re;
         Game game = new Game();
         game.setGameName(gameName);
@@ -93,10 +83,10 @@ public class GameServiceImpl {
 
         int temp = gameDaoImpl.addGame(game);
         if (temp > 0) {
-            System.out.println("游戏添加成功");
+            logger.info("游戏添加成功");
             re = new Result(200, "游戏添加成功", null);
         } else {
-            System.out.println("游戏添加失败");
+            logger.info("游戏添加失败");
             re = new Result(400, "游戏添加失败", null);
         }
         return re;
@@ -113,15 +103,6 @@ public class GameServiceImpl {
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        System.out.println("id：" + id);
-        System.out.println("gameName：" + gameName);
-        System.out.println("game_describe：" + game_describe);
-        System.out.println("gameTag：" + gameTag);
-        System.out.println("sort：" + sort);
-        System.out.println("addUser：" + addUser);
-        System.out.println("addDatetime：" + addDatetime);
-        System.out.println("state：" + state);
-
         Result re;
         Game game = new Game();
         game.setId(Integer.parseInt(id));
@@ -133,10 +114,10 @@ public class GameServiceImpl {
 
         int temp = gameDaoImpl.editGame(game);
         if (temp > 0) {
-            System.out.println("游戏信息修改成功");
+            logger.info("游戏信息修改成功");
             re = new Result(200, "游戏信息更新成功", null);
         } else {
-            System.out.println("游戏信息修改失败");
+            logger.info("游戏信息修改失败");
             re = new Result(400, "游戏信息更新失败", null);
         }
         return re;
@@ -144,17 +125,17 @@ public class GameServiceImpl {
 
     public Result deleteGame(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Game game = new Game();
         game.setId(Integer.parseInt(id));
 
         Result re;
         int temp = gameDaoImpl.deleteGame(game);
         if (temp > 0) {
-            System.out.println("游戏删除成功");
+            logger.info("游戏删除成功");
             re = new Result(200, "游戏删除成功", null);
         } else {
-            System.out.println("游戏删除失败");
+            logger.info("游戏删除失败");
             re = new Result(400, " 游戏删除失败", null);
         }
         return re;
@@ -162,17 +143,17 @@ public class GameServiceImpl {
 
     public Result changeStateToNormal_Game(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Result re;
         Game game = new Game();
         game.setId(Integer.parseInt(id));
 
         int temp = gameDaoImpl.changeStateToNormal_Game(game);
         if (temp > 0) {
-            System.out.println("游戏解冻成功");
+            logger.info("游戏解冻成功");
             re = new Result(200, "游戏解冻成功", null);
         } else {
-            System.out.println("游戏解冻失败");
+            logger.info("游戏解冻失败");
             re = new Result(400, "游戏解冻失败", null);
         }
         return re;
@@ -180,16 +161,16 @@ public class GameServiceImpl {
 
     public Result changeStateToFrozen_Game(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         Result re;
         Game game = new Game();
         game.setId(Integer.parseInt(id));
         int temp = gameDaoImpl.changeStateToFrozen_Game(game);
         if (temp > 0) {
-            System.out.println("游戏冻结成功");
+            logger.info("游戏冻结成功");
             re = new Result(200, "游戏冻结成功", null);
         } else {
-            System.out.println("游戏冻结失败");
+            logger.info("游戏冻结失败");
             re = new Result(400, "游戏冻结失败", null);
 
         }
@@ -198,26 +179,26 @@ public class GameServiceImpl {
 
     public Result deleteAllGame(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] ObjectArry = id.split(",");
-        System.out.println("ObjectArry：" + ObjectArry);
+        logger.info("ObjectArry：" + ObjectArry);
 
         Result re;
         int[] temp = gameDaoImpl.deleteAllGame(ObjectArry);
 
         if (temp.length != 0) {
-            System.out.println("游戏批量删除成功");
+            logger.info("游戏批量删除成功");
             re = new Result(200, "游戏批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("游戏批量删除失败");
+            logger.info("游戏批量删除失败");
             re = new Result(400, "游戏批量删除失败", null);
         }
         return re;

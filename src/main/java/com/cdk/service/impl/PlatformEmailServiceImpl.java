@@ -17,12 +17,14 @@ import java.net.URLEncoder;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class PlatformEmailServiceImpl extends ApiHandeler {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformEmailServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -31,6 +33,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
     public Result getPlatformEmail(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -46,7 +49,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         platformEmail.setServerList(serverName);
         platformEmail.setEmailContent(emailContent);
         platformEmail.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服邮件列表获取失败", "");
         } else {
@@ -91,10 +94,10 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
         int temp = platformEmailDaoImpl.editPlatformEmail(platformEmail);
         if (temp > 0) {
-            System.out.println("全服公告编辑成功");
+            logger.info("全服公告编辑成功");
             re = new Result(200, "全服公告编辑成功", null);
         } else {
-            System.out.println("全服公告编辑失败");
+            logger.info("全服公告编辑失败");
             re = new Result(400, "全服公告编辑失败", null);
         }
         return re;
@@ -134,10 +137,10 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
         int temp = platformEmailDaoImpl.addPlatformEmail(platformEmail);
         if (temp > 0) {
-            System.out.println("全服邮件添加成功");
+            logger.info("全服邮件添加成功");
             re = new Result(200, "全服邮件添加成功", null);
         } else {
-            System.out.println("全服邮件添加失败");
+            logger.info("全服邮件添加失败");
             re = new Result(400, "全服邮件添加失败", null);
         }
         return re;
@@ -153,10 +156,10 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
         int temp = platformEmailDaoImpl.deletePlatformEmail(platformEmail);
         if (temp > 0) {
-            System.out.println("全服邮件删除成功");
+            logger.info("全服邮件删除成功");
             re = new Result(200, "全服邮件删除成功", null);
         } else {
-            System.out.println("全服公告删除失败");
+            logger.info("全服公告删除失败");
             re = new Result(400, "全服公告删除失败", null);
         }
         return re;
@@ -174,7 +177,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
 
-        System.out.println("strServerList:" + strServerList);
+        logger.info("strServerList:" + strServerList);
 
         String[] ServerList = strServerList.split("-");
 
@@ -197,27 +200,32 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String url = "";
 
         String error = "";
-        url = apiUrl + "/UpdatePlayer/Mail";
+
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+
 
         for (int i = 0; i < ServerList.length; i++) {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
-            System.out.println(param + "&WorldID=" + ServerList[i]);
+            logger.info(param + "&WorldID=" + ServerList[i]);
+            apiUrl = getApiUrl(serverUrl.get(i));
+            url = apiUrl + "/UpdatePlayer/Mail";
+
             String data = httpRequestUtil.sendGet(url, param + "&WorldID=" + ServerList[i]);
-            System.out.println(data);
+            logger.info(data);
             JSONObject jb = JSONObject.fromObject(data);
             Map resultMap = (Map) jb;
             if (!Objects.equals(resultMap.get("Result"), 1)) {
                 error += ServerList[i];
             }
         }
-        System.out.println("error:" + error);
-
+        logger.info("error:" + error);
+        Long time = Math.abs(new Date().getTime() / 1000L);
         if (!Objects.equals(error.length(), 0)) {
-            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error);
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error, time);
             re = new Result(400, "全服邮件发送失败", error);
         } else {
 
-            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error);
+            int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error, time);
             if (temp > 0) {
                 re = new Result(200, "全服邮件发送成功", error);
             } else {
@@ -230,25 +238,25 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
     public Result deleteAllPlatformEmail(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = platformEmailDaoImpl.deleteAllPlatformEmail(objectArry);
         if (temp.length != 0) {
-            System.out.println("全服邮件批量删除成功");
+            logger.info("全服邮件批量删除成功");
             re = new Result(200, "全服邮件批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("全服邮件批量删除失败");
+            logger.info("全服邮件批量删除失败");
             re = new Result(400, "全服邮件批量删除失败", null);
         }
         return re;

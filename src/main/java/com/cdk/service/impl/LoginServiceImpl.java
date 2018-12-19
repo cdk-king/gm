@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class LoginServiceImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(LoginServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
     @Autowired
@@ -29,24 +30,24 @@ public class LoginServiceImpl {
             //因为string属于符合数据类型，所以应该是使用equals，假如我们使用==比较，肯定是比较它们的内存地址了
             if (!Objects.equals(list.get(0).get("password"), password)) {
                 re = new Result(400, "登录失败，密码错误", list.get(0).get("password") + "|" + password);
-                System.out.println("登录失败，密码错误");
+                logger.info("登录失败，密码错误");
                 return re;
             }
         } else {
             re = new Result(400, "登录失败，用户名无效", password);
-            System.out.println("登录失败，用户名无效");
+            logger.info("登录失败，用户名无效");
             return re;
         }
 
         re = new Result(200, "登录成功", list.get(0));
-        System.out.println("用户登录成功");
+        logger.info("用户登录成功");
         return re;
     }
 
     public Result getTouristId() {
         Result re;
         List<Map<String, Object>> list = loginDaoImpl.getTouristId();
-        System.out.println(list);
+        logger.info(list.toString());
         if (Objects.equals(list.get(0).get("configValue"), null)) {
             re = new Result(400, "游客Id获取失败", "");
         } else {
@@ -58,7 +59,7 @@ public class LoginServiceImpl {
     public Result getTouristName() {
         Result re;
         List<Map<String, Object>> list = loginDaoImpl.getTouristName();
-        System.out.println(list);
+        logger.info(list.toString());
         if (Objects.equals(list.get(0).get("configValue"), null)) {
             re = new Result(400, "游客name获取失败", "");
         } else {

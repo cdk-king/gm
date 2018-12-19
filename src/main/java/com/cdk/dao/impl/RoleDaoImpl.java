@@ -13,10 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(RoleDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -30,7 +31,7 @@ public class RoleDaoImpl implements RoleDao {
 
         String sql = "insert into t_role  (role,role_describe,addUser,addDatetime,state,isDelete) " + " values ('" + role.getRole() + "','" +
                 role.getRole_describe() + "','" + role.getAddUser() + "','" + addDatetime + "','0','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
@@ -69,7 +70,7 @@ public class RoleDaoImpl implements RoleDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -84,7 +85,7 @@ public class RoleDaoImpl implements RoleDao {
 
         String sql = "UPDATE t_role as a SET a.role='" + role.getRole() + "',a.role_describe = '" + role.getRole_describe() + "',a.addUser = '" +
                 role.getAddUser() + "' where a.id =" + role.getId() + "";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -93,7 +94,7 @@ public class RoleDaoImpl implements RoleDao {
     public int changeStateToFrozen_Role(Role role) {
 
         String sql = "UPDATE t_role SET state='1' where id ='" + role.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -101,7 +102,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public int changeStateToNormal_Role(Role role) {
         String sql = "UPDATE t_role SET state='0' where id ='" + role.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -109,7 +110,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public int deleteRole(Role role) {
         String sql = "UPDATE t_role SET isDelete='1' where id ='" + role.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -126,7 +127,7 @@ public class RoleDaoImpl implements RoleDao {
             //只能运行一条语句，不可使用拼接
             temp = jdbcTemplate.update(sql);
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         return temp;
     }
 
@@ -141,7 +142,7 @@ public class RoleDaoImpl implements RoleDao {
             //只能运行一条语句，不可使用拼接
             temp = jdbcTemplate.update(sql);
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         return temp;
     }
 
@@ -159,7 +160,7 @@ public class RoleDaoImpl implements RoleDao {
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
         temp = jdbcTemplate.batchUpdate(sql);
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         return temp;
     }
 }

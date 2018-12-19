@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class GameDaoImpl implements GameDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(GameDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -48,7 +50,7 @@ public class GameDaoImpl implements GameDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -66,7 +68,7 @@ public class GameDaoImpl implements GameDao {
         String sql = "insert into t_game (gameName,gameTag,game_describe,gameEncryptSign,sort,addUser,addDatetime,state,isDelete) " + " values ('" +
                 game.getGameName() + "','" + game.getGameTag() + "','" + game.getGame_describe() + "','" + game.getGameEncryptSign() + "','0','" +
                 game.getAddUser() + "','" + addDatetime + "','0','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -76,7 +78,7 @@ public class GameDaoImpl implements GameDao {
         String sql = "UPDATE t_game as a SET a.gameName='" + game.getGameName() + "',a.game_describe = '" + game.getGame_describe() + "'," +
                 "a.gameTag='" + game.getGameTag() + "' ,a.gameEncryptSign = '" + game.getGameEncryptSign() + "',a.addUser = '" + game.getAddUser() +
                 "' where a.id =" + game.getId() + "";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
@@ -85,7 +87,7 @@ public class GameDaoImpl implements GameDao {
     @Override
     public int deleteGame(Game game) {
         String sql = "UPDATE t_game SET isDelete='1' where id ='" + game.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -93,7 +95,7 @@ public class GameDaoImpl implements GameDao {
     @Override
     public int changeStateToNormal_Game(Game game) {
         String sql = "UPDATE t_game SET state='0' where id ='" + game.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -101,7 +103,7 @@ public class GameDaoImpl implements GameDao {
     @Override
     public int changeStateToFrozen_Game(Game game) {
         String sql = "UPDATE t_game SET state='1' where id ='" + game.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -119,7 +121,7 @@ public class GameDaoImpl implements GameDao {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

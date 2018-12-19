@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 @Service
 public class CDK_ServiceImpl {
-    static Logger logger = Logger.getLogger("CDK_ServiceImpl");
+    private static Logger logger = Logger.getLogger(String.valueOf(CDK_ServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -60,7 +60,7 @@ public class CDK_ServiceImpl {
         cdkUse.setCdk(cdk);
 
         Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, isPage, pageNo, pageSize, strPlatform);
-        System.out.println(JsonMap.get("list"));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {
@@ -193,8 +193,7 @@ public class CDK_ServiceImpl {
      */
     public int checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
         List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-        System.out.println(list);
-        System.out.println(list.size());
+        logger.info(list.toString());
         if (null == list || list.size() == 0) {
             return 0;
         }
@@ -213,7 +212,7 @@ public class CDK_ServiceImpl {
     public int checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
 
         List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId);
-        System.out.println(list);
+        logger.info(list.toString());
         if (null == list || list.size() == 0) {
             //失败
             return 0;
@@ -228,7 +227,7 @@ public class CDK_ServiceImpl {
      * @return
      */
     public Map<String, Integer> analyse(String cdk) {
-        System.out.println(cdk);
+        logger.info(cdk);
         Map<String, Integer> map = new HashMap();
         //base32解码
         try {
@@ -238,12 +237,12 @@ public class CDK_ServiceImpl {
             for (int i = 0; i < strChar.length; i++) {
                 result += Integer.toBinaryString(strChar[i]) + " ";
             }
-            System.out.println(result);
+            logger.info(result);
             int a = BufferUtil.readVarInt32(data, 2);
             int length = BufferUtil.computeVarInt32Size(a) + 2;
-            System.out.println(a);
+            logger.info(a + "");
             long b = BufferUtil.readVarInt64(data, length);
-            System.out.println(b);
+            logger.info(b + "");
 
             map.put("couponId", a);
             map.put("sequenceId", (int) b);

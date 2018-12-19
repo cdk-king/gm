@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 @RestController
 public class EmailTableController {
+    private static Logger logger = Logger.getLogger(String.valueOf(EmailTableController.class));
     public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -25,7 +27,7 @@ public class EmailTableController {
     @RequestMapping("/getEmail")
     public Result getEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.getEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -33,7 +35,7 @@ public class EmailTableController {
     @RequestMapping("/addEmail")
     public Result addEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.addEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -41,7 +43,7 @@ public class EmailTableController {
     @RequestMapping("/editEmail")
     public Result editEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.editEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -49,7 +51,7 @@ public class EmailTableController {
     @RequestMapping("/sendEmail")
     public Result sendEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.sendEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +59,7 @@ public class EmailTableController {
     @RequestMapping("/deleteEmail")
     public Result deleteEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.deleteEmail(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

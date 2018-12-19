@@ -126,7 +126,9 @@ public class BufferUtil {
         if (tmp >= 0) {
             return tmp;
         }
-        //0x7f 127
+        //0x7f 128  0111 1111
+        //0x7f与常量做与运算实质是保留常量（转换为二进制形式）的后7位数，既取值区间为[0,128]
+        //<< 7 相当于后边加7个0（右边补7个0）
         int result = tmp & 0x7f;
         if ((tmp = data[index++]) >= 0) {
             //result = result|tmp << 7;
@@ -161,7 +163,7 @@ public class BufferUtil {
     public static long readVarInt64(byte[] data, int index) {
         int shift = 0;
         long result = 0;
-        
+
         while (shift < 64) {
             final byte b = data[index++];
             result |= (long) (b & 0x7F) << shift;

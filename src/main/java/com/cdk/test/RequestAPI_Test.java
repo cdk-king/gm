@@ -27,7 +27,6 @@ public class RequestAPI_Test {
         params.put("showapi_sign", "###");
         //调用httpRequest方法，这个方法主要用于请求地址，并加上请求参数
 
-
         String string = httpRequest(requestUrl, params);
 
 

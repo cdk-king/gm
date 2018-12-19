@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Service
 public class GiftServiceImpl {
+    private static Logger logger = Logger.getLogger(String.valueOf(GiftServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -28,7 +30,7 @@ public class GiftServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -49,7 +51,7 @@ public class GiftServiceImpl {
         gift.setState(Integer.parseInt(state));
 
         Map<String, Object> JsonMap = giftDaoImpl.getGift(gift, isPage, pageNo, pageSize, strPlatform);
-        System.out.println(JsonMap.get("list"));
+        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {
@@ -69,7 +71,7 @@ public class GiftServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        System.out.println("strPlatform：" + strPlatform);
+        logger.info("strPlatform：" + strPlatform);
 
         Gift gift = new Gift();
         gift.setGiftName(giftName);
@@ -82,10 +84,10 @@ public class GiftServiceImpl {
         Result re;
         int temp = giftDaoImpl.addGift(gift);
         if (temp > 0) {
-            System.out.println("礼包添加成功");
+            logger.info("礼包添加成功");
             re = new Result(200, "礼包添加成功", null);
         } else {
-            System.out.println("礼包添加失败");
+            logger.info("礼包添加失败");
             re = new Result(400, "礼包添加失败", null);
         }
         return re;

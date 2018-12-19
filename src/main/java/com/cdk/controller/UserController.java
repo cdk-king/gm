@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.logging.Logger;
+
 @RestController
 public class UserController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(UserController.class));
     //Spring模拟HTTP请求——RestTemplate类
     private RestTemplate restTemplate;
 

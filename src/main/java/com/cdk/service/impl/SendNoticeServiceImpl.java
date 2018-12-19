@@ -11,6 +11,8 @@ import com.cdk.util.HttpRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
 
 @Service
 public class SendNoticeServiceImpl extends ApiHandeler {
-    Logger logger = Logger.getLogger("SendNoticeServiceImpl");
+    private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -75,10 +77,10 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
         int temp = sendNoticeDaoImpl.addNotice(notice);
         if (temp > 0) {
-            System.out.println("公告添加成功");
+            logger.info("公告添加成功");
             re = new Result(200, "公告添加成功", null);
         } else {
-            System.out.println("公告添加失败");
+            logger.info("公告添加失败");
             re = new Result(400, "公告添加失败", null);
         }
         return re;
@@ -86,6 +88,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
     public Result getNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "0");
         String strNoticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "0");
@@ -113,7 +116,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         notice.setCycleTime(cycleTime);
         notice.setNoticeContent(noticeContent);
         notice.setAddUser(addUser);
-        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "公告列表获取失败", "");
         } else {
@@ -125,25 +128,25 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
     public Result deleteAllNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = sendNoticeDaoImpl.deleteAllNotice(objectArry);
         if (temp.length != 0) {
-            System.out.println("公告批量删除成功");
+            logger.info("公告批量删除成功");
             re = new Result(200, "公告批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("公告批量删除失败");
+            logger.info("公告批量删除失败");
             re = new Result(400, "公告批量删除失败", null);
         }
         return re;
@@ -158,9 +161,16 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         String noticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "");
 
 
-        System.out.println("strPlatformId:" + strPlatformId);
-        System.out.println("strServerList:" + strServerList);
+        logger.info("strPlatformId:" + strPlatformId);
+        logger.info("strServerList:" + strServerList);
         String[] serverArray = strServerList.split(",");
+
+        try {
+            //中文转码
+            Content = URLEncoder.encode(Content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         String param = getParam(strPlatformId);
         param += "&Content=" + Content;
@@ -172,7 +182,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             param += "&noticeType=" + noticeType;
         }
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
-        System.out.println(urlList);
+        logger.info(urlList.toString());
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
@@ -184,10 +194,10 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             } else {
                 return new Result(400, "广播发送失败，无效的服务器", "");
             }
-            //暂时用配置的
+            apiUrl = getApiUrl(urlList.get(i));
             url = apiUrl + "/notice/sendBroadcast";
-            System.out.println(url);
-            System.out.println(param);
+            logger.info(url);
+            logger.info(param);
 
 
             String data = httpRequestUtil.sendGet(url, param);
@@ -214,22 +224,22 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             datas = datas.substring(0, datas.length() - 1);
 
         }
-        System.out.println("data:" + datas);
+        logger.info("data:" + datas);
         if (error.length() > 0) {
             error = error.substring(0, error.length() - 1);
 
         }
-        System.out.println("error:" + error);
+        logger.info("error:" + error);
         Result re;
 
         if (error.length() > 0 || datas.length() == 0) {
             int temp = sendNoticeDaoImpl.sendNoticeToError(id);
-            System.out.println("广播发送失败");
+            logger.info("广播发送失败");
             re = new Result(400, "广播发送失败", error);
 
         } else {
             int temp = sendNoticeDaoImpl.sendNotice(id);
-            System.out.println("广播发送成功");
+            logger.info("广播发送成功");
             re = new Result(200, "广播发送成功", datas);
         }
         return re;

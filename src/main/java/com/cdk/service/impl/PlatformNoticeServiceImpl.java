@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 @Service
 public class PlatformNoticeServiceImpl extends ApiHandeler {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeServiceImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -41,6 +41,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
     public Result getPlatformNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
         String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -56,7 +57,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         platformNotice.setServerList(serverName);
         platformNotice.setNoticeContent(noticeContent);
         platformNotice.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服公告列表获取失败", "");
         } else {
@@ -102,19 +103,12 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
         int temp = platformNoticeDaoImpl.addPlatformNotice(platformNotice);
         if (temp > 0) {
-            System.out.println("全服公告添加成功");
-            long number = 20000L;
-            cacheManagerImpl.putCache("Notice", platformNotice, 20000L);
-            //cacheListener = new CacheListener(cacheManagerImpl);
-            //cacheListener.startListen();
-            Logger logger = Logger.getLogger("platformNoticeLog");
-            logger.info("Notice缓存添加成功");
+            logger.info("全服公告添加成功");
             PlatformNotice data = (PlatformNotice) cacheManagerImpl.getCacheDataByKey("Notice");
             String content = data.getNoticeContent();
-            logger.info(content);
             re = new Result(200, "全服公告添加成功", null);
         } else {
-            System.out.println("全服公告添加失败");
+            logger.info("全服公告添加失败");
             re = new Result(400, "全服公告添加失败", null);
         }
         return re;
@@ -158,10 +152,10 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
         int temp = platformNoticeDaoImpl.editPlatformNotice(platformNotice);
         if (temp > 0) {
-            System.out.println("全服公告编辑成功");
+            logger.info("全服公告编辑成功");
             re = new Result(200, "全服公告编辑成功", null);
         } else {
-            System.out.println("全服公告编辑失败");
+            logger.info("全服公告编辑失败");
             re = new Result(400, "全服公告编辑失败", null);
         }
         return re;
@@ -178,10 +172,10 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
         int temp = platformNoticeDaoImpl.deletePlatformNotice(platformNotice);
         if (temp > 0) {
-            System.out.println("全服公告删除成功");
+            logger.info("全服公告删除成功");
             re = new Result(200, "全服公告删除成功", null);
         } else {
-            System.out.println("全服公告删除失败");
+            logger.info("全服公告删除失败");
             re = new Result(400, "全服公告删除失败", null);
         }
         return re;
@@ -220,15 +214,15 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         }
         param += "&StartTime=" + time;
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
-        System.out.println(urlList);
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
         String error = "";
         for (int i = 0; i < urlList.size(); i++) {
-            url = http + urlList.get(i).get("url") + "/notice/sendAllNotice";
-            System.out.println(url);
-            System.out.println(param);
+            apiUrl = getApiUrl(urlList.get(i));
+            url = apiUrl + "/notice/sendAllNotice";
+            logger.info(url);
+            logger.info(param);
             String data = httpRequestUtil.sendGet(url, param);
             JSONObject jo = JSONObject.parseObject(data);
             data = jo.getString("Result");
@@ -247,8 +241,8 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             error = error.substring(0, error.length() - 1);
             int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
         }
-        System.out.println("datas:" + datas);
-        System.out.println("error:" + error);
+        logger.info("datas:" + datas);
+        logger.info("error:" + error);
         Map<String, String> remap = new HashMap<>();
         remap.put("codes", datas);
         remap.put("error", error);
@@ -267,9 +261,9 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         String moneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "");
         String startDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
-        System.out.println(propList);
-        System.out.println(strServerList);
-        System.out.println(startDatetime);
+        logger.info(propList);
+        logger.info(strServerList);
+        logger.info(startDatetime);
         //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         //        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String[] serverArray = strServerList.split(",");
@@ -294,7 +288,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         }
         param += "&StartTime=" + time;
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
-        System.out.println(urlList);
+        logger.info(urlList.toString());
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
@@ -306,10 +300,10 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             } else {
                 return new Result(400, "公告发送失败，无效的服务器", "");
             }
-            //暂时用配置的
+            apiUrl = getApiUrl(urlList.get(i));
             url = apiUrl + "/notice/sendAllNotice";
-            System.out.println(url);
-            System.out.println(param);
+            logger.info(url);
+            logger.info(param);
 
             String data = httpRequestUtil.sendGet(url, param);
             //返回结果判空处理
@@ -341,8 +335,8 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         } else {
             int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, "", 1, time);
         }
-        System.out.println("datas:" + datas);
-        System.out.println("error:" + error);
+        logger.info("datas:" + datas);
+        logger.info("error:" + error);
         Map<String, String> remap = new HashMap<>();
         remap.put("codes", datas);
         remap.put("error", error);
@@ -354,25 +348,25 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
     public Result deleteAllPlatformNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        System.out.println("id：" + id);
+        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
-            System.out.println("无任何批量删除操作");
+            logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        System.out.println("ObjectArry：" + objectArry);
+        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = platformNoticeDaoImpl.deleteAllPlatformNotice(objectArry);
         if (temp.length != 0) {
-            System.out.println("公告批量删除成功");
+            logger.info("公告批量删除成功");
             re = new Result(200, "公告批量删除成功", null);
         } else if (objectArry.length == 0) {
-            System.out.println("无任何删除操作");
+            logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            System.out.println("公告批量删除失败");
+            logger.info("公告批量删除失败");
             re = new Result(400, "公告批量删除失败", null);
         }
         return re;

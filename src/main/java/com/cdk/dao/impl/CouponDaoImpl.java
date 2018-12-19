@@ -22,11 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 import java.util.zip.Adler32;
 
 @Repository
 public class CouponDaoImpl {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(CouponDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -37,38 +38,37 @@ public class CouponDaoImpl {
     public String[] generateCDK(Coupon coupon) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        System.out.println("giftId" + coupon.getGiftId());
-        System.out.println("couponId" + coupon.getCouponId());
-        System.out.println("couponCount" + coupon.getCouponCount());
-        System.out.println("couponTitle" + coupon.getCouponTitle());
-        System.out.println("coupon_describe" + coupon.getCoupon_describe());
-        System.out.println("platformId" + coupon.getPlatformId());
-        System.out.println("start_sequence" + coupon.getCouponId());
+        logger.info("giftId" + coupon.getGiftId());
+        logger.info("couponId" + coupon.getCouponId());
+        logger.info("couponCount" + coupon.getCouponCount());
+        logger.info("couponTitle" + coupon.getCouponTitle());
+        logger.info("coupon_describe" + coupon.getCoupon_describe());
+        logger.info("platformId" + coupon.getPlatformId());
+        logger.info("start_sequence" + coupon.getCouponId());
 
 
         int max_end_sequence = getMaxEnd_sequence(coupon);
-        System.out.println(max_end_sequence);
+        logger.info(max_end_sequence + "");
         int start_sequence = max_end_sequence + 1;
-        System.out.println(start_sequence);
+        logger.info(start_sequence + "");
         int end_sequence = start_sequence + coupon.getCouponCount() - 1;
-        System.out.println(end_sequence);
+        logger.info(end_sequence + "");
         // 随机salt
         //java7在所有情形下都更推荐使用ThreadLocalRandom，它向下兼容已有的代码且运营成本更低
         int salt = ThreadLocalRandom.current().nextInt();
-        System.out.println(salt);
-        System.out.println("starDatetime" + coupon.getStartDatetime());
-        System.out.println("endDatetime" + coupon.getEndDatetime());
-        System.out.println("addDatetime" + addDatetime);
+        logger.info(salt + "");
+        logger.info("starDatetime" + coupon.getStartDatetime());
+        logger.info("endDatetime" + coupon.getEndDatetime());
+        logger.info("addDatetime" + addDatetime);
         long int2Long = CDKUtil.int2Long(start_sequence, salt);
         String fileUrl =
-                "/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
-
+                "cdk/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
         String sql = "insert into t_coupon (giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
                 "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl) " + " values ('" + coupon.getGiftId() + "','" + coupon.getCouponId() +
                 "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" + coupon.getCoupon_describe() + "','" +
                 coupon.getPlatformId() + "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" + coupon.getAddUser() + "','" +
                 addDatetime + "','" + fileUrl + "' )";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         String[] resultList = new String[coupon.getCouponCount()];
         if (temp > 0) {
@@ -90,11 +90,11 @@ public class CouponDaoImpl {
     public int getMaxEnd_sequence(Coupon coupon) {
         String sql = "select max(end_sequence) as max_end_sequence from t_coupon ";
         //+" where id=" + coupon.getCouponId() + " and platformId=" + coupon.getPlatformId();
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        System.out.println(list);
+        logger.info(list.toString());
         //结果为空时size为1
-        System.out.println(list.size());
+        logger.info(list.size() + "");
         int maxEnd_sequence = 0;
         if (list.size() != 0) {
             if (Objects.equals(list.get(0).get("max_end_sequence"), null)) {
@@ -107,7 +107,13 @@ public class CouponDaoImpl {
     }
 
     public String[] generateCDK(int start_sequence, int salt, long int2Long, int count, int CouponId, int platformId, int giftId) {
-        String fileName = "平台" + platformId + "_礼包id" + giftId + "_个数" + count + "_序号" + start_sequence + ".txt";
+        File f1 = new File("cdk");
+        if (!f1.exists()) {
+            //生成所有目录
+            f1.mkdirs();
+            logger.info("文件夹已创建");
+        }
+        String fileName = "cdk/平台" + platformId + "_礼包id" + giftId + "_个数" + count + "_序号" + start_sequence + ".txt";
         String results = new String();
         File file = new File(fileName);
 
@@ -152,13 +158,13 @@ public class CouponDaoImpl {
             file.createNewFile();
             FileWriter writer = new FileWriter(file);
             // 创建 FileReader 对象
-            System.out.println(0 + giftId * 10000);
-            System.out.println(start_sequence);
-            System.out.println(salt);
+            logger.info((0 + giftId * 10000) + "");
+            logger.info(start_sequence + "");
+            logger.info(salt + "");
             for (int i = 0; i < count; i++) {
                 String s = generate(0 + giftId * 1, start_sequence + i, salt);
                 //String s = "cdk国王";
-                System.out.println(s);
+                logger.info(s);
                 //writer.append(s);
                 writer.write(s);
                 results = results + s + ";";
@@ -205,19 +211,18 @@ public class CouponDaoImpl {
 
         String encoded = Base64.getEncoder().encodeToString(data);
         System.out.print("Base64:");
-        System.out.println(encoded);
+        logger.info(encoded);
         return encoding.encode(data);
     }
 
     public Map<String, Object> getCoupon(Coupon coupon, String isPage, int pageNo, int pageSize, String strPlatform) {
-        String sql =
-                "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ")  and b.isDelete != 1  ";
+        String sql = "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ")  and b.isDelete != 1  ";
         if (coupon.getPlatformId() != 0) {
             sql += " and a.platformId ='" + coupon.getPlatformId() + "' ";
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {

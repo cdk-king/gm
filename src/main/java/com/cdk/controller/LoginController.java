@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
 
 @RestController
 public class LoginController {
-
+    private static Logger logger = Logger.getLogger(String.valueOf(LoginController.class));
     public static final String Divider = "############################";
 
     @Autowired
@@ -63,7 +64,7 @@ public class LoginController {
     @RequestMapping("/api/login/getTouristId")
     public Result getTouristId(@RequestBody Map map) {
         Result re = loginServiceImpl.getTouristId();
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -71,7 +72,7 @@ public class LoginController {
     @RequestMapping("/api/login/getTouristName")
     public Result getTouristName(@RequestBody Map map) {
         Result re = loginServiceImpl.getTouristName();
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -81,7 +82,7 @@ public class LoginController {
         Result re1 = loginServiceImpl.getTouristId();
         Result re2 = loginServiceImpl.getTouristName();
         Result re3 = new Result(200, "游客获取成功", re1.getData().toString() + "|" + re2.getData().toString());
-        System.out.println(Divider);
+        logger.info(Divider);
         return re3;
     }
 
@@ -89,7 +90,7 @@ public class LoginController {
     @RequestMapping("/api/login/setTouristId")
     public Result setTouristId(@RequestBody Map map) {
         Result re = loginServiceImpl.setTouristId(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -97,7 +98,7 @@ public class LoginController {
     @RequestMapping("/api/login/setTouristName")
     public Result setTouristName(@RequestBody Map map) {
         Result re = loginServiceImpl.setTouristName(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 
@@ -107,7 +108,7 @@ public class LoginController {
         Result re1 = loginServiceImpl.setTouristId(map);
         Result re2 = loginServiceImpl.setTouristName(map);
         Result re3 = new Result(200, "游客设置成功", "");
-        System.out.println(Divider);
+        logger.info(Divider);
         return re3;
     }
 
@@ -115,7 +116,7 @@ public class LoginController {
     @RequestMapping("/api/login/getThisUserInfo")
     public Result getThisUserInfo(@RequestBody Map map) {
         Result re = loginServiceImpl.getThisUserInfo(map);
-        System.out.println(Divider);
+        logger.info(Divider);
         return re;
     }
 }

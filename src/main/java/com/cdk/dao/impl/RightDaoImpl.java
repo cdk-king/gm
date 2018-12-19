@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class RightDaoImpl implements RightDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(RightDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -32,7 +34,7 @@ public class RightDaoImpl implements RightDao {
                 "insert into t_right (rightName,rightTag,right_describe,rightSort,rightParentId,addUser,addDatetime,state,isDelete) " + " values ('" +
                         right.getRightName() + "','" + right.getRightTag() + "','" + right.getRight_describe() + "','0','0','" + right.getAddUser() +
                         "','" + addDatetime + "','0','0')";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -64,7 +66,7 @@ public class RightDaoImpl implements RightDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -78,7 +80,7 @@ public class RightDaoImpl implements RightDao {
                 //+"a.rightParentId=0,a.rightSort=0,"
                 + "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "',a.rightSort = " + right.getRightSort() +
                 " where a.id =" + right.getId() + "";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -87,7 +89,7 @@ public class RightDaoImpl implements RightDao {
     public int changeStateToFrozen_Right(Right right) {
 
         String sql = "UPDATE t_right SET state='1' where id ='" + right.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -95,7 +97,7 @@ public class RightDaoImpl implements RightDao {
     @Override
     public int changeStateToNormal_Right(Right right) {
         String sql = "UPDATE t_right SET state='0' where id ='" + right.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -103,7 +105,7 @@ public class RightDaoImpl implements RightDao {
     @Override
     public int deleteRight(Right right) {
         String sql = "UPDATE t_right SET isDelete='1' where id ='" + right.getId() + "'";
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -122,7 +124,7 @@ public class RightDaoImpl implements RightDao {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

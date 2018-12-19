@@ -1,10 +1,12 @@
 package com.cdk.cache;
 
+import org.springframework.stereotype.Service;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+@Service
 public class CacheManagerImpl implements ICacheManager {
     private static Map<String, EntityCache> caches = new ConcurrentHashMap<String, EntityCache>();
 
@@ -113,4 +115,5 @@ public class CacheManagerImpl implements ICacheManager {
     public Set<String> getAllKeys() {
         return caches.keySet();
     }
+
 }

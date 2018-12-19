@@ -13,9 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 @Repository
 public class PropDaoImpl implements PropDao {
+    private static Logger logger = Logger.getLogger(String.valueOf(PropDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
 
@@ -25,9 +27,8 @@ public class PropDaoImpl implements PropDao {
     @Override
     public Map<String, Object> getProp(Prop prop, String isPage, int pageNo, int pageSize, String strPlatform) {
         //如果查询结果有个重复的字段，默认取后边
-        String sql =
-                "select a.* , b.platform  from t_prop as a join  t_gameplatform as b on a.platformId = b.id where a.platformId IN (" + strPlatform +
-                        ") and a.isDelete != 1  and b.isDelete != 1  ";
+        String sql = "select a.* , b.platform  from t_prop as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
+                strPlatform + ") and a.isDelete != 1  and b.isDelete != 1  ";
         if (prop.getPlatformId() != 0) {
             sql += " and a.platformId ='" + prop.getPlatformId() + "' ";
         }
@@ -47,7 +48,7 @@ public class PropDaoImpl implements PropDao {
                 sql += " and a.state != 1 ";
             }
         }
-        System.out.println("sql：" + sql);
+        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -79,7 +80,7 @@ public class PropDaoImpl implements PropDao {
     public int editProp(Prop prop) {
         String sql = "UPDATE t_prop as a SET a.propName='" + prop.getPropName() + "',a.prop_describe = '" + prop.getProp_describe() + "'," +
                 "a.propTag='" + prop.getPropTag() + "' ,a.addUser = '" + prop.getAddUser() + "' where a.id =" + prop.getId() + "";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -87,7 +88,7 @@ public class PropDaoImpl implements PropDao {
     @Override
     public int deleteProp(Prop prop) {
         String sql = "UPDATE t_prop  SET isDelete = 1 where id =" + prop.getId() + "";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -95,7 +96,7 @@ public class PropDaoImpl implements PropDao {
     @Override
     public int changeStateToNormal_Game(Prop prop) {
         String sql = "UPDATE t_prop  SET state = 0 where id =" + prop.getId() + "";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -103,7 +104,7 @@ public class PropDaoImpl implements PropDao {
     @Override
     public int changeStateToFrozen_Game(Prop prop) {
         String sql = "UPDATE t_prop  SET state = 1 where id =" + prop.getId() + "";
-        System.out.println(sql);
+        logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -121,7 +122,7 @@ public class PropDaoImpl implements PropDao {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        System.out.println("sql：" + strSql);
+        logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
