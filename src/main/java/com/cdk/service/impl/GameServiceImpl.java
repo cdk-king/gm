@@ -29,10 +29,6 @@ public class GameServiceImpl {
         if (state == "") {
             state = "0";
         }
-        logger.info("gameName：" + gameName);
-        logger.info("game_describe：" + game_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -77,14 +73,6 @@ public class GameServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        logger.info("id：" + id);
-        logger.info("gameName：" + gameName);
-        logger.info("game_describe：" + game_describe);
-        logger.info("gameTag：" + gameTag);
-        logger.info("sort：" + sort);
-        logger.info("addUser：" + addUser);
-        logger.info("state：" + state);
-
         Result re;
         Game game = new Game();
         game.setGameName(gameName);
@@ -114,15 +102,6 @@ public class GameServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
-
-        logger.info("id：" + id);
-        logger.info("gameName：" + gameName);
-        logger.info("game_describe：" + game_describe);
-        logger.info("gameTag：" + gameTag);
-        logger.info("sort：" + sort);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
 
         Result re;
         Game game = new Game();

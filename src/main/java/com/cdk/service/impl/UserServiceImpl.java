@@ -34,15 +34,6 @@ public class UserServiceImpl {
         String email = (map.get("email") != null ? map.get("email").toString() : "");
         String type = (map.get("type") != null ? map.get("type").toString() : "");
 
-        logger.info("id：" + id);
-        logger.info("account：" + account);
-        logger.info("password：" + password);
-        logger.info("name：" + name);
-        logger.info("phone：" + phone);
-        logger.info("email：" + email);
-        logger.info("type：" + type);
-        logger.info("addDatatime：" + addDatetime);
-
         User user = new User();
         user.setAccount(account);
         user.setPassword(password);
@@ -73,12 +64,6 @@ public class UserServiceImpl {
         String phone = (map.get("phone") != null ? map.get("phone").toString() : "");
         String email = (map.get("email") != null ? map.get("email").toString() : "");
         String type = (map.get("type") != null ? map.get("type").toString() : "");
-        logger.info("id：" + id);
-        logger.info("account：" + account);
-        logger.info("name：" + name);
-        logger.info("phone：" + phone);
-        logger.info("email：" + email);
-        logger.info("type：" + type);
 
         User user = new User();
         user.setId(Integer.parseInt(id));
@@ -143,12 +128,6 @@ public class UserServiceImpl {
         user.setPhone(phone);
         user.setEmail(email);
         user.setState(Integer.parseInt(state));
-
-        logger.info("account：" + account);
-        logger.info("name：" + name);
-        logger.info("phone：" + phone);
-        logger.info("email：" + email);
-        logger.info("state：" + state);
 
         //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");

@@ -62,8 +62,7 @@ public class CouponDaoImpl {
         logger.info("addDatetime" + addDatetime);
         long int2Long = CDKUtil.int2Long(start_sequence, salt);
         String fileUrl =
-                "/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
-
+                "cdk/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
         String sql = "insert into t_coupon (giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
                 "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl) " + " values ('" + coupon.getGiftId() + "','" + coupon.getCouponId() +
                 "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" + coupon.getCoupon_describe() + "','" +
@@ -108,7 +107,13 @@ public class CouponDaoImpl {
     }
 
     public String[] generateCDK(int start_sequence, int salt, long int2Long, int count, int CouponId, int platformId, int giftId) {
-        String fileName = "平台" + platformId + "_礼包id" + giftId + "_个数" + count + "_序号" + start_sequence + ".txt";
+        File f1 = new File("cdk");
+        if (!f1.exists()) {
+            //生成所有目录
+            f1.mkdirs();
+            logger.info("文件夹已创建");
+        }
+        String fileName = "cdk/平台" + platformId + "_礼包id" + giftId + "_个数" + count + "_序号" + start_sequence + ".txt";
         String results = new String();
         File file = new File(fileName);
 

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static com.cdk.util.MD5Util.convertMD5;
 import static com.cdk.util.MD5Util.md5Decode;
@@ -43,8 +44,9 @@ public class UtilsController {
       * @see [类、类#方法、类#成员]
       * @deprecated
       */
+    @CrossOrigin
     @RequestMapping("/md5")
-    public String md5(HttpServletRequest request) {
+    public String md5(HttpServletRequest request, HttpServletResponse response) {
         String s = request.getParameter("psw");
         logger.info(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
         logger.info("原始：" + s);
@@ -119,4 +121,6 @@ public class UtilsController {
         logger.info(Divider);
         return re;
     }
+
+
 }

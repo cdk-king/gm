@@ -34,11 +34,6 @@ public class PlatformServiceImpl {
         if (state == "") {
             state = "0";
         }
-        logger.info("platformName：" + platformName);
-        logger.info("platform_describe：" + platform_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");

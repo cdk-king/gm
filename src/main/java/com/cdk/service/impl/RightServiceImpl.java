@@ -33,14 +33,6 @@ public class RightServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        logger.info("rightName：" + rightName);
-        logger.info("right_describe：" + right_describe);
-        logger.info("rightTag：" + rightTag);
-        logger.info("rightSort：" + rightSort);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
-
         Right right = new Right();
         right.setRightName(rightName);
         right.setRight_describe(right_describe);
@@ -71,11 +63,6 @@ public class RightServiceImpl {
         if (state == "") {
             state = "0";
         }
-        logger.info("rightName：" + rightName);
-        logger.info("right_describe：" + right_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -122,17 +109,6 @@ public class RightServiceImpl {
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
-
-        logger.info("id：" + id);
-        logger.info("rightName：" + rightName);
-        logger.info("right_describe：" + right_describe);
-        logger.info("rightTag：" + rightTag);
-        logger.info("rightParentId：" + rightParentId);
-        logger.info("rightSort：" + rightSort);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
-        logger.info("sort：" + sort);
 
         Right right = new Right();
         right.setId(Integer.parseInt(id));

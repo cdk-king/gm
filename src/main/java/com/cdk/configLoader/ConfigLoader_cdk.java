@@ -30,6 +30,7 @@ public class ConfigLoader_cdk {
                     //                        System.out.print(c); // 一个个打印字符
                     //                    }
                     String str = null;
+                    //字符流
                     BufferedReader br = new BufferedReader(new FileReader(fileName));
                     while ((str = br.readLine()) != null) {
                         AnalysisStrDB(str);

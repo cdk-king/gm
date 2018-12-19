@@ -24,8 +24,8 @@ public class UtilsServiceImpl {
     public UtilsDaoImpl utilsDaoImpl;
 
     public List<Map<String, String>> getServerUrl(String serverIdList, String platformId) {
-        logger.info(serverIdList);
-        logger.info(platformId);
+        logger.info("serverIdList:" + serverIdList);
+        logger.info("platformId:" + platformId);
         String[] serverIdArray = serverIdList.split(",");
 
         List<Map<String, Object>> list = utilsDaoImpl.getServerUrl(platformId);

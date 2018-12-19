@@ -42,13 +42,6 @@ public class ServerServiceImpl extends ApiHandeler {
         if (state == "") {
             state = "-1";
         }
-        logger.info("server：" + serverName);
-        logger.info("serverIp：" + serverIp);
-        logger.info("platformName：" + platformName);
-        logger.info("server_describe：" + server_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
 
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -95,14 +88,6 @@ public class ServerServiceImpl extends ApiHandeler {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
 
-        logger.info("serverId：" + serverId);
-        logger.info("server：" + serverName);
-        logger.info("server_describe：" + server_describe);
-        logger.info("serverIP：" + serverIp);
-        logger.info("sort：" + sort);
-        logger.info("addUser：" + addUser);
-        logger.info("state：" + state);
-
         Server server = new Server();
         server.setServer(serverName);
         server.setServerId(Integer.parseInt(serverId));
@@ -136,14 +121,6 @@ public class ServerServiceImpl extends ApiHandeler {
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
-
-        logger.info("id：" + id);
-        logger.info("server：" + serverName);
-        logger.info("server_describe：" + server_describe);
-        logger.info("serverIP：" + serverIp);
-        logger.info("sort：" + sort);
-        logger.info("addUser：" + addUser);
-        logger.info("state：" + state);
 
         Server server = new Server();
         server.setId(Integer.parseInt(id));

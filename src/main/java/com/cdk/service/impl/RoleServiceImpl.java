@@ -31,12 +31,6 @@ public class RoleServiceImpl {
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
 
-        logger.info("id：" + id);
-        logger.info("role：" + roleName);
-        logger.info("role_describe：" + role_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-
         Role role = new Role();
         role.setRole(roleName);
         role.setRole_describe(role_describe);
@@ -78,18 +72,9 @@ public class RoleServiceImpl {
         if (state == "") {
             state = "0";
         }
-        logger.info("role：" + roleName);
-        logger.info("role_describe：" + role_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
-
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
 
-        logger.info("isPage：" + isPage);
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -123,13 +108,6 @@ public class RoleServiceImpl {
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
-
-        logger.info("id：" + id);
-        logger.info("role：" + roleName);
-        logger.info("role_describe：" + role_describe);
-        logger.info("addUser：" + addUser);
-        logger.info("addDatetime：" + addDatetime);
-        logger.info("state：" + state);
 
         Result re;
 
