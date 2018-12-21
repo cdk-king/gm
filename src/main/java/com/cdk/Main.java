@@ -1,7 +1,5 @@
 package com.cdk;
 
-import com.cdk.cache.CacheListener;
-import com.cdk.cache.CacheManagerImpl;
 import com.cdk.classLoader.ClassLoaderTest;
 import com.cdk.configLoader.ConfigLoader_cdk;
 import com.cdk.util.HttpRequestUtil;
@@ -28,11 +26,6 @@ public class Main {
      */
 
     public static void main(String[] args) {
-        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
-        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
-        cacheListener.startAllListenUseThread();
-        cacheListener.cacheManagerImpl.putCache("CDK", "CDK", 30000);
-
 
         SpringApplication.run(Main.class, args);
 

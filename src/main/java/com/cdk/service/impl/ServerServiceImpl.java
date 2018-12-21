@@ -1,6 +1,9 @@
 package com.cdk.service.impl;
 
-import com.cdk.cache.CacheManagerImpl;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
 import com.cdk.dao.impl.ServerDaoImpl;
 import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
@@ -20,6 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class ServerServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(ServerServiceImpl.class));
@@ -28,6 +33,22 @@ public class ServerServiceImpl extends ApiHandeler {
 
     @Autowired
     public ServerDaoImpl serverDaoImpl;
+
+    private LoadingCache<String, Map<String, Object>> serverListCache;
+
+    @PostConstruct
+    private void initCache() {
+        serverListCache = CacheBuilder.newBuilder().concurrencyLevel(4).maximumSize(4096).build(new CacheLoader<String, Map<String, Object>>() {
+            @Override
+            public Map<String, Object> load(String s) {
+                return serverDaoImpl.getServerList(s);
+            }
+        });
+    }
+
+    public Map<String, Object> getServerList(String platform) {
+        return serverListCache.getUnchecked(platform);
+    }
 
     public Result getAllServer(Map map) {
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
@@ -102,6 +123,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器添加成功");
             re = new Result(200, "服务器添加成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器添加失败");
             re = new Result(400, "服务器添加失败", null);
@@ -136,6 +158,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器信息修改成功");
             re = new Result(200, "服务器信息更新成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器信息修改失败");
             re = new Result(400, "服务器信息更新失败", null);
@@ -166,6 +189,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器解冻成功");
             re = new Result(200, "服务器解冻成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器解冻失败");
             re = new Result(400, "服务器解冻失败", null);
@@ -183,6 +207,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器冻结成功");
             re = new Result(200, "服务器冻结成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器冻结失败");
             re = new Result(400, "服务器冻结失败", null);
@@ -201,6 +226,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器删除成功");
             re = new Result(200, "服务器删除成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器删除失败");
             re = new Result(400, "服务器删除失败", null);
@@ -223,6 +249,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp.length != 0) {
             logger.info("服务器批量删除成功");
             re = new Result(200, "服务器批量删除成功", null);
+            serverListCache.invalidateAll();
         } else if (ObjectArry.length == 0) {
             logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
@@ -303,6 +330,7 @@ public class ServerServiceImpl extends ApiHandeler {
             int[] temp = serverDaoImpl.SynServerList(jsonArray);
 
             re = new Result(200, "服务器列表获取成功", data);
+            serverListCache.invalidateAll();
         } else {
             re = new Result(400, "服务器列表获取失败", data);
         }
@@ -319,6 +347,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("默认服务器设置成功");
             re = new Result(200, "默认服务器设置成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("默认服务器设置失败");
             re = new Result(400, "默认服务器设置失败", null);
@@ -346,6 +375,7 @@ public class ServerServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("服务器状态设置成功");
             re = new Result(200, "服务器状态设置成功", null);
+            serverListCache.invalidateAll();
         } else {
             logger.info("服务器状态设置失败");
             re = new Result(400, "服务器状态设置失败", null);
@@ -353,37 +383,17 @@ public class ServerServiceImpl extends ApiHandeler {
         return re;
     }
 
-    @Autowired
-    private CacheManagerImpl cacheManagerImpl;
-
-
-    Logger logger2 = Logger.getLogger("getServerListLog");
-
     /***
      *
      * @param map
      * @return
      */
     public Map<String, Object> getServerList(Map map) {
-        Result re;
         int def = 0;
         String platform = (map.get("platform") != null ? map.get("platform").toString() : "");
         String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
         String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
-        Map<String, Object> JsonMap = new HashMap<>();
-        if (cacheManagerImpl.isContains("ServerList-" + platform)) {
-            JsonMap = (Map<String, Object>) cacheManagerImpl.getCacheByKey("ServerList-" + platform).getDatas();
-            logger2.info("已找到缓存" + "ServerList-" + platform);
-            logger2.info(JsonMap.toString());
-        } else {
-            logger2.info("未找到缓存" + "ServerList-" + platform);
-            JsonMap = serverDaoImpl.getServerList(platform);
-            int timeOut = 60 * 1000;
-            cacheManagerImpl.putCache("ServerList-" + platform, JsonMap, timeOut);
-            logger2.info("已设置缓存，缓存时间" + Math.floor(timeOut / 1000L) + "秒");
-            logger2.info(JsonMap.toString());
-        }
-
+        Map<String, Object> JsonMap = getServerList(platform);
 
         List<Map<String, Object>> list = (List<Map<String, Object>>) JsonMap.get("list");
         int len = list.size();

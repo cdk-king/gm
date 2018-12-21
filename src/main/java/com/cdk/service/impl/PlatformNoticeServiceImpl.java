@@ -1,8 +1,10 @@
 package com.cdk.service.impl;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+
 import com.alibaba.fastjson.JSONObject;
-import com.cdk.cache.CacheListener;
-import com.cdk.cache.CacheManagerImpl;
 import com.cdk.dao.impl.PlatformNoticeDaoImpl;
 import com.cdk.entity.PlatformNotice;
 import com.cdk.result.Result;
@@ -23,6 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class PlatformNoticeServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeServiceImpl.class));
@@ -33,11 +37,18 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
     public PlatformNoticeDaoImpl platformNoticeDaoImpl;
     @Autowired
     public UtilsServiceImpl utilsServiceImpl;
-    //@Autowired   @Service实现自动装填
-    //public CacheManagerImpl cacheManagerImpl;
-    public CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
 
-    public CacheListener cacheListener;
+    private LoadingCache<String, Map<String, String>> noticeCache;
+
+    @PostConstruct
+    public void initCache() {
+        noticeCache = CacheBuilder.newBuilder().concurrencyLevel(4).maximumSize(4096).build(new CacheLoader<String, Map<String, String>>() {
+            @Override
+            public Map<String, String> load(String s) {
+                return platformNoticeDaoImpl.getLastNotice(s);
+            }
+        });
+    }
 
     public Result getPlatformNotice(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -104,9 +115,8 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         int temp = platformNoticeDaoImpl.addPlatformNotice(platformNotice);
         if (temp > 0) {
             logger.info("全服公告添加成功");
-            PlatformNotice data = (PlatformNotice) cacheManagerImpl.getCacheDataByKey("Notice");
-            String content = data.getNoticeContent();
             re = new Result(200, "全服公告添加成功", null);
+            noticeCache.invalidate(strPlatformId);
         } else {
             logger.info("全服公告添加失败");
             re = new Result(400, "全服公告添加失败", null);
@@ -154,6 +164,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("全服公告编辑成功");
             re = new Result(200, "全服公告编辑成功", null);
+            noticeCache.invalidate(strPlatformId);
         } else {
             logger.info("全服公告编辑失败");
             re = new Result(400, "全服公告编辑失败", null);
@@ -174,6 +185,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (temp > 0) {
             logger.info("全服公告删除成功");
             re = new Result(200, "全服公告删除成功", null);
+            noticeCache.invalidateAll();
         } else {
             logger.info("全服公告删除失败");
             re = new Result(400, "全服公告删除失败", null);
@@ -362,6 +374,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (temp.length != 0) {
             logger.info("公告批量删除成功");
             re = new Result(200, "公告批量删除成功", null);
+            noticeCache.invalidateAll();
         } else if (objectArry.length == 0) {
             logger.info("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
@@ -372,10 +385,9 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         return re;
     }
 
-    public Result getLastNotice(Map map) {
-        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+    public Result getLastNotice(String platformId) {
         Result re;
-        Map<String, String> lastGonggao = platformNoticeDaoImpl.getLastNotice(strPlatformId);
+        Map<String, String> lastGonggao = noticeCache.getUnchecked(platformId);
         if (lastGonggao.size() != 0) {
             re = new Result(200, "最新的公告获取成功", lastGonggao);
         } else {
