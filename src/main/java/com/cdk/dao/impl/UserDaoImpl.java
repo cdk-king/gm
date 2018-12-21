@@ -213,6 +213,24 @@ public class UserDaoImpl implements UserDao {
         return temp;
     }
 
+    public int addRole(String id, String roleId) {
+        int temp = 0;
+        String sql = "";
+        sql = "select * from  t_user_roles  where userId = " + id + " and roleId =  " + roleId + " and isDelete!=1";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        int total = list.size();
+        if (!Objects.equals(total, 0)) {
+            temp = 99;
+            return temp;
+        } else {
+            sql = "insert into t_user_roles  (userId,roleId,isDelete) " + " values ( " + id + " , " + roleId + " , '0')";
+            //只能运行一条语句，不可使用拼接
+            temp = jdbcTemplate.update(sql);
+            return temp;
+        }
+
+    }
+
     @Override
     public int deleteUserRoles(String id, String[] roleList) {
         int temp = 0;

@@ -38,7 +38,7 @@ public class UserTableController {
     @RequestMapping("/getUser")
     public Result getUser(@RequestBody Map map) {
         Result re = userServiceImpl.getUser(map);
-        logger.info("UserData：" + re);
+        logger.info("UserData：" + re.toString());
         logger.info(Divider);
         return re;
     }
@@ -135,6 +135,14 @@ public class UserTableController {
     @ResponseBody
     public Result deleteUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.deleteUserRoles(map);
+        logger.info(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/user/addRole")
+    public Result addRole(@RequestBody Map map) {
+        Result re = userServiceImpl.addRole(map);
         logger.info(Divider);
         return re;
     }

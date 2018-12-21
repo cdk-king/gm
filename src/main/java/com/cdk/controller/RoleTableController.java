@@ -112,4 +112,11 @@ public class RoleTableController {
         return re;
     }
 
+    @CrossOrigin
+    @RequestMapping("/api/role/addRight")
+    public Result addRight(@RequestBody Map map) {
+        Result re = roleServiceImpl.addRight(map);
+        logger.info(Divider);
+        return re;
+    }
 }

@@ -163,4 +163,21 @@ public class RoleDaoImpl implements RoleDao {
         logger.info("sql：" + strSql);
         return temp;
     }
+
+    public int addRight(String id, String rightId) {
+        int temp = 0;
+        String sql = "";
+        sql = "select * from  t_role_rights  where roleId = " + id + " and rightId =  " + rightId + " and isDelete!=1";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        int total = list.size();
+        if (!Objects.equals(total, 0)) {
+            temp = 99;
+            return temp;
+        } else {
+            sql = "insert into t_role_rights  (roleId,rightId,isDelete) " + " values ( " + id + " , " + rightId + " , '0')";
+            //只能运行一条语句，不可使用拼接
+            temp = jdbcTemplate.update(sql);
+            return temp;
+        }
+    }
 }

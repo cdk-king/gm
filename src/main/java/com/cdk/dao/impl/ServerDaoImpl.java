@@ -30,7 +30,7 @@ public class ServerDaoImpl implements ServerDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Map<String, Object> getAllServer(Server server, String platformName, String gameName, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getAllServer(Server server, String platformId, String gameName, String isPage, int pageNo, int pageSize) {
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.platformId and b.isDelete!=1  left JOIN \n" +
                 " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
@@ -44,8 +44,8 @@ public class ServerDaoImpl implements ServerDao {
         if (server.getServerIp() != "") {
             sql += " and a.serverIp LIKE '%" + server.getServerIp() + "%'";
         }
-        if (platformName != "") {
-            sql += " and b.platform LIKE '%" + platformName + "%'";
+        if (!Objects.equals(platformId, "0")) {
+            sql += " and b.platformId ='" + platformId + "'";
         }
         if (gameName != "") {
             sql += " and c.gameName LIKE '%" + gameName + "%'";

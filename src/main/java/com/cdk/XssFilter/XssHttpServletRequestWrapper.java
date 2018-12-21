@@ -144,7 +144,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
         //You'll need to remove the spaces from the html entities below
         value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
-        value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
+        //value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
         value = value.replaceAll("'", "& #39;");
         value = value.replaceAll("eval\\((.*)\\)", "");
         value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
@@ -162,7 +162,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                 "table|from|grant|use|group_concat|column_name|" +
                 "information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|" +
                 "chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#";
-
         String[] badStrs = badStr.split("\\|");
         for (int i = 0; i < badStrs.length; i++) {
             for (int j = 0; j < values.length; j++) {

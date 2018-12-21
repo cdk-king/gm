@@ -94,7 +94,7 @@ public class RoleServiceImpl {
         Result re;
         Map<String, Object> JsonMap = roleDaoImpl.getRole(role, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(400, "角色列表获取失败", "");
+            re = new Result(400, "角色列表为空", "");
         } else {
             re = new Result(200, "角色列表获取成功", JsonMap);
         }
@@ -218,6 +218,30 @@ public class RoleServiceImpl {
         }
         return re;
     }
+
+    public Result addRight(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String rightId = (map.get("rightId") != null ? map.get("rightId").toString() : "");
+        if (Objects.equals(rightId, "")) {
+            logger.info("无任何添加操作");
+            return new Result(200, "无任何添加操作", null);
+        }
+        Result re;
+        int temp = 0;
+        temp = roleDaoImpl.addRight(id, rightId);
+        if (temp > 0) {
+            logger.info("权限添加成功");
+            re = new Result(200, "权限添加成功", null);
+        } else if (temp == 99) {
+            logger.info("权限已存在");
+            re = new Result(200, "权限已存在", null);
+        } else {
+            logger.info("权限添加失败");
+            re = new Result(400, "权限添加失败", null);
+        }
+        return re;
+    }
+
 
     public Result InsertRoleRights(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
