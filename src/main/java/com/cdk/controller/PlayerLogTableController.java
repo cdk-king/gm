@@ -40,9 +40,33 @@ public class PlayerLogTableController {
     }
 
     @CrossOrigin
-    @RequestMapping("/api/log/getPlayerLogByPlayerId")
-    public Result getPlayerLogByPlayerId(@RequestBody Map map) {
-        Result re = playerLogServiceImpl.getPlayerLogByPlayerId(map);
+    @RequestMapping("/api/log/getGoodFlowLog")
+    public Result getGoodFlowLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getGoodFlowLog(map);
+        logger.info(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getMoneyFlowLog")
+    public Result getMoneyFlowLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getMoneyFlowLog(map);
+        logger.info(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getCreateRoleLog")
+    public Result getCreateRoleLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getCreateRoleLog(map);
+        logger.info(Divider);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getRoleLoginLog")
+    public Result getRoleLoginLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getRoleLoginLog(map);
         logger.info(Divider);
         return re;
     }

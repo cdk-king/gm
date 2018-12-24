@@ -84,7 +84,7 @@ public class RightServiceImpl {
 
         Map<String, Object> JsonMap = rightDaoImpl.getRight(right, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("total"), 0)) {
-            re = new Result(400, "权限列表为空", "");
+            re = new Result(200, "权限列表为空", "");
         } else {
             re = new Result(200, "权限列表获取成功", JsonMap);
         }
