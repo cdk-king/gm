@@ -58,8 +58,6 @@ public class PropDaoImpl implements PropDao {
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
         JsonMap.put("total", total);
-
-
         return JsonMap;
     }
 
@@ -115,12 +113,8 @@ public class PropDaoImpl implements PropDao {
         String strSql = "";
         int[] temp = new int[propList.length];
         for (int i = 0; i < propList.length; i++) {
-            //UPDATE user_roles  set  isDelete='1' where
             sql[i] = "UPDATE  t_prop  set isDelete='1' where id = '" + propList[i] + "';";
             strSql += sql;
-            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
         logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);

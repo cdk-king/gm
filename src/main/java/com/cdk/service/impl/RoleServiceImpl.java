@@ -7,8 +7,6 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,10 +21,6 @@ public class RoleServiceImpl {
     public RoleDaoImpl roleDaoImpl;
 
     public Result addRole(Map map) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -66,7 +60,6 @@ public class RoleServiceImpl {
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -94,7 +87,7 @@ public class RoleServiceImpl {
         Result re;
         Map<String, Object> JsonMap = roleDaoImpl.getRole(role, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(400, "角色列表获取失败", "");
+            re = new Result(400, "角色列表为空", "");
         } else {
             re = new Result(200, "角色列表获取成功", JsonMap);
         }
@@ -106,11 +99,8 @@ public class RoleServiceImpl {
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Result re;
-
         Role role = new Role();
         role.setId(Integer.parseInt(id));
         role.setRole(roleName);
@@ -219,6 +209,30 @@ public class RoleServiceImpl {
         return re;
     }
 
+    public Result addRight(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String rightId = (map.get("rightId") != null ? map.get("rightId").toString() : "");
+        if (Objects.equals(rightId, "")) {
+            logger.info("无任何添加操作");
+            return new Result(200, "无任何添加操作", null);
+        }
+        Result re;
+        int temp = 0;
+        temp = roleDaoImpl.addRight(id, rightId);
+        if (temp > 0) {
+            logger.info("权限添加成功");
+            re = new Result(200, "权限添加成功", null);
+        } else if (temp == 99) {
+            logger.info("权限已存在");
+            re = new Result(200, "权限已存在", null);
+        } else {
+            logger.info("权限添加失败");
+            re = new Result(400, "权限添加失败", null);
+        }
+        return re;
+    }
+
+
     public Result InsertRoleRights(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String InsertRoleRights = map.get("InsertRoleRights").toString();
@@ -263,8 +277,6 @@ public class RoleServiceImpl {
 
         String[] ObjectArry = id.split(",");
 
-        String sql[] = new String[ObjectArry.length];
-        String strSql = "";
         Result re;
         int[] temp = new int[ObjectArry.length];
 

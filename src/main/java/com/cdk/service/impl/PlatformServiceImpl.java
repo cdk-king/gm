@@ -7,8 +7,6 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,8 +25,6 @@ public class PlatformServiceImpl {
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -94,19 +90,13 @@ public class PlatformServiceImpl {
     }
 
     public Result addPlatform(Map map) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         String roleId = (map.get("roleId") != null ? map.get("roleId").toString() : "");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
-        String ParentId = (map.get("ParentId") != null ? map.get("ParentId").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Platform platform = new Platform();
         platform.setPlatform(platformName);
@@ -135,13 +125,9 @@ public class PlatformServiceImpl {
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
-        String ParentId = (map.get("ParentId") != null ? map.get("ParentId").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         String roleId = (map.get("roleId") != null ? map.get("roleId").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));

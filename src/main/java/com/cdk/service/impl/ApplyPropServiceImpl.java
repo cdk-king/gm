@@ -146,12 +146,6 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        String strPropList = (map.get("propList") != null ? map.get("propList").toString() : "");
-        String releaseTitle = (map.get("releaseTitle") != null ? map.get("releaseTitle").toString() : "");
-        String releaseContent = (map.get("releaseContent") != null ? map.get("releaseContent").toString() : "");
-        String strApplyType = (map.get("applyType") != null ? map.get("applyType").toString() : "0");
-        String strPlayerType = (map.get("playerType") != null ? map.get("playerType").toString() : "0");
-        String strSendState = (map.get("sendState") != null ? map.get("sendState").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -188,7 +182,6 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
 
         String strPlayerType = (map.get("playerType") != null ? map.get("playerType").toString() : "0");
-        String strApplyUser = (map.get("applyUser") != null ? map.get("applyUser").toString() : "0");
         String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
         String strMoneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "0");
@@ -236,13 +229,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String releaseTitle = (map.get("releaseTitle") != null ? map.get("releaseTitle").toString() : "");
         String releaseContent = (map.get("releaseContent") != null ? map.get("releaseContent").toString() : "");
         String propList = (map.get("propList") != null ? map.get("propList").toString() : "");
-
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
-
         String strPlayerType = (map.get("playerType") != null ? map.get("playerType").toString() : "0");
-        String strApplyUser = (map.get("applyUser") != null ? map.get("applyUser").toString() : "0");
         String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
         String strMoneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "0");

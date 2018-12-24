@@ -1,6 +1,5 @@
 package com.cdk.dao.impl;
 
-import com.cdk.dao.NewPropDao;
 import com.cdk.entity.NewProp;
 
 import org.json.JSONArray;
@@ -17,7 +16,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 @Repository
-public class NewPropDaoImpl implements NewPropDao {
+public class NewPropDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(NewPropDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";

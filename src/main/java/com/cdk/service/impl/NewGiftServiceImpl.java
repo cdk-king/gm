@@ -22,7 +22,6 @@ public class NewGiftServiceImpl {
     public NewGiftDaoImpl newGiftDaoImpl;
 
     public Result ImportGift(Map map) {
-        int len = 10;
         int platformId = 0;
         int gameId = 0;
         Result re;
@@ -41,7 +40,6 @@ public class NewGiftServiceImpl {
         gameId = Integer.parseInt(strGameId);
         jsonArray = JSONArray.parseArray(strlist);
         logger.info(jsonArray.toString());
-        len = jsonArray.size();
 
         int temp = newGiftDaoImpl.ImportGift(jsonArray, platformId, gameId);
         if (temp > 0) {

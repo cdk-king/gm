@@ -38,4 +38,12 @@ public class PlayerLogTableController {
         logger.info(Divider);
         return re;
     }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getPlayerLogByPlayerId")
+    public Result getPlayerLogByPlayerId(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getPlayerLogByPlayerId(map);
+        logger.info(Divider);
+        return re;
+    }
 }

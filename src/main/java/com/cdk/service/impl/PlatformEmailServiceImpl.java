@@ -247,7 +247,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String[] objectArry = id.split(",");
         logger.info("ObjectArry：" + objectArry);
         Result re;
-        String sql[] = new String[objectArry.length];
         int[] temp = platformEmailDaoImpl.deleteAllPlatformEmail(objectArry);
         if (temp.length != 0) {
             logger.info("全服邮件批量删除成功");

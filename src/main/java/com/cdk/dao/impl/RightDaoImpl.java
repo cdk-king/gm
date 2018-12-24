@@ -26,7 +26,6 @@ public class RightDaoImpl implements RightDao {
 
     @Override
     public int addRight(Right right) {
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
@@ -76,9 +75,8 @@ public class RightDaoImpl implements RightDao {
     }
 
     public int editRight(Right right) {
-        String sql = "UPDATE t_right as a SET a.rightName='" + right.getRightName() + "',a.right_describe = '" + right.getRight_describe() + "',"
-                //+"a.rightParentId=0,a.rightSort=0,"
-                + "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "',a.rightSort = " + right.getRightSort() +
+        String sql = "UPDATE t_right as a SET a.rightName='" + right.getRightName() + "',a.right_describe = '" + right.getRight_describe() + "'," +
+                "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "',a.rightSort = " + right.getRightSort() +
                 " where a.id =" + right.getId() + "";
         logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);

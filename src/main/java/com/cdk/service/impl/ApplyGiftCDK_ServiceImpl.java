@@ -36,7 +36,6 @@ public class ApplyGiftCDK_ServiceImpl {
     public GiftDaoImpl giftDaoImpl;
 
     public Result generateCDK(Map map) {
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String sign = (map.get("sign") != null ? map.get("sign").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String giftId = (map.get("giftId") != null ? map.get("giftId").toString() : "");
@@ -45,8 +44,6 @@ public class ApplyGiftCDK_ServiceImpl {
         String couponCount = (map.get("couponCount") != null ? map.get("couponCount").toString() : "");
         String startDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
         String endDatetime = (map.get("endDatetime") != null ? map.get("endDatetime").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         logger.info(startDatetime);
         logger.info(endDatetime);
@@ -86,7 +83,6 @@ public class ApplyGiftCDK_ServiceImpl {
 
     public Result analyseCDK(Map map) {
         String analyseCDK = (map.get("analyseCDK") != null ? map.get("analyseCDK").toString() : "");
-        //int temp = couponDaoImpl.exchangeCDK(exchangeCDK);
         Map<String, Integer> temp = analyse(analyseCDK);
         Result re;
         if (temp.get("couponID") > 0) {

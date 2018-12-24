@@ -201,7 +201,6 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         String noticeContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
         String propList = (map.get("propList") != null ? map.get("propList").toString() : "");
         String moneyList = (map.get("moneyList") != null ? map.get("moneyList").toString() : "");
-        String startDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
 
         String[] serverArray = strServerList.split(",");
@@ -247,7 +246,6 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         Result re;
         if (datas.length() > 0) {
             datas = datas.substring(0, datas.length() - 1);
-
         }
         if (error.length() > 0) {
             error = error.substring(0, error.length() - 1);
@@ -276,8 +274,6 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         logger.info(propList);
         logger.info(strServerList);
         logger.info(startDatetime);
-        //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        //        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String[] serverArray = strServerList.split(",");
         Long time = Math.abs(new Date().getTime() / 1000L);
         String param = getParam(strPlatformId);
@@ -369,7 +365,6 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         String[] objectArry = id.split(",");
         logger.info("ObjectArry：" + objectArry);
         Result re;
-        String sql[] = new String[objectArry.length];
         int[] temp = platformNoticeDaoImpl.deleteAllPlatformNotice(objectArry);
         if (temp.length != 0) {
             logger.info("公告批量删除成功");

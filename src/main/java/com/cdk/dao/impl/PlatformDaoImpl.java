@@ -137,9 +137,6 @@ public class PlatformDaoImpl implements PlatformDao {
         String sql[] = new String[platformList.length];
         String strSql = "";
         int[] temp = new int[platformList.length];
-        //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-        //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-        //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         for (int i = 0; i < platformList.length; i++) {
             sql[i] = "UPDATE  t_gameplatform  set isDelete='1' where id = '" + platformList[i] + "'; ";
             strSql += sql;

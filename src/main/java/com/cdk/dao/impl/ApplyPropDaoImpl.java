@@ -79,8 +79,7 @@ public class ApplyPropDaoImpl {
     }
 
     public int changeApplyState(int id, int state) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String addDatetime = df.format(new Date());
 
         String sql = "UPDATE  t_prop_apply  set applyState='" + state + "' , applyDatetime = '" + addDatetime + "' where id = '" + id + "' ";
         logger.info("sql：" + sql);
@@ -89,8 +88,7 @@ public class ApplyPropDaoImpl {
     }
 
     public int addApplyProp(ApplyProp applyProp) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
+        String addDatetime = df.format(new Date());
         String sql =
                 "insert into t_prop_apply (platformId,serverId,applyType,propList,releaseTitle,releaseContent,playerType,applyUser,applyReason,confirmState,addUser,addDatetime,isDelete,playerAccountList,playerNameList,playerIdList,moneyList) " +
                         " values ('" + applyProp.getPlatformId() + "','" + applyProp.getServerId() + "','" + applyProp.getApplyType() + "','" +
@@ -104,7 +102,7 @@ public class ApplyPropDaoImpl {
     }
 
     public int editApplyProp(ApplyProp applyProp) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String addDatetime = df.format(new Date());
 
         String sql =
                 "UPDATE t_prop_apply set platformId = '" + applyProp.getPlatformId() + "' ,serverId = '" + applyProp.getServerId() + "',applyType='" +
@@ -120,7 +118,7 @@ public class ApplyPropDaoImpl {
     }
 
     public int confirmApplyProp(ApplyProp applyProp) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String addDatetime = df.format(new Date());
 
         String sql =
                 "UPDATE  t_prop_apply  set confirmState='1' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
@@ -131,8 +129,7 @@ public class ApplyPropDaoImpl {
     }
 
     public int notConfirmApplyProp(ApplyProp applyProp) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
+        String addDatetime = df.format(new Date());
         String sql =
                 "UPDATE  t_prop_apply  set confirmState='2' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
                         "' where id = '" + applyProp.getId() + "' ";
@@ -142,8 +139,6 @@ public class ApplyPropDaoImpl {
     }
 
     public int deleteApplyProp(ApplyProp applyProp) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
         String sql = "UPDATE  t_prop_apply  set isDelete='1' " + " where id = '" + applyProp.getId() + "' ";
         logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
@@ -151,7 +146,6 @@ public class ApplyPropDaoImpl {
     }
 
     public int[] deleteAllApplyProp(String[] idList) {
-
         String strSql = "";
         String sql[] = new String[idList.length];
         int[] temp = new int[idList.length];
@@ -159,9 +153,6 @@ public class ApplyPropDaoImpl {
         for (int i = 0; i < idList.length; i++) {
             sql[i] = "UPDATE  t_prop_apply  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
-            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
         logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);

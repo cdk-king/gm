@@ -51,13 +51,11 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getAllServer(Map map) {
+        String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "0");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
-        String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -87,7 +85,7 @@ public class ServerServiceImpl extends ApiHandeler {
         server.setState(Integer.parseInt(state));
 
 
-        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformName, gameName, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformId, gameName, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "服务器列表获取失败", "");
         } else {

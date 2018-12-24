@@ -23,7 +23,6 @@ public class GameServiceImpl {
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String gameTag = (map.get("gameTag") != null ? map.get("gameTag").toString() : "");
         String game_describe = (map.get("game_describe") != null ? map.get("game_describe").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -63,15 +62,11 @@ public class GameServiceImpl {
     }
 
     public Result addGame(Map map) {
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String gameTag = (map.get("gameTag") != null ? map.get("gameTag").toString() : "");
         String game_describe = (map.get("game_describe") != null ? map.get("game_describe").toString() : "");
         String gameEncryptSign = (map.get("gameEncryptSign") != null ? map.get("gameEncryptSign").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
-
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Result re;
         Game game = new Game();
@@ -98,10 +93,7 @@ public class GameServiceImpl {
         String game_describe = (map.get("game_describe") != null ? map.get("game_describe").toString() : "");
         String gameTag = (map.get("gameTag") != null ? map.get("gameTag").toString() : "");
         String gameEncryptSign = (map.get("gameEncryptSign") != null ? map.get("gameEncryptSign").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Result re;
         Game game = new Game();
@@ -172,7 +164,6 @@ public class GameServiceImpl {
         } else {
             logger.info("游戏冻结失败");
             re = new Result(400, "游戏冻结失败", null);
-
         }
         return re;
     }

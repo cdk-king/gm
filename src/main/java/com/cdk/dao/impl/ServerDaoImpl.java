@@ -30,7 +30,7 @@ public class ServerDaoImpl implements ServerDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Map<String, Object> getAllServer(Server server, String platformName, String gameName, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getAllServer(Server server, String platformId, String gameName, String isPage, int pageNo, int pageSize) {
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.platformId and b.isDelete!=1  left JOIN \n" +
                 " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
@@ -44,14 +44,13 @@ public class ServerDaoImpl implements ServerDao {
         if (server.getServerIp() != "") {
             sql += " and a.serverIp LIKE '%" + server.getServerIp() + "%'";
         }
-        if (platformName != "") {
-            sql += " and b.platform LIKE '%" + platformName + "%'";
+        if (!Objects.equals(platformId, "0")) {
+            sql += " and b.platformId ='" + platformId + "'";
         }
         if (gameName != "") {
             sql += " and c.gameName LIKE '%" + gameName + "%'";
         }
         if (!Objects.equals(server.getState(), null) && !Objects.equals(server.getState(), -1)) {
-
             sql += " and a.state ='" + server.getState() + "' ";
 
         }
@@ -69,7 +68,6 @@ public class ServerDaoImpl implements ServerDao {
         JsonMap.put("total", total);
         return JsonMap;
     }
-
 
     /***
      * 外部通过平台Tag回去服务器列表
@@ -151,9 +149,6 @@ public class ServerDaoImpl implements ServerDao {
         String sql[] = new String[serverList.length];
         String strSql = "";
         int[] temp = new int[serverList.length];
-        //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-        //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-        //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         for (int i = 0; i < serverList.length; i++) {
             sql[i] = "UPDATE  t_gameserver  set isDelete='1' where id = '" + serverList[i] + "'; ";
             strSql += sql;
@@ -171,7 +166,6 @@ public class ServerDaoImpl implements ServerDao {
                 user.getId();
         logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-
         return list;
     }
 
@@ -180,7 +174,6 @@ public class ServerDaoImpl implements ServerDao {
         String sql = "SELECT a.serverId as serverId,a.server as serverName,a.serverIp from t_gameserver as a \n" +
                 "join t_gameplatform as b on a.platformId = b.platformId \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.platformId =" +
                 platform.getPlatformId();
-
         logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
@@ -216,8 +209,6 @@ public class ServerDaoImpl implements ServerDao {
     public int[] SynServerList(JSONArray jsonArray) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql[] = new String[jsonArray.length()];
-        String strSql = "";
         int[] temp = null;
         logger.info("jsonArray.length():" + jsonArray.length());
         if (Objects.equals(jsonArray.length(), 0)) {

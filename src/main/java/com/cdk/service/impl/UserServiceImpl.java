@@ -20,7 +20,6 @@ public class UserServiceImpl {
     public static final String Split = "----------------";
     @Autowired
     public UserDaoImpl userDaoImpl;
-    //public UserDaoImpl userDaoImpl = new UserDaoImpl();
 
     public Result addUser(Map map) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -41,7 +40,6 @@ public class UserServiceImpl {
         user.setPhone(phone);
         user.setEmail(email);
         user.setType(type);
-        //user.setAddDatetime(new Date());
 
         int temp = userDaoImpl.addUser(user);
         Result re;
@@ -146,8 +144,8 @@ public class UserServiceImpl {
         }
         Result re;
         Map<String, Object> JsonMap = userDaoImpl.getUser(user, pageNo, pageSize);
-        if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(400, "用户列表获取失败", "");
+        if (Objects.equals(JsonMap.get("total"), 0)) {
+            re = new Result(400, "用户列表为空", "");
         } else {
             re = new Result(200, "用户列表获取成功", JsonMap);
         }
@@ -248,7 +246,7 @@ public class UserServiceImpl {
             re = new Result(200, "用户批量删除成功", null);
         } else if (objectArry.length == 0) {
             logger.info("无任何删除操作");
-            re = new Result(400, "无任何删除操作", null);
+            re = new Result(200, "无任何删除操作", null);
         } else {
             logger.info("用户批量删除失败");
             re = new Result(400, "用户批量删除失败", null);
@@ -281,12 +279,36 @@ public class UserServiceImpl {
         return re;
     }
 
+    public Result addRole(Map map) {
+        String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String roleId = (map.get("roleId") != null ? map.get("roleId").toString() : "");
+        if (Objects.equals(roleId, "")) {
+            logger.info("无任何添加操作");
+            return new Result(200, "无任何添加操作", null);
+        }
+        Result re;
+        int temp = 0;
+        temp = userDaoImpl.addRole(id, roleId);
+        if (temp > 0) {
+            logger.info("用户角色添加成功");
+            re = new Result(200, "用户角色添加成功", null);
+        } else if (temp == 99) {
+            logger.info("用户角色已存在");
+            re = new Result(200, "用户角色已存在", null);
+        } else {
+            logger.info("用户角色添加失败");
+            re = new Result(400, "用户角色添加失败", null);
+        }
+        return re;
+    }
+
+
     public Result deleteUserRoles(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String deleteUserRoles = map.get("deleteUserRoles").toString();
         if (Objects.equals(deleteUserRoles, "")) {
             logger.info("无任何删除操作");
-            return new Result(400, "无任何删除操作", null);
+            return new Result(200, "无任何删除操作", null);
         }
 
         String[] ObjectArry = deleteUserRoles.split(",");
@@ -298,30 +320,11 @@ public class UserServiceImpl {
             re = new Result(200, "用户角色删除成功", null);
         } else if (temp == 99) {
             logger.info("无任何删除操作");
-            re = new Result(400, "无任何删除操作", null);
+            re = new Result(200, "无任何删除操作", null);
         } else {
             logger.info("用户角色删除失败");
             re = new Result(400, "用户角色删除失败", null);
         }
-        return re;
-    }
-
-    public Result insert(String name, String password) {
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-        int temp = userDaoImpl.insert(user);
-        //int temp = 1;
-        Result re = new Result(200, "", "");
-        if (temp > 0) {
-            re = new Result(200, "成功", temp);
-        }
-        return re;
-    }
-
-    public Result test() {
-        int temp = this.userDaoImpl.test();
-        Result re = new Result(200, "", temp);
         return re;
     }
 }

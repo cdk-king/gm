@@ -8,6 +8,15 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -24,7 +33,6 @@ public class PlayerLogServiceImpl {
     public Result getPlayerProhibitSpeakLog(Map map) {
         String playerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
-        String playerId = (map.get("playerId") != null ? map.get("playerId").toString() : "");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String strIsToProhibitSpeak =
@@ -69,7 +77,6 @@ public class PlayerLogServiceImpl {
     public Result getPlayerBan(Map map) {
         String playerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
-        String playerId = (map.get("playerId") != null ? map.get("playerId").toString() : "");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String strIsToBan = ((map.get("isToBan") != null && map.get("isToBan") != "") ? map.get("isToBan").toString() : "0");
@@ -106,6 +113,74 @@ public class PlayerLogServiceImpl {
             re = new Result(200, "日志列表获取成功", JsonMap);
         }
 
+        return re;
+    }
+
+
+    public Result getPlayerLogByPlayerId(Map map) {
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        int total = 0;
+        int pageNo = 1;
+        int pageSize = 5;
+        try {
+            pageNo = Integer.parseInt(StrPageNo);
+            pageSize = Integer.parseInt(StrPageSize);
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        Result re;
+        String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+        String DB_URL = "jdbc:mysql://192.168.1.16:3306/dbdiablomuzhilog?serverTimezone=Asia/Shanghai";
+        String USER = "root";
+        String PASS = "123456";
+        Connection conn = null;
+        Statement stmt = null;
+        List<Map<String, Object>> list = new ArrayList<>();
+        try {
+            Class.forName(JDBC_DRIVER);
+            logger.info("连接数据库...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            logger.info(" 实例化Statement对象...");
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT *  FROM goodsflow ";
+            ResultSet rs = stmt.executeQuery(sql);
+            ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
+            int columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+                total++;
+            }
+            logger.info(total + "");
+            if (!Objects.equals(isPage, "")) {
+                sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+            }
+            logger.info(sql);
+            rs = stmt.executeQuery(sql);
+            md = rs.getMetaData(); //获得结果集结构信息,元数据
+            columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+
+                Map<String, Object> rowData = new HashMap<String, Object>();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData.put(md.getColumnName(i), rs.getObject(i));
+                }
+                list.add(rowData);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        JsonMap.put("total", total);
+        re = new Result(200, "日志列表获取成功", JsonMap);
         return re;
     }
 }

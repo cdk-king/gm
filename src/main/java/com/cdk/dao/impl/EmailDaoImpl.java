@@ -23,7 +23,6 @@ public class EmailDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
     public Map<String, Object> getEmail(Email email, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql =
                 "select a.*,b.platform,c.name as userName,d.server from t_send_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_gameserver as d on d.serverId = a.serverId where a.platformId IN (" +
@@ -57,7 +56,6 @@ public class EmailDaoImpl {
         String minRegistrationTime = "";
         String maxRegistrationTime = "";
 
-
         String sql =
                 "insert into t_send_email (platformId,serverId,emailTitle,emailContent,sendReason,sendType,minLevel,maxLevel,minVipLevel,maxVipLevel," +
                         "minRegistrationTime,maxRegistrationTime,isOnline,sex,playerNameList,playerAccountList,playerIdList,addUser,addDatetime,isDelete,sendState) " +
@@ -89,8 +87,6 @@ public class EmailDaoImpl {
     }
 
     public int editEmail(Email email) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         logger.info(email.getMinRegistrationTime() + "");
         String minRegistrationTime = "";
         String maxRegistrationTime = "";
@@ -100,13 +96,6 @@ public class EmailDaoImpl {
                 email.getEmailTitle() + "',emailContent='" + email.getEmailContent() + "',sendReason='" + email.getSendReason() + "',sendType='" +
                 email.getSendType() + "',minLevel='" + email.getMinLevel() + "',maxLevel='" + email.getMaxLevel() + "',minVipLevel='" +
                 email.getMinVipLevel() + "',maxVipLevel='" + email.getMaxVipLevel() + "',";
-
-
-        //                "insert into t_send_email (platformId,serverId,emailTitle,emailContent,sendReason,sendType,minLevel,maxLevel,minVipLevel,maxVipLevel," +
-        //                        "minRegistrationTime,maxRegistrationTime,isOnline,sex,playerNameList,playerAccountList,playerIdList,addUser,addDatetime,isDelete,sendState) " +
-        //                        " values ('" + email.getPlatformId() + "','" + email.getServerId() + "','" + email.getEmailTitle() + "','" +
-        //                        email.getEmailContent() + "','" + email.getSendReason() + "','" + email.getSendType() + "','" + email.getMinLevel() + "','" +
-        //                        email.getMaxLevel() + "','" + email.getMinVipLevel() + "','" + email.getMaxVipLevel() + "',";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(email.getMinRegistrationTime(), null)) {
             minRegistrationTime = formatter.format(email.getMinRegistrationTime());
@@ -144,9 +133,6 @@ public class EmailDaoImpl {
     }
 
     public int deleteEmail(Email email) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
         String sql = "update t_send_email SET isDelete='1' where id= '" + email.getId() + "'";
 
         logger.info("sql：" + sql);

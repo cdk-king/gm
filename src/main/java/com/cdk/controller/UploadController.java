@@ -1,10 +1,12 @@
 package com.cdk.controller;
 
+import com.cdk.dao.impl.UploadDaoImpl;
 import com.cdk.result.Result;
+import com.cdk.service.impl.UploadServiceImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-@Controller
+@RestController
 public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
@@ -27,6 +30,12 @@ public class UploadController {
     //    public String upload() {
     //        return "upload";
     //    }
+
+    @Autowired
+    private UploadServiceImpl uploadServiceImpl;
+
+    @Autowired
+    public UploadDaoImpl uploadDaoImpl;
 
     @CrossOrigin
     @PostMapping("/upload")
@@ -55,44 +64,25 @@ public class UploadController {
     @CrossOrigin
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     @ResponseBody
-    public Result fileUpload(@RequestParam("file") MultipartFile file) {
+    public Result fileUpload(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName,
+            @RequestParam("fileSize") String fileSize, @RequestParam("fileDescribe") String fileDescribe, @RequestParam("addUser") String addUser) {
+
         if (file.isEmpty()) {
             return new Result(400, "文件为空", "");
             //return "false";
         }
-        String fileName = file.getOriginalFilename();
-        int size = (int) file.getSize();
-        logger.info(fileName + "-->" + size);
-
-        String path = "f:/file";
-        File dest = new File(path + "/" + fileName);
-        if (!dest.getParentFile().exists()) { //判断文件父目录是否存在
-            dest.getParentFile().mkdir();
-        }
-        try {
-            file.transferTo(dest); //保存文件
-            return new Result(200, "文件上传成功", "");
-            //return "true";
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return new Result(400, "文件上传失败", "");
-            //return "false";
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return new Result(400, "文件上传失败", "");
-            //return "false";
-        }
+        Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser);
+        return re;
     }
 
 
     @CrossOrigin
     @RequestMapping("/api/file/getFileList")
     @ResponseBody
-    public String getFileList(@RequestBody Map map) {
-        getFile("f:/file", 0);
-        return "获取失败";
+    public Result getFileList(@RequestBody Map map) {
+        //getFile("f:/file", 0);
+        Result re = uploadServiceImpl.getFileList(map);
+        return re;
     }
 
     public void getFile(String path, int deep) {
@@ -111,7 +101,7 @@ public class UploadController {
                 // 只输出文件名字
                 logger.info(array[i].getName());
                 // 输出当前文件的完整路径
-                logger.info("#####" + array[i]);
+                //logger.info("#####" + array[i]);
                 // 同样输出当前文件的完整路径   大家可以去掉注释 测试一下
                 logger.info(array[i].getPath());
             } else if (array[i].isDirectory())//如果是文件夹
@@ -125,6 +115,40 @@ public class UploadController {
                 //logger.info(array[i].getPath());
                 //文件夹需要调用递归 ，深度+1
                 //getFile(array[i].getPath(), deep + 1);
+            }
+        }
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/file/deleteFile")
+    public Result deleteFile(@RequestBody Map map) {
+        String fileName = map.get("fileName").toString();
+        String id = map.get("id").toString();
+        String filePath = map.get("filePath").toString();
+        deleteFile(filePath, fileName);
+        int temp = uploadDaoImpl.deleteFile(id);
+
+        return null;
+    }
+
+    /**
+     * 删除单个文件
+     * @param filePath
+     *         文件目录路径
+     * @param fileName
+     *         文件名称
+     */
+    public static void deleteFile(String filePath, String fileName) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    if (files[i].getName().equals(fileName)) {
+                        files[i].delete();
+                        return;
+                    }
+                }
             }
         }
     }

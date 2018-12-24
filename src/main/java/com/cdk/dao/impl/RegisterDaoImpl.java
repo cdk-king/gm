@@ -21,7 +21,7 @@ public class RegisterDaoImpl {
     private JdbcTemplate jdbcTemplate;
 
     public int addRegisterUser(User user) {
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
+        String addDatetime = df.format(new Date());
         String sql = "insert into t_user (name,account,password,nick,phone,email,state,addDatetime,lastDatetime,isDelete) " + " values ('" +
                 user.getName() + "','" + user.getName() + "','" + user.getPassword() + "','" + user.getName() + "','" + user.getPhone() + "'" +
                 ",'','0','" + addDatetime + "','" + addDatetime + "','0')";
@@ -36,6 +36,5 @@ public class RegisterDaoImpl {
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
-
 
 }

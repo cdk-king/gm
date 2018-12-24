@@ -54,7 +54,6 @@ public class NewGiftDaoImpl {
     }
 
     public Map<String, Object> getGiftUpload(NewGift newGift, String isPage, int pageNo, int pageSize, String strPlatform) {
-
         String sql =
                 "select a.* , b.platform  from t_gift_upload as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
                         strPlatform + ")  and b.isDelete != 1  ";

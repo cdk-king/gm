@@ -26,6 +26,10 @@ public class Main {
      */
 
     public static void main(String[] args) {
+        //        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
+        //        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
+        //        cacheListener.startAllListenUseThread();
+        //        cacheListener.cacheManagerImpl.putCache("CDK", "CDK", 30000);
 
         SpringApplication.run(Main.class, args);
 

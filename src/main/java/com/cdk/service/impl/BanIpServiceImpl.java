@@ -87,7 +87,6 @@ public class BanIpServiceImpl extends ApiHandeler {
         } else {
             re = new Result(400, "IP禁封申请添加失败", "");
         }
-
         return re;
     }
 
