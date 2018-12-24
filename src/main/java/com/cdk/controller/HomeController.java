@@ -73,8 +73,6 @@ public class HomeController {
     public String getString() {
         String sql = "select * from t_user";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        //String str = jdbcTemplate.queryForObject(sql, String.class);
-        //String s = String.valueOf(list);
         return list.toString();
     }
 

@@ -27,11 +27,8 @@ public class RightServiceImpl {
 
         String rightName = (map.get("rightName") != null ? map.get("rightName").toString() : "");
         String rightTag = (map.get("rightTag") != null ? map.get("rightTag").toString() : "");
-        String rightParentId = (map.get("rightParentId") != null ? map.get("rightParentId").toString() : "");
         String right_describe = (map.get("right_describe") != null ? map.get("right_describe").toString() : "");
-        String rightSort = (map.get("rightSort") != null ? map.get("rightSort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Right right = new Right();
         right.setRightName(rightName);
@@ -56,8 +53,6 @@ public class RightServiceImpl {
         String rightName = (map.get("rightName") != null ? map.get("rightName").toString() : "");
         String rightTag = (map.get("rightTag") != null ? map.get("rightTag").toString() : "");
         String right_describe = (map.get("right_describe") != null ? map.get("right_describe").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -97,17 +92,11 @@ public class RightServiceImpl {
     }
 
     public Result editRight(Map map) {
-
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String rightName = (map.get("rightName") != null ? map.get("rightName").toString() : "");
         String right_describe = (map.get("right_describe") != null ? map.get("right_describe").toString() : "");
         String rightTag = (map.get("rightTag") != null ? map.get("rightTag").toString() : "");
-        String rightParentId = (map.get("rightParentId") != null ? map.get("rightParentId").toString() : "");
-        String rightSort = (map.get("rightSort") != null ? map.get("rightSort").toString() : "");
-
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
 
         Right right = new Right();

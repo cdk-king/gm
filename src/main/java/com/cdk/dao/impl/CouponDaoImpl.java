@@ -34,7 +34,6 @@ public class CouponDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    //@Override
     public String[] generateCDK(Coupon coupon) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -72,13 +71,11 @@ public class CouponDaoImpl {
         int temp = jdbcTemplate.update(sql);
         String[] resultList = new String[coupon.getCouponCount()];
         if (temp > 0) {
-
             resultList = generateCDK(start_sequence, salt, int2Long, coupon.getCouponCount(), coupon.getCouponId(), coupon.getPlatformId(),
                     coupon.getGiftId());
         } else {
             return null;
         }
-
         return resultList;
     }
 
@@ -89,7 +86,6 @@ public class CouponDaoImpl {
 
     public int getMaxEnd_sequence(Coupon coupon) {
         String sql = "select max(end_sequence) as max_end_sequence from t_coupon ";
-        //+" where id=" + coupon.getCouponId() + " and platformId=" + coupon.getPlatformId();
         logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         logger.info(list.toString());
@@ -120,39 +116,6 @@ public class CouponDaoImpl {
         if (file.exists()) {
             throw new RuntimeException("文件存在??? " + fileName);
         }
-
-        //
-        //        FileOutputStream writerStream = null;
-        //        try {
-        //            writerStream = new FileOutputStream(file);
-        //        } catch (FileNotFoundException e) {
-        //            e.printStackTrace();
-        //        }
-
-        //        try {
-        //            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(writerStream, "UTF-8"));
-        //            for (int i = 0; i < count; i++) {
-        //                //String s = generate(0 + giftId * 10000, start_sequence + i, salt);
-        //                String s = "cdk国王";
-        //                System.out.print(s);
-        //                writer.write(s);
-        //                writer.append("\r\n");
-        //
-        //            }
-        //            writer.flush();
-        //            writer.close();
-        //            FileReader fr = new FileReader(file);
-        //            char[] a = new char[50];
-        //            fr.read(a); // 从数组中读取内容
-        //            for (char c : a) {
-        //                System.out.print(c); // 一个个打印字符
-        //            }
-        //            fr.close();
-        //        } catch (UnsupportedEncodingException e) {
-        //            e.printStackTrace();
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
 
         try {
             file.createNewFile();

@@ -50,7 +50,6 @@ public class PlayerServiceImpl extends ApiHandeler {
             param += "&PlayerID=" + PlayerID;
         }
 
-
         apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
@@ -69,11 +68,9 @@ public class PlayerServiceImpl extends ApiHandeler {
         return re;
     }
 
-
     public Result getPlayerFromServer(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("WorldID") != null && map.get("WorldID") != "") ? map.get("WorldID").toString() : "0");
-        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
@@ -131,7 +128,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
+        //logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -151,16 +148,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strSearchForm = (map.get("searchForm") != null ? map.get("searchForm").toString() : "");
 
-        //strSearchForm = JSON.toJSONString(strSearchForm);
         logger.info(strSearchForm);
         JSONObject jsonObject = JSON.parseObject(strSearchForm);
         //将jsonObj转换成Map
         Map<String, Object> searchForm = JSONObject.toJavaObject(jsonObject, Map.class);
-        //JSONObject myJson = JSONObject.
-
-        //Map<String, Object> searchForm = jsonObject;
-        //Map searchForm = JSONObject.parseObject(strSearchForm);
-        //Map searchForm = JSON.parseObject(strSearchForm);
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -233,7 +224,6 @@ public class PlayerServiceImpl extends ApiHandeler {
             player.setServerId(Integer.parseInt(WorldID));
             player.setPlatformId(Integer.parseInt(strPlatformId));
             player.setPlayerAccount(AccountName);
-            //player.setPlayerId(Integer.parseInt(PlayerIds));
             player.setBanTime(Integer.parseInt(HowLong));
 
             if (Objects.equals(Remove, "0")) {
@@ -298,7 +288,6 @@ public class PlayerServiceImpl extends ApiHandeler {
             player.setServerId(Integer.parseInt(WorldID));
             player.setPlatformId(Integer.parseInt(strPlatformId));
             player.setPlayerName(PlayerName);
-            //player.setPlayerId(Integer.parseInt(PlayerID));
             player.setProhibitSpeakTime(Integer.parseInt(HowLong));
             if (Objects.equals(Remove, "0")) {
                 playerDaoImpl.SaveProhibitSpeakLog(player, userId, PlayerID, PlayerAccount);

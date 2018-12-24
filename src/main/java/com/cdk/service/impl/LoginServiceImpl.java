@@ -73,7 +73,6 @@ public class LoginServiceImpl {
         Result re;
         int temp = loginDaoImpl.setTouristId(userId);
         if (temp > 0) {
-
             re = new Result(200, "游客Id设置成功", "");
         } else {
             re = new Result(400, "游客Id设置失败", "");

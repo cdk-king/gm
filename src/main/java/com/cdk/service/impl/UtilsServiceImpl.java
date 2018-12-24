@@ -94,9 +94,7 @@ public class UtilsServiceImpl {
         } else {
             re = new Result(400, "用户角色组获取失败", strList);
         }
-
         logger.info(strList.toString());
-
         return re;
     }
 

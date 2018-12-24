@@ -191,7 +191,6 @@ public class ChannelServiceImpl {
             temp = channelDaoImpl.saveCheckChannel(array[i], channel);
             logger.info(temp + "");
         }
-
         if (temp > 0) {
             re = new Result(200, "通道批量处理完成", temp);
         } else {

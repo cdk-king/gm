@@ -20,7 +20,6 @@ public class UserServiceImpl {
     public static final String Split = "----------------";
     @Autowired
     public UserDaoImpl userDaoImpl;
-    //public UserDaoImpl userDaoImpl = new UserDaoImpl();
 
     public Result addUser(Map map) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -41,7 +40,6 @@ public class UserServiceImpl {
         user.setPhone(phone);
         user.setEmail(email);
         user.setType(type);
-        //user.setAddDatetime(new Date());
 
         int temp = userDaoImpl.addUser(user);
         Result re;
@@ -327,25 +325,6 @@ public class UserServiceImpl {
             logger.info("用户角色删除失败");
             re = new Result(400, "用户角色删除失败", null);
         }
-        return re;
-    }
-
-    public Result insert(String name, String password) {
-        User user = new User();
-        user.setName(name);
-        user.setPassword(password);
-        int temp = userDaoImpl.insert(user);
-        //int temp = 1;
-        Result re = new Result(200, "", "");
-        if (temp > 0) {
-            re = new Result(200, "成功", temp);
-        }
-        return re;
-    }
-
-    public Result test() {
-        int temp = this.userDaoImpl.test();
-        Result re = new Result(200, "", temp);
         return re;
     }
 }

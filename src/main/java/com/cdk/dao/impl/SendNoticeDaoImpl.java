@@ -46,7 +46,6 @@ public class SendNoticeDaoImpl {
     public int addNotice(Notice notice) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
         String sql =
                 "insert into t_send_notice (platformId,serverList,sendType,noticeType,timeInterval,cycleTime,noticeContent,sendState,addUser,addDatetime,isDelete) " +
                         " values ('" + notice.getPlatformId() + "','" + notice.getServerList() + "','" + notice.getSendType() + "','" +
@@ -84,7 +83,6 @@ public class SendNoticeDaoImpl {
     }
 
     public int[] deleteAllNotice(String[] idList) {
-
         String strSql = "";
         String sql[] = new String[idList.length];
         int[] temp = new int[idList.length];
@@ -92,9 +90,6 @@ public class SendNoticeDaoImpl {
         for (int i = 0; i < idList.length; i++) {
             sql[i] = "UPDATE  t_send_notice  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
-            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
         logger.info("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);

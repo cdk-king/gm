@@ -33,11 +33,9 @@ public class BanIpDaoImpl {
         if (banIp.getServerId() != 0) {
             sql += " and a.serverId ='" + banIp.getServerId() + "' ";
         }
-
         logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
-        //sql += "  order by a.addDatetime desc";
         if (!Objects.equals(isPage, "")) {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
@@ -74,20 +72,16 @@ public class BanIpDaoImpl {
     }
 
     public int deleteBanIp(int id) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql = "update t_ban_ip set isDelete = '1' where id = " + id;
         logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
-
     }
 
     public int[] deleteAllBanIp(String[] idList) {
         String strSql = "";
         String sql[] = new String[idList.length];
         int[] temp = new int[idList.length];
-
         for (int i = 0; i < idList.length; i++) {
             sql[i] = "UPDATE  t_ban_ip  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;

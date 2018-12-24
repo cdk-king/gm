@@ -16,7 +16,6 @@ public class DemoServiceImpl implements DemoService {
     private DemoDao demoDao;
 
     public void save(Demo demo) {
-
         demoDao.save(demo);
     }
 }

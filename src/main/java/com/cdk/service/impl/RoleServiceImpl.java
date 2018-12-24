@@ -7,8 +7,6 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,10 +21,6 @@ public class RoleServiceImpl {
     public RoleDaoImpl roleDaoImpl;
 
     public Result addRole(Map map) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -66,7 +60,6 @@ public class RoleServiceImpl {
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {
@@ -106,11 +99,8 @@ public class RoleServiceImpl {
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Result re;
-
         Role role = new Role();
         role.setId(Integer.parseInt(id));
         role.setRole(roleName);
@@ -287,8 +277,6 @@ public class RoleServiceImpl {
 
         String[] ObjectArry = id.split(",");
 
-        String sql[] = new String[ObjectArry.length];
-        String strSql = "";
         Result re;
         int[] temp = new int[ObjectArry.length];
 

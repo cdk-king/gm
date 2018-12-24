@@ -1,7 +1,6 @@
 package com.cdk.controller;
 
 import com.cdk.entity.User;
-import com.cdk.result.Result;
 import com.cdk.service.impl.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +25,6 @@ public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
-
-    @GetMapping("/insertUserDao")
-    public Result insertUserDao() {
-        Result re = userServiceImpl.insert("cdk", "cdk");
-        return re;
-    }
-
-    @GetMapping("/testUserDao")
-    public Result testUserDao() {
-        Result re = userServiceImpl.test();
-        return re;
-    }
 
     @GetMapping("/getTest")
     public String getTest() {

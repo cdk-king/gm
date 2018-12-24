@@ -54,11 +54,8 @@ public class ServerServiceImpl extends ApiHandeler {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "0");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
-        String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String gameName = (map.get("gameName") != null ? map.get("gameName").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String addDatetime = (map.get("addDatetime") != null ? map.get("addDatetime").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         if (state == "") {

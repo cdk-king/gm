@@ -160,7 +160,6 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
         String noticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "");
 
-
         logger.info("strPlatformId:" + strPlatformId);
         logger.info("strServerList:" + strServerList);
         String[] serverArray = strServerList.split(",");

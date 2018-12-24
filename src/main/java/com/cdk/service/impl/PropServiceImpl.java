@@ -40,7 +40,6 @@ public class PropServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         if (state == "") {
             state = "0";
         }
@@ -66,13 +65,11 @@ public class PropServiceImpl {
     }
 
     public Result addProp(Map map) {
-        String propId = (map.get("propId") != null ? map.get("propId").toString() : "");
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
         String propTag = (map.get("propTag") != null ? map.get("propTag").toString() : "");
         String prop_describe = (map.get("prop_describe") != null ? map.get("prop_describe").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
 
         Prop prop = new Prop();
         prop.setPropName(propName);
@@ -99,9 +96,7 @@ public class PropServiceImpl {
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
         String propTag = (map.get("propTag") != null ? map.get("propTag").toString() : "");
         String prop_describe = (map.get("prop_describe") != null ? map.get("prop_describe").toString() : "");
-        //String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        //String state = (map.get("state") != null ? map.get("state").toString() : "");
         Result re;
         Prop prop = new Prop();
         prop.setId(Integer.parseInt(id));
@@ -176,7 +171,6 @@ public class PropServiceImpl {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
-
         String[] ObjectArry = id.split(",");
         logger.info("ObjectArry：" + ObjectArry);
 

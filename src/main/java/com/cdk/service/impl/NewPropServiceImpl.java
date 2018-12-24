@@ -24,7 +24,6 @@ public class NewPropServiceImpl {
     public NewPropDaoImpl newPropDaoImpl;
 
     public Result ImportProp(Map map) {
-        int len = 10;
         int platformId = 0;
         int gameId = 0;
         Result re;
@@ -43,7 +42,6 @@ public class NewPropServiceImpl {
             gameId = Integer.parseInt(strGameId);
             jsonArray = new JSONArray(strlist);
             logger.info(jsonArray.toString());
-            len = jsonArray.length();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -61,7 +59,6 @@ public class NewPropServiceImpl {
 
     public Result getPropTypeList(Map map) {
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
-
         Result re;
         int gameId = Integer.parseInt(strGameId);
 
@@ -75,7 +72,6 @@ public class NewPropServiceImpl {
         return re;
 
     }
-
 
     public Result getPropUplaod(Map map) {
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
@@ -111,6 +107,5 @@ public class NewPropServiceImpl {
             re = new Result(200, "道具列表获取成功", JsonMap);
         }
         return re;
-
     }
 }

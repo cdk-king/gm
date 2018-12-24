@@ -47,7 +47,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Map<String, Object> getRole(Role role, String isPage, int pageNo, int pageSize) {
-        // GROUP_CONCAT 默认长度1024 要炸
+        // GROUP_CONCAT 默认长度1024
         String sql = "select * ,(select GROUP_CONCAT(distinct b.rightId) as info from t_role_rights as b JOIN t_right as c on b.rightId = c.id \n" +
                 "where a.id= b.roleId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as rights";
         sql += " from t_role as a where a.isDelete != 1  ";
@@ -80,9 +80,6 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public int editRole(Role role) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
         String sql = "UPDATE t_role as a SET a.role='" + role.getRole() + "',a.role_describe = '" + role.getRole_describe() + "',a.addUser = '" +
                 role.getAddUser() + "' where a.id =" + role.getId() + "";
         logger.info("sql：" + sql);
@@ -92,7 +89,6 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public int changeStateToFrozen_Role(Role role) {
-
         String sql = "UPDATE t_role SET state='1' where id ='" + role.getId() + "'";
         logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
@@ -121,10 +117,8 @@ public class RoleDaoImpl implements RoleDao {
         String sql = "";
         String strSql = "";
         for (int i = 0; i < rightList.length; i++) {
-            //UPDATE user_roles  set  isDelete='1' where
             sql = "delete from  t_role_rights  where roleId ='" + id + "' and rightId = '" + rightList[i] + "'";
             strSql += sql;
-            //只能运行一条语句，不可使用拼接
             temp = jdbcTemplate.update(sql);
         }
         logger.info("sql：" + strSql);
@@ -139,7 +133,6 @@ public class RoleDaoImpl implements RoleDao {
         for (int i = 0; i < rightList.length; i++) {
             sql = "insert into t_role_rights  (roleId,rightId,isDelete) " + " values ( " + id + " , " + rightList[i] + " , '0')";
             strSql += sql;
-            //只能运行一条语句，不可使用拼接
             temp = jdbcTemplate.update(sql);
         }
         logger.info("sql：" + strSql);
@@ -152,12 +145,8 @@ public class RoleDaoImpl implements RoleDao {
         String sql[] = new String[roleList.length];
         String strSql = "";
         for (int i = 0; i < roleList.length; i++) {
-            //UPDATE user_roles  set  isDelete='1' where
             sql[i] = "UPDATE  t_role  set isDelete='1' where id = '" + roleList[i] + "';";
             strSql += sql;
-            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
-            //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
-            //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
         temp = jdbcTemplate.batchUpdate(sql);
         logger.info("sql：" + strSql);
@@ -175,7 +164,6 @@ public class RoleDaoImpl implements RoleDao {
             return temp;
         } else {
             sql = "insert into t_role_rights  (roleId,rightId,isDelete) " + " values ( " + id + " , " + rightId + " , '0')";
-            //只能运行一条语句，不可使用拼接
             temp = jdbcTemplate.update(sql);
             return temp;
         }

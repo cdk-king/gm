@@ -34,7 +34,6 @@ public class CacheListener {
                         logger.info("time:" + c + "s");
                         logger.info(key + "缓存被清除");
                     }
-
                 }
             }
         }.start();
@@ -56,15 +55,12 @@ public class CacheListener {
                         for (String key : cacheManagerImpl.getAllKeys()) {
                             if (cacheManagerImpl.isTimeOut(key)) {
                                 cacheManagerImpl.clearByKey(key);
+
                                 logger.info(key + "缓存被清除");
                             }
                         }
                     }
-                    try {
-                        sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
                 }
             }
         }.start();

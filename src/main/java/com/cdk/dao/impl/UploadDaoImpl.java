@@ -38,7 +38,6 @@ public class UploadDaoImpl {
     }
 
     public Map<String, Object> getFileList(int pageNo, int pageSize) {
-
         String sql = "select * from t_file where isDelete!=1 ";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();

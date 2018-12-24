@@ -31,7 +31,6 @@ public class EmailServiceImpl extends ApiHandeler {
 
     public Result getEmail(Map map) {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String emailContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
@@ -66,20 +65,15 @@ public class EmailServiceImpl extends ApiHandeler {
         String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "1");
         String strMinLevel = (map.get("minLevel") != null ? map.get("minLevel").toString() : "0");
         String strMaxLevel = (map.get("maxLevel") != null ? map.get("maxLevel").toString() : "0");
-
         String strMinVipLevel = (map.get("minVipLevel") != null ? map.get("minVipLevel").toString() : "0");
         String strMaxVipLevel = (map.get("maxVipLevel") != null ? map.get("maxVipLevel").toString() : "0");
-
         String strMinRegistrationTime = (map.get("minRegistrationTime") != null ? map.get("minRegistrationTime").toString() : "");
         String strMaxRegistrationTime = (map.get("maxRegistrationTime") != null ? map.get("maxRegistrationTime").toString() : "");
-
         String strIsOnline = (map.get("isOnline") != null ? map.get("isOnline").toString() : "0");
         String strSex = (map.get("sex") != null ? map.get("sex").toString() : "0");
-
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
-
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         int platformId = Integer.parseInt(strPlatformId);
         int serverId = Integer.parseInt(strServerId);
@@ -90,7 +84,6 @@ public class EmailServiceImpl extends ApiHandeler {
         int maxVipLevel = Integer.parseInt(strMaxVipLevel);
         int isOnline = Integer.parseInt(strIsOnline);
         int sex = Integer.parseInt(strSex);
-
 
         Result re;
         Email email = new Email();
@@ -147,16 +140,12 @@ public class EmailServiceImpl extends ApiHandeler {
         String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "1");
         String strMinLevel = (map.get("minLevel") != null ? map.get("minLevel").toString() : "0");
         String strMaxLevel = (map.get("maxLevel") != null ? map.get("maxLevel").toString() : "0");
-
         String strMinVipLevel = (map.get("minVipLevel") != null ? map.get("minVipLevel").toString() : "0");
         String strMaxVipLevel = (map.get("maxVipLevel") != null ? map.get("maxVipLevel").toString() : "0");
-
         String strMinRegistrationTime = (map.get("minRegistrationTime") != null ? map.get("minRegistrationTime").toString() : "");
         String strMaxRegistrationTime = (map.get("maxRegistrationTime") != null ? map.get("maxRegistrationTime").toString() : "");
-
         String strIsOnline = (map.get("isOnline") != null ? map.get("isOnline").toString() : "0");
         String strSex = (map.get("sex") != null ? map.get("sex").toString() : "0");
-
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");

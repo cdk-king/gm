@@ -66,10 +66,6 @@ public class GiftServiceImpl {
         String gift_describe = (map.get("gift_describe") != null ? map.get("gift_describe").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
-        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
-        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
-        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         logger.info("strPlatform：" + strPlatform);
 

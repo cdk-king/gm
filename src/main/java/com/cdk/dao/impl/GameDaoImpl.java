@@ -61,7 +61,6 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public int addGame(Game game) {
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
@@ -114,10 +113,8 @@ public class GameDaoImpl implements GameDao {
         String strSql = "";
         int[] temp = new int[gameList.length];
         for (int i = 0; i < gameList.length; i++) {
-            //UPDATE user_roles  set  isDelete='1' where
             sql[i] = "UPDATE  t_game  set isDelete='1' where id = '" + gameList[i] + "';";
             strSql += sql;
-            //jdbcTemplate.update(sql)只能运行一条语句，不可使用拼接
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }

@@ -166,7 +166,6 @@ public class PlayerDaoImpl {
         logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            //SaveProhibitSpeakToNormalLog(player, userId);
         }
         return temp;
     }
@@ -194,7 +193,6 @@ public class PlayerDaoImpl {
         logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            //SaveBanLog(player, userId);
         }
         return temp;
     }
@@ -221,7 +219,6 @@ public class PlayerDaoImpl {
         logger.info(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            //SaveBanToNormalLog(player, userId);
         }
         return temp;
     }
