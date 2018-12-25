@@ -35,8 +35,6 @@ public class PlayerServiceImpl extends ApiHandeler {
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
 
-        int platformId = Integer.parseInt(strPlatformId);
-
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";
         String operator = strPlatformId;
@@ -49,7 +47,6 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(PlayerID, "")) {
             param += "&PlayerID=" + PlayerID;
         }
-
         apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
@@ -58,7 +55,6 @@ public class PlayerServiceImpl extends ApiHandeler {
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
         logger.info(data);
-
         Result re;
         if (!data.isEmpty()) {
             re = new Result(200, "玩家详细信息获取成功", data);
@@ -128,7 +124,6 @@ public class PlayerServiceImpl extends ApiHandeler {
         logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        //logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -147,8 +142,6 @@ public class PlayerServiceImpl extends ApiHandeler {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strSearchForm = (map.get("searchForm") != null ? map.get("searchForm").toString() : "");
-
-        logger.info(strSearchForm);
         JSONObject jsonObject = JSON.parseObject(strSearchForm);
         //将jsonObj转换成Map
         Map<String, Object> searchForm = JSONObject.toJavaObject(jsonObject, Map.class);
@@ -211,12 +204,8 @@ public class PlayerServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/UpdateAccount/FreezeAccount";
-        logger.info(url);
-        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
-
         Result re;
         if (!data.isEmpty()) {
 
@@ -276,11 +265,8 @@ public class PlayerServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/UpdatePlayer/GagPlayer";
-        logger.info(url);
-        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
 
         Result re;
         if (!data.isEmpty()) {
@@ -431,7 +417,6 @@ public class PlayerServiceImpl extends ApiHandeler {
             platformId = Integer.parseInt(strPlatformId);
             serverId = Integer.parseInt(strServerId);
             jsonArray = new JSONArray(strlist);
-            logger.info(jsonArray.toString());
             len = jsonArray.length();
         } catch (JSONException e) {
             e.printStackTrace();

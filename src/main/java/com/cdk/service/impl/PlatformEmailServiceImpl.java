@@ -74,11 +74,9 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ParsePosition pos = new ParsePosition(0);
         Date startDatetime = formatter.parse(strStartDatetime, pos);
-        //必须重新创建实例
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pos = new ParsePosition(0);
         Date endDatetime = formatter.parse(strEndDatetime, pos);
-
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
         platformEmail.setId(id);
@@ -118,7 +116,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ParsePosition pos = new ParsePosition(0);
         Date startDatetime = formatter.parse(strStartDatetime, pos);
-        //必须重新创建实例
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pos = new ParsePosition(0);
         Date endDatetime = formatter.parse(strEndDatetime, pos);
@@ -134,7 +131,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         platformEmail.setStartDatetime(startDatetime);
         platformEmail.setEndDatetime(endDatetime);
 
-
         int temp = platformEmailDaoImpl.addPlatformEmail(platformEmail);
         if (temp > 0) {
             logger.info("全服邮件添加成功");
@@ -149,7 +145,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
     public Result deletePlatformEmail(Map map) {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
         int id = Integer.parseInt(strId);
-
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
         platformEmail.setId(id);
@@ -176,9 +171,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
-
-        logger.info("strServerList:" + strServerList);
-
         String[] ServerList = strServerList.split("-");
 
         try {
@@ -188,30 +180,22 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         String param = getParam(strPlatformId);
         param += "&Content=" + emailContent;
         if (!Objects.equals(emailTitle, "")) {
             param += "&Title=" + emailTitle;
         }
-
         param += "&IsAllPlayer=1";
-
         String url = "";
-
         String error = "";
-
         List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
 
 
         for (int i = 0; i < ServerList.length; i++) {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
-            logger.info(param + "&WorldID=" + ServerList[i]);
             apiUrl = getApiUrl(serverUrl.get(i));
             url = apiUrl + "/UpdatePlayer/Mail";
-
             String data = httpRequestUtil.sendGet(url, param + "&WorldID=" + ServerList[i]);
-            logger.info(data);
             JSONObject jb = JSONObject.fromObject(data);
             Map resultMap = (Map) jb;
             if (!Objects.equals(resultMap.get("Result"), 1)) {
@@ -224,7 +208,6 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
             int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error, time);
             re = new Result(400, "全服邮件发送失败", error);
         } else {
-
             int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 1, error, time);
             if (temp > 0) {
                 re = new Result(200, "全服邮件发送成功", error);
@@ -235,17 +218,13 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         return re;
     }
 
-
     public Result deleteAllPlatformEmail(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
-            return new Result(400, "无任何批量删除操作", null);
+            return new Result(200, "无任何批量删除操作", null);
         }
-
         String[] objectArry = id.split(",");
-        logger.info("ObjectArry：" + objectArry);
         Result re;
         int[] temp = platformEmailDaoImpl.deleteAllPlatformEmail(objectArry);
         if (temp.length != 0) {
@@ -253,7 +232,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
             re = new Result(200, "全服邮件批量删除成功", null);
         } else if (objectArry.length == 0) {
             logger.info("无任何删除操作");
-            re = new Result(400, "无任何删除操作", null);
+            re = new Result(200, "无任何删除操作", null);
         } else {
             logger.info("全服邮件批量删除失败");
             re = new Result(400, "全服邮件批量删除失败", null);

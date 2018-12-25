@@ -74,7 +74,6 @@ public class DownloadController {
                 e.printStackTrace();
             }
         }
-        logger.info(Divider);
         return null;
     }
 
@@ -128,7 +127,6 @@ public class DownloadController {
                 e.printStackTrace();
             }
         }
-        logger.info(Divider);
         return null;
     }
 
@@ -182,5 +180,5 @@ public class DownloadController {
         return null;
     }
 
-    
+
 }

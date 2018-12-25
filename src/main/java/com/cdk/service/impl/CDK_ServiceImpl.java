@@ -58,9 +58,7 @@ public class CDK_ServiceImpl {
         cdkUse.setSequenceId(Integer.parseInt(sequenceId));
         cdkUse.setPlatformId(Integer.parseInt(platformId));
         cdkUse.setCdk(cdk);
-
         Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, isPage, pageNo, pageSize, strPlatform);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {
@@ -87,7 +85,6 @@ public class CDK_ServiceImpl {
         if (couponId > 0) {
             int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
             int check = checkCDK(couponId, sequenceId, cdk, platformId);
-            logger.info("checkIsUsed" + checkIsUsed + "|check:" + check);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -129,7 +126,6 @@ public class CDK_ServiceImpl {
         if (couponId > 0) {
             int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
             int check = checkCDK(couponId, sequenceId, cdk, platformId);
-            logger.info("checkIsUsed" + checkIsUsed + "|check:" + check);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -167,7 +163,6 @@ public class CDK_ServiceImpl {
         if (couponId > 0) {
             int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
             int check = checkCDK(couponId, sequenceId, cdk, platformId);
-            logger.info("checkIsUsed" + checkIsUsed + "|check:" + check);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -193,7 +188,6 @@ public class CDK_ServiceImpl {
      */
     public int checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
         List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-        logger.info(list.toString());
         if (null == list || list.size() == 0) {
             return 0;
         }
@@ -210,11 +204,8 @@ public class CDK_ServiceImpl {
      * @return
      */
     public int checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
-
         List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId);
-        logger.info(list.toString());
         if (null == list || list.size() == 0) {
-            //失败
             return 0;
         }
         return 1;
@@ -227,7 +218,6 @@ public class CDK_ServiceImpl {
      * @return
      */
     public Map<String, Integer> analyse(String cdk) {
-        logger.info(cdk);
         Map<String, Integer> map = new HashMap();
         //base32解码
         try {
@@ -237,13 +227,9 @@ public class CDK_ServiceImpl {
             for (int i = 0; i < strChar.length; i++) {
                 result += Integer.toBinaryString(strChar[i]) + " ";
             }
-            logger.info(result);
             int a = BufferUtil.readVarInt32(data, 2);
             int length = BufferUtil.computeVarInt32Size(a) + 2;
-            logger.info(a + "");
             long b = BufferUtil.readVarInt64(data, length);
-            logger.info(b + "");
-
             map.put("couponId", a);
             map.put("sequenceId", (int) b);
         } catch (NumberFormatException e) {

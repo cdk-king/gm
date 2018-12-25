@@ -30,7 +30,6 @@ public class CDK_TableController {
     @RequestMapping("/getCDK")
     public Result getCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.getCDK(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -38,7 +37,6 @@ public class CDK_TableController {
     @RequestMapping("/exchangeCDK")
     public Result exchangeCDK(@RequestBody Map map) {
         Result re = cdkServiceImpl.exchangeCDK(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -46,7 +44,6 @@ public class CDK_TableController {
     @RequestMapping("/api/cdk/checkCDKIsUse")
     public Result checkCDKIsUse(@RequestBody Map map) {
         Result re = cdkServiceImpl.checkCDKIsUse(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -62,7 +59,6 @@ public class CDK_TableController {
         String code = "0";
         Result re = cdkServiceImpl.exchangeCDK_External(map);
         code = re.getData().toString();
-        logger.info(Divider);
         return code;
     }
 }

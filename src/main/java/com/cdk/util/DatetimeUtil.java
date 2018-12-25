@@ -32,4 +32,28 @@ public class DatetimeUtil {
         return dateString;
     }
 
+
+    /**
+     * 时间转换
+     * 可将秒数转变为可读的时间格式
+     * @param value
+     * @return
+     */
+    public static String dealTime(int value) {
+        String re = "";
+        int size = 0;
+        if (value < 60) {
+            re = value + "秒";
+            return re;
+        } else if (value < (60 * 60)) {
+            size = value / 60;
+            return size + "分钟-" + dealTime(value - size * 60);
+        } else if (value < (60 * 60 * 24)) {
+            size = value / (60 * 60);
+            return size + "小时-" + dealTime(value - size * 60 * 60);
+        } else {
+            size = value / (60 * 60 * 24);
+            return size + "天-" + dealTime(value - size * 60 * 60 * 24);
+        }
+    }
 }

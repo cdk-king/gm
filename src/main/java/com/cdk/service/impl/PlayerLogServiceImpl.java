@@ -41,7 +41,6 @@ public class PlayerLogServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -84,7 +83,6 @@ public class PlayerLogServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -179,16 +177,13 @@ public class PlayerLogServiceImpl {
             while (rs.next()) {
                 total++;
             }
-            logger.info(total + "");
             if (!Objects.equals(isPage, "")) {
                 sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
             }
-            logger.info(sql);
             rs = stmt.executeQuery(sql);
             md = rs.getMetaData(); //获得结果集结构信息,元数据
             columnCount = md.getColumnCount();   //获得列数
             while (rs.next()) {
-
                 Map<String, Object> rowData = new HashMap<String, Object>();
                 for (int i = 1; i <= columnCount; i++) {
                     rowData.put(md.getColumnName(i), rs.getObject(i));
@@ -273,11 +268,9 @@ public class PlayerLogServiceImpl {
             while (rs.next()) {
                 total++;
             }
-            logger.info(total + "");
             if (!Objects.equals(isPage, "")) {
                 sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
             }
-            logger.info(sql);
             rs = stmt.executeQuery(sql);
             md = rs.getMetaData(); //获得结果集结构信息,元数据
             columnCount = md.getColumnCount();   //获得列数
@@ -306,7 +299,6 @@ public class PlayerLogServiceImpl {
 
     public Result getMoneyFlowLog(Map map) {
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
-
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
@@ -367,11 +359,9 @@ public class PlayerLogServiceImpl {
             while (rs.next()) {
                 total++;
             }
-            logger.info(total + "");
             if (!Objects.equals(isPage, "")) {
                 sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
             }
-            logger.info(sql);
             rs = stmt.executeQuery(sql);
             md = rs.getMetaData(); //获得结果集结构信息,元数据
             columnCount = md.getColumnCount();   //获得列数
@@ -402,7 +392,6 @@ public class PlayerLogServiceImpl {
 
     public Result getGoodFlowLog(Map map) {
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
-
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
@@ -467,11 +456,9 @@ public class PlayerLogServiceImpl {
             while (rs.next()) {
                 total++;
             }
-            logger.info(total + "");
             if (!Objects.equals(isPage, "")) {
                 sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
             }
-            logger.info(sql);
             rs = stmt.executeQuery(sql);
             md = rs.getMetaData(); //获得结果集结构信息,元数据
             columnCount = md.getColumnCount();   //获得列数

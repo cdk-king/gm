@@ -27,7 +27,6 @@ public class NewPropTableController {
     @RequestMapping("/ImportProp")
     public Result ImportProp(@RequestBody Map map) {
         Result re = newPropServiceImpl.ImportProp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,7 +34,6 @@ public class NewPropTableController {
     @RequestMapping("/getPropUplaod")
     public Result getPropUplaod(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropUplaod(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -43,8 +41,6 @@ public class NewPropTableController {
     @RequestMapping("/api/newProp/getPropTypeList")
     public Result getPropTypeList(@RequestBody Map map) {
         Result re = newPropServiceImpl.getPropTypeList(map);
-        logger.info(Divider);
         return re;
     }
-
 }

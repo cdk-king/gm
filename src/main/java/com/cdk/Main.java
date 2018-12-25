@@ -1,9 +1,6 @@
 package com.cdk;
 
-import com.cdk.classLoader.ClassLoaderTest;
-import com.cdk.configLoader.ConfigLoader_cdk;
-import com.cdk.util.HttpRequestUtil;
-import com.cdk.util.annotation.AnnotationTest;
+import com.cdk.util.DomAnalysis;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -13,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan。
-//@SpringBootApplication
 @EnableAutoConfiguration
 //引入@ServletComponentScan时会扫描标注@WebFilter的自定义filter, 并且加载到项目中
 @ServletComponentScan
@@ -21,44 +17,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.cdk") // JPA扫描该包路径下的Repositorie
 @EntityScan("com.cdk.entity") // 扫描实体类
 public class Main {
-    /**
-     * 无法注入
-     */
-
     public static void main(String[] args) {
-        //        CacheManagerImpl cacheManagerImpl = new CacheManagerImpl();
-        //        CacheListener cacheListener = new CacheListener(cacheManagerImpl);
-        //        cacheListener.startAllListenUseThread();
-        //        cacheListener.cacheManagerImpl.putCache("CDK", "CDK", 30000);
-
         SpringApplication.run(Main.class, args);
 
-        /**
-         * HttpRequestUtil测试
-         */
-        HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
-        //httpRequestUtil.testBaiduTranslate();
+        DomAnalysis domAnalysis = new DomAnalysis();
+        domAnalysis.Analysis("tlog.xml");
 
-        /**
-         * 反射调用外部Class文件
-         */
-        ClassLoaderTest classLoaderTest = new ClassLoaderTest();
-        //classLoaderTest.LoaderTest();
-
-        /**
-         * 自定义注解测试
-         */
-        AnnotationTest annotationTest = new AnnotationTest();
-        try {
-            annotationTest.test();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-
-        /**
-         *
-         */
-        ConfigLoader_cdk configLoader = new ConfigLoader_cdk();
-        configLoader.loadTxt("info.txt");
     }
+
+
 }

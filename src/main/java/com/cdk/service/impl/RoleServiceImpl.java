@@ -24,7 +24,6 @@ public class RoleServiceImpl {
         String roleName = (map.get("role") != null ? map.get("role").toString() : "");
         String role_describe = (map.get("role_describe") != null ? map.get("role_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-
         Role role = new Role();
         role.setRole(roleName);
         role.setRole_describe(role_describe);
@@ -67,7 +66,6 @@ public class RoleServiceImpl {
         }
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-
         int pageNo = 1;
         int pageSize = 5;
 
@@ -121,10 +119,8 @@ public class RoleServiceImpl {
 
     public Result changeStateToFrozen_Role(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Role user = new Role();
         user.setId(Integer.parseInt(id));
-
         Result re;
         int temp = roleDaoImpl.changeStateToFrozen_Role(user);
         if (temp > 0) {
@@ -139,10 +135,8 @@ public class RoleServiceImpl {
 
     public Result changeStateToNormal_Role(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Role role = new Role();
         role.setId(Integer.parseInt(id));
-
         Result re;
         int temp = roleDaoImpl.changeStateToNormal_Role(role);
         if (temp > 0) {
@@ -157,10 +151,8 @@ public class RoleServiceImpl {
 
     public Result deleteRole(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Role role = new Role();
         role.setId(Integer.parseInt(id));
-
         Result re;
         int temp = roleDaoImpl.deleteRole(role);
         if (temp > 0) {
@@ -177,10 +169,6 @@ public class RoleServiceImpl {
     public Result deleteRoleRights(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String deleteRoleRights = map.get("deleteRoleRights").toString();
-
-        logger.info("id：" + id);
-        logger.info("deleteRoleRights：" + deleteRoleRights);
-
         if (Objects.equals(deleteRoleRights, "")) {
             logger.info("无任何添加操作");
             logger.info(Divider);
@@ -237,9 +225,6 @@ public class RoleServiceImpl {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String InsertRoleRights = map.get("InsertRoleRights").toString();
 
-        logger.info("id：" + id);
-        logger.info("InsertRoleRights：" + InsertRoleRights);
-
         if (Objects.equals(InsertRoleRights, "")) {
             logger.info("无任何添加操作");
             return new Result(200, "无任何添加操作", null);
@@ -269,17 +254,13 @@ public class RoleServiceImpl {
 
     public Result deleteAllRole(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(200, "无任何批量删除操作", null);
         }
-
         String[] ObjectArry = id.split(",");
-
         Result re;
         int[] temp = new int[ObjectArry.length];
-
         temp = roleDaoImpl.deleteAllRole(ObjectArry);
         if (temp.length != 0) {
             logger.info("角色批量删除成功");

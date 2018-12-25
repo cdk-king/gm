@@ -61,7 +61,6 @@ public class UtilsController {
     @RequestMapping("/getUserAllRight")
     public Result getUserAllRight(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRight(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -69,7 +68,6 @@ public class UtilsController {
     @RequestMapping("/getUserAllRole")
     public Result getUserAllRole(@RequestBody Map map) {
         Result re = utilsServiceImpl.getUserAllRole(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -77,7 +75,6 @@ public class UtilsController {
     @RequestMapping("/getGameListForUser")
     public Result getGameListForUser(@RequestBody Map map) {
         Result re = utilsServiceImpl.getGameListForUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -85,7 +82,6 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForGameId")
     public Result getPlatformListForGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForGameId(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -102,7 +98,6 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForUser")
     public Result getPlatformListForUser(@RequestBody Map map) {
         Result re = serverServiceImpl.getPlatformListForUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -110,7 +105,6 @@ public class UtilsController {
     @RequestMapping("/getPlatformListForUserIdAndGameId")
     public Result getPlatformListForUserIdAndGameId(@RequestBody Map map) {
         Result re = utilsServiceImpl.getPlatformListForUserIdAndGameId(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -118,9 +112,7 @@ public class UtilsController {
     @RequestMapping("/api/prize/getValueTypeList")
     public Result getValueTypeList(@RequestBody Map map) {
         Result re = utilsServiceImpl.getValueTypeList(map);
-        logger.info(Divider);
         return re;
     }
-
 
 }

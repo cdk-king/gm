@@ -128,14 +128,12 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
     public Result deleteAllNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] objectArry = id.split(",");
-        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = sendNoticeDaoImpl.deleteAllNotice(objectArry);
@@ -159,9 +157,6 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         String Content = (map.get("Content") != null ? map.get("Content").toString() : "");
         String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
         String noticeType = (map.get("noticeType") != null ? map.get("noticeType").toString() : "");
-
-        logger.info("strPlatformId:" + strPlatformId);
-        logger.info("strServerList:" + strServerList);
         String[] serverArray = strServerList.split(",");
 
         try {
@@ -181,7 +176,6 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             param += "&noticeType=" + noticeType;
         }
         List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
-        logger.info(urlList.toString());
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
@@ -195,10 +189,6 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             }
             apiUrl = getApiUrl(urlList.get(i));
             url = apiUrl + "/notice/sendBroadcast";
-            logger.info(url);
-            logger.info(param);
-
-
             String data = httpRequestUtil.sendGet(url, param);
             //返回结果判空处理
             if (!Objects.equals(data, null)) {
@@ -223,7 +213,6 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             datas = datas.substring(0, datas.length() - 1);
 
         }
-        logger.info("data:" + datas);
         if (error.length() > 0) {
             error = error.substring(0, error.length() - 1);
 

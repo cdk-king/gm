@@ -28,7 +28,6 @@ public class PlatformNoticeController {
     @RequestMapping("/getPlatformNotice")
     public Result getPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.getPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -36,7 +35,6 @@ public class PlatformNoticeController {
     @RequestMapping("/addPlatformNotice")
     public Result addPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.addPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -44,7 +42,6 @@ public class PlatformNoticeController {
     @RequestMapping("/editPlatformNotice")
     public Result editPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.editPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -52,7 +49,6 @@ public class PlatformNoticeController {
     @RequestMapping("/deletePlatformNotice")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deletePlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -60,7 +56,6 @@ public class PlatformNoticeController {
     @RequestMapping("/api/notice/sendNotice")
     public Result sendPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -68,7 +63,6 @@ public class PlatformNoticeController {
     @RequestMapping("/api/notice/reSendNotice")
     public Result reSendNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.sendPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -76,7 +70,6 @@ public class PlatformNoticeController {
     @RequestMapping("/deleteAllPlatformNotice")
     public Result deleteAllPlatformNotice(@RequestBody Map map) {
         Result re = platformNoticeServiceImpl.deleteAllPlatformNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -85,9 +78,7 @@ public class PlatformNoticeController {
     @RequestMapping("/api/notice/getLastNotice")
     public String getLastNotice(@RequestParam("oid") String oid) {
         Result re = platformNoticeServiceImpl.getLastNotice(oid);
-
         JSONObject jsonObject = JSONObject.fromObject(re.getData());
-        logger.info(Divider);
         return jsonObject.toString();
     }
 }

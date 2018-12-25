@@ -39,7 +39,6 @@ public class UserTableController {
     public Result getUser(@RequestBody Map map) {
         Result re = userServiceImpl.getUser(map);
         logger.info("UserData：" + re.toString());
-        logger.info(Divider);
         return re;
     }
 
@@ -47,8 +46,6 @@ public class UserTableController {
     @RequestMapping("/api/user/getAllUser")
     public Result getAllUser() {
         Result re = userServiceImpl.getAllUser();
-        logger.info(Divider);
-
         return re;
     }
 
@@ -56,7 +53,6 @@ public class UserTableController {
     @RequestMapping("/api/user/getUserById")
     public Result getUserById(@RequestBody Map map) {
         Result re = userServiceImpl.getUserById(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -65,7 +61,6 @@ public class UserTableController {
     @ResponseBody
     public Result editUser(@RequestBody Map map) {
         Result re = userServiceImpl.editUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -73,7 +68,6 @@ public class UserTableController {
     @RequestMapping("/addUser")
     public Result addUser(@RequestBody Map map) {
         Result re = userServiceImpl.addUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -82,7 +76,6 @@ public class UserTableController {
     @ResponseBody
     public Result editpassword(@RequestBody Map map) {
         Result re = userServiceImpl.editPassword(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -91,7 +84,6 @@ public class UserTableController {
     @ResponseBody
     public Result changeStateToFrozen_User(@RequestBody Map map) {
         Result re = userServiceImpl.changeStateToFrozen_User(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -100,7 +92,6 @@ public class UserTableController {
     @ResponseBody
     public Result changeStateToNormal_User(@RequestBody Map map) {
         Result re = userServiceImpl.changeStateToNormal_User(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -109,7 +100,6 @@ public class UserTableController {
     @ResponseBody
     public Result deleteUser(@RequestBody Map map) {
         Result re = userServiceImpl.deleteUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -118,7 +108,6 @@ public class UserTableController {
     @ResponseBody
     public Result deleteAllUser(@RequestBody Map map) {
         Result re = userServiceImpl.deleteAllUser(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -126,7 +115,6 @@ public class UserTableController {
     @RequestMapping("/insertUserRoles")
     public Result insertUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.insertUserRoles(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -135,7 +123,6 @@ public class UserTableController {
     @ResponseBody
     public Result deleteUserRoles(@RequestBody Map map) {
         Result re = userServiceImpl.deleteUserRoles(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -143,7 +130,6 @@ public class UserTableController {
     @RequestMapping("/api/user/addRole")
     public Result addRole(@RequestBody Map map) {
         Result re = userServiceImpl.addRole(map);
-        logger.info(Divider);
         return re;
     }
 }

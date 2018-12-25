@@ -26,8 +26,6 @@ public class TxtUtils {
 
         File file = new File(filePath);
         if (!file.exists()) {
-            // f1.mkdirs(); 生成所有目录
-            // f1.mkdir(); 必须AAA目录存在才能生成BBB目录
             file.mkdir();
             System.out.println("文件夹已创建");
         }

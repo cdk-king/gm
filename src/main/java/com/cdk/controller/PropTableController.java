@@ -30,7 +30,6 @@ public class PropTableController {
     @RequestMapping("/getProp")
     public Result getProp(@RequestBody Map map) {
         Result re = propServiceImpl.getProp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -38,7 +37,6 @@ public class PropTableController {
     @RequestMapping("/addProp")
     public Result addProp(@RequestBody Map map) {
         Result re = propServiceImpl.addProp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -46,7 +44,6 @@ public class PropTableController {
     @RequestMapping("/editProp")
     public Result editProp(@RequestBody Map map) {
         Result re = propServiceImpl.editProp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -54,7 +51,6 @@ public class PropTableController {
     @RequestMapping("/deleteProp")
     public Result deleteProp(@RequestBody Map map) {
         Result re = propServiceImpl.deleteProp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -62,7 +58,6 @@ public class PropTableController {
     @ResponseBody
     public Result changeStateToNormal_Game(@RequestBody Map map) {
         Result re = propServiceImpl.changeStateToNormal_Game(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -71,7 +66,6 @@ public class PropTableController {
     @ResponseBody
     public Result changeStateToFrozen_Game(@RequestBody Map map) {
         Result re = propServiceImpl.changeStateToFrozen_Game(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -79,7 +73,6 @@ public class PropTableController {
     @RequestMapping("/deleteAllProp")
     public Result deleteAllProp(@RequestBody Map map) {
         Result re = propServiceImpl.deleteAllProp(map);
-        logger.info(Divider);
         return re;
     }
 }

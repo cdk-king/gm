@@ -10,7 +10,7 @@ public class Server {
     }
 
     public Server(int id, int serverId, String server, String serverIp, String serverPort, int platformId, String server_describe, int state,
-            int sort, String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, Date openServiceTime) {
+            int sort, String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, String openServiceTime) {
         //有参构造器
         this.id = id;
         this.serverId = serverId;
@@ -125,7 +125,7 @@ public class Server {
      * 开服时间
      */
 
-    private Date openServiceTime;
+    private String openServiceTime;
 
     public int getId() {
         return id;
@@ -239,11 +239,11 @@ public class Server {
         this.area = area;
     }
 
-    public Date getOpenServiceTime() {
+    public String getOpenServiceTime() {
         return openServiceTime;
     }
 
-    public void setOpenServiceTime(Date openServiceTime) {
+    public void setOpenServiceTime(String openServiceTime) {
         this.openServiceTime = openServiceTime;
     }
 

@@ -30,12 +30,8 @@ public class PlatformServiceImpl {
         if (state == "") {
             state = "0";
         }
-
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -97,7 +93,6 @@ public class PlatformServiceImpl {
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-
         Platform platform = new Platform();
         platform.setPlatform(platformName);
         platform.setPlatformTag(platformTag);
@@ -128,7 +123,6 @@ public class PlatformServiceImpl {
         String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         String roleId = (map.get("roleId") != null ? map.get("roleId").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
         platform.setPlatform(platformName);
@@ -153,11 +147,8 @@ public class PlatformServiceImpl {
 
     public Result deletePlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
-
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
-
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
         if (temp > 0) {
@@ -173,11 +164,8 @@ public class PlatformServiceImpl {
 
     public Result changeStateToNormal_Platform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
-
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
-
         Result re;
         int temp = platformDaoImpl.changeStateToNormal_Platform(platform);
         if (temp > 0) {
@@ -192,8 +180,6 @@ public class PlatformServiceImpl {
 
     public Result changeStateToFrozen_Platform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
-
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
         Result re;
@@ -209,17 +195,12 @@ public class PlatformServiceImpl {
     }
 
     public Result deleteAllPlatform(Map map) {
-
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
-
         String[] ObjectArry = id.split(",");
-        logger.info("ObjectArry：" + ObjectArry);
-
         Result re;
         int[] temp = new int[ObjectArry.length];
         temp = platformDaoImpl.deleteAllPlatform(ObjectArry);

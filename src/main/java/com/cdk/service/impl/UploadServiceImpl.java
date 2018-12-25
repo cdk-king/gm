@@ -87,8 +87,6 @@ public class UploadServiceImpl {
         //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
         //设置缺省值
         int pageNo = 1;
         int pageSize = 5;

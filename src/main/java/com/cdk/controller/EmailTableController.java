@@ -27,7 +27,6 @@ public class EmailTableController {
     @RequestMapping("/getEmail")
     public Result getEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.getEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,7 +34,6 @@ public class EmailTableController {
     @RequestMapping("/addEmail")
     public Result addEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.addEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -43,7 +41,6 @@ public class EmailTableController {
     @RequestMapping("/editEmail")
     public Result editEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.editEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -51,7 +48,6 @@ public class EmailTableController {
     @RequestMapping("/sendEmail")
     public Result sendEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.sendEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -59,7 +55,6 @@ public class EmailTableController {
     @RequestMapping("/deleteEmail")
     public Result deleteEmail(@RequestBody Map map) {
         Result re = emailServiceImpl.deleteEmail(map);
-        logger.info(Divider);
         return re;
     }
 }

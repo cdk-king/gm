@@ -29,7 +29,6 @@ public class GiftTableController {
     @RequestMapping("/getGift")
     public Result getGift(@RequestBody Map map) {
         Result re = giftServiceImpl.getGift(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -37,7 +36,6 @@ public class GiftTableController {
     @RequestMapping("/addGift")
     public Result addGift(@RequestBody Map map) {
         Result re = giftServiceImpl.addGift(map);
-        logger.info(Divider);
         return re;
     }
 }

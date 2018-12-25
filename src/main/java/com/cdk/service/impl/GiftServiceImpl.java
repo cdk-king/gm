@@ -24,13 +24,11 @@ public class GiftServiceImpl {
         String giftName = (map.get("giftName") != null ? map.get("giftName").toString() : "");
         String giftTag = (map.get("giftTag") != null ? map.get("giftTag").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String state = (map.get("state") != null ? map.get("state").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -39,7 +37,6 @@ public class GiftServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         if (state == "") {
             state = "0";
         }
@@ -51,7 +48,6 @@ public class GiftServiceImpl {
         gift.setState(Integer.parseInt(state));
 
         Map<String, Object> JsonMap = giftDaoImpl.getGift(gift, isPage, pageNo, pageSize, strPlatform);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {
@@ -66,9 +62,6 @@ public class GiftServiceImpl {
         String gift_describe = (map.get("gift_describe") != null ? map.get("gift_describe").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
-
         Gift gift = new Gift();
         gift.setGiftName(giftName);
         gift.setGiftTag(giftTag);
@@ -76,7 +69,6 @@ public class GiftServiceImpl {
         gift.setGift_describe(gift_describe);
         gift.setAddUser(addUser);
         gift.setGiftType(0);
-
         Result re;
         int temp = giftDaoImpl.addGift(gift);
         if (temp > 0) {

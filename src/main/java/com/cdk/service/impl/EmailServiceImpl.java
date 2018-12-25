@@ -110,14 +110,12 @@ public class EmailServiceImpl extends ApiHandeler {
             Date minRegistrationTime = formatter.parse(strMinRegistrationTime, pos);
             email.setMinRegistrationTime(minRegistrationTime);
         }
-        //必须重新创建实例
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pos = new ParsePosition(0);
         if (!Objects.equals(strMaxRegistrationTime, "")) {
             Date maxRegistrationTime = formatter.parse(strMaxRegistrationTime, pos);
             email.setMaxRegistrationTime(maxRegistrationTime);
         }
-
         int temp = emailDaoImpl.addEmail(email);
         if (temp > 0) {
             logger.info("邮件添加成功");
@@ -188,14 +186,12 @@ public class EmailServiceImpl extends ApiHandeler {
             Date minRegistrationTime = formatter.parse(strMinRegistrationTime, pos);
             email.setMinRegistrationTime(minRegistrationTime);
         }
-        //必须重新创建实例
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         pos = new ParsePosition(0);
         if (!Objects.equals(strMaxRegistrationTime, "")) {
             Date maxRegistrationTime = formatter.parse(strMaxRegistrationTime, pos);
             email.setMaxRegistrationTime(maxRegistrationTime);
         }
-
         int temp = emailDaoImpl.editEmail(email);
         if (temp > 0) {
             logger.info("邮件编辑成功");
@@ -213,7 +209,6 @@ public class EmailServiceImpl extends ApiHandeler {
         Result re;
         Email email = new Email();
         email.setId(id);
-
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strserverId = (map.get("serverId") != null ? map.get("serverId").toString() : "0");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
@@ -221,17 +216,12 @@ public class EmailServiceImpl extends ApiHandeler {
         String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
-
-        logger.info("strPlatformId:" + strPlatformId);
-
         try {
-            //中文转码
             emailTitle = URLEncoder.encode(emailTitle, "UTF-8");
             emailContent = URLEncoder.encode(emailContent, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         String param = getParam(strPlatformId);
         param += "&Content=" + emailContent;
         if (!Objects.equals(emailTitle, "")) {
@@ -246,38 +236,28 @@ public class EmailServiceImpl extends ApiHandeler {
         if (!Objects.equals(playerIdList, "")) {
             param += "&PlayerID=" + playerIdList;
         }
-        //条件
         if (Objects.equals(sendType, "1")) {
             param += "&IsAllPlayer=0";
         }
-        //角色
         if (Objects.equals(sendType, "2")) {
             param += "&IsAllPlayer=0";
         }
-        //全服
         if (Objects.equals(sendType, "3")) {
             param += "&IsAllPlayer=1";
         }
-
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
-        String error = "";
         apiUrl = getApiUrl(strPlatformId, strserverId);
 
         url = apiUrl + "/UpdatePlayer/Mail";
-        logger.info(url + "?" + param);
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
-        logger.info("error:" + error);
 
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
-        logger.info(resultMap.toString());
         if (!Objects.equals(resultMap.get("Result"), 1)) {
             int temp = emailDaoImpl.sendEmail(email, 2);
             re = new Result(400, "邮件发送失败", data);
         } else {
-
             int temp = emailDaoImpl.sendEmail(email, 1);
             if (temp > 0) {
                 re = new Result(200, "邮件发送成功", data);

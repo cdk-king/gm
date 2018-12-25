@@ -26,7 +26,6 @@ public class RegisterController {
     @RequestMapping("/api/register/addRegisterUser")
     public Result addRegisterUser(@RequestBody Map map) {
         Result re = RegisterServiceImpl.addRegisterUser(map);
-        logger.info(Divider);
         return re;
     }
 }

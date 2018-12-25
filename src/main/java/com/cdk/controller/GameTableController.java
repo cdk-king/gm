@@ -32,7 +32,6 @@ public class GameTableController {
     @RequestMapping("/getAllGame")
     public Result getAllGame(@RequestBody Map map) {
         Result re = gameServiceImpl.getAllGame(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -42,7 +41,6 @@ public class GameTableController {
     @ResponseBody
     public Result editGame(@RequestBody Map map) {
         Result re = gameServiceImpl.editGame(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -51,7 +49,6 @@ public class GameTableController {
     @RequestMapping("/addGame")
     public Result addGame(@RequestBody Map map) {
         Result re = gameServiceImpl.addGame(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -61,7 +58,6 @@ public class GameTableController {
     @ResponseBody
     public Result deleteGame(@RequestBody Map map) {
         Result re = gameServiceImpl.deleteGame(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -70,7 +66,6 @@ public class GameTableController {
     @ResponseBody
     public Result changeStateToNormal_Game(@RequestBody Map map) {
         Result re = gameServiceImpl.changeStateToNormal_Game(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -79,7 +74,6 @@ public class GameTableController {
     @ResponseBody
     public Result changeStateToFrozen_Game(@RequestBody Map map) {
         Result re = gameServiceImpl.changeStateToFrozen_Game(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -89,7 +83,6 @@ public class GameTableController {
     @ResponseBody
     public Result deleteAllGame(@RequestBody Map<String, String> map) {
         Result re = gameServiceImpl.deleteAllGame(map);
-        logger.info(Divider);
         return re;
     }
 }

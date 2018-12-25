@@ -61,7 +61,6 @@ public class NewPropServiceImpl {
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         Result re;
         int gameId = Integer.parseInt(strGameId);
-
         Map<String, Object> JsonMap = newPropDaoImpl.getPropTypeList(gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具类别列表获取失败", "");
@@ -80,7 +79,6 @@ public class NewPropServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -90,7 +88,6 @@ public class NewPropServiceImpl {
             e.printStackTrace();
         }
         Result re;
-
         NewProp newProp = new NewProp();
         newProp.setPropName(propName);
         newProp.setPropType(propType);

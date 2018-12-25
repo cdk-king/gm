@@ -41,21 +41,15 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     public XssHttpServletRequestWrapper(HttpServletRequest request) {
         super(request);
-
         String path = request.getContextPath();
         String method = request.getServletPath();
         Map map = request.getParameterMap();
-        logger.info("method:" + method);
 
         try {
             requestBody = StreamUtils.copyToByteArray(request.getInputStream());
-            //jsonObject = getRequestBody();
             String strRequestBody = new String(requestBody, "UTF-8");
-            logger.info("requestBody:" + strRequestBody);
             String re = cleanXSS(strRequestBody);
-            logger.info(re);
             requestBody = re.getBytes("UTF-8");
-            logger.info("requestBody:" + new String(requestBody, "UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,7 +111,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
      */
     public String getParameter(String parameter) {
         String value = super.getParameter(parameter);
-        logger.info("getParameter:" + value);
         if (value == null) {
             return null;
         }
