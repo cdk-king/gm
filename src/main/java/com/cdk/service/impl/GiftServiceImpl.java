@@ -4,16 +4,17 @@ import com.cdk.dao.impl.GiftDaoImpl;
 import com.cdk.entity.Gift;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class GiftServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(GiftServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(GiftServiceImpl.class);
 
     @Autowired
     public GiftDaoImpl giftDaoImpl;
@@ -70,10 +71,10 @@ public class GiftServiceImpl {
         Result re;
         int temp = giftDaoImpl.addGift(gift);
         if (temp > 0) {
-            logger.info("礼包添加成功");
+            logger.debug("礼包添加成功");
             re = new Result(200, "礼包添加成功", null);
         } else {
-            logger.info("礼包添加失败");
+            logger.debug("礼包添加失败");
             re = new Result(400, "礼包添加失败", null);
         }
         return re;

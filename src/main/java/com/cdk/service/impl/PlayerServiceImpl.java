@@ -10,16 +10,17 @@ import com.cdk.util.HttpRequestUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class PlayerServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlayerServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PlayerServiceImpl.class);
 
     public PlayerServiceImpl() {
         super();
@@ -48,11 +49,11 @@ public class PlayerServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(strPlatformId, WorldID);
 
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
-        logger.info(url);
-        logger.info(param);
+        logger.debug(url);
+        logger.debug(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
+        logger.debug(data);
         Result re;
         if (!data.isEmpty()) {
             re = new Result(200, "玩家详细信息获取成功", data);
@@ -118,8 +119,8 @@ public class PlayerServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(strPlatformId, strServerId);
 
         String url = apiUrl + "/QueryPlayer/PlayerList";
-        logger.info(url);
-        logger.info(param);
+        logger.debug(url);
+        logger.debug(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
 
@@ -309,10 +310,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeToProhibitSpeak(player, userId);
         if (temp > 0) {
-            logger.info("玩家禁言成功");
+            logger.debug("玩家禁言成功");
             re = new Result(200, "玩家禁言成功", null);
         } else {
-            logger.info("玩家禁言失败");
+            logger.debug("玩家禁言失败");
             re = new Result(400, "玩家禁言失败", null);
         }
         return re;
@@ -334,10 +335,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeProhibitSpeakToNormal(player, userId);
         if (temp > 0) {
-            logger.info("玩家解除禁言成功");
+            logger.debug("玩家解除禁言成功");
             re = new Result(200, "玩家解除禁言成功", null);
         } else {
-            logger.info("玩家解除禁言失败");
+            logger.debug("玩家解除禁言失败");
             re = new Result(400, "玩家解除禁言失败", null);
         }
         return re;
@@ -362,10 +363,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeToBan(player, userId);
         if (temp > 0) {
-            logger.info("玩家禁封成功");
+            logger.debug("玩家禁封成功");
             re = new Result(200, "玩家禁封成功", null);
         } else {
-            logger.info("玩家禁封失败");
+            logger.debug("玩家禁封失败");
             re = new Result(400, "玩家禁封失败", null);
         }
         return re;
@@ -387,10 +388,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         Result re;
         int temp = playerDaoImpl.ChangeBanToNormal(player, userId);
         if (temp > 0) {
-            logger.info("玩家解除禁封成功");
+            logger.debug("玩家解除禁封成功");
             re = new Result(200, "玩家解除禁封成功", null);
         } else {
-            logger.info("玩家解除禁封失败");
+            logger.debug("玩家解除禁封失败");
             re = new Result(400, "玩家解除禁封失败", null);
         }
         return re;
@@ -406,7 +407,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            logger.info("礼包导入失败");
+            logger.debug("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
             return re;
         }
@@ -422,10 +423,10 @@ public class PlayerServiceImpl extends ApiHandeler {
         int[] temp = new int[len];
         temp = playerDaoImpl.ImportPlayer(jsonArray, platformId, serverId);
         if (temp.length > 0) {
-            logger.info("玩家导入成功");
+            logger.debug("玩家导入成功");
             re = new Result(200, "玩家导入成功", null);
         } else {
-            logger.info("玩家导入失败");
+            logger.debug("玩家导入失败");
             re = new Result(400, "玩家导入失败", null);
         }
         return re;

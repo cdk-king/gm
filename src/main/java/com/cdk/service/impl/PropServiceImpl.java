@@ -5,16 +5,18 @@ import com.cdk.dao.impl.PropDaoImpl;
 import com.cdk.entity.Prop;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class PropServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(PropServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PropServiceImpl.class);
+
     @Autowired
     public PropDaoImpl propDaoImpl;
 
@@ -75,10 +77,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.addProp(prop);
         if (temp > 0) {
-            logger.info("道具添加成功");
+            logger.debug("道具添加成功");
             re = new Result(200, "道具添加成功", null);
         } else {
-            logger.info("道具添加失败");
+            logger.debug("道具添加失败");
             re = new Result(400, "道具添加失败", null);
         }
         return re;
@@ -100,10 +102,10 @@ public class PropServiceImpl {
 
         int temp = propDaoImpl.editProp(prop);
         if (temp > 0) {
-            logger.info("道具编辑成功");
+            logger.debug("道具编辑成功");
             re = new Result(200, "道具编辑成功", null);
         } else {
-            logger.info("道具编辑失败");
+            logger.debug("道具编辑失败");
             re = new Result(400, "道具编辑失败", null);
         }
         return re;
@@ -116,10 +118,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.deleteProp(prop);
         if (temp > 0) {
-            logger.info("道具删除成功");
+            logger.debug("道具删除成功");
             re = new Result(200, "道具删除成功", null);
         } else {
-            logger.info("道具删除失败");
+            logger.debug("道具删除失败");
             re = new Result(400, "道具删除失败", null);
         }
         return re;
@@ -132,10 +134,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.changeStateToNormal_Game(prop);
         if (temp > 0) {
-            logger.info("道具解冻成功");
+            logger.debug("道具解冻成功");
             re = new Result(200, "道具解冻成功", null);
         } else {
-            logger.info("道具解冻失败");
+            logger.debug("道具解冻失败");
             re = new Result(400, "道具解冻失败", null);
         }
         return re;
@@ -148,10 +150,10 @@ public class PropServiceImpl {
         Result re;
         int temp = propDaoImpl.changeStateToFrozen_Game(prop);
         if (temp > 0) {
-            logger.info("道具冻结成功");
+            logger.debug("道具冻结成功");
             re = new Result(200, "道具冻结成功", null);
         } else {
-            logger.info("道具冻结失败");
+            logger.debug("道具冻结失败");
             re = new Result(400, "道具冻结失败", null);
         }
         return re;
@@ -160,23 +162,23 @@ public class PropServiceImpl {
     public Result deleteAllProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
-        logger.info("ObjectArry：" + ObjectArry);
+        logger.debug("ObjectArry：" + ObjectArry);
 
         Result re;
         int[] temp = propDaoImpl.deleteAllProp(ObjectArry);
 
         if (temp.length != 0) {
-            logger.info("游戏批量删除成功");
+            logger.debug("游戏批量删除成功");
             re = new Result(200, "游戏批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("游戏批量删除失败");
+            logger.debug("游戏批量删除失败");
             re = new Result(400, "游戏批量删除失败", null);
         }
         return re;

@@ -4,16 +4,17 @@ import com.cdk.dao.impl.DataSourceDaoImpl;
 import com.cdk.entity.DataSource;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class DataSourceServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(DataSourceServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(DataSourceServiceImpl.class);
 
     @Autowired
     private DataSourceDaoImpl dataSourceDaoImpl;
@@ -121,7 +122,7 @@ public class DataSourceServiceImpl {
     public Result deleteAllDataSource(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(200, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
@@ -129,13 +130,13 @@ public class DataSourceServiceImpl {
         int[] temp = dataSourceDaoImpl.deleteAllDataSource(ObjectArry);
 
         if (temp.length != 0) {
-            logger.info("数据源批量删除成功");
+            logger.debug("数据源批量删除成功");
             re = new Result(200, "数据源批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(200, "无任何删除操作", null);
         } else {
-            logger.info("数据源批量删除失败");
+            logger.debug("数据源批量删除失败");
             re = new Result(400, "数据源批量删除失败", null);
         }
         return re;

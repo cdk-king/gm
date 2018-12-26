@@ -1,5 +1,7 @@
 package com.cdk.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +13,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 //大多数情况我们只需要返回json格式的字符串而不需要返回json对象，所以加上@Responsebody就行了
 @RestController
 public class DownloadController {
-    private static Logger logger = Logger.getLogger(String.valueOf(DownloadController.class));
+    private static Logger logger = LoggerFactory.getLogger(DownloadController.class);
 
     @CrossOrigin
     @RequestMapping("/api/file/CDKFileDownload")

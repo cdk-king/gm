@@ -59,8 +59,6 @@ public class ApiHandeler {
         MD5 md5 = new MD5();
         md5.Update(timeKeyBytes);
         md5.Update(time);
-
-
         md5.Update(keyBytes);
         md5.Update(key);
         md5.Update(operatorKeyBytes);
@@ -101,16 +99,13 @@ public class ApiHandeler {
 
     public String getApiUrl(Map<String, String> serverUrl) {
         String apiUrl = "";
-        System.out.println(serverUrl);
         if (serverUrl.get("url").matches(".*[a-zA-z].*")) {
-            System.out.println(serverUrl.get("url").matches(".*[a-zA-z].*"));
             if (serverUrl.get("url").indexOf("http") != -1) {
                 apiUrl = serverUrl.get("url").split(":")[0];
             } else {
                 apiUrl = http + serverUrl.get("url").split(":")[0];
             }
         } else {
-            System.out.println(serverUrl.get("url").indexOf("http"));
             if (serverUrl.get("url").indexOf("http") != -1) {
                 apiUrl = serverUrl.get("url").split(":")[0] + ":" + serverUrl.get("url").split(":")[1];
             } else {

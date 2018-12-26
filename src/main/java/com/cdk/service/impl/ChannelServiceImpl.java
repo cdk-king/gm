@@ -4,16 +4,17 @@ import com.cdk.dao.impl.ChannelDaoImpl;
 import com.cdk.entity.Channel;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class ChannelServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(ChannelServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(ChannelServiceImpl.class);
 
     @Autowired
     public ChannelDaoImpl channelDaoImpl;

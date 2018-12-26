@@ -2,14 +2,14 @@ package com.cdk;
 
 import com.cdk.util.DomAnalysis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.util.logging.Logger;
 
 //@SpringBootApplication = (默认属性)@Configuration + @EnableAutoConfiguration + @ComponentScan。
 @EnableAutoConfiguration
@@ -19,13 +19,14 @@ import java.util.logging.Logger;
 @EnableJpaRepositories("com.cdk") // JPA扫描该包路径下的Repositorie
 @EntityScan("com.cdk.entity") // 扫描实体类
 public class Main {
-    private static final Logger logger = Logger.getLogger(Main.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
         DomAnalysis domAnalysis = new DomAnalysis();
         domAnalysis.Analysis("tlog.xml");
-        logger.info("启动成功");
+        
+        logger.debug("启动成功");
     }
 }

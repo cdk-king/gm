@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.Email;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class EmailDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(EmailDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(EmailDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,7 +35,7 @@ public class EmailDaoImpl {
         if (!Objects.equals(email.getEmailContent(), "")) {
             sql += " and a.emailContent LIKE '%" + email.getEmailContent() + "%' ";
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -50,7 +51,7 @@ public class EmailDaoImpl {
     public int addEmail(Email email) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        logger.info(email.getMinRegistrationTime() + "");
+        logger.debug(email.getMinRegistrationTime() + "");
         String minRegistrationTime = "";
         String maxRegistrationTime = "";
 
@@ -67,7 +68,7 @@ public class EmailDaoImpl {
         } else {
             sql += "null,";
         }
-        logger.info("minRegistrationTime:" + minRegistrationTime);
+        logger.debug("minRegistrationTime:" + minRegistrationTime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(email.getMaxRegistrationTime(), null)) {
             maxRegistrationTime = formatter.format(email.getMaxRegistrationTime());
@@ -75,17 +76,17 @@ public class EmailDaoImpl {
         } else {
             sql += "null,";
         }
-        logger.info("maxRegistrationTime:" + maxRegistrationTime);
+        logger.debug("maxRegistrationTime:" + maxRegistrationTime);
 
         sql += "'" + email.getIsOnline() + "','" + email.getSex() + "','" + email.getPlayerNameList() + "','" + email.getPlayerAccountList() + "','" +
                 email.getPlayerIdList() + "','" + email.getAddUser() + "','" + addDatetime + "','0','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int editEmail(Email email) {
-        logger.info(email.getMinRegistrationTime() + "");
+        logger.debug(email.getMinRegistrationTime() + "");
         String minRegistrationTime = "";
         String maxRegistrationTime = "";
 
@@ -101,7 +102,7 @@ public class EmailDaoImpl {
         } else {
 
         }
-        logger.info("minRegistrationTime:" + minRegistrationTime);
+        logger.debug("minRegistrationTime:" + minRegistrationTime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(email.getMaxRegistrationTime(), null)) {
             maxRegistrationTime = formatter.format(email.getMaxRegistrationTime());
@@ -109,12 +110,12 @@ public class EmailDaoImpl {
         } else {
 
         }
-        logger.info("maxRegistrationTime:" + maxRegistrationTime);
+        logger.debug("maxRegistrationTime:" + maxRegistrationTime);
 
         sql += "isOnline='" + email.getIsOnline() + "',sex='" + email.getSex() + "', playerNameList='" + email.getPlayerNameList() +
                 "', playerAccountList='" + email.getPlayerAccountList() + "',playerIdList='" + email.getPlayerIdList() + "' where id = '" +
                 email.getId() + "' ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -125,7 +126,7 @@ public class EmailDaoImpl {
 
         String sql = "update t_send_email SET sendState='" + state + "',sendDatetime = '" + addDatetime + "' where id= '" + email.getId() + "'";
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -133,7 +134,7 @@ public class EmailDaoImpl {
     public int deleteEmail(Email email) {
         String sql = "update t_send_email SET isDelete='1' where id= '" + email.getId() + "'";
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }

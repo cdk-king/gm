@@ -22,7 +22,6 @@ import javax.transaction.Transactional;
 @RestController
 public class ServerTableController {
     private static Logger logger = LoggerFactory.getLogger(ServerTableController.class);
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -33,7 +32,6 @@ public class ServerTableController {
     @RequestMapping("/getAllServer")
     public Result getAllServer(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -42,7 +40,6 @@ public class ServerTableController {
     @RequestMapping("/addServer")
     public Result addServer(@RequestBody Map map) {
         Result re = serverServiceImpl.addServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -52,7 +49,6 @@ public class ServerTableController {
     @ResponseBody
     public Result editServer(@RequestBody Map map) {
         Result re = serverServiceImpl.editServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -60,7 +56,6 @@ public class ServerTableController {
     @RequestMapping("/getAllPlatformList")
     public Result getAllPlatformList(@RequestBody Map map) {
         Result re = serverServiceImpl.getAllPlatformList(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -69,7 +64,6 @@ public class ServerTableController {
     @ResponseBody
     public Result changeStateToNormal_Server(@RequestBody Map map) {
         Result re = serverServiceImpl.changeStateToNormal_Server(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -78,7 +72,6 @@ public class ServerTableController {
     @ResponseBody
     public Result changeStateToFrozen_Server(@RequestBody Map map) {
         Result re = serverServiceImpl.changeStateToFrozen_Server(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -88,7 +81,6 @@ public class ServerTableController {
     @ResponseBody
     public Result deleteServer(@RequestBody Map map) {
         Result re = serverServiceImpl.deleteServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -98,7 +90,6 @@ public class ServerTableController {
     @ResponseBody
     public Result deleteAllServer(@RequestBody Map<String, String> map) {
         Result re = serverServiceImpl.deleteAllServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -116,7 +107,6 @@ public class ServerTableController {
     @RequestMapping("/getServerListForPlatform")
     public Result getServerListForPlatform(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerListForPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -133,7 +123,6 @@ public class ServerTableController {
     @RequestMapping("/getServerTree")
     public Result getServerTree(@RequestBody Map map) {
         Result re = serverServiceImpl.getServerTree(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -147,7 +136,6 @@ public class ServerTableController {
     @RequestMapping("/api/server/SynServerList")
     public Result SynServerList(@RequestBody Map map) {
         Result re = serverServiceImpl.SynServerList(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -161,7 +149,6 @@ public class ServerTableController {
     @RequestMapping("/api/server/setDefaultServer")
     public Result setDefaultServer(@RequestBody Map map) {
         Result re = serverServiceImpl.setDefaultServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -175,7 +162,6 @@ public class ServerTableController {
     @RequestMapping("/api/server/ChangeState")
     public Result ChangeState(@RequestBody Map map) {
         Result re = serverServiceImpl.ChangeState(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -191,7 +177,6 @@ public class ServerTableController {
     public String getServerList(HttpServletRequest request) {
         String platform = request.getParameter("platform");
         String re = serverServiceImpl.getServerList(platform);
-        logger.debug(Divider);
         return re;
     }
 }

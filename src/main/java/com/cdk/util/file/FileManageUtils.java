@@ -1,5 +1,8 @@
 package com.cdk.util.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 2014年9月11日 上午9:37:47 Exp $
  */
 public class FileManageUtils {
+    private static Logger logger = LoggerFactory.getLogger(FileManageUtils.class);
 
     /**
      * 下载文件
@@ -41,7 +45,7 @@ public class FileManageUtils {
                 out.write(buffer, 0, len);
             }
         } catch (FileNotFoundException e) {
-            System.out.println(e);
+            logger.debug(e + "");
         } finally {
             if (in != null) {
                 try {

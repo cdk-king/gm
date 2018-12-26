@@ -4,6 +4,8 @@ package com.cdk.service.impl;
 import com.cdk.dao.impl.UploadDaoImpl;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,25 +14,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class UploadServiceImpl {
-
-    private static Logger logger = Logger.getLogger(String.valueOf(UploadServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(UploadServiceImpl.class);
     @Autowired
     public UploadDaoImpl uploadDaoImpl;
 
     public Result fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser) {
         String fileName = file.getOriginalFilename();
         int size = (int) file.getSize();
-        logger.info(fileName + "-->" + size);
-        logger.info(newName);
+        logger.debug(fileName + "-->" + size);
+        logger.debug(newName);
         File f1 = new File("file");
         if (!f1.exists()) {
             //生成所有目录
             f1.mkdirs();
-            logger.info("文件夹已创建");
+            logger.debug("文件夹已创建");
         }
         if (!Objects.equals(newName, "")) {
             if (newName.indexOf("\\.") != -1) {
@@ -39,7 +39,7 @@ public class UploadServiceImpl {
             } else {
 
                 fileName = newName + "." + fileName.split("\\.")[1];
-                logger.info(fileName);
+                logger.debug(fileName);
             }
         } else {
             //会转义成反斜杠,反斜杠本身就是转义符,所有就成了“\.”
@@ -48,9 +48,9 @@ public class UploadServiceImpl {
         File dest = new File(f1.getAbsolutePath() + "/" + fileName);
         if (!dest.getParentFile().exists()) { //判断文件父目录是否存在
             dest.getParentFile().mkdirs();
-            logger.info("文件夹已创建");
+            logger.debug("文件夹已创建");
         }
-        logger.info("文件夹已创建");
+        logger.debug("文件夹已创建");
         try {
 
             // file.transferTo(new File(path));

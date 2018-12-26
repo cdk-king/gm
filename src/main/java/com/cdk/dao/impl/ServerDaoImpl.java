@@ -1,6 +1,5 @@
 package com.cdk.dao.impl;
 
-import com.cdk.dao.ServerDao;
 import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
 import com.cdk.entity.User;
@@ -8,6 +7,8 @@ import com.cdk.entity.User;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,16 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
-public class ServerDaoImpl implements ServerDao {
-    private static Logger logger = Logger.getLogger(String.valueOf(ServerDaoImpl.class));
+public class ServerDaoImpl {
+    private static Logger logger = LoggerFactory.getLogger(ServerDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public Map<String, Object> getAllServer(Server server, String platformId, String gameName, String isPage, int pageNo, int pageSize) {
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.platformId and b.isDelete!=1  left JOIN \n" +
@@ -59,7 +58,7 @@ public class ServerDaoImpl implements ServerDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -85,7 +84,6 @@ public class ServerDaoImpl implements ServerDao {
         return JsonMap;
     }
 
-    @Override
     public int addServer(Server server) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -94,55 +92,49 @@ public class ServerDaoImpl implements ServerDao {
                         " values ('" + server.getServerId() + "','" + server.getServer() + "','" + server.getServerIp() + "','" +
                         server.getServerPort() + "','" + server.getServer_describe() + "','" + server.getPlatformId() + "','0','" +
                         server.getAddUser() + "','" + addDatetime + "','0','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int editServer(Server server) {
         String sql = "UPDATE t_gameserver as a SET a.serverId = '" + server.getServerId() + "', a.server='" + server.getServer() +
                 "',a.server_describe = '" + server.getServer_describe() + "'," + "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" +
                 server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" + server.getAddUser() +
                 "',a.openServiceTime='" + server.getOpenServiceTime() + "'   where a.id =" + server.getId() + "";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public List<Map<String, Object>> getAllPlatformList() {
         String sql = "select * from t_gameplatform where isDelete != 1 ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         return list;
     }
 
-    @Override
     public int changeStateToNormal_Server(Server server) {
         String sql = "UPDATE t_gameserver SET state='0' where id ='" + server.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int changeStateToFrozen_Server(Server server) {
         String sql = "UPDATE t_gameserver SET state='1' where id ='" + server.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int deleteServer(Server server) {
         String sql = "UPDATE t_gameserver SET isDelete='1' where id ='" + server.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int[] deleteAllServer(String[] serverList) {
         String sql[] = new String[serverList.length];
         String strSql = "";
@@ -151,28 +143,26 @@ public class ServerDaoImpl implements ServerDao {
             sql[i] = "UPDATE  t_gameserver  set isDelete='1' where id = '" + serverList[i] + "'; ";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
 
-    @Override
     public List<Map<String, Object>> getPlatformListForUser(User user) {
         String sql = "SELECT d.platformId as platformId, d.platform as platformName  from t_user as a \n" +
                 "join t_user_roles as b on a.id = b.userId \n" + "join t_role as c on b.roleId = c.id \n" +
                 "join t_gameplatform as d on c.id = d.roleId  \n" + "where a.isDelete != 1 and c.isDelete!=1 and d.isDelete!=1 and  a.id =" +
                 user.getId();
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
 
-    @Override
     public List<Map<String, Object>> getServerListForPlatform(Platform platform) {
         String sql = "SELECT a.serverId as serverId,a.server as serverName,a.serverIp from t_gameserver as a \n" +
                 "join t_gameplatform as b on a.platformId = b.platformId \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.platformId =" +
                 platform.getPlatformId();
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -181,25 +171,24 @@ public class ServerDaoImpl implements ServerDao {
         String sql = "UPDATE t_server_config SET isDefault=0 ";
         int temp = jdbcTemplate.update(sql);
         sql = "UPDATE t_gameserver SET isDefault=1 where id ='" + server.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int ChangeState(Server server) {
         String sql = "UPDATE t_gameserver SET state='" + server.getState() + "' where id ='" + server.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public List<Map<String, Object>> getServerTree() {
         String sql =
                 "SELECT a.id as gameId ,b.platformId as platformId,c.serverId as serverId,a.gameName,b.platform,c.server FROM t_game as a join t_gameplatform as b on a.id = b.gameId \n" +
                         "join t_gameserver as c on b.platformId = c.platformId where a.isDelete!=1 and b.isDelete!=1 and c.isDelete !=1 ORDER BY a.id ,b.id,c.id";
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -208,7 +197,7 @@ public class ServerDaoImpl implements ServerDao {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         int[] temp = null;
-        logger.info("jsonArray.length():" + jsonArray.length());
+        logger.debug("jsonArray.length():" + jsonArray.length());
         if (Objects.equals(jsonArray.length(), 0)) {
             //数据空，退出
             return null;
@@ -244,9 +233,7 @@ public class ServerDaoImpl implements ServerDao {
                 e.printStackTrace();
             }
         }
-
         return temp;
     }
-
 
 }

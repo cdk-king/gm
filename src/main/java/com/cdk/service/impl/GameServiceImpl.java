@@ -4,16 +4,17 @@ import com.cdk.dao.impl.GameDaoImpl;
 import com.cdk.entity.Game;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class GameServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(GameServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(GameServiceImpl.class);
     @Autowired
     public GameDaoImpl gameDaoImpl;
 
@@ -68,10 +69,10 @@ public class GameServiceImpl {
         game.setGameEncryptSign(gameEncryptSign);
         int temp = gameDaoImpl.addGame(game);
         if (temp > 0) {
-            logger.info("游戏添加成功");
+            logger.debug("游戏添加成功");
             re = new Result(200, "游戏添加成功", null);
         } else {
-            logger.info("游戏添加失败");
+            logger.debug("游戏添加失败");
             re = new Result(400, "游戏添加失败", null);
         }
         return re;
@@ -95,10 +96,10 @@ public class GameServiceImpl {
 
         int temp = gameDaoImpl.editGame(game);
         if (temp > 0) {
-            logger.info("游戏信息修改成功");
+            logger.debug("游戏信息修改成功");
             re = new Result(200, "游戏信息更新成功", null);
         } else {
-            logger.info("游戏信息修改失败");
+            logger.debug("游戏信息修改失败");
             re = new Result(400, "游戏信息更新失败", null);
         }
         return re;
@@ -112,10 +113,10 @@ public class GameServiceImpl {
         Result re;
         int temp = gameDaoImpl.deleteGame(game);
         if (temp > 0) {
-            logger.info("游戏删除成功");
+            logger.debug("游戏删除成功");
             re = new Result(200, "游戏删除成功", null);
         } else {
-            logger.info("游戏删除失败");
+            logger.debug("游戏删除失败");
             re = new Result(400, " 游戏删除失败", null);
         }
         return re;
@@ -129,10 +130,10 @@ public class GameServiceImpl {
 
         int temp = gameDaoImpl.changeStateToNormal_Game(game);
         if (temp > 0) {
-            logger.info("游戏解冻成功");
+            logger.debug("游戏解冻成功");
             re = new Result(200, "游戏解冻成功", null);
         } else {
-            logger.info("游戏解冻失败");
+            logger.debug("游戏解冻失败");
             re = new Result(400, "游戏解冻失败", null);
         }
         return re;
@@ -145,10 +146,10 @@ public class GameServiceImpl {
         game.setId(Integer.parseInt(id));
         int temp = gameDaoImpl.changeStateToFrozen_Game(game);
         if (temp > 0) {
-            logger.info("游戏冻结成功");
+            logger.debug("游戏冻结成功");
             re = new Result(200, "游戏冻结成功", null);
         } else {
-            logger.info("游戏冻结失败");
+            logger.debug("游戏冻结失败");
             re = new Result(400, "游戏冻结失败", null);
         }
         return re;
@@ -157,7 +158,7 @@ public class GameServiceImpl {
     public Result deleteAllGame(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(200, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
@@ -165,13 +166,13 @@ public class GameServiceImpl {
         int[] temp = gameDaoImpl.deleteAllGame(ObjectArry);
 
         if (temp.length != 0) {
-            logger.info("游戏批量删除成功");
+            logger.debug("游戏批量删除成功");
             re = new Result(200, "游戏批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(200, "无任何删除操作", null);
         } else {
-            logger.info("游戏批量删除失败");
+            logger.debug("游戏批量删除失败");
             re = new Result(400, "游戏批量删除失败", null);
         }
         return re;

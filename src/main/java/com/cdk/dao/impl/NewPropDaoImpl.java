@@ -5,6 +5,8 @@ import com.cdk.entity.NewProp;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,11 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class NewPropDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(NewPropDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(NewPropDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -26,7 +27,7 @@ public class NewPropDaoImpl {
         String sql[] = new String[jsonArray.length()];
         String strSql = "";
         int temp = 1;
-        logger.info("jsonArray.length:" + jsonArray.length());
+        logger.debug("jsonArray.length:" + jsonArray.length());
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 int index = i;
@@ -60,7 +61,7 @@ public class NewPropDaoImpl {
     public Map<String, Object> getPropTypeList(int gameId) {
         //如果查询结果有个重复的字段，默认取后边
         String sql = "select * from t_prop_upload_type where gameId = " + gameId;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -83,7 +84,7 @@ public class NewPropDaoImpl {
             sql += " and a.propType = '" + newProp.getPropType() + "'";
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {

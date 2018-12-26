@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.PlatformEmail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class PlatformEmailDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlatformEmailDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PlatformEmailDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,7 +35,7 @@ public class PlatformEmailDaoImpl {
         if (!Objects.equals(platformEmail.getEmailContent(), "")) {
             sql += " and a.emailContent LIKE '%" + platformEmail.getEmailContent() + "%' ";
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -54,19 +55,19 @@ public class PlatformEmailDaoImpl {
         if (!Objects.equals(platformEmail.getStartDatetime(), null)) {
             startDatetime = "'" + formatter.format(platformEmail.getStartDatetime()) + "'";
         }
-        logger.info("startDatetime:" + startDatetime);
+        logger.debug("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(platformEmail.getEndDatetime(), null)) {
             endDatetime = "'" + formatter.format(platformEmail.getEndDatetime()) + "'";
         }
-        logger.info("endDatetime:" + endDatetime);
+        logger.debug("endDatetime:" + endDatetime);
 
         String sql =
                 "update t_platform_email SET platformId = '" + platformEmail.getPlatformId() + "',serverList = '" + platformEmail.getServerList() +
                         "',emailTitle = '" + platformEmail.getEmailTitle() + "',emailContent ='" + platformEmail.getEmailContent() +
                         "',sendReason ='" + platformEmail.getSendReason() + "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime +
                         "  where id  = '" + platformEmail.getId() + "'";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -81,25 +82,25 @@ public class PlatformEmailDaoImpl {
         if (!Objects.equals(platformEmail.getStartDatetime(), null)) {
             startDatetime = "'" + formatter.format(platformEmail.getStartDatetime()) + "'";
         }
-        logger.info("startDatetime:" + startDatetime);
+        logger.debug("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(platformEmail.getEndDatetime(), null)) {
             endDatetime = "'" + formatter.format(platformEmail.getEndDatetime()) + "'";
         }
-        logger.info("endDatetime:" + endDatetime);
+        logger.debug("endDatetime:" + endDatetime);
         String sql =
                 "insert into t_platform_email (platformId,serverList,emailTitle,emailContent,sendReason,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete) " +
                         " values ('" + platformEmail.getPlatformId() + "','" + platformEmail.getServerList() + "','" + platformEmail.getEmailTitle() +
                         "','" + platformEmail.getEmailContent() + "','" + platformEmail.getSendReason() + "'," + startDatetime + "," + endDatetime +
                         ",'0','" + platformEmail.getAddUser() + "','" + addDatetime + "','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deletePlatformEmail(PlatformEmail platformEmail) {
         String sql = "UPDATE  t_platform_email  set isDelete = 1 where id = '" + platformEmail.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -109,7 +110,7 @@ public class PlatformEmailDaoImpl {
         String addDatetime = df.format(time * 1000);// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql = "UPDATE  t_platform_email  set sendState = '" + state + "',errorList = '" + error + "' ,startDatetime='" + addDatetime +
                 "' where id = '" + platformEmail.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -123,7 +124,7 @@ public class PlatformEmailDaoImpl {
             sql[i] = "UPDATE  t_platform_email  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

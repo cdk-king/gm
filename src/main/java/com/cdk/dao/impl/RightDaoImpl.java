@@ -1,8 +1,9 @@
 package com.cdk.dao.impl;
 
-import com.cdk.dao.RightDao;
 import com.cdk.entity.Right;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,16 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
-public class RightDaoImpl implements RightDao {
-    private static Logger logger = Logger.getLogger(String.valueOf(RightDaoImpl.class));
+public class RightDaoImpl {
+    private static Logger logger = LoggerFactory.getLogger(RightDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public int addRight(Right right) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -31,12 +30,11 @@ public class RightDaoImpl implements RightDao {
                 "insert into t_right (rightName,rightTag,right_describe,rightSort,rightParentId,addUser,addDatetime,state,isDelete) " + " values ('" +
                         right.getRightName() + "','" + right.getRightTag() + "','" + right.getRight_describe() + "','0','0','" + right.getAddUser() +
                         "','" + addDatetime + "','0','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public Map<String, Object> getRight(Right right, String isPage, int pageNo, int pageSize) {
 
         String sql = "select * from t_right where isDelete != 1  ";
@@ -63,7 +61,7 @@ public class RightDaoImpl implements RightDao {
             sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -76,37 +74,33 @@ public class RightDaoImpl implements RightDao {
         String sql = "UPDATE t_right as a SET a.rightName='" + right.getRightName() + "',a.right_describe = '" + right.getRight_describe() + "'," +
                 "a.rightTag='" + right.getRightTag() + "' ,a.addUser = '" + right.getAddUser() + "',a.rightSort = " + right.getRightSort() +
                 " where a.id =" + right.getId() + "";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int changeStateToFrozen_Right(Right right) {
 
         String sql = "UPDATE t_right SET state='1' where id ='" + right.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int changeStateToNormal_Right(Right right) {
         String sql = "UPDATE t_right SET state='0' where id ='" + right.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int deleteRight(Right right) {
         String sql = "UPDATE t_right SET isDelete='1' where id ='" + right.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int[] deleteAllRight(String[] rightList) {
         String sql[] = new String[rightList.length];
         String strSql = "";
@@ -120,7 +114,7 @@ public class RightDaoImpl implements RightDao {
             //jdbcTemplate.batchUpdate可执行多条语句，同时还能规避执行过程中中断
             //这期间任一条SQL语句出现问题都会回滚[**]会所有语句没有执行前的最初状态
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

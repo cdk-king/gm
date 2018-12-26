@@ -5,6 +5,8 @@ import com.cdk.entity.Player;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,11 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class PlayerDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlayerDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PlayerDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -113,7 +114,7 @@ public class PlayerDaoImpl {
             sql += " and a.combatPower<='" + searchForm.get("maxCombatPower") + "' ";
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -131,7 +132,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isProhibitSpeak='1',prohibitSpeakTime = '" + player.getProhibitSpeakTime() + "'  where playerName ='" +
                 player.getPlayerName() + "' and  playerAccount = '" + player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() +
                 "' and  platformId = '" + player.getPlatformId() + "' and serverId = '" + player.getServerId() + "' ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
             //SaveProhibitSpeakLog(player, userId);
@@ -146,12 +147,12 @@ public class PlayerDaoImpl {
                 "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
                         player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
                         player.getServerId() + "','" + addDatetime + "','" + userId + "','1','" + player.getProhibitSpeakTime() + "')  ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            logger.info("禁言日志保存成功");
+            logger.debug("禁言日志保存成功");
         } else {
-            logger.info("禁言日志保存失败");
+            logger.debug("禁言日志保存失败");
         }
     }
 
@@ -159,7 +160,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isProhibitSpeak='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
                 player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
                 "' and serverId = '" + player.getServerId() + "' ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
         }
@@ -173,12 +174,12 @@ public class PlayerDaoImpl {
                 "insert t_player_prohibitspeak_log (playerName,playerId,playerAccount,platformId,serverId,addDatetime,userId,isToProhibitSpeak,prohibitSpeakTime) values ('" +
                         player.getPlayerName() + "','" + playerId + "','" + playerAccount + "','" + player.getPlatformId() + "','" +
                         player.getServerId() + "','" + addDatetime + "','" + userId + "','0','0')  ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            logger.info("解除禁言日志保存成功");
+            logger.debug("解除禁言日志保存成功");
         } else {
-            logger.info("解除禁言日志保存失败");
+            logger.debug("解除禁言日志保存失败");
         }
     }
 
@@ -186,7 +187,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isBan='1',banTime = '" + player.getBanTime() + "'  where playerName ='" + player.getPlayerName() +
                 "' and  playerAccount = '" + player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" +
                 player.getPlatformId() + "' and serverId = '" + player.getServerId() + "'   ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
         }
@@ -199,12 +200,12 @@ public class PlayerDaoImpl {
         String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
                 player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
                 "','" + addDatetime + "','" + userId + "','1','" + player.getBanTime() + "')  ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            logger.info("禁封日志保存成功");
+            logger.debug("禁封日志保存成功");
         } else {
-            logger.info("禁封日志保存失败");
+            logger.debug("禁封日志保存失败");
         }
     }
 
@@ -212,7 +213,7 @@ public class PlayerDaoImpl {
         String sql = "UPDATE t_player SET isBan='0' where playerName ='" + player.getPlayerName() + "' and  playerAccount = '" +
                 player.getPlayerAccount() + "' and playerId = '" + player.getPlayerId() + "' and  platformId = '" + player.getPlatformId() +
                 "' and serverId = '" + player.getServerId() + "' ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
         }
@@ -225,12 +226,12 @@ public class PlayerDaoImpl {
         String sql = "insert t_player_ban_log (playerAccount,playerId,playerName,platformId,serverId,addDatetime,userId,isToBan,banTime) values ('" +
                 player.getPlayerAccount() + "','" + PlayerIds + "','" + PlayerName + "','" + player.getPlatformId() + "','" + player.getServerId() +
                 "','" + addDatetime + "','" + userId + "','0','0')  ";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         if (temp > 0) {
-            logger.info("解除禁封日志保存成功");
+            logger.debug("解除禁封日志保存成功");
         } else {
-            logger.info("解除禁封日志保存失败");
+            logger.debug("解除禁封日志保存失败");
         }
     }
 

@@ -5,16 +5,17 @@ import com.cdk.dao.impl.NewGiftDaoImpl;
 import com.cdk.entity.NewGift;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class NewGiftServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(NewGiftServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(NewGiftServiceImpl.class);
 
     @Autowired
     public NewGiftDaoImpl newGiftDaoImpl;
@@ -28,7 +29,7 @@ public class NewGiftServiceImpl {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            logger.info("礼包导入失败");
+            logger.debug("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
             return re;
         }
@@ -39,10 +40,10 @@ public class NewGiftServiceImpl {
 
         int temp = newGiftDaoImpl.ImportGift(jsonArray, platformId, gameId);
         if (temp > 0) {
-            logger.info("礼包导入成功");
+            logger.debug("礼包导入成功");
             re = new Result(200, "礼包导入成功", null);
         } else {
-            logger.info("礼包导入失败");
+            logger.debug("礼包导入失败");
             re = new Result(400, "礼包导入失败", null);
         }
         return re;
@@ -71,10 +72,10 @@ public class NewGiftServiceImpl {
         }
         Map<String, Object> JsonMap = newGiftDaoImpl.getGiftUpload(newGift, isPage, pageNo, pageSize, strPlatform);
         if (!Objects.equals(JsonMap.get("list"), 0)) {
-            logger.info("礼包列表获取成功");
+            logger.debug("礼包列表获取成功");
             re = new Result(200, "礼包列表获取成功", JsonMap);
         } else {
-            logger.info("礼包列表获取失败");
+            logger.debug("礼包列表获取失败");
             re = new Result(400, "礼包列表获取失败", null);
         }
         return re;

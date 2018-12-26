@@ -3,6 +3,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.CDK;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,11 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class CDK_DaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(BanIpDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(CDK_DaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -41,7 +42,7 @@ public class CDK_DaoImpl {
             sql += " and a.cdk LIKE '%" + cdk.getCdk() + "%'";
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -66,7 +67,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
         String sql = "select * from t_cdk where couponId = '" + couponId + "' and sequenceId = '" + sequenceId + "' and cdk = '" + cdk +
                 "' and platformId = '" + platformId + "' ";
-        logger.info(sql);
+        logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
@@ -74,7 +75,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
         String sql = "select * from t_coupon where couponId = '" + couponId + "' and end_sequence >= '" + sequenceId + "' and start_sequence <='" +
                 sequenceId + "' and  platformId = '" + platformId + "' ";
-        logger.info(sql);
+        logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if (Objects.equals(list.size(), 0)) {
             return null;
@@ -83,8 +84,8 @@ public class CDK_DaoImpl {
         int salt = Integer.parseInt(strSalt);
 
         String s = couponDaoImpl.generate(couponId, sequenceId, salt);
-        logger.info("Origin" + cdk);
-        logger.info("generate" + s);
+        logger.debug("Origin" + cdk);
+        logger.debug("generate" + s);
         if (Objects.equals(cdk, s)) {
             return list;
         } else {
@@ -95,7 +96,7 @@ public class CDK_DaoImpl {
     public List<Map<String, Object>> checkCDKByServerId(Map map, String cdk, int serverId) {
         String sql = "select * from t_cdk as a join t_gameserver as b on a.platformId = b.platformId where a.couponId = '" + map.get("couponId") +
                 "' and a.sequenceId = '" + map.get("sequenceId") + "' and a.cdk = '" + cdk + "' and b.Id = " + serverId;
-        logger.info(sql);
+        logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }

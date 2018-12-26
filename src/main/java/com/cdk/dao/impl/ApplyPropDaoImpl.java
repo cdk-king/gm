@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.ApplyProp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class ApplyPropDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(ApplyPropDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(ApplyPropDaoImpl.class);
 
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
@@ -25,7 +26,7 @@ public class ApplyPropDaoImpl {
 
     public Map<String, Object> getPlayerTypeList() {
         String sql = "select * from t_player_type";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -35,7 +36,7 @@ public class ApplyPropDaoImpl {
 
     public Map<String, Object> getMoneyTypeList(int gameId) {
         String sql = "select * from t_prop_money_type where gameId=" + gameId;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -45,7 +46,7 @@ public class ApplyPropDaoImpl {
 
     public Map<String, Object> getPropQualityList(int gameId) {
         String sql = "select * from t_prop_quality where gameId=" + gameId;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -63,7 +64,7 @@ public class ApplyPropDaoImpl {
         if (!Objects.equals(applyProp.getServerId(), "") && !Objects.equals(applyProp.getServerId(), 0)) {
             sql += " and a.serverId = '" + applyProp.getServerId() + "' ";
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -80,7 +81,7 @@ public class ApplyPropDaoImpl {
         String addDatetime = df.format(new Date());
 
         String sql = "UPDATE  t_prop_apply  set applyState='" + state + "' , applyDatetime = '" + addDatetime + "' where id = '" + id + "' ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -94,7 +95,7 @@ public class ApplyPropDaoImpl {
                         applyProp.getPlayerType() + "','" + applyProp.getApplyUser() + "','" + applyProp.getApplyReason() + "','0','" +
                         applyProp.getAddUser() + "','" + addDatetime + "','0','" + applyProp.getPlayerAccountList() + "','" +
                         applyProp.getPlayerNameList() + "','" + applyProp.getPlayerIdList() + "','" + applyProp.getMoneyList() + "')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -110,7 +111,7 @@ public class ApplyPropDaoImpl {
                         applyProp.getAddUser() + "',addDatetime='" + addDatetime + "',isDelete='0',playerAccountList='" +
                         applyProp.getPlayerAccountList() + "',playerNameList='" + applyProp.getPlayerNameList() + "',playerIdList='" +
                         applyProp.getPlayerIdList() + "',moneyList='" + applyProp.getMoneyList() + "' where id='" + applyProp.getId() + "';";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -121,7 +122,7 @@ public class ApplyPropDaoImpl {
         String sql =
                 "UPDATE  t_prop_apply  set confirmState='1' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
                         "' where id = '" + applyProp.getId() + "' ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -131,14 +132,14 @@ public class ApplyPropDaoImpl {
         String sql =
                 "UPDATE  t_prop_apply  set confirmState='2' , confirmUserId='" + applyProp.getAddUser() + "' , confirmDatetime = '" + addDatetime +
                         "' where id = '" + applyProp.getId() + "' ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deleteApplyProp(ApplyProp applyProp) {
         String sql = "UPDATE  t_prop_apply  set isDelete='1' " + " where id = '" + applyProp.getId() + "' ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -152,7 +153,7 @@ public class ApplyPropDaoImpl {
             sql[i] = "UPDATE  t_prop_apply  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

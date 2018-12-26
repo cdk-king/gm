@@ -2,11 +2,16 @@ package com.cdk.util;
 
 //Java时间格式转换大全
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatetimeUtil {
+    private static Logger logger = LoggerFactory.getLogger(DatetimeUtil.class);
+
     /**
      * 将长时间格式字符串转换为时间 yyyy-MM-dd HH:mm:ss
      *

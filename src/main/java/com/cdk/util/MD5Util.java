@@ -3,12 +3,20 @@ package com.cdk.util;
 /**
  * Created by yangyibo on 17/2/7.
  */
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.MessageDigest;
+
 /**
  * MD5加密工具
  *
  */
 public class MD5Util {
+    private static Logger logger = LoggerFactory.getLogger(MD5Util.class);
+
     /**
      * Title: MD5加密 生成32位md5码
      * Description: TestDemo
@@ -23,7 +31,7 @@ public class MD5Util {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
-            System.out.println(e.toString());
+            logger.debug(e.toString());
             e.printStackTrace();
             return "";
         }
@@ -39,6 +47,7 @@ public class MD5Util {
         }
         return hexValue.toString();
     }
+
     /**
      * Title: MD5加密
      * Description: TestDemo
@@ -52,21 +61,23 @@ public class MD5Util {
         try {
             md5 = MessageDigest.getInstance("MD5");
         } catch (Exception e) {
-            System.out.println(e.toString());
+            logger.debug(e.toString());
             e.printStackTrace();
             return "";
         }
         char[] charArray = inStr.toCharArray();
         byte[] byteArray = new byte[charArray.length];
 
-        for (int i = 0; i < charArray.length; i++)
+        for (int i = 0; i < charArray.length; i++) {
             byteArray[i] = (byte) charArray[i];
+        }
         byte[] md5Bytes = md5.digest(byteArray);
         StringBuffer hexValue = new StringBuffer();
         for (int i = 0; i < md5Bytes.length; i++) {
             int val = ((int) md5Bytes[i]) & 0xff;
-            if (val < 16)
+            if (val < 16) {
                 hexValue.append("0");
+            }
             hexValue.append(Integer.toHexString(val));
         }
         return hexValue.toString();
@@ -91,16 +102,17 @@ public class MD5Util {
         return s;
 
     }
+
     public static String md5Decode(String str) {
         return convertMD5(convertMD5(str));
     }
 
-//    public static void Main(String[] args) {
-//        String s = new String("13917114404");
-//        System.out.println(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
-//        System.out.println("原始：" + s);
-//        System.out.println("MD5后：" + string2MD5(s));
-//        System.out.println("加密的：" + convertMD5(s));
-//        System.out.println("解密的：" + convertMD5(convertMD5(s)));
-//    }
+    //    public static void Main(String[] args) {
+    //        String s = new String("13917114404");
+    //        logger.debug(md5Decode("a6aeb3ffa55fc7d664406af9c3bd0f1b"));
+    //        logger.debug("原始：" + s);
+    //        logger.debug("MD5后：" + string2MD5(s));
+    //        logger.debug("加密的：" + convertMD5(s));
+    //        logger.debug("解密的：" + convertMD5(convertMD5(s)));
+    //    }
 }

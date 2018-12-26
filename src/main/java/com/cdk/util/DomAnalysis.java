@@ -2,6 +2,8 @@ package com.cdk.util;
 
 import com.alibaba.fastjson.JSON;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -13,14 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class DomAnalysis {
-    private static Logger logger = Logger.getLogger(String.valueOf(DomAnalysis.class));
+    private static Logger logger = LoggerFactory.getLogger(DomAnalysis.class);
 
     public void Analysis(String fileName) {
         List<Map<String, Object>> list = new ArrayList<>();
@@ -68,7 +69,7 @@ public class DomAnalysis {
             e.printStackTrace();
         }
         String jsonString = JSON.toJSONString(list);
-        System.out.println(jsonString);
+        logger.debug(jsonString);
     }
 }
 

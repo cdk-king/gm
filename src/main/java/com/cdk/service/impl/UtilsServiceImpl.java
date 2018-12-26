@@ -5,6 +5,8 @@ import com.cdk.entity.Game;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class UtilsServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(UtilsServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(UtilsServiceImpl.class);
     @Autowired
     public UtilsDaoImpl utilsDaoImpl;
 
@@ -78,7 +79,7 @@ public class UtilsServiceImpl {
         } else {
             re = new Result(400, "用户角色组获取失败", strList);
         }
-        logger.info(strList.toString());
+        logger.debug(strList.toString());
         return re;
     }
 

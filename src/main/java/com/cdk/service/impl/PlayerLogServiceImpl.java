@@ -6,6 +6,8 @@ import com.cdk.dao.impl.UtilsDaoImpl;
 import com.cdk.entity.Player;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class PlayerLogServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PlayerLogServiceImpl.class);
 
     @Autowired
     public PlayerLogDaoImpl playerLogDaoImpl;

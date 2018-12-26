@@ -1,5 +1,7 @@
 package com.cdk.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,15 +12,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Repository
 public class UploadDaoImpl {
+    private static Logger logger = LoggerFactory.getLogger(UploadDaoImpl.class);
 
-    private static Logger logger = Logger.getLogger(String.valueOf(UploadDaoImpl.class));
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
 
     public int fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
@@ -39,7 +39,7 @@ public class UploadDaoImpl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {

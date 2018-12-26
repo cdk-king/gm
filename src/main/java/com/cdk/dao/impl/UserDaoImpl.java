@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.User;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class UserDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(UserDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -27,7 +28,7 @@ public class UserDaoImpl {
         String sql = "insert into t_user (name,account,password,nick,phone,email,state,addDatetime,lastDatetime,isDelete) " + " values ('" +
                 user.getName() + "','" + user.getAccount() + "','" + user.getPassword() + "','" + user.getName() + "','" + user.getPhone() + "'" +
                 ",'" + user.getEmail() + "','0','" + addDatetime + "','" + addDatetime + "','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -36,7 +37,7 @@ public class UserDaoImpl {
         String sql = "select * ,(select GROUP_CONCAT(distinct b.roleId) as info from t_user_roles as b JOIN t_role as c on b.roleId = c.id\n" +
                 "where a.id= b.userId and c.isDelete!=1 and b.isDelete!=1 )\n" + "as roles";
         sql += " from t_user as a where a.isDelete != 1  ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -49,7 +50,7 @@ public class UserDaoImpl {
 
     public Map<String, Object> getUserById(User user) {
         String sql = "select *  from t_user  where id='" + user.getId() + "' and isDelete != 1  ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -81,7 +82,7 @@ public class UserDaoImpl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -98,7 +99,7 @@ public class UserDaoImpl {
         String sql =
                 "UPDATE t_user SET account='" + user.getAccount() + "',name = '" + user.getName() + "',phone = '" + user.getPhone() + "',email = '" +
                         user.getEmail() + "' where id ='" + user.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
@@ -106,14 +107,14 @@ public class UserDaoImpl {
 
     public int checkSameUserName(User user) {
         String sql = "select * from t_user where name='" + user.getName() + "' and isDelete!=1";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int editPassword(User user) {
         String sql = "UPDATE t_user SET password='" + user.getPassword() + "' where id ='" + user.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -121,21 +122,21 @@ public class UserDaoImpl {
     public int changeStateToFrozen_User(User user) {
 
         String sql = "UPDATE t_user SET state='1' where id ='" + user.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int changeStateToNormal_User(User user) {
         String sql = "UPDATE t_user SET state='0' where id ='" + user.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deleteUser(User user) {
         String sql = "UPDATE t_user SET isDelete='1' where id ='" + user.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -148,7 +149,7 @@ public class UserDaoImpl {
             sql[i] = "UPDATE  t_user  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

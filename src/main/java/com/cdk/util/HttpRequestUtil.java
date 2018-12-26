@@ -2,10 +2,10 @@ package com.cdk.util;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cdk.dao.UtilsDao;
-import com.cdk.entity.Game;
-import com.cdk.entity.User;
 import com.twmacinta.util.MD5;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +21,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Http请求工具类
@@ -30,7 +29,7 @@ import java.util.logging.Logger;
  * @version v1.0.1
  */
 public class HttpRequestUtil {
-    static Logger logger = Logger.getLogger("httpRequestLog");
+    private static Logger logger = LoggerFactory.getLogger(HttpRequestUtil.class);
     static boolean proxySet = false;
     static String proxyHost = "127.0.0.1";
     static int proxyPort = 8087;
@@ -97,7 +96,7 @@ public class HttpRequestUtil {
             httpUrlConn.disconnect();
 
         } catch (Exception e) {
-            System.out.println(e.getStackTrace());
+            logger.debug(e.getStackTrace() + "");
         }
         return buffer.toString();
     }
@@ -151,8 +150,8 @@ public class HttpRequestUtil {
             Map<String, List<String>> map = connection.getHeaderFields();
             // 遍历所有的响应头字段
             for (String key : map.keySet()) {
-                //System.out.println(key + "--->" + map.get(key));
-                logger.info(key + "--->" + map.get(key));
+                //logger.debug(key + "--->" + map.get(key));
+                logger.debug(key + "--->" + map.get(key));
             }
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -161,7 +160,7 @@ public class HttpRequestUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
+            logger.debug("发送GET请求出现异常！" + e);
             e.printStackTrace();
         }
         // 使用finally块来关闭输入流
@@ -208,7 +207,6 @@ public class HttpRequestUtil {
             conn.setDoInput(true);
             conn.setRequestMethod("POST");    // POST方法
 
-
             // 设置通用的请求属性
 
             conn.setRequestProperty("accept", "*/*");
@@ -231,7 +229,7 @@ public class HttpRequestUtil {
                 result += line;
             }
         } catch (Exception e) {
-            System.out.println("发送 POST 请求出现异常！" + e);
+            logger.debug("发送 POST 请求出现异常！" + e);
             e.printStackTrace();
         }
         //使用finally块来关闭输出流、输入流
@@ -271,14 +269,6 @@ public class HttpRequestUtil {
         return input;
     }
 
-    //    public static void main(String[] args) {
-    //        //demo:代理访问
-    //        String url = "http://api.adf.ly/api.php";
-    //        String para = "key=youkeyid&youuid=uid&advert_type=int&domain=adf.ly&url=http://somewebsite.com";
-    //
-    //        String sr=HttpRequestUtil.sendPost(url,para,true);
-    //        System.out.println(sr);
-    //    }
 
     //测试百度翻译接口
     public static void testBaiduTranslate() {
@@ -296,61 +286,20 @@ public class HttpRequestUtil {
         md5.Update(salt);
         md5.Update("BIXt419EpxCsbyIuv5PO");
         String sign = md5.asHex();
-        //System.out.println(sign);
+        //logger.debug(sign);
         //q=apple&from=en&to=zh&appid=2015063000000001&salt=1435660288&sign=f89f9594663708c1605f3d736d01d2d4
         String para = "q=" + q + "&from=" + from + "&to=" + to + "&appid=" + appid + "&salt=" + salt + "&sign=" + sign;
-        //System.out.println(para);
+        //logger.debug(para);
         //String sr = HttpRequestUtil.sendGet(url, para);
         String sr = HttpRequestUtil.sendPost(url, para, false);
-        //System.out.println(sr);
+        //logger.debug(sr);
         JSONObject jsonObject = JSONObject.parseObject(sr);
-        //System.out.println(jsonObject.get("trans_result"));
+        //logger.debug(jsonObject.get("trans_result"));
         JSONArray list = jsonObject.getJSONArray("trans_result");
         JSONObject info = list.getJSONObject(0);
         String re = info.getString("dst");
-        System.out.println(re);
-
-        //URLDecoder.decode
-        //        try {
-        //
-        //            System.out.println(URLDecoder.decode(jsonObject.get("trans_result").toString(), "UTF-8"));
-        //        } catch (UnsupportedEncodingException e) {
-        //            e.printStackTrace();
-        //        }
+        logger.debug(re);
     }
 
-    //回调示例
-    public void aaa(UtilsDao a) {
-
-    }
-
-    public void b() {
-        aaa(new UtilsDao() {
-            @Override
-            public List<Map<String, Object>> getUserAllRight(User user) {
-                return null;
-            }
-
-            @Override
-            public List<Map<String, Object>> getUserAllRole(User user) {
-                return null;
-            }
-
-            @Override
-            public List<Map<String, Object>> getGameListForUser(User user) {
-                return null;
-            }
-
-            @Override
-            public List<Map<String, Object>> getPlatformListForGameId(Game game) {
-                return null;
-            }
-
-            @Override
-            public List<Map<String, Object>> getPlatformListForUserIdAndGameId(User user, Game game) {
-                return null;
-            }
-        });
-    }
 }
 

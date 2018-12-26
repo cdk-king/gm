@@ -111,11 +111,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.addServer(server);
         if (temp > 0) {
-            logger.info("服务器添加成功");
+            logger.debug("服务器添加成功");
             re = new Result(200, "服务器添加成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器添加失败");
+            logger.debug("服务器添加失败");
             re = new Result(400, "服务器添加失败", null);
         }
         return re;
@@ -131,7 +131,7 @@ public class ServerServiceImpl extends ApiHandeler {
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String openDatetime = (map.get("openDatetime") != null ? map.get("openDatetime").toString() : "");
-        logger.info(openDatetime);
+        logger.debug(openDatetime);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         server.setServer(serverName);
@@ -145,11 +145,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.editServer(server);
         if (temp > 0) {
-            logger.info("服务器信息修改成功");
+            logger.debug("服务器信息修改成功");
             re = new Result(200, "服务器信息更新成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器信息修改失败");
+            logger.debug("服务器信息修改失败");
             re = new Result(400, "服务器信息更新失败", null);
         }
         return re;
@@ -159,10 +159,10 @@ public class ServerServiceImpl extends ApiHandeler {
         List<Map<String, Object>> list = serverDaoImpl.getAllPlatformList();
         Result re;
         if (list.size() > 0) {
-            logger.info("渠道列表获取成功");
+            logger.debug("渠道列表获取成功");
             re = new Result(200, "渠道列表获取成功", list);
         } else {
-            logger.info("渠道列表获取失败");
+            logger.debug("渠道列表获取失败");
             re = new Result(400, "渠道列表获取失败", list);
         }
         return re;
@@ -175,11 +175,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.changeStateToNormal_Server(server);
         if (temp > 0) {
-            logger.info("服务器解冻成功");
+            logger.debug("服务器解冻成功");
             re = new Result(200, "服务器解冻成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器解冻失败");
+            logger.debug("服务器解冻失败");
             re = new Result(400, "服务器解冻失败", null);
         }
         return re;
@@ -192,11 +192,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.changeStateToFrozen_Server(server);
         if (temp > 0) {
-            logger.info("服务器冻结成功");
+            logger.debug("服务器冻结成功");
             re = new Result(200, "服务器冻结成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器冻结失败");
+            logger.debug("服务器冻结失败");
             re = new Result(400, "服务器冻结失败", null);
         }
         return re;
@@ -209,11 +209,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.deleteServer(server);
         if (temp > 0) {
-            logger.info("服务器删除成功");
+            logger.debug("服务器删除成功");
             re = new Result(200, "服务器删除成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器删除失败");
+            logger.debug("服务器删除失败");
             re = new Result(400, "服务器删除失败", null);
         }
         return re;
@@ -222,7 +222,7 @@ public class ServerServiceImpl extends ApiHandeler {
     public Result deleteAllServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
@@ -230,14 +230,14 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         temp = serverDaoImpl.deleteAllServer(ObjectArry);
         if (temp.length != 0) {
-            logger.info("服务器批量删除成功");
+            logger.debug("服务器批量删除成功");
             re = new Result(200, "服务器批量删除成功", null);
             serverListCache.invalidateAll();
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("服务器批量删除失败");
+            logger.debug("服务器批量删除失败");
             re = new Result(400, "服务器批量删除失败", null);
         }
         return re;
@@ -321,11 +321,11 @@ public class ServerServiceImpl extends ApiHandeler {
         Result re;
         int temp = serverDaoImpl.setDefaultServer(server);
         if (temp > 0) {
-            logger.info("默认服务器设置成功");
+            logger.debug("默认服务器设置成功");
             re = new Result(200, "默认服务器设置成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("默认服务器设置失败");
+            logger.debug("默认服务器设置失败");
             re = new Result(400, "默认服务器设置失败", null);
         }
         return re;
@@ -349,11 +349,11 @@ public class ServerServiceImpl extends ApiHandeler {
         int temp = serverDaoImpl.ChangeState(server);
         Result re;
         if (temp > 0) {
-            logger.info("服务器状态设置成功");
+            logger.debug("服务器状态设置成功");
             re = new Result(200, "服务器状态设置成功", null);
             serverListCache.invalidateAll();
         } else {
-            logger.info("服务器状态设置失败");
+            logger.debug("服务器状态设置失败");
             re = new Result(400, "服务器状态设置失败", null);
         }
         return re;

@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,11 +13,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Repository
 public class DataSourceDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(CouponDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(DataSourceDaoImpl.class);
+
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -29,7 +31,7 @@ public class DataSourceDaoImpl {
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         if (list.size() != 0) {
@@ -50,7 +52,7 @@ public class DataSourceDaoImpl {
                         dataSource.getPlatformId() + "','" + dataSource.getDataSource_id() + "','" + dataSource.getDataSource_url() + "','" +
                         dataSource.getDataSource_name() + "','" + dataSource.getDataSource_password() + "','" + addDatetime + "','" +
                         dataSource.getAddUser() + "','0');";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -63,14 +65,14 @@ public class DataSourceDaoImpl {
                 "',dataSource_url='" + dataSource.getDataSource_url() + "',dataSource_name='" + dataSource.getDataSource_name() + "',addUser='" +
                 dataSource.getAddUser() + "',addDatetime='" + addDatetime + "',dataSource_password='" + dataSource.getDataSource_password() +
                 "',isDelete='0' where id = '" + dataSource.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deleteDataSource(String id) {
         String sql = "update  t_datasource  set isDelete = '1' where id = '" + id + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -83,7 +85,7 @@ public class DataSourceDaoImpl {
             sql[i] = "UPDATE  t_datasource  set isDelete='1' where id = '" + list[i] + "';";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

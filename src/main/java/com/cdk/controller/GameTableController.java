@@ -3,6 +3,8 @@ package com.cdk.controller;
 import com.cdk.result.Result;
 import com.cdk.service.impl.GameServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,14 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.transaction.Transactional;
 
 
 @RestController
 public class GameTableController {
-    private static Logger logger = Logger.getLogger(String.valueOf(GameTableController.class));
+    private static Logger logger = LoggerFactory.getLogger(GameTableController.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

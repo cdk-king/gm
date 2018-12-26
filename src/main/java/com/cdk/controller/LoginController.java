@@ -5,6 +5,8 @@ import com.cdk.result.Result;
 import com.cdk.result.ResultFactory;
 import com.cdk.service.impl.LoginServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.validation.BindingResult;
@@ -16,14 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
 
 @RestController
 public class LoginController {
-    private static Logger logger = Logger.getLogger(String.valueOf(LoginController.class));
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

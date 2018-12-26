@@ -9,6 +9,8 @@ import com.cdk.entity.CDK;
 import com.cdk.result.Result;
 import com.cdk.util.BufferUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class CDK_ServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(CDK_ServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(CDK_ServiceImpl.class);
 
     @Autowired
     public CDK_DaoImpl cdkDaoImpl;

@@ -3,6 +3,8 @@ package com.cdk.controller;
 import com.cdk.result.Result;
 import com.cdk.service.impl.RightServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,11 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 public class RightTableController {
-    private static Logger logger = Logger.getLogger(String.valueOf(RightTableController.class));
+    private static Logger logger = LoggerFactory.getLogger(RightTableController.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

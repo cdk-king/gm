@@ -9,6 +9,8 @@ import com.cdk.util.HttpRequestUtil;
 
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,10 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class BanIpServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(BanIpServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(ApplyPropServiceImpl.class);
 
     @Autowired
     public BanIpDaoImpl banIpDaoImpl;
@@ -169,20 +170,20 @@ public class BanIpServiceImpl extends ApiHandeler {
     public Result deleteAllBanIp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] objectArry = id.split(",");
         Result re;
         int[] temp = banIpDaoImpl.deleteAllBanIp(objectArry);
         if (temp.length != 0) {
-            logger.info("批量删除成功");
+            logger.debug("批量删除成功");
             re = new Result(200, "批量删除成功", null);
         } else if (objectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("批量删除失败");
+            logger.debug("批量删除失败");
             re = new Result(400, "批量删除失败", null);
         }
         return re;

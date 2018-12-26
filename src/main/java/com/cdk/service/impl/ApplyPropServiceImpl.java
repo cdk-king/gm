@@ -8,6 +8,8 @@ import com.cdk.util.HttpRequestUtil;
 
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class ApplyPropServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(ApplyPropServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(ApplyPropServiceImpl.class);
 
     @Autowired
     public ApplyPropDaoImpl applyPropDaoImpl;
@@ -197,10 +198,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.addApplyProp(applyProp);
         if (temp > 0) {
-            logger.info("道具申请添加成功");
+            logger.debug("道具申请添加成功");
             re = new Result(200, "道具申请添加成功", null);
         } else {
-            logger.info("道具申请添加失败");
+            logger.debug("道具申请添加失败");
             re = new Result(400, "道具申请添加失败", null);
         }
         return re;
@@ -249,10 +250,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.editApplyProp(applyProp);
         if (temp > 0) {
-            logger.info("道具申请修改成功");
+            logger.debug("道具申请修改成功");
             re = new Result(200, "道具申请修改成功", null);
         } else {
-            logger.info("道具申请修改失败");
+            logger.debug("道具申请修改失败");
             re = new Result(400, "道具申请修改失败", null);
         }
         return re;
@@ -270,10 +271,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.confirmApplyProp(applyProp);
         if (temp > 0) {
-            logger.info("道具申请审核通过成功");
+            logger.debug("道具申请审核通过成功");
             re = new Result(200, "道具申请审核通过成功", null);
         } else {
-            logger.info("道具申请审核通过失败");
+            logger.debug("道具申请审核通过失败");
             re = new Result(400, "道具申请审核通过失败", null);
         }
         return re;
@@ -291,10 +292,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.notConfirmApplyProp(applyProp);
         if (temp > 0) {
-            logger.info("道具申请审核不通过成功");
+            logger.debug("道具申请审核不通过成功");
             re = new Result(200, "道具申请审核不通过成功", null);
         } else {
-            logger.info("道具申请审核不通过失败");
+            logger.debug("道具申请审核不通过失败");
             re = new Result(400, "道具申请审核不通过失败", null);
         }
         return re;
@@ -309,10 +310,10 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         int temp = applyPropDaoImpl.deleteApplyProp(applyProp);
         if (temp > 0) {
-            logger.info("道具申请删除成功");
+            logger.debug("道具申请删除成功");
             re = new Result(200, "道具申请删除成功", null);
         } else {
-            logger.info("道具申请删除失败");
+            logger.debug("道具申请删除失败");
             re = new Result(400, "道具申请删除失败", null);
         }
         return re;
@@ -321,7 +322,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
     public Result deleteAllApplyProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] objectArry = id.split(",");
@@ -329,13 +330,13 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String sql[] = new String[objectArry.length];
         int[] temp = applyPropDaoImpl.deleteAllApplyProp(objectArry);
         if (temp.length != 0) {
-            logger.info("道具申请批量删除成功");
+            logger.debug("道具申请批量删除成功");
             re = new Result(200, "道具申请批量删除成功", null);
         } else if (objectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("道具申请批量删除失败");
+            logger.debug("道具申请批量删除失败");
             re = new Result(400, "道具申请批量删除失败", null);
         }
         return re;

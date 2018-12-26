@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdk.entity.NewGift;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class NewGiftDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(NewGiftDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(NewGiftDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -66,7 +67,7 @@ public class NewGiftDaoImpl {
             sql += " and a.giftTag LIKE '%" + newGift.getGiftTag() + "%'";
         }
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {

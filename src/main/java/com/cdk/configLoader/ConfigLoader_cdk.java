@@ -1,5 +1,8 @@
 package com.cdk.configLoader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +16,7 @@ import java.sql.Statement;
 import java.util.Objects;
 
 public class ConfigLoader_cdk {
-
+    private static Logger logger = LoggerFactory.getLogger(ConfigLoader_cdk.class);
     private String dbUrl = "";
     private String dbName = "";
     private String dbPwd = "";
@@ -41,7 +44,7 @@ public class ConfigLoader_cdk {
                         AnalysisStrDB(str);
                     }
                     fr.close();
-                    System.out.println("----------------------------------");
+                    logger.debug("----------------------------------");
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -67,19 +70,19 @@ public class ConfigLoader_cdk {
             key = "spring.datasource.url=";
             if (str.indexOf(key) != -1) {
                 int index = str.indexOf(key) + key.length();
-                System.out.println(str.substring(index, len));
+                logger.debug(str.substring(index, len));
                 dbUrl = str.substring(index, len);
             }
             key = "spring.datasource.username=";
             if (str.indexOf(key) != -1) {
                 int index = str.indexOf(key) + key.length();
-                System.out.println(str.substring(index, len));
+                logger.debug(str.substring(index, len));
                 dbName = str.substring(index, len);
             }
             key = "spring.datasource.password=";
             if (str.indexOf(key) != -1) {
                 int index = str.indexOf(key) + key.length();
-                System.out.println(str.substring(index, len));
+                logger.debug(str.substring(index, len));
                 dbPwd = str.substring(index, len);
             }
             if (!Objects.equals(dbUrl, "") && !Objects.equals(dbName, "") && !Objects.equals(dbPwd, "")) {
@@ -109,10 +112,10 @@ public class ConfigLoader_cdk {
             // 注册 JDBC 驱动
             Class.forName("com.mysql.jdbc.Driver");
             // 打开链接
-            System.out.println("连接数据库...");
+            logger.debug("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             // 执行查询
-            System.out.println(" 实例化Statement对象...");
+            logger.debug(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
             sql = "SELECT id, name, url FROM websites";

@@ -4,17 +4,18 @@ import com.cdk.dao.impl.PlatformDaoImpl;
 import com.cdk.entity.Platform;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class PlatformServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlatformServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(PlatformServiceImpl.class);
     @Autowired
     public PlatformDaoImpl platformDaoImpl;
 
@@ -61,10 +62,10 @@ public class PlatformServiceImpl {
         Result re;
         List<Map<String, Object>> list = platformDaoImpl.getAllGameList();
         if (list.size() > 0) {
-            logger.info("游戏列表获取成功");
+            logger.debug("游戏列表获取成功");
             re = new Result(200, "游戏列表获取成功", list);
         } else {
-            logger.info("游戏列表获取失败");
+            logger.debug("游戏列表获取失败");
             re = new Result(400, "游戏列表获取失败", list);
         }
         return re;
@@ -74,10 +75,10 @@ public class PlatformServiceImpl {
         Result re;
         List<Map<String, Object>> list = platformDaoImpl.getAllRoleList();
         if (list.size() > 0) {
-            logger.info("角色列表获取成功");
+            logger.debug("角色列表获取成功");
             re = new Result(200, "角色列表获取成功", list);
         } else {
-            logger.info("角色列表获取失败");
+            logger.debug("角色列表获取失败");
             re = new Result(400, "角色列表获取失败", list);
         }
         return re;
@@ -103,10 +104,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.addPlatform(platform);
         if (temp > 0) {
-            logger.info("权限添加成功");
+            logger.debug("权限添加成功");
             re = new Result(200, "权限添加成功", null);
         } else {
-            logger.info("权限添加失败");
+            logger.debug("权限添加失败");
             re = new Result(400, "权限添加失败", null);
         }
         return re;
@@ -134,10 +135,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
         if (temp > 0) {
-            logger.info("平台信息修改成功");
+            logger.debug("平台信息修改成功");
             re = new Result(200, "平台信息更新成功", null);
         } else {
-            logger.info("平台信息修改失败");
+            logger.debug("平台信息修改失败");
             re = new Result(400, "平台信息更新失败", null);
         }
         return re;
@@ -150,10 +151,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.editPlatform(platform);
         if (temp > 0) {
-            logger.info("平台删除成功");
+            logger.debug("平台删除成功");
             re = new Result(200, "平台删除成功", null);
         } else {
-            logger.info("平台删除失败");
+            logger.debug("平台删除失败");
             re = new Result(400, "平台删除失败", null);
 
         }
@@ -167,10 +168,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.changeStateToNormal_Platform(platform);
         if (temp > 0) {
-            logger.info("平台解冻成功");
+            logger.debug("平台解冻成功");
             re = new Result(200, "平台解冻成功", null);
         } else {
-            logger.info("平台解冻失败");
+            logger.debug("平台解冻失败");
             re = new Result(400, "平台解冻失败", null);
         }
         return re;
@@ -183,10 +184,10 @@ public class PlatformServiceImpl {
         Result re;
         int temp = platformDaoImpl.changeStateToFrozen_Platform(platform);
         if (temp > 0) {
-            logger.info("平台冻结成功");
+            logger.debug("平台冻结成功");
             re = new Result(200, "平台冻结成功", null);
         } else {
-            logger.info("平台冻结失败");
+            logger.debug("平台冻结失败");
             re = new Result(400, "平台冻结失败", null);
         }
         return re;
@@ -195,7 +196,7 @@ public class PlatformServiceImpl {
     public Result deleteAllPlatform(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
@@ -203,13 +204,13 @@ public class PlatformServiceImpl {
         int[] temp = new int[ObjectArry.length];
         temp = platformDaoImpl.deleteAllPlatform(ObjectArry);
         if (temp.length != 0) {
-            logger.info("平台批量删除成功");
+            logger.debug("平台批量删除成功");
             re = new Result(200, "平台批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("平台批量删除失败");
+            logger.debug("平台批量删除失败");
             re = new Result(400, "平台批量删除失败", null);
         }
         return re;

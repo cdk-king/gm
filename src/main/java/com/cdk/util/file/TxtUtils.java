@@ -1,6 +1,9 @@
 package com.cdk.util.file;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 2014年9月11日 上午8:40:02 Exp $
  */
 public class TxtUtils {
-
+    private static Logger logger = LoggerFactory.getLogger(TxtUtils.class);
 
     @SuppressWarnings("rawtypes")
     public static File writeTxtFile(String channelCode, List contentList, LinkedHashMap map, String filePath, String readStr, String fileName)
@@ -27,7 +30,7 @@ public class TxtUtils {
         File file = new File(filePath);
         if (!file.exists()) {
             file.mkdir();
-            System.out.println("文件夹已创建");
+            logger.debug("文件夹已创建");
         }
         //定义文件名格式并创建
         File txtFile = File.createTempFile(fileName, ".txt", new File(filePath));
@@ -72,7 +75,7 @@ public class TxtUtils {
                 }
             }
             try {
-                System.out.println("数据filein1：" + filein1);
+                logger.debug("数据filein1：" + filein1);
                 filein1 = String.valueOf(num) + filein1;
                 writer = new FileWriter(txtFile, true);
                 writer.write(filein1);

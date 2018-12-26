@@ -1,8 +1,9 @@
 package com.cdk.dao.impl;
 
-import com.cdk.dao.PlatformDao;
 import com.cdk.entity.Platform;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,16 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
-public class PlatformDaoImpl implements PlatformDao {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlatformDaoImpl.class));
+public class PlatformDaoImpl {
+    private static Logger logger = LoggerFactory.getLogger(PlatformDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public Map<String, Object> getAllPlatform(Platform platform, String gameName, String isPage, int pageNo, int pageSize) {
 
         String sql = "select a.*,b.gameName,c.role from t_gameplatform as a left JOIN " +
@@ -52,7 +51,7 @@ public class PlatformDaoImpl implements PlatformDao {
 
         sql += " order by a.id ";
 
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -66,21 +65,18 @@ public class PlatformDaoImpl implements PlatformDao {
         return JsonMap;
     }
 
-    @Override
     public List<Map<String, Object>> getAllGameList() {
         String sql = "select * from t_game where isDelete != 1 ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
 
-    @Override
     public List<Map<String, Object>> getAllRoleList() {
         String sql = "select * from t_role where isDelete != 1 ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
 
-    @Override
     public int addPlatform(Platform platform) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -89,48 +85,43 @@ public class PlatformDaoImpl implements PlatformDao {
                         " values ('" + platform.getPlatformId() + "','" + platform.getPlatform() + "','" + platform.getPlatformTag() + "','" +
                         platform.getPlatform_describe() + "','" + platform.getGameId() + "','" + platform.getRoleId() + "','0','" +
                         platform.getAddUser() + "','" + addDatetime + "','0','0')";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int editPlatform(Platform platform) {
         String sql = "UPDATE t_gameplatform as a SET a.platformId = '" + platform.getPlatformId() + "' , a.platform='" + platform.getPlatform() +
                 "',a.platform_describe = '" + platform.getPlatform_describe() + "'," + "a.gameId='" + platform.getGameId() + "',a.roleId='" +
                 platform.getRoleId() + "'," + "a.platformTag='" + platform.getPlatformTag() + "' ,a.addUser = '" + platform.getAddUser() +
                 "' where a.id =" + platform.getId() + "";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int deletePlatform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET isDelete='1' where id ='" + platform.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int changeStateToNormal_Platform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET state='0' where id ='" + platform.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    @Override
     public int changeStateToFrozen_Platform(Platform platform) {
         String sql = "UPDATE t_gameplatform SET state='1' where id ='" + platform.getId() + "'";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
 
-    @Override
     public int[] deleteAllPlatform(String[] platformList) {
         String sql[] = new String[platformList.length];
         String strSql = "";
@@ -139,7 +130,7 @@ public class PlatformDaoImpl implements PlatformDao {
             sql[i] = "UPDATE  t_gameplatform  set isDelete='1' where id = '" + platformList[i] + "'; ";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

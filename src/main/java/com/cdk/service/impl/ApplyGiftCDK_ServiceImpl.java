@@ -10,6 +10,8 @@ import com.cdk.result.Result;
 import com.cdk.util.BufferUtil;
 import com.twmacinta.util.MD5;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class ApplyGiftCDK_ServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(ApplyGiftCDK_ServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(ApplyGiftCDK_ServiceImpl.class);
     public static final int GIFTID_OFFSET = 1;
     private static final String SIGN_KEY = "cdk";
     private static final byte[] SIGN_KEY_BYTES = SIGN_KEY.getBytes(Charset.forName("UTF-8"));
@@ -114,7 +115,7 @@ public class ApplyGiftCDK_ServiceImpl {
         String strCouponID = String.valueOf(CouponId);
         String strOperator = String.valueOf(platformId);
         String strCount = String.valueOf(count);
-        logger.info(SIGN_KEY_BYTES + "");
+        logger.debug(SIGN_KEY_BYTES + "");
         MD5 md5 = new MD5();
         md5.Update(strCouponID);
         md5.Update(strOperator);

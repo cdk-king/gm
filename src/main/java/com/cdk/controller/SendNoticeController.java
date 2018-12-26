@@ -3,6 +3,8 @@ package com.cdk.controller;
 import com.cdk.result.Result;
 import com.cdk.service.impl.SendNoticeServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 public class SendNoticeController {
-    private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeController.class));
+    private static Logger logger = LoggerFactory.getLogger(SendNoticeController.class);
 
     public static final String Divider = "############################";
     @Autowired
@@ -70,22 +71,18 @@ public class SendNoticeController {
         return null;
     }
 
-    Logger logger2 = Logger.getLogger("sendNotice");
-
     public void sendNotice(int timeInterval, int cycleTime, Map map) {
         new Thread() {
             public void run() {
                 long a = System.currentTimeMillis();
                 int c = 0;
                 Boolean isContinue = true;
-                logger2.info("startSendNotice");
                 while (isContinue) {
                     long b = System.currentTimeMillis();
                     if ((b - a) > (1000 * timeInterval)) {
                         c++;
                         a = System.currentTimeMillis();
                         Result re = sendNoticeServiceImpl.sendNotice(map);
-                        logger2.info(c + "-SendNoticeResult:" + re);
                     }
                     if (c >= cycleTime) {
                         isContinue = false;

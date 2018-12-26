@@ -8,6 +8,8 @@ import com.cdk.result.Result;
 import com.cdk.util.ApiHandeler;
 import com.cdk.util.HttpRequestUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,10 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class SendNoticeServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(SendNoticeServiceImpl.class);
 
     @Autowired
     public SendNoticeDaoImpl sendNoticeDaoImpl;
@@ -75,10 +76,10 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
         int temp = sendNoticeDaoImpl.addNotice(notice);
         if (temp > 0) {
-            logger.info("公告添加成功");
+            logger.debug("公告添加成功");
             re = new Result(200, "公告添加成功", null);
         } else {
-            logger.info("公告添加失败");
+            logger.debug("公告添加失败");
             re = new Result(400, "公告添加失败", null);
         }
         return re;
@@ -127,7 +128,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
     public Result deleteAllNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
@@ -136,13 +137,13 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         String sql[] = new String[objectArry.length];
         int[] temp = sendNoticeDaoImpl.deleteAllNotice(objectArry);
         if (temp.length != 0) {
-            logger.info("公告批量删除成功");
+            logger.debug("公告批量删除成功");
             re = new Result(200, "公告批量删除成功", null);
         } else if (objectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("公告批量删除失败");
+            logger.debug("公告批量删除失败");
             re = new Result(400, "公告批量删除失败", null);
         }
         return re;
@@ -215,17 +216,17 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             error = error.substring(0, error.length() - 1);
 
         }
-        logger.info("error:" + error);
+        logger.debug("error:" + error);
         Result re;
 
         if (error.length() > 0 || datas.length() == 0) {
             int temp = sendNoticeDaoImpl.sendNoticeToError(id);
-            logger.info("广播发送失败");
+            logger.debug("广播发送失败");
             re = new Result(400, "广播发送失败", error);
 
         } else {
             int temp = sendNoticeDaoImpl.sendNotice(id);
-            logger.info("广播发送成功");
+            logger.debug("广播发送成功");
             re = new Result(200, "广播发送成功", datas);
         }
         return re;

@@ -4,17 +4,18 @@ import com.cdk.dao.impl.RoleDaoImpl;
 import com.cdk.entity.Role;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class RoleServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(RoleServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
     @Autowired
     public RoleDaoImpl roleDaoImpl;
 
@@ -30,10 +31,10 @@ public class RoleServiceImpl {
         Result re;
         int temp = roleDaoImpl.addRole(role);
         if (temp > 0) {
-            logger.info("角色添加成功");
+            logger.debug("角色添加成功");
             re = new Result(200, "角色添加成功", null);
         } else {
-            logger.info("角色添加失败");
+            logger.debug("角色添加失败");
             re = new Result(400, "角色添加失败", null);
         }
         return re;
@@ -44,10 +45,10 @@ public class RoleServiceImpl {
         Result re;
         List<Map<String, Object>> list = roleDaoImpl.getRoleById(id);
         if (list.size() > 0) {
-            logger.info("角色信息获取成功");
+            logger.debug("角色信息获取成功");
             re = new Result(200, "角色信息获取成功", list);
         } else {
-            logger.info("角色信息获取失败");
+            logger.debug("角色信息获取失败");
             re = new Result(400, "角色信息获取失败", list);
         }
         return re;
@@ -105,10 +106,10 @@ public class RoleServiceImpl {
 
         int temp = roleDaoImpl.editRole(role);
         if (temp > 0) {
-            logger.info("角色信息修改成功");
+            logger.debug("角色信息修改成功");
             re = new Result(200, "角色信息更新成功", null);
         } else {
-            logger.info("角色信息修改失败");
+            logger.debug("角色信息修改失败");
             re = new Result(400, "角色信息更新失败", null);
         }
 
@@ -122,10 +123,10 @@ public class RoleServiceImpl {
         Result re;
         int temp = roleDaoImpl.changeStateToFrozen_Role(user);
         if (temp > 0) {
-            logger.info("角色冻结成功");
+            logger.debug("角色冻结成功");
             re = new Result(200, "角色冻结成功", null);
         } else {
-            logger.info("角色冻结失败");
+            logger.debug("角色冻结失败");
             re = new Result(400, "角色冻结失败", null);
         }
         return re;
@@ -138,10 +139,10 @@ public class RoleServiceImpl {
         Result re;
         int temp = roleDaoImpl.changeStateToNormal_Role(role);
         if (temp > 0) {
-            logger.info("角色解冻成功");
+            logger.debug("角色解冻成功");
             re = new Result(200, "角色解冻成功", null);
         } else {
-            logger.info("角色解冻失败");
+            logger.debug("角色解冻失败");
             re = new Result(400, "角色解冻失败", null);
         }
         return re;
@@ -154,10 +155,10 @@ public class RoleServiceImpl {
         Result re;
         int temp = roleDaoImpl.deleteRole(role);
         if (temp > 0) {
-            logger.info("角色删除成功");
+            logger.debug("角色删除成功");
             re = new Result(200, "角色删除成功", null);
         } else {
-            logger.info("角色删除失败");
+            logger.debug("角色删除失败");
             re = new Result(400, "角色删除失败", null);
 
         }
@@ -168,7 +169,7 @@ public class RoleServiceImpl {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String deleteRoleRights = map.get("deleteRoleRights").toString();
         if (Objects.equals(deleteRoleRights, "")) {
-            logger.info("无任何添加操作");
+            logger.debug("无任何添加操作");
             return new Result(200, "无任何添加操作", null);
         }
 
@@ -182,13 +183,13 @@ public class RoleServiceImpl {
         temp = roleDaoImpl.deleteRoleRights(Integer.parseInt(id), ObjectArry);
 
         if (temp > 0 && temp != 99) {
-            logger.info("角色权限删除成功");
+            logger.debug("角色权限删除成功");
             re = new Result(200, "角色权限删除成功", null);
         } else if (temp == 99) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("角色权限删除失败");
+            logger.debug("角色权限删除失败");
             re = new Result(400, "角色权限删除失败", null);
         }
         return re;
@@ -198,20 +199,20 @@ public class RoleServiceImpl {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String rightId = (map.get("rightId") != null ? map.get("rightId").toString() : "");
         if (Objects.equals(rightId, "")) {
-            logger.info("无任何添加操作");
+            logger.debug("无任何添加操作");
             return new Result(200, "无任何添加操作", null);
         }
         Result re;
         int temp = 0;
         temp = roleDaoImpl.addRight(id, rightId);
         if (temp > 0) {
-            logger.info("权限添加成功");
+            logger.debug("权限添加成功");
             re = new Result(200, "权限添加成功", null);
         } else if (temp == 99) {
-            logger.info("权限已存在");
+            logger.debug("权限已存在");
             re = new Result(200, "权限已存在", null);
         } else {
-            logger.info("权限添加失败");
+            logger.debug("权限添加失败");
             re = new Result(400, "权限添加失败", null);
         }
         return re;
@@ -223,7 +224,7 @@ public class RoleServiceImpl {
         String InsertRoleRights = map.get("InsertRoleRights").toString();
 
         if (Objects.equals(InsertRoleRights, "")) {
-            logger.info("无任何添加操作");
+            logger.debug("无任何添加操作");
             return new Result(200, "无任何添加操作", null);
         }
 
@@ -237,13 +238,13 @@ public class RoleServiceImpl {
         temp = roleDaoImpl.InsertRoleRights(Integer.parseInt(id), ObjectArry);
 
         if (temp > 0 && temp != 99) {
-            logger.info("角色权限添加成功");
+            logger.debug("角色权限添加成功");
             re = new Result(200, "角色权限添加成功", null);
         } else if (temp == 99) {
-            logger.info("无任何添加操作");
+            logger.debug("无任何添加操作");
             re = new Result(200, "无任何添加操作", null);
         } else {
-            logger.info("角色权限添加失败");
+            logger.debug("角色权限添加失败");
             re = new Result(400, "角色权限添加失败", null);
         }
         return re;
@@ -252,7 +253,7 @@ public class RoleServiceImpl {
     public Result deleteAllRole(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(200, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
@@ -260,13 +261,13 @@ public class RoleServiceImpl {
         int[] temp = new int[ObjectArry.length];
         temp = roleDaoImpl.deleteAllRole(ObjectArry);
         if (temp.length != 0) {
-            logger.info("角色批量删除成功");
+            logger.debug("角色批量删除成功");
             re = new Result(200, "角色批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("角色批量删除失败");
+            logger.debug("角色批量删除失败");
             re = new Result(400, "角色批量删除失败", null);
         }
         return re;

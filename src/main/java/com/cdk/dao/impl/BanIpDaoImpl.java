@@ -2,6 +2,8 @@ package com.cdk.dao.impl;
 
 import com.cdk.entity.BanIp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
 public class BanIpDaoImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(BanIpDaoImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(BanIpDaoImpl.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -30,7 +31,7 @@ public class BanIpDaoImpl {
         if (banIp.getServerId() != 0) {
             sql += " and a.serverId ='" + banIp.getServerId() + "' ";
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -49,7 +50,7 @@ public class BanIpDaoImpl {
         String sql = "insert t_ban_ip (platformId,serverId,ip,banLong,note,addUser,isDelete,addDatetime,banState) values ('" + banIp.getPlatformId() +
                 "','" + banIp.getServerId() + "','" + banIp.getIp() + "','" + banIp.getBanLong() + "','" + banIp.getNote() + "','" +
                 banIp.getAddUser() + "','0','" + addDatetime + "',0)";
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -63,14 +64,14 @@ public class BanIpDaoImpl {
         } else {
             sql = "update t_ban_ip set banState = '" + banState + "' where id = " + id;
         }
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
     public int deleteBanIp(int id) {
         String sql = "update t_ban_ip set isDelete = '1' where id = " + id;
-        logger.info(sql);
+        logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
@@ -83,7 +84,7 @@ public class BanIpDaoImpl {
             sql[i] = "UPDATE  t_ban_ip  set isDelete='1' where id = '" + idList[i] + "';";
             strSql += sql;
         }
-        logger.info("sql：" + strSql);
+        logger.debug("sql：" + strSql);
         temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }

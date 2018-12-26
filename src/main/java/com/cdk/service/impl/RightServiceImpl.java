@@ -4,16 +4,17 @@ import com.cdk.dao.impl.RightDaoImpl;
 import com.cdk.entity.Right;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class RightServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(RightServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(RightServiceImpl.class);
     @Autowired
     public RightDaoImpl rightDaoImpl;
 
@@ -32,10 +33,10 @@ public class RightServiceImpl {
         Result re;
         int temp = rightDaoImpl.addRight(right);
         if (temp > 0) {
-            logger.info("权限添加成功");
+            logger.debug("权限添加成功");
             re = new Result(200, "权限添加成功", null);
         } else {
-            logger.info("权限添加失败");
+            logger.debug("权限添加失败");
             re = new Result(400, "权限添加失败", null);
         }
         return re;
@@ -97,10 +98,10 @@ public class RightServiceImpl {
         Result re;
         int temp = rightDaoImpl.editRight(right);
         if (temp > 0) {
-            logger.info("权限信息修改成功");
+            logger.debug("权限信息修改成功");
             re = new Result(200, "权限信息更新成功", null);
         } else {
-            logger.info("权限信息修改失败");
+            logger.debug("权限信息修改失败");
             re = new Result(400, "权限信息更新失败", null);
 
         }
@@ -114,10 +115,10 @@ public class RightServiceImpl {
         Result re;
         int temp = rightDaoImpl.changeStateToFrozen_Right(right);
         if (temp > 0) {
-            logger.info("权限冻结成功");
+            logger.debug("权限冻结成功");
             re = new Result(200, "权限冻结成功", null);
         } else {
-            logger.info("权限冻结失败");
+            logger.debug("权限冻结失败");
             re = new Result(400, "权限冻结失败", null);
         }
         return re;
@@ -130,10 +131,10 @@ public class RightServiceImpl {
         Result re;
         int temp = rightDaoImpl.changeStateToNormal_Right(right);
         if (temp > 0) {
-            logger.info("权限解冻成功");
+            logger.debug("权限解冻成功");
             re = new Result(200, "权限解冻成功", null);
         } else {
-            logger.info("权限解冻失败");
+            logger.debug("权限解冻失败");
             re = new Result(400, "权限解冻失败", null);
         }
         return re;
@@ -146,10 +147,10 @@ public class RightServiceImpl {
         Result re;
         int temp = rightDaoImpl.deleteRight(right);
         if (temp > 0) {
-            logger.info("权限删除成功");
+            logger.debug("权限删除成功");
             re = new Result(200, "权限删除成功", null);
         } else {
-            logger.info("权限删除失败");
+            logger.debug("权限删除失败");
             re = new Result(400, "权限删除失败", null);
 
         }
@@ -159,7 +160,7 @@ public class RightServiceImpl {
     public Result deleteAllRight(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
-            logger.info("无任何批量删除操作");
+            logger.debug("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
@@ -169,13 +170,13 @@ public class RightServiceImpl {
         temp = rightDaoImpl.deleteAllRight(ObjectArry);
 
         if (temp.length != 0) {
-            logger.info("权限批量删除成功");
+            logger.debug("权限批量删除成功");
             re = new Result(200, "权限批量删除成功", null);
         } else if (ObjectArry.length == 0) {
-            logger.info("无任何删除操作");
+            logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.info("权限批量删除失败");
+            logger.debug("权限批量删除失败");
             re = new Result(400, "权限批量删除失败", null);
         }
         return re;

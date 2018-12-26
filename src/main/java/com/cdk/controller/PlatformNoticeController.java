@@ -5,6 +5,8 @@ import com.cdk.service.impl.PlatformNoticeServiceImpl;
 
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 public class PlatformNoticeController {
-    private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeController.class));
+    private static Logger logger = LoggerFactory.getLogger(PlatformNoticeController.class);
 
     @Autowired
     private PlatformNoticeServiceImpl platformNoticeServiceImpl;

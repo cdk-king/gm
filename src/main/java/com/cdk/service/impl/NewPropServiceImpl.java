@@ -7,16 +7,17 @@ import com.cdk.result.Result;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class NewPropServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(NewPropServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(NewPropServiceImpl.class);
 
     @Autowired
     public NewPropDaoImpl newPropDaoImpl;
@@ -30,7 +31,7 @@ public class NewPropServiceImpl {
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         if (Objects.equals(strPlatformId, "")) {
-            logger.info("道具导入失败");
+            logger.debug("道具导入失败");
             re = new Result(400, "道具导入失败", null);
             return re;
         }
@@ -39,17 +40,17 @@ public class NewPropServiceImpl {
             platformId = Integer.parseInt(strPlatformId);
             gameId = Integer.parseInt(strGameId);
             jsonArray = new JSONArray(strlist);
-            logger.info(jsonArray.toString());
+            logger.debug(jsonArray.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         int temp = newPropDaoImpl.ImportProp(jsonArray, platformId, gameId);
         if (temp > 0) {
-            logger.info("道具导入成功");
+            logger.debug("道具导入成功");
             re = new Result(200, "道具导入成功", null);
         } else {
-            logger.info("道具导入失败");
+            logger.debug("道具导入失败");
             re = new Result(400, "道具导入失败", null);
         }
         return re;

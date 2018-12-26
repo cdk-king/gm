@@ -4,15 +4,16 @@ import com.cdk.dao.impl.RegisterDaoImpl;
 import com.cdk.entity.User;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Service
 public class RegisterServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(RegisterServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(RegisterServiceImpl.class);
     @Autowired
     public RegisterDaoImpl registerDaoImpl;
 

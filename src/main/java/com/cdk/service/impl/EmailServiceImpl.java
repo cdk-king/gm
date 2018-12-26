@@ -8,6 +8,8 @@ import com.cdk.util.HttpRequestUtil;
 
 import net.sf.json.JSONObject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class EmailServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(EmailServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
 
     @Autowired
     public EmailDaoImpl emailDaoImpl;
@@ -116,10 +117,10 @@ public class EmailServiceImpl extends ApiHandeler {
         }
         int temp = emailDaoImpl.addEmail(email);
         if (temp > 0) {
-            logger.info("邮件添加成功");
+            logger.debug("邮件添加成功");
             re = new Result(200, "邮件添加成功", null);
         } else {
-            logger.info("邮件添加失败");
+            logger.debug("邮件添加失败");
             re = new Result(400, "邮件添加失败", null);
         }
         return re;
@@ -192,10 +193,10 @@ public class EmailServiceImpl extends ApiHandeler {
         }
         int temp = emailDaoImpl.editEmail(email);
         if (temp > 0) {
-            logger.info("邮件编辑成功");
+            logger.debug("邮件编辑成功");
             re = new Result(200, "邮件编辑成功", null);
         } else {
-            logger.info("邮件编辑失败");
+            logger.debug("邮件编辑失败");
             re = new Result(400, "邮件编辑失败", null);
         }
         return re;
@@ -275,10 +276,10 @@ public class EmailServiceImpl extends ApiHandeler {
 
         int temp = emailDaoImpl.deleteEmail(email);
         if (temp > 0) {
-            logger.info("邮件删除成功");
+            logger.debug("邮件删除成功");
             re = new Result(200, "邮件删除成功", null);
         } else {
-            logger.info("邮件删除失败");
+            logger.debug("邮件删除失败");
             re = new Result(400, "邮件删除失败", null);
         }
         return re;

@@ -3,6 +3,8 @@ package com.cdk.controller;
 import com.cdk.result.Result;
 import com.cdk.service.impl.UserServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,11 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 @RestController
 public class UserTableController {
-    private static Logger logger = Logger.getLogger(String.valueOf(UserTableController.class));
+    private static Logger logger = LoggerFactory.getLogger(UserTableController.class);
     public static final String Divider = "############################";
 
     //1、@Autowired是spring自带的，@Inject是JSR330规范实现的，@Resource是JSR250规范实现的，需要导入不同的包

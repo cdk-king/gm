@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 public class UploadController {
-    private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
+    private static Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
     private UploadServiceImpl uploadServiceImpl;

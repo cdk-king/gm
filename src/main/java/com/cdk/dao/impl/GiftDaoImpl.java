@@ -1,9 +1,10 @@
 package com.cdk.dao.impl;
 
 
-import com.cdk.dao.GiftDao;
 import com.cdk.entity.Gift;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,16 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Repository
-public class GiftDaoImpl implements GiftDao {
-    private static Logger logger = Logger.getLogger(String.valueOf(GiftDaoImpl.class));
+public class GiftDaoImpl {
+    private static Logger logger = LoggerFactory.getLogger(GiftDaoImpl.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public Map<String, Object> getGift(Gift gift, String isPage, int pageNo, int pageSize, String strPlatform) {
         String sql = "select a.* , b.platform  from t_gift as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
                 strPlatform + ") and a.isDelete != 1  and b.isDelete != 1  ";
@@ -46,7 +45,7 @@ public class GiftDaoImpl implements GiftDao {
                 sql += " and a.state != 1 ";
             }
         }
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         if (!Objects.equals(isPage, "")) {
@@ -59,8 +58,6 @@ public class GiftDaoImpl implements GiftDao {
         return JsonMap;
     }
 
-
-    @Override
     public int addGift(Gift gift) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -72,10 +69,9 @@ public class GiftDaoImpl implements GiftDao {
         return temp;
     }
 
-    @Override
     public Map<String, Object> getGiftListForPlatformId(Gift gift) {
         String sql = "select * from t_gift where platformId = " + gift.getPlatformId() + "  and isDelete!=1 ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -84,7 +80,7 @@ public class GiftDaoImpl implements GiftDao {
 
     public Map<String, Object> getNewGiftListForPlatformId(Gift gift) {
         String sql = "select *  from t_gift_upload where platformId = " + gift.getPlatformId() + " ";
-        logger.info("sql：" + sql);
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);

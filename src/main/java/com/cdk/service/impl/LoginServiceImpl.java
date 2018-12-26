@@ -5,17 +5,18 @@ import com.cdk.entity.User;
 import com.cdk.entity.VueLoginInfoVo;
 import com.cdk.result.Result;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
 public class LoginServiceImpl {
-    private static Logger logger = Logger.getLogger(String.valueOf(LoginServiceImpl.class));
+    private static Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
     @Autowired
     public LoginDaoImpl loginDaoImpl;
 
@@ -27,16 +28,16 @@ public class LoginServiceImpl {
         if (list != null && list.size() >= 1) {
             if (!Objects.equals(list.get(0).get("password"), password)) {
                 re = new Result(400, "登录失败，密码错误", list.get(0).get("password") + "|" + password);
-                logger.info("登录失败，密码错误");
+                logger.debug("登录失败，密码错误");
                 return re;
             }
         } else {
             re = new Result(400, "登录失败，用户名无效", password);
-            logger.info("登录失败，用户名无效");
+            logger.debug("登录失败，用户名无效");
             return re;
         }
         re = new Result(200, "登录成功", list.get(0));
-        logger.info("用户登录成功");
+        logger.debug("用户登录成功");
         return re;
     }
 
