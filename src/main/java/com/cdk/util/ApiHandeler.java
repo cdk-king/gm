@@ -5,7 +5,6 @@ import com.cdk.service.impl.UtilsServiceImpl;
 import com.twmacinta.util.MD5;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -39,8 +38,7 @@ public class ApiHandeler {
         return toDo.getBytes(UTF_8);
     }
 
-    @Value("${api.url}")
-    public String apiUrl;
+    public String apiUrl = "";
 
     public String http = "http://";
     public String https = "https://";

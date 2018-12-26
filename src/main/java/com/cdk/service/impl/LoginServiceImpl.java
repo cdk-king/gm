@@ -27,7 +27,6 @@ public class LoginServiceImpl {
         Result re;
         List<Map<String, Object>> list = loginDaoImpl.login(loginInfoVo);
         if (list != null && list.size() >= 1) {
-            //因为string属于符合数据类型，所以应该是使用equals，假如我们使用==比较，肯定是比较它们的内存地址了
             if (!Objects.equals(list.get(0).get("password"), password)) {
                 re = new Result(400, "登录失败，密码错误", list.get(0).get("password") + "|" + password);
                 logger.info("登录失败，密码错误");
@@ -38,7 +37,6 @@ public class LoginServiceImpl {
             logger.info("登录失败，用户名无效");
             return re;
         }
-
         re = new Result(200, "登录成功", list.get(0));
         logger.info("用户登录成功");
         return re;
@@ -47,7 +45,6 @@ public class LoginServiceImpl {
     public Result getTouristId() {
         Result re;
         List<Map<String, Object>> list = loginDaoImpl.getTouristId();
-        logger.info(list.toString());
         if (Objects.equals(list.get(0).get("configValue"), null)) {
             re = new Result(400, "游客Id获取失败", "");
         } else {
@@ -59,7 +56,6 @@ public class LoginServiceImpl {
     public Result getTouristName() {
         Result re;
         List<Map<String, Object>> list = loginDaoImpl.getTouristName();
-        logger.info(list.toString());
         if (Objects.equals(list.get(0).get("configValue"), null)) {
             re = new Result(400, "游客name获取失败", "");
         } else {
@@ -85,7 +81,6 @@ public class LoginServiceImpl {
         Result re;
         int temp = loginDaoImpl.setTouristName(name);
         if (temp > 0) {
-
             re = new Result(200, "游客name设置成功", "");
         } else {
             re = new Result(400, "游客name设置失败", "");

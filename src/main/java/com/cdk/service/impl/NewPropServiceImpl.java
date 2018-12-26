@@ -61,9 +61,7 @@ public class NewPropServiceImpl {
         String strGameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         Result re;
         int gameId = Integer.parseInt(strGameId);
-
         Map<String, Object> JsonMap = newPropDaoImpl.getPropTypeList(gameId);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具类别列表获取失败", "");
         } else {
@@ -81,8 +79,6 @@ public class NewPropServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
-
         int pageNo = 1;
         int pageSize = 5;
         try {
@@ -91,16 +87,13 @@ public class NewPropServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        logger.info(propName);
         Result re;
-
         NewProp newProp = new NewProp();
         newProp.setPropName(propName);
         newProp.setPropType(propType);
         newProp.setPlatformId(Integer.parseInt(platformId));
 
         Map<String, Object> JsonMap = newPropDaoImpl.getPropUplaod(newProp, isPage, pageNo, pageSize, strPlatform);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具列表获取失败", "");
         } else {

@@ -77,7 +77,6 @@ public class PlayerLogDaoImpl {
         if (player.getPlayerAccount() != "") {
             sql += " and a.playerAccount LIKE '%" + player.getPlayerAccount() + "%'";
         }
-
         if (Objects.equals(player.getIsProhibitSpeak(), 1)) {
             sql += " and a.isToProhibitSpeak = '0'";
         }
@@ -85,7 +84,6 @@ public class PlayerLogDaoImpl {
             sql += " and a.isToProhibitSpeak = '1'";
         }
 
-        logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += "  order by a.addDatetime desc";

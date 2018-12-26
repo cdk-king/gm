@@ -27,7 +27,6 @@ public class PlatformEmailController {
     @RequestMapping("/getPlatformEmail")
     public Result getPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.getPlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,7 +34,6 @@ public class PlatformEmailController {
     @RequestMapping("/editPlatformEmail")
     public Result editPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.editPlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -43,7 +41,6 @@ public class PlatformEmailController {
     @RequestMapping("/addPlatformEmail")
     public Result addPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.addPlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -51,7 +48,6 @@ public class PlatformEmailController {
     @RequestMapping("/deletePlatformEmail")
     public Result deletePlatformNotice(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deletePlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -59,7 +55,6 @@ public class PlatformEmailController {
     @RequestMapping("/sendPlatformEmail")
     public Result sendPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.sendPlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -67,7 +62,6 @@ public class PlatformEmailController {
     @RequestMapping("/deleteAllPlatformEmail")
     public Result deleteAllPlatformEmail(@RequestBody Map map) {
         Result re = platformEmailServiceImpl.deleteAllPlatformEmail(map);
-        logger.info(Divider);
         return re;
     }
 }

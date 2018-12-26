@@ -9,13 +9,6 @@ public class TimerClass {
     private static Long delay = 2000L;
     private static Long period = 5000L;
 
-    //    public static void main(String[] args) {
-    //        timer1(delay);
-    //        timer2(delay,period);
-    //        timer3(delay,period);
-    //        timer4();
-    //    }
-
     // 第一种方法：设定指定任务task在指定时间time执行 schedule(TimerTask task, Date time)
     public static void timer1(long delay) {
         Timer timer = new Timer();
@@ -51,19 +44,6 @@ public class TimerClass {
     // 第四种方法：安排指定的任务task在指定的时间firstTime开始进行重复的固定速率period执行．
     // Timer.scheduleAtFixedRate(TimerTask task,Date firstTime,long period)
     public static void timer4() {
-
-        //        Calendar calendar = Calendar.getInstance();
-        //        int year = calendar.get(Calendar.YEAR);
-        //        int month = calendar.get(Calendar.MONTH);
-        //        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        //        /**
-        //         *  定制每天的8:00:00执行，若程序已超过8点启动,当天不再执行，等到明日八点再执行
-        //         *  这样保证了时间一直是8点，而不会变成程序启动时间
-        //         */
-        //        calendar.set(year, month, day, 8, 00, 00);
-        //        Date defaultdate = calendar.getTime();// 今天8点（默认发送时间）
-
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 12); // 控制时
         calendar.set(Calendar.MINUTE, 0);    // 控制分

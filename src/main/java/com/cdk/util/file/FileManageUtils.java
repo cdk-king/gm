@@ -29,7 +29,6 @@ public class FileManageUtils {
     public static void exportFile(HttpServletResponse response, String csvFilePath, String fileName) throws IOException {
         response.setContentType("application/csv;charset=GBK");
         response.setHeader("Content-Disposition", "attachment;  filename=" + new String(fileName.getBytes("GBK"), "ISO8859-1"));
-        //URLEncoder.encode(fileName, "GBK")
 
         InputStream in = null;
         try {
@@ -39,7 +38,6 @@ public class FileManageUtils {
             response.setCharacterEncoding("GBK");
             OutputStream out = response.getOutputStream();
             while ((len = in.read(buffer)) > 0) {
-                //out.write(new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF });
                 out.write(buffer, 0, len);
             }
         } catch (FileNotFoundException e) {

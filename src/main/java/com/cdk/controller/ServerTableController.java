@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @RestController
@@ -180,14 +181,15 @@ public class ServerTableController {
 
     /***
      * 平台获取服务器列表
-     * @param map
+     * @param
      * @return
      */
     @CrossOrigin
     @Transactional
     @RequestMapping("/api/server/getServerList")
-    public Map<String, Object> getServerList(@RequestBody Map map) {
-        Map<String, Object> re = serverServiceImpl.getServerList(map);
+    public String getServerList(HttpServletRequest request) {
+        String platform = request.getParameter("platform");
+        String re = serverServiceImpl.getServerList(platform);
         logger.info(Divider);
         return re;
     }

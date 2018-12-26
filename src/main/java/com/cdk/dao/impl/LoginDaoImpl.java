@@ -1,6 +1,5 @@
 package com.cdk.dao.impl;
 
-import com.cdk.dao.LoginDao;
 import com.cdk.entity.User;
 import com.cdk.entity.VueLoginInfoVo;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @Repository
-public class LoginDaoImpl implements LoginDao {
+public class LoginDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(LoginDaoImpl.class));
     public static final String Divider = "############################";
     public static final String Split = "----------------";
@@ -21,7 +20,6 @@ public class LoginDaoImpl implements LoginDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Override
     public List<Map<String, Object>> login(VueLoginInfoVo loginInfoVo) {
         String sql = "select * from t_user where name = '" + loginInfoVo.getUsername() + "' order by id desc limit 1";
         logger.info("sql：" + sql);

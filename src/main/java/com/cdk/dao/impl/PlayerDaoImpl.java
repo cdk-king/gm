@@ -102,7 +102,6 @@ public class PlayerDaoImpl {
         if (!Objects.equals(searchForm.get("maxLevel"), "") && !Objects.equals(searchForm.get("maxLevel"), null)) {
             sql += " and a.level<='" + searchForm.get("maxLevel") + "' ";
         }
-        logger.info(searchForm.get("minRegistrationTime") + "");
         if (!Objects.equals(searchForm.get("minRegistrationTime"), "") && !Objects.equals(searchForm.get("minRegistrationTime"), null)) {
             sql += " and a.registrationTime>='" + searchForm.get("minRegistrationTime") + "' ";
         }

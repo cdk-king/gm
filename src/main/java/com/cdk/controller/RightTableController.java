@@ -30,7 +30,6 @@ public class RightTableController {
     @RequestMapping("/getRight")
     public Result getRight(@RequestBody Map map) {
         Result re = rightServiceImpl.getRight(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -39,7 +38,6 @@ public class RightTableController {
     @ResponseBody
     public Result editRight(@RequestBody Map map) {
         Result re = rightServiceImpl.editRight(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -47,7 +45,6 @@ public class RightTableController {
     @RequestMapping("/addRight")
     public Result addRight(@RequestBody Map map) {
         Result re = rightServiceImpl.addRight(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -56,7 +53,6 @@ public class RightTableController {
     @ResponseBody
     public Result changeStateToFrozen_Right(@RequestBody Map map) {
         Result re = rightServiceImpl.changeStateToFrozen_Right(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -65,7 +61,6 @@ public class RightTableController {
     @ResponseBody
     public Result changeStateToNormal_Right(@RequestBody Map map) {
         Result re = rightServiceImpl.changeStateToNormal_Right(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -74,7 +69,6 @@ public class RightTableController {
     @ResponseBody
     public Result deleteRight(@RequestBody Map map) {
         Result re = rightServiceImpl.deleteRight(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -83,7 +77,6 @@ public class RightTableController {
     @ResponseBody
     public Result deleteAllRight(@RequestBody Map<String, String> map) {
         Result re = rightServiceImpl.deleteAllRight(map);
-        logger.info(Divider);
         return re;
     }
 

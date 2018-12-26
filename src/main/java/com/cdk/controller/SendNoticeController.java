@@ -28,7 +28,6 @@ public class SendNoticeController {
     @RequestMapping("/getSendNoticeSendType")
     public Result getSendNoticeSendType(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getSendNoticeSendType();
-        logger.info(Divider);
         return re;
     }
 
@@ -36,7 +35,6 @@ public class SendNoticeController {
     @RequestMapping("/getSendNoticeNoticeType")
     public Result getSendNoticeNoticeType(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getSendNoticeNoticeType();
-        logger.info(Divider);
         return re;
     }
 
@@ -44,7 +42,6 @@ public class SendNoticeController {
     @RequestMapping("/addNotice")
     public Result addNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.addNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -52,7 +49,6 @@ public class SendNoticeController {
     @RequestMapping("/getNotice")
     public Result getNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.getNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -60,7 +56,6 @@ public class SendNoticeController {
     @RequestMapping("/deleteAllNotice")
     public Result deleteAllNotice(@RequestBody Map map) {
         Result re = sendNoticeServiceImpl.deleteAllNotice(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -72,7 +67,6 @@ public class SendNoticeController {
         int timeInterval = Integer.parseInt(strTimeInterval);
         int cycleTime = Integer.parseInt(strCycleTime);
         sendNotice(timeInterval, cycleTime, map);
-        logger.info(Divider);
         return null;
     }
 

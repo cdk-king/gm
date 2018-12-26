@@ -4,6 +4,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
+import com.alibaba.fastjson.JSON;
 import com.cdk.dao.impl.ServerDaoImpl;
 import com.cdk.entity.Platform;
 import com.cdk.entity.Server;
@@ -15,8 +16,12 @@ import com.cdk.util.HttpRequestUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +51,7 @@ public class ServerServiceImpl extends ApiHandeler {
         });
     }
 
-    public Map<String, Object> getServerList(String platform) {
+    public Map<String, Object> getServerListCache(String platform) {
         return serverListCache.getUnchecked(platform);
     }
 
@@ -61,29 +66,22 @@ public class ServerServiceImpl extends ApiHandeler {
         if (state == "") {
             state = "-1";
         }
-
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
-
         try {
             pageNo = Integer.parseInt(StrPageNo);
             pageSize = Integer.parseInt(StrPageSize);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         Result re;
         Server server = new Server();
         server.setServer(serverName);
         server.setServerIp(serverIp);
         server.setServer_describe(server_describe);
         server.setState(Integer.parseInt(state));
-
 
         Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformId, gameName, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
@@ -96,17 +94,13 @@ public class ServerServiceImpl extends ApiHandeler {
 
 
     public Result addServer(Map map) {
-
         String serverId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
         String serverPort = (map.get("serverPort") != null ? map.get("serverPort").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
-
         Server server = new Server();
         server.setServer(serverName);
         server.setServerId(Integer.parseInt(serverId));
@@ -115,7 +109,6 @@ public class ServerServiceImpl extends ApiHandeler {
         server.setPlatformId(Integer.parseInt(platformId));
         server.setAddUser(addUser);
         server.setServerPort(serverPort);
-
         Result re;
         int temp = serverDaoImpl.addServer(server);
         if (temp > 0) {
@@ -131,17 +124,15 @@ public class ServerServiceImpl extends ApiHandeler {
 
 
     public Result editServer(Map map) {
-
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
         String serverPort = (map.get("serverPort") != null ? map.get("serverPort").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
-        String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String state = (map.get("state") != null ? map.get("state").toString() : "");
-
+        String openDatetime = (map.get("openDatetime") != null ? map.get("openDatetime").toString() : "");
+        logger.info(openDatetime);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         server.setServer(serverName);
@@ -150,6 +141,7 @@ public class ServerServiceImpl extends ApiHandeler {
         server.setPlatformId(Integer.parseInt(platformId));
         server.setAddUser(addUser);
         server.setServerPort(serverPort);
+        server.setOpenServiceTime(openDatetime);
 
         Result re;
         int temp = serverDaoImpl.editServer(server);
@@ -179,7 +171,6 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result changeStateToNormal_Server(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
@@ -197,7 +188,6 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result changeStateToFrozen_Server(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
@@ -215,10 +205,8 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result deleteServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
-
         Result re;
         int temp = serverDaoImpl.deleteServer(server);
         if (temp > 0) {
@@ -234,13 +222,11 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result deleteAllServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
-        logger.info("ObjectArry：" + ObjectArry);
         int[] temp = new int[ObjectArry.length];
         Result re;
         temp = serverDaoImpl.deleteAllServer(ObjectArry);
@@ -260,7 +246,6 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result getPlatformListForUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
 
@@ -276,7 +261,6 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result getServerListForPlatform(Map map) {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
-        logger.info("platformId：" + platformId);
         if (Objects.equals(platformId, "")) {
             return new Result(400, "渠道服务器列表获取失败", null);
         }
@@ -294,9 +278,7 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getServerTree(Map map) {
-
         List<Map<String, Object>> list = serverDaoImpl.getServerTree();
-        logger.info(list.toString());
         Result re;
         if (list.size() != 0) {
             re = new Result(200, "服务器树状结构获取成功", list);
@@ -306,16 +288,14 @@ public class ServerServiceImpl extends ApiHandeler {
         return re;
     }
 
-    public Result SynServerList(Map map) {
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
-        String param = "";
+    @Value("${SynServerListUrl.url}")
+    public String SynServerListUrl;
 
-        String url = "http://123.207.115.217:20000/serversByJson";
-        logger.info(url);
+    public Result SynServerList(Map map) {
+        String param = "";
+        String url = SynServerListUrl;
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
         Result re;
         if (data.length() != 0) {
             JSONArray jsonArray = null;
@@ -337,7 +317,6 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result setDefaultServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
         Result re;
@@ -383,45 +362,57 @@ public class ServerServiceImpl extends ApiHandeler {
 
     /***
      *
-     * @param map
+     * @param
      * @return
      */
-    public Map<String, Object> getServerList(Map map) {
+    public String getServerList(String platform) {
         int def = 0;
-        String platform = (map.get("platform") != null ? map.get("platform").toString() : "");
-        String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
-        String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
-        Map<String, Object> JsonMap = getServerList(platform);
+        //        String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
+        //        String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
+        Map<String, Object> JsonMap = getServerListCache(platform);
 
         List<Map<String, Object>> list = (List<Map<String, Object>>) JsonMap.get("list");
         int len = list.size();
+        int total = 0;
         Map<String, Object> all = new HashMap<>();
         if (len > 0) {
-
             Map<String, Object> serverList = new HashMap<>();
             for (int i = 0; i < len; i++) {
-                String serverId = list.get(i).get("serverId").toString();
-                String area = list.get(i).get("area").toString();
-                String state = list.get(i).get("state").toString();
-                String server = list.get(i).get("server").toString();
-                String ip = list.get(i).get("serverIp").toString();
-                String port = list.get(i).get("serverPort").toString();
-                Map<String, Object> ServerItem = new HashMap<>();
-                ServerItem.put("real", serverId);
-                ServerItem.put("area", area);
-                ServerItem.put("show", serverId);
-                ServerItem.put("status", state);
-                ServerItem.put("name", server);
-                ServerItem.put("ip", ip + ":" + port);
-                ServerItem.put("platform", platform);
-                serverList.put(serverId, ServerItem);
-                if (Objects.equals(list.get(i).get("isDefault").toString(), "1")) {
-                    def = Integer.parseInt(list.get(i).get("isDefault").toString());
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String openTime = formatter.format(list.get(i).get("openServiceTime"));
+                Date openDate = new Date();
+                try {
+                    openDate = formatter.parse(openTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+                Date date = new Date();
+                if (date.getTime() > openDate.getTime()) {
+                    total++;
+                    String serverId = list.get(i).get("serverId").toString();
+                    String area = list.get(i).get("area").toString();
+                    String state = list.get(i).get("state").toString();
+                    String server = list.get(i).get("server").toString();
+                    String ip = list.get(i).get("serverIp").toString();
+                    String port = list.get(i).get("serverPort").toString();
+                    Map<String, Object> ServerItem = new HashMap<>();
+                    ServerItem.put("real", serverId);
+                    ServerItem.put("area", area);
+                    ServerItem.put("show", serverId);
+                    ServerItem.put("status", state);
+                    ServerItem.put("name", server);
+                    ServerItem.put("ip", ip + ":" + port);
+                    ServerItem.put("platform", platform);
+                    serverList.put(serverId, ServerItem);
+                    if (Objects.equals(list.get(i).get("isDefault").toString(), "1")) {
+                        def = Integer.parseInt(list.get(i).get("isDefault").toString());
+                    }
+                }
+
             }
             all.put("servers", serverList);
             Map<String, Object> area = new HashMap<>();
-            int arealen = Integer.parseInt(JsonMap.get("total").toString());
+            int arealen = total;
             int count = 1;
             while (arealen > 0) {
                 area.put(count + "", count + "" + "-50服");
@@ -430,9 +421,8 @@ public class ServerServiceImpl extends ApiHandeler {
             }
             all.put("area", area);
             all.put("default", def);
-
         }
-
-        return all;
+        String jsonString = JSON.toJSONString(all);
+        return jsonString;
     }
 }

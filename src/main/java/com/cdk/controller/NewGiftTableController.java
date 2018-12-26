@@ -29,7 +29,6 @@ public class NewGiftTableController {
     @RequestMapping("/api/gift/ImportGift")
     public Result ImportGift(@RequestBody Map map) {
         Result re = newGiftServiceImpl.ImportGift(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -38,7 +37,6 @@ public class NewGiftTableController {
     @RequestMapping("/getGiftUpload")
     public Result getGiftUpload(@RequestBody Map map) {
         Result re = newGiftServiceImpl.getGiftUpload(map);
-        logger.info(Divider);
         return re;
     }
 }

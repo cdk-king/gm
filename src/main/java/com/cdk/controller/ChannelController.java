@@ -26,7 +26,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/getAllChannel")
     public Result getAllChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.getAllChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -34,7 +33,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/getAllChannelFormPlatform")
     public Result getAllChannelFormPlatform(@RequestBody Map map) {
         Result re = channelServiceImpl.getAllChannelFormPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -42,7 +40,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/getChannel")
     public Result getChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.getChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -50,7 +47,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/getChannelTable")
     public Result getChannelTable(@RequestBody Map map) {
         Result re = channelServiceImpl.getChannelTable(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -58,7 +54,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/addChannel")
     public Result addChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.addChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -66,7 +61,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/saveCheckChannel")
     public Result saveCheckChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.saveCheckChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -74,7 +68,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/saveAllCheckChannel")
     public Result saveAllCheckChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.saveAllCheckChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -82,7 +75,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/editChannel")
     public Result editChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.editChannel(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -91,7 +83,6 @@ public class ChannelController {
     @RequestMapping("/api/channel/deleteChannel")
     public Result deleteChannel(@RequestBody Map map) {
         Result re = channelServiceImpl.deleteChannel(map);
-        logger.info(Divider);
         return re;
     }
 }

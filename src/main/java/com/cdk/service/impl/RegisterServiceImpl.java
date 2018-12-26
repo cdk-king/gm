@@ -19,7 +19,6 @@ public class RegisterServiceImpl {
     public RegisterDaoImpl registerDaoImpl;
 
     public Result addRegisterUser(Map map) {
-
         String strUser = (map.get("name") != null ? map.get("name").toString() : "");
         String password = (map.get("password") != null ? map.get("password").toString() : "");
         String phone = (map.get("phone") != null ? map.get("phone").toString() : "");

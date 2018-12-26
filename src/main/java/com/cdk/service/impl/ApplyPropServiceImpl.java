@@ -75,8 +75,6 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String Content = ((map.get("Content") != null) ? map.get("Content").toString() : "");
         String ItemList = ((map.get("ItemList") != null) ? map.get("ItemList").toString() : "");
         String Money = ((map.get("Money") != null) ? map.get("Money").toString() : "");
-        logger.info(ItemList);
-        logger.info(Money);
         int id = Integer.parseInt(strId);
 
         long time = Math.abs(System.currentTimeMillis() / 1000);
@@ -90,14 +88,12 @@ public class ApplyPropServiceImpl extends ApiHandeler {
             param += "&WorldID=" + serverId;
         }
         param += "&IsAllPlayer=" + IsAllPlayer;
-
         if (!Objects.equals(PlayerID, "")) {
             param += "&PlayerID=" + PlayerID;
         } else {
             param += "&PlayerName=" + PlayerName;
         }
         try {
-            //中文转码
             Title = URLEncoder.encode(Title, "UTF-8");
             Content = URLEncoder.encode(Content, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -112,21 +108,15 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         if (!Objects.equals(Money, "")) {
             param += "&Money=" + Money;
         }
-
         apiUrl = getApiUrl(platformId, serverId);
 
         String url = apiUrl + "/UpdatePlayer/Mail";
-        logger.info(url);
-
-        logger.info(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-        logger.info(data);
 
         Result re;
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
-        logger.info(resultMap.toString());
         if (!Objects.equals(resultMap.get("Result"), 1)) {
             int temp = applyPropDaoImpl.changeApplyState(id, 2);
             re = new Result(400, "道具申请邮件发送失败", data);
@@ -176,11 +166,9 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String releaseTitle = (map.get("releaseTitle") != null ? map.get("releaseTitle").toString() : "");
         String releaseContent = (map.get("releaseContent") != null ? map.get("releaseContent").toString() : "");
         String propList = (map.get("propList") != null ? map.get("propList").toString() : "");
-
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerAccountList = (map.get("playerAccountList") != null ? map.get("playerAccountList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
-
         String strPlayerType = (map.get("playerType") != null ? map.get("playerType").toString() : "0");
         String applyReason = (map.get("applyReason") != null ? map.get("applyReason").toString() : "");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
@@ -208,7 +196,6 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         applyProp.setApplyUser(strAddUser);
         applyProp.setPlayerType(playerType);
         applyProp.setMoneyList(strMoneyList);
-
 
         int temp = applyPropDaoImpl.addApplyProp(applyProp);
         if (temp > 0) {
@@ -262,7 +249,6 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         applyProp.setPlayerType(playerType);
         applyProp.setMoneyList(strMoneyList);
 
-
         int temp = applyPropDaoImpl.editApplyProp(applyProp);
         if (temp > 0) {
             logger.info("道具申请修改成功");
@@ -277,10 +263,8 @@ public class ApplyPropServiceImpl extends ApiHandeler {
     public Result confirmApplyProp(Map map) {
         String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
-
         int id = Integer.parseInt(strId);
         int addUser = Integer.parseInt(strAddUser);
-
         Result re;
         ApplyProp applyProp = new ApplyProp();
         applyProp.setId(id);
@@ -300,10 +284,8 @@ public class ApplyPropServiceImpl extends ApiHandeler {
     public Result notConfirmApplyProp(Map map) {
         String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String strAddUser = (map.get("addUser") != null ? map.get("addUser").toString() : "0");
-
         int id = Integer.parseInt(strId);
         int addUser = Integer.parseInt(strAddUser);
-
         Result re;
         ApplyProp applyProp = new ApplyProp();
         applyProp.setId(id);
@@ -322,9 +304,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
     public Result deleteApplyProp(Map map) {
         String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
-
         int id = Integer.parseInt(strId);
-
         Result re;
         ApplyProp applyProp = new ApplyProp();
         applyProp.setId(id);
@@ -342,14 +322,11 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
     public Result deleteAllApplyProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
-
         String[] objectArry = id.split(",");
-        logger.info("ObjectArry：" + objectArry);
         Result re;
         String sql[] = new String[objectArry.length];
         int[] temp = applyPropDaoImpl.deleteAllApplyProp(objectArry);
@@ -365,5 +342,4 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         }
         return re;
     }
-
 }

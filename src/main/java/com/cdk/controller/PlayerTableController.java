@@ -27,7 +27,6 @@ public class PlayerTableController {
     @RequestMapping("/api/player/getPlayer")
     public Result getPlayer(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,7 +34,6 @@ public class PlayerTableController {
     @RequestMapping("/api/player/getPlayerFromServer")
     public Result getPlayerFromServer(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayerFromServer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -43,7 +41,6 @@ public class PlayerTableController {
     @RequestMapping("/api/player/getPlayerDetailInfo")
     public Result getPlayerDetailInfo(@RequestBody Map map) {
         Result re = playerServiceImpl.getPlayerDetailInfo(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -51,7 +48,6 @@ public class PlayerTableController {
     @RequestMapping("/api/player/talkBan")
     public Result talkBan(@RequestBody Map map) {
         Result re = playerServiceImpl.talkBan(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -59,7 +55,6 @@ public class PlayerTableController {
     @RequestMapping("/api/player/Ban")
     public Result Ban(@RequestBody Map map) {
         Result re = playerServiceImpl.Ban(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -67,7 +62,6 @@ public class PlayerTableController {
     @RequestMapping("/ChangeToProhibitSpeak")
     public Result ChangeToProhibitSpeak(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeToProhibitSpeak(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -75,7 +69,6 @@ public class PlayerTableController {
     @RequestMapping("/ImportPlayer")
     public Result ImportPlayer(@RequestBody Map map) {
         Result re = playerServiceImpl.ImportPlayer(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -83,7 +76,6 @@ public class PlayerTableController {
     @RequestMapping("/ChangeProhibitSpeakToNormal")
     public Result ChangeProhibitSpeakToNormal(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeProhibitSpeakToNormal(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -91,7 +83,6 @@ public class PlayerTableController {
     @RequestMapping("/ChangeToBan")
     public Result ChangeToBan(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeToBan(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -99,7 +90,6 @@ public class PlayerTableController {
     @RequestMapping("/ChangeBanToNormal")
     public Result ChangeBanToNormal(@RequestBody Map map) {
         Result re = playerServiceImpl.ChangeBanToNormal(map);
-        logger.info(Divider);
         return re;
     }
 

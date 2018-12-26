@@ -27,7 +27,6 @@ public class PlayerLogTableController {
     @RequestMapping("/getPlayerProhibitSpeakLog")
     public Result getPlayerProhibitSpeakLog(@RequestBody Map map) {
         Result re = playerLogServiceImpl.getPlayerProhibitSpeakLog(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,15 +34,34 @@ public class PlayerLogTableController {
     @RequestMapping("/getPlayerBan")
     public Result getPlayerBan(@RequestBody Map map) {
         Result re = playerLogServiceImpl.getPlayerBan(map);
-        logger.info(Divider);
         return re;
     }
 
     @CrossOrigin
-    @RequestMapping("/api/log/getPlayerLogByPlayerId")
-    public Result getPlayerLogByPlayerId(@RequestBody Map map) {
-        Result re = playerLogServiceImpl.getPlayerLogByPlayerId(map);
-        logger.info(Divider);
-        return re;
+    @RequestMapping("/api/log/getGoodFlowLog")
+    public Result getGoodFlowLog(@RequestBody Map map) {
+        //Result re = playerLogServiceImpl.getGoodFlowLog(map);
+        return null;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getMoneyFlowLog")
+    public Result getMoneyFlowLog(@RequestBody Map map) {
+        //Result re = playerLogServiceImpl.getMoneyFlowLog(map);
+        return null;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getCreateRoleLog")
+    public Result getCreateRoleLog(@RequestBody Map map) {
+        //Result re = playerLogServiceImpl.getCreateRoleLog(map);
+        return null;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getRoleLoginLog")
+    public Result getRoleLoginLog(@RequestBody Map map) {
+        //Result re = playerLogServiceImpl.getRoleLoginLog(map);
+        return null;
     }
 }

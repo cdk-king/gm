@@ -25,12 +25,6 @@ import java.util.Map;
 public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
-    //    @CrossOrigin
-    //    @GetMapping("/upload")
-    //    public String upload() {
-    //        return "upload";
-    //    }
-
     @Autowired
     private UploadServiceImpl uploadServiceImpl;
 
@@ -69,7 +63,6 @@ public class UploadController {
 
         if (file.isEmpty()) {
             return new Result(400, "文件为空", "");
-            //return "false";
         }
         Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser);
         return re;
@@ -80,7 +73,6 @@ public class UploadController {
     @RequestMapping("/api/file/getFileList")
     @ResponseBody
     public Result getFileList(@RequestBody Map map) {
-        //getFile("f:/file", 0);
         Result re = uploadServiceImpl.getFileList(map);
         return re;
     }
@@ -153,20 +145,4 @@ public class UploadController {
         }
     }
 
-    //    public String filterFileSize(int value) {
-    //        if (value != 0) {
-    //            int size = 0;
-    //            if (value < 0.1 * 1024) { //如果小于0.1KB转化成B
-    //                size = value.toFixed(2) + "B";
-    //            } else if (value < 0.1 * 1024 * 1024) {//如果小于0.1MB转化成KB
-    //                size = (value / 1024).toFixed(2) + "KB";
-    //            } else if (value < 0.1 * 1024 * 1024 * 1024) { //如果小于0.1GB转化成MB
-    //                size = (value / (1024 * 1024)).toFixed(2) + "MB";
-    //            } else { //其他转化成GB
-    //                size = (value / (1024 * 1024 * 1024)).toFixed(2) + "GB";
-    //            }
-    //            return "文件大小：" + size;
-    //        }
-    //        return "";
-    //    }
 }

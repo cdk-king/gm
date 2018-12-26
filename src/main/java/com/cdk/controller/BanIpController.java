@@ -27,7 +27,6 @@ public class BanIpController {
     @RequestMapping("/api/ip/getBanIp")
     public Result getBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.getBanIp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -35,7 +34,6 @@ public class BanIpController {
     @RequestMapping("/api/ip/addBanIp")
     public Result addBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.addBanIp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -43,7 +41,6 @@ public class BanIpController {
     @RequestMapping("/api/ip/banIp")
     public Result banIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.banIp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -51,7 +48,6 @@ public class BanIpController {
     @RequestMapping("/api/ip/deleteBanIp")
     public Result deleteBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteBanIp(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -59,7 +55,6 @@ public class BanIpController {
     @RequestMapping("/api/ip/deleteAllBanIp")
     public Result deleteAllBanIp(@RequestBody Map map) {
         Result re = banIpServiceImpl.deleteAllBanIp(map);
-        logger.info(Divider);
         return re;
     }
 }

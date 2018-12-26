@@ -24,12 +24,8 @@ public class UtilsServiceImpl {
     public UtilsDaoImpl utilsDaoImpl;
 
     public List<Map<String, String>> getServerUrl(String serverIdList, String platformId) {
-        logger.info("serverIdList:" + serverIdList);
-        logger.info("platformId:" + platformId);
         String[] serverIdArray = serverIdList.split(",");
-
         List<Map<String, Object>> list = utilsDaoImpl.getServerUrl(platformId);
-        logger.info(list.toString());
         List<Map<String, String>> urlList = new ArrayList<>();
         Map<String, String> map = new HashMap();
         for (int j = 0; j < serverIdArray.length; j++) {
@@ -48,18 +44,14 @@ public class UtilsServiceImpl {
 
     public Result getUserAllRight(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
-
         User user = new User();
         user.setId(Integer.parseInt(id));
         Result re;
         List<Map<String, Object>> list = utilsDaoImpl.getUserAllRight(user);
-        logger.info("list.size()：" + list.size());
         Object[] str = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             str[i] = list.get(i).get("rightTag");
         }
-
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
         if (list.size() > 0) {
@@ -73,20 +65,15 @@ public class UtilsServiceImpl {
 
     public Result getUserAllRole(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
         List<Map<String, Object>> list = utilsDaoImpl.getUserAllRole(user);
-        logger.info("list.size()：" + list.size());
-        logger.info(list.toString());
         Object[] strList = new String[list.size()];
 
         for (int i = 0; i < list.size(); i++) {
             strList[i] = list.get(i).get("id").toString();
         }
-
         Result re;
-
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
         if (list.size() > 0) {
@@ -98,9 +85,9 @@ public class UtilsServiceImpl {
         return re;
     }
 
+
     public Result getGameListForUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
         List<Map<String, Object>> list = utilsDaoImpl.getGameListForUser(user);
@@ -117,7 +104,6 @@ public class UtilsServiceImpl {
 
     public Result getPlatformListForGameId(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Game game = new Game();
         game.setId(Integer.parseInt(id));
         List<Map<String, Object>> list = utilsDaoImpl.getPlatformListForGameId(game);
@@ -134,9 +120,7 @@ public class UtilsServiceImpl {
 
     public Result getPlatformListForUserIdAndGameId(Map map) {
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
-        logger.info("userId：" + userId);
         String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
-        logger.info("gameId：" + gameId);
         User user = new User();
         user.setId(Integer.parseInt(userId));
         Game game = new Game();

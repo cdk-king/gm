@@ -105,8 +105,8 @@ public class ServerDaoImpl implements ServerDao {
     public int editServer(Server server) {
         String sql = "UPDATE t_gameserver as a SET a.serverId = '" + server.getServerId() + "', a.server='" + server.getServer() +
                 "',a.server_describe = '" + server.getServer_describe() + "'," + "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" +
-                server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" + server.getAddUser() + "' where a.id =" +
-                server.getId() + "";
+                server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" + server.getAddUser() +
+                "',a.openServiceTime='" + server.getOpenServiceTime() + "'   where a.id =" + server.getId() + "";
         logger.info("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -230,16 +230,16 @@ public class ServerDaoImpl implements ServerDao {
                             jsonObject.get("pname") + "',a.openServiceTime='" + jsonObject.get("time") + "',a.addDatetime='" + addDatetime + "'," +
                             "a.serverIp='" + jsonObject.get("domain") + "',a.area='" + jsonObject.get("area") + "' ,a.serverPort = '" +
                             jsonObject.get("port") + "',a.addUser = 'cdk' where a.id =" + jsonObject.get("sid") + " and  a.platformId = '" +
-                            jsonObject.get("pid") + "' ";
+                            jsonObject.get("pid") + "' and a.channel = '' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增
                     String sqlInsert =
-                            "insert into t_gameserver (serverId,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime) values ('" +
+                            "insert into t_gameserver (serverId,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime,channel) values ('" +
                                     jsonObject.get("sid") + "', '" + jsonObject.get("sname") + "','" + jsonObject.get("domain") + "','" +
                                     jsonObject.get("port") + "','" + jsonObject.get("pid") + "','" + jsonObject.get("pname") + "','" +
                                     jsonObject.get("sname") + "','0','0','cdk','" + addDatetime + "',0,'0','" + jsonObject.get("area") + "','" +
-                                    jsonObject.get("time") + "' ) ; ";
+                                    jsonObject.get("time") + "','' ) ; ";
                     jdbcTemplate.update(sqlInsert);
                 }
             } catch (JSONException e) {

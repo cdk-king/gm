@@ -7,8 +7,6 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -22,10 +20,6 @@ public class UserServiceImpl {
     public UserDaoImpl userDaoImpl;
 
     public Result addUser(Map map) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
-        String id = (map.get("id") != null ? map.get("id").toString() : "");
         String account = (map.get("account") != null ? map.get("account").toString() : "");
         String name = (map.get("name") != null ? map.get("name").toString() : "");
         String password = "123456";//默认初始密码
@@ -49,7 +43,6 @@ public class UserServiceImpl {
         } else {
             logger.info("用户添加失败");
             re = new Result(400, "用户添加失败", null);
-
         }
         re = new Result(200, "", "");
         return re;
@@ -83,11 +76,10 @@ public class UserServiceImpl {
     }
 
     public Result getAllUser() {
-
         Result re;
         Map<String, Object> JsonMap = userDaoImpl.getAllUser();
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(400, "用户列表获取失败", "");
+            re = new Result(200, "用户列表为空", "");
         } else {
             re = new Result(200, "用户列表获取成功", JsonMap);
         }
@@ -106,9 +98,7 @@ public class UserServiceImpl {
         } else {
             re = new Result(200, "用户获取成功", JsonMap);
         }
-
         return re;
-
     }
 
     public Result getUser(Map map) {
@@ -126,16 +116,10 @@ public class UserServiceImpl {
         user.setPhone(phone);
         user.setEmail(email);
         user.setState(Integer.parseInt(state));
-
-        //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
-        //设置缺省值
         int pageNo = 1;
         int pageSize = 5;
-
         try {
             pageNo = Integer.parseInt(StrPageNo);
             pageSize = Integer.parseInt(StrPageSize);
@@ -145,7 +129,7 @@ public class UserServiceImpl {
         Result re;
         Map<String, Object> JsonMap = userDaoImpl.getUser(user, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("total"), 0)) {
-            re = new Result(400, "用户列表为空", "");
+            re = new Result(200, "用户列表为空", "");
         } else {
             re = new Result(200, "用户列表获取成功", JsonMap);
         }
@@ -156,9 +140,6 @@ public class UserServiceImpl {
     public Result editPassword(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String password = (map.get("password") != null ? map.get("password").toString() : "");
-        logger.info("id：" + id);
-        logger.info("password：" + password);
-
         User user = new User();
         user.setId(Integer.parseInt(id));
         user.setPassword(password);
@@ -176,10 +157,8 @@ public class UserServiceImpl {
 
     public Result changeStateToFrozen_User(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
-
         Result re;
         int temp = userDaoImpl.changeStateToFrozen_User(user);
         if (temp > 0) {
@@ -194,10 +173,8 @@ public class UserServiceImpl {
 
     public Result changeStateToNormal_User(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
-
         Result re;
         int temp = userDaoImpl.changeStateToNormal_User(user);
         if (temp > 0) {
@@ -212,10 +189,8 @@ public class UserServiceImpl {
 
     public Result deleteUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         User user = new User();
         user.setId(Integer.parseInt(id));
-
         Result re;
         int temp = userDaoImpl.deleteUser(user);
         if (temp > 0) {
@@ -230,16 +205,12 @@ public class UserServiceImpl {
 
     public Result deleteAllUser(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
-
         String[] objectArry = id.split(",");
-        logger.info("ObjectArry：" + objectArry);
         Result re;
-        String sql[] = new String[objectArry.length];
         int[] temp = userDaoImpl.deleteAllUser(objectArry);
         if (temp.length != 0) {
             logger.info("用户批量删除成功");

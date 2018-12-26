@@ -35,11 +35,9 @@ public class NewGiftServiceImpl {
             return re;
         }
         JSONArray jsonArray = null;
-
         platformId = Integer.parseInt(strPlatformId);
         gameId = Integer.parseInt(strGameId);
         jsonArray = JSONArray.parseArray(strlist);
-        logger.info(jsonArray.toString());
 
         int temp = newGiftDaoImpl.ImportGift(jsonArray, platformId, gameId);
         if (temp > 0) {
@@ -73,7 +71,6 @@ public class NewGiftServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         Map<String, Object> JsonMap = newGiftDaoImpl.getGiftUpload(newGift, isPage, pageNo, pageSize, strPlatform);
         if (!Objects.equals(JsonMap.get("list"), 0)) {
             logger.info("礼包列表获取成功");

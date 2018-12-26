@@ -7,8 +7,6 @@ import com.cdk.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -22,9 +20,6 @@ public class RightServiceImpl {
     public RightDaoImpl rightDaoImpl;
 
     public Result addRight(Map map) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-
         String rightName = (map.get("rightName") != null ? map.get("rightName").toString() : "");
         String rightTag = (map.get("rightTag") != null ? map.get("rightTag").toString() : "");
         String right_describe = (map.get("right_describe") != null ? map.get("right_describe").toString() : "");
@@ -37,7 +32,6 @@ public class RightServiceImpl {
         right.setAddUser(addUser);
 
         Result re;
-
         int temp = rightDaoImpl.addRight(right);
         if (temp > 0) {
             logger.info("权限添加成功");
@@ -58,12 +52,8 @@ public class RightServiceImpl {
         if (state == "") {
             state = "0";
         }
-
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
-
-        logger.info("pageNo：" + StrPageNo);
-        logger.info("pageSize：" + StrPageSize);
         int pageNo = 1;
         int pageSize = 5;
 
@@ -73,18 +63,15 @@ public class RightServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         Right right = new Right();
         right.setRightName(rightName);
         right.setRight_describe(right_describe);
         right.setRightTag(rightTag);
         right.setState(Integer.parseInt(state));
-
         Result re;
-
         Map<String, Object> JsonMap = rightDaoImpl.getRight(right, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("total"), 0)) {
-            re = new Result(400, "权限列表为空", "");
+            re = new Result(200, "权限列表为空", "");
         } else {
             re = new Result(200, "权限列表获取成功", JsonMap);
         }
@@ -98,7 +85,6 @@ public class RightServiceImpl {
         String rightTag = (map.get("rightTag") != null ? map.get("rightTag").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String sort = (map.get("sort") != null ? map.get("sort").toString() : "");
-
         Right right = new Right();
         right.setId(Integer.parseInt(id));
         right.setRightName(rightName);
@@ -110,7 +96,6 @@ public class RightServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-
         Result re;
         int temp = rightDaoImpl.editRight(right);
         if (temp > 0) {
@@ -126,10 +111,8 @@ public class RightServiceImpl {
 
     public Result changeStateToFrozen_Right(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Right right = new Right();
         right.setId(Integer.parseInt(id));
-
         Result re;
         int temp = rightDaoImpl.changeStateToFrozen_Right(right);
         if (temp > 0) {
@@ -144,10 +127,8 @@ public class RightServiceImpl {
 
     public Result changeStateToNormal_Right(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Right right = new Right();
         right.setId(Integer.parseInt(id));
-
         Result re;
         int temp = rightDaoImpl.changeStateToNormal_Right(right);
         if (temp > 0) {
@@ -162,10 +143,8 @@ public class RightServiceImpl {
 
     public Result deleteRight(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         Right right = new Right();
         right.setId(Integer.parseInt(id));
-
         Result re;
         int temp = rightDaoImpl.deleteRight(right);
         if (temp > 0) {
@@ -181,16 +160,12 @@ public class RightServiceImpl {
 
     public Result deleteAllRight(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);
         }
 
         String[] ObjectArry = id.split(",");
-        logger.info("ObjectArry：" + ObjectArry);
-
-        Right right = new Right();
         int[] temp = new int[ObjectArry.length];
         Result re;
         temp = rightDaoImpl.deleteAllRight(ObjectArry);

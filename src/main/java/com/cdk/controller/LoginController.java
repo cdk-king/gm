@@ -64,7 +64,6 @@ public class LoginController {
     @RequestMapping("/api/login/getTouristId")
     public Result getTouristId(@RequestBody Map map) {
         Result re = loginServiceImpl.getTouristId();
-        logger.info(Divider);
         return re;
     }
 
@@ -72,7 +71,6 @@ public class LoginController {
     @RequestMapping("/api/login/getTouristName")
     public Result getTouristName(@RequestBody Map map) {
         Result re = loginServiceImpl.getTouristName();
-        logger.info(Divider);
         return re;
     }
 
@@ -82,7 +80,6 @@ public class LoginController {
         Result re1 = loginServiceImpl.getTouristId();
         Result re2 = loginServiceImpl.getTouristName();
         Result re3 = new Result(200, "游客获取成功", re1.getData().toString() + "|" + re2.getData().toString());
-        logger.info(Divider);
         return re3;
     }
 
@@ -90,7 +87,6 @@ public class LoginController {
     @RequestMapping("/api/login/setTouristId")
     public Result setTouristId(@RequestBody Map map) {
         Result re = loginServiceImpl.setTouristId(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -98,7 +94,6 @@ public class LoginController {
     @RequestMapping("/api/login/setTouristName")
     public Result setTouristName(@RequestBody Map map) {
         Result re = loginServiceImpl.setTouristName(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -108,7 +103,6 @@ public class LoginController {
         Result re1 = loginServiceImpl.setTouristId(map);
         Result re2 = loginServiceImpl.setTouristName(map);
         Result re3 = new Result(200, "游客设置成功", "");
-        logger.info(Divider);
         return re3;
     }
 
@@ -116,7 +110,6 @@ public class LoginController {
     @RequestMapping("/api/login/getThisUserInfo")
     public Result getThisUserInfo(@RequestBody Map map) {
         Result re = loginServiceImpl.getThisUserInfo(map);
-        logger.info(Divider);
         return re;
     }
 }

@@ -30,7 +30,6 @@ public class PropServiceImpl {
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
-        logger.info("strPlatform：" + strPlatform);
 
         int pageNo = 1;
         int pageSize = 5;
@@ -43,9 +42,7 @@ public class PropServiceImpl {
         if (state == "") {
             state = "0";
         }
-
         Result re;
-
         Prop prop = new Prop();
         prop.setPropName(propName);
         prop.setPropTag(propTag);
@@ -54,13 +51,11 @@ public class PropServiceImpl {
         prop.setState(Integer.parseInt(state));
 
         Map<String, Object> JsonMap = propDaoImpl.getProp(prop, isPage, pageNo, pageSize, strPlatform);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具列表获取失败", "");
         } else {
             re = new Result(200, "道具列表获取成功", JsonMap);
         }
-
         return re;
     }
 
@@ -166,7 +161,6 @@ public class PropServiceImpl {
 
     public Result deleteAllProp(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
-        logger.info("id：" + id);
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
             return new Result(400, "无任何批量删除操作", null);

@@ -24,7 +24,6 @@ public class ChannelServiceImpl {
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getAllChannelFormPlatform(platformId);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "通道列表为空", "");
         } else {
@@ -36,7 +35,6 @@ public class ChannelServiceImpl {
     public Result getAllChannel(Map map) {
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getAllChannel();
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "通道列表为空", "");
         } else {
@@ -49,7 +47,6 @@ public class ChannelServiceImpl {
         String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getChannel(id);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "通道列表为空", "");
         } else {
@@ -77,7 +74,6 @@ public class ChannelServiceImpl {
             e.printStackTrace();
         }
         Result re;
-
         Channel channel = new Channel();
         channel.setChannelId(Integer.parseInt(channelId));
         channel.setChannelName(channelName);
@@ -86,7 +82,6 @@ public class ChannelServiceImpl {
         channel.setChannel_describe(channel_describe);
 
         Map<String, Object> JsonMap = channelDaoImpl.getChannelTable(channel, isPage, pageNo, pageSize);
-        logger.info(JsonMap.get("list").toString());
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "通道列表为空", "");
         } else {
@@ -131,7 +126,6 @@ public class ChannelServiceImpl {
                 ((map.get("channel_describe") != null && map.get("channel_describe") != "") ? map.get("channel_describe").toString() : "0");
         String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        logger.info(platformId);
         Channel channel = new Channel();
         channel.setId(Integer.parseInt(id));
         channel.setChannelId(Integer.parseInt(channelId));
@@ -156,7 +150,6 @@ public class ChannelServiceImpl {
         String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         Result re;
         int temp = channelDaoImpl.deleteChannel(id);
-        logger.info(temp + "");
         if (temp > 0) {
             re = new Result(200, "通道删除成功", temp);
         } else {
@@ -170,7 +163,6 @@ public class ChannelServiceImpl {
         String channel = ((map.get("channel") != null && map.get("channel") != "") ? map.get("channel").toString() : "");
         Result re;
         int temp = channelDaoImpl.saveCheckChannel(id, channel);
-        logger.info(temp + "");
         if (temp > 0) {
             re = new Result(200, "通道更新成功", temp);
         } else {
@@ -183,13 +175,10 @@ public class ChannelServiceImpl {
         String ids = ((map.get("ids") != null && map.get("ids") != "") ? map.get("ids").toString() : "");
         String channel = ((map.get("channel") != null && map.get("channel") != "") ? map.get("channel").toString() : "");
         String[] array = ids.split(",");
-        logger.info(ids);
-        logger.info(channel);
         Result re;
         int temp = 0;
         for (int i = 0; i < array.length; i++) {
             temp = channelDaoImpl.saveCheckChannel(array[i], channel);
-            logger.info(temp + "");
         }
         if (temp > 0) {
             re = new Result(200, "通道批量处理完成", temp);

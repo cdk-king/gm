@@ -73,8 +73,6 @@ public class UserDaoImpl {
         if (user.getAccount() != "") {
             sql += " and a.account LIKE '%" + user.getAccount() + "%'";
         }
-        logger.info("user.getState():" + user.getState());
-        logger.info(Split);
         if (!Objects.equals(user.getState(), null) && !Objects.equals(user.getState(), 0)) {
             if (Objects.equals(user.getState(), 1)) {
                 sql += " and state = 1 ";

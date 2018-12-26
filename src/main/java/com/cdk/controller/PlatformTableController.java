@@ -32,7 +32,6 @@ public class PlatformTableController {
     @RequestMapping("/getAllPlatform")
     public Result getAllPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -40,7 +39,6 @@ public class PlatformTableController {
     @RequestMapping("/getAllGameList")
     public Result getAllGameList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllGameList(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -48,7 +46,6 @@ public class PlatformTableController {
     @RequestMapping("/getAllRoleList")
     public Result getAllRoleList(@RequestBody Map map) {
         Result re = platformServiceImpl.getAllRoleList(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -57,7 +54,6 @@ public class PlatformTableController {
     @RequestMapping("/addPlatform")
     public Result addPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.addPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -67,7 +63,6 @@ public class PlatformTableController {
     @ResponseBody
     public Result editPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.editPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -77,7 +72,6 @@ public class PlatformTableController {
     @ResponseBody
     public Result deletePlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.deletePlatform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -86,7 +80,6 @@ public class PlatformTableController {
     @ResponseBody
     public Result changeStateToNormal_Platform(@RequestBody Map map) {
         Result re = platformServiceImpl.changeStateToNormal_Platform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -95,7 +88,6 @@ public class PlatformTableController {
     @ResponseBody
     public Result changeStateToFrozen_Platform(@RequestBody Map map) {
         Result re = platformServiceImpl.changeStateToFrozen_Platform(map);
-        logger.info(Divider);
         return re;
     }
 
@@ -105,7 +97,6 @@ public class PlatformTableController {
     @ResponseBody
     public Result deleteAllPlatform(@RequestBody Map map) {
         Result re = platformServiceImpl.deleteAllPlatform(map);
-        logger.info(Divider);
         return re;
     }
 
