@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class NewPropTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(NewPropTableController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

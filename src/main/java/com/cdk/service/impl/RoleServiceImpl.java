@@ -15,8 +15,6 @@ import java.util.logging.Logger;
 @Service
 public class RoleServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(RoleServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public RoleDaoImpl roleDaoImpl;
 
@@ -171,7 +169,6 @@ public class RoleServiceImpl {
         String deleteRoleRights = map.get("deleteRoleRights").toString();
         if (Objects.equals(deleteRoleRights, "")) {
             logger.info("无任何添加操作");
-            logger.info(Divider);
             return new Result(200, "无任何添加操作", null);
         }
 

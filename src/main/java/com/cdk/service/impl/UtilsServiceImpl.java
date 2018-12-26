@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 @Service
 public class UtilsServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(UtilsServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public UtilsDaoImpl utilsDaoImpl;
 
@@ -36,7 +34,6 @@ public class UtilsServiceImpl {
                     urlList.add(map);
                     map = new HashMap();
                 }
-
             }
         }
         return urlList;

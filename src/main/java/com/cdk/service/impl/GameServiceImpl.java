@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 @Service
 public class GameServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(GameServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public GameDaoImpl gameDaoImpl;
 
@@ -160,7 +158,7 @@ public class GameServiceImpl {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         if (Objects.equals(id, "")) {
             logger.info("无任何批量删除操作");
-            return new Result(400, "无任何批量删除操作", null);
+            return new Result(200, "无任何批量删除操作", null);
         }
         String[] ObjectArry = id.split(",");
         Result re;
@@ -171,7 +169,7 @@ public class GameServiceImpl {
             re = new Result(200, "游戏批量删除成功", null);
         } else if (ObjectArry.length == 0) {
             logger.info("无任何删除操作");
-            re = new Result(400, "无任何删除操作", null);
+            re = new Result(200, "无任何删除操作", null);
         } else {
             logger.info("游戏批量删除失败");
             re = new Result(400, "游戏批量删除失败", null);

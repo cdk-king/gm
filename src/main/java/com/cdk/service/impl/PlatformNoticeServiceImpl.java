@@ -30,8 +30,6 @@ import javax.annotation.PostConstruct;
 @Service
 public class PlatformNoticeServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public PlatformNoticeDaoImpl platformNoticeDaoImpl;

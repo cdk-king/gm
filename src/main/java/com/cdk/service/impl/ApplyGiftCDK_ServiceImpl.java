@@ -24,8 +24,6 @@ import java.util.logging.Logger;
 @Service
 public class ApplyGiftCDK_ServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(ApplyGiftCDK_ServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     public static final int GIFTID_OFFSET = 1;
     private static final String SIGN_KEY = "cdk";
     private static final byte[] SIGN_KEY_BYTES = SIGN_KEY.getBytes(Charset.forName("UTF-8"));

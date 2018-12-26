@@ -21,7 +21,6 @@ import javax.transaction.Transactional;
 @RestController
 public class GameTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(GameTableController.class));
-    public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

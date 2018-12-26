@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class ApplyGiftCDKController {
     private static Logger logger = Logger.getLogger(String.valueOf(ApplyGiftCDKController.class));
-    public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired

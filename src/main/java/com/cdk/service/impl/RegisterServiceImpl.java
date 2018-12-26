@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 @Service
 public class RegisterServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(RegisterServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public RegisterDaoImpl registerDaoImpl;
 

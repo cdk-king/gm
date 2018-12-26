@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 @Repository
 public class ChannelDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(ChannelDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

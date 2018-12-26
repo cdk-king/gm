@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 @Repository
 public class RegisterDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(RegisterDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 
     @Autowired

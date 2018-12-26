@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 @RestController
 public class RoleTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(RoleTableController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

@@ -21,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class DownloadController {
     private static Logger logger = Logger.getLogger(String.valueOf(DownloadController.class));
-    public static final String Divider = "############################";
-
 
     @CrossOrigin
     @RequestMapping("/api/file/CDKFileDownload")

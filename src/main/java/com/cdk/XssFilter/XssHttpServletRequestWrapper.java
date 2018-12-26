@@ -144,7 +144,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         value = value.replaceAll("script", "");
         value = value.replaceAll("[*]", "[" + "*]");
         value = value.replaceAll("[+]", "[" + "+]");
-        value = value.replaceAll("[?]", "[" + "?]");
+        //value = value.replaceAll("[?]", "[" + "?]");
 
 
         // replace sql 这里可以自由发挥

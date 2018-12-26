@@ -15,8 +15,6 @@ import java.util.logging.Logger;
 @Service
 public class PlatformServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public PlatformDaoImpl platformDaoImpl;
 

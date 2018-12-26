@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 @Repository
 public class LoginDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(LoginDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

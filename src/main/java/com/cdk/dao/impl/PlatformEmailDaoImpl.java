@@ -18,9 +18,6 @@ import java.util.logging.Logger;
 public class PlatformEmailDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformEmailDaoImpl.class));
 
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

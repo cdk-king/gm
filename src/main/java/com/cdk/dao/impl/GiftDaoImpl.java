@@ -19,8 +19,6 @@ import java.util.logging.Logger;
 @Repository
 public class GiftDaoImpl implements GiftDao {
     private static Logger logger = Logger.getLogger(String.valueOf(GiftDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

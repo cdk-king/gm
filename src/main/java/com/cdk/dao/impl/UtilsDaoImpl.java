@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 @Repository
 public class UtilsDaoImpl implements UtilsDao {
     private static Logger logger = Logger.getLogger(String.valueOf(UtilsDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -90,9 +88,15 @@ public class UtilsDaoImpl implements UtilsDao {
         String sql = "select * from t_prize_valuetype where valueTypeId  in (" + allow + ") and gameId=" + gameId;
         logger.info("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
-        list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
         return JsonMap;
+    }
+
+    public List<Map<String, Object>> getDataSourceForPlatformId(int platformId) {
+        String sql = "select * from t_datasource where platformId  =" + platformId;
+        logger.info("sql：" + sql);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        return list;
     }
 }

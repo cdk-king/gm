@@ -17,9 +17,6 @@ import java.util.logging.Logger;
 @Repository
 public class BanIpDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(BanIpDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

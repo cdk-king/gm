@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 public class NewGiftTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(NewGiftTableController.class));
 
-    public static final String Divider = "############################";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class PlatformEmailController {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformEmailController.class));
-    public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

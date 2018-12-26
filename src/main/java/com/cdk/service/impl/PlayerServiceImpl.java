@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 @Service
 public class PlayerServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(PlayerServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     public PlayerServiceImpl() {
         super();

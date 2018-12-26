@@ -16,9 +16,6 @@ import java.util.logging.Logger;
 public class UploadDaoImpl {
 
     private static Logger logger = Logger.getLogger(String.valueOf(UploadDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

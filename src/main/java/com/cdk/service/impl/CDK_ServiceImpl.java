@@ -21,8 +21,6 @@ import java.util.logging.Logger;
 @Service
 public class CDK_ServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(CDK_ServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public CDK_DaoImpl cdkDaoImpl;

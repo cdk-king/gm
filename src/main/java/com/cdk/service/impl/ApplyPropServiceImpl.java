@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 @Service
 public class ApplyPropServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(ApplyPropServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public ApplyPropDaoImpl applyPropDaoImpl;

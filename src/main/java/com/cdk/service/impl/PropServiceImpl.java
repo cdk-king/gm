@@ -15,8 +15,6 @@ import java.util.logging.Logger;
 @Service
 public class PropServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(PropServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public PropDaoImpl propDaoImpl;
 

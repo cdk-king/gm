@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 @RestController
 public class GiftTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(GiftTableController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

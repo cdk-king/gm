@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 @Service
 public class NewPropServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(NewPropServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public NewPropDaoImpl newPropDaoImpl;

@@ -15,8 +15,6 @@ import java.util.logging.Logger;
 @Service
 public class NewGiftServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(NewGiftServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public NewGiftDaoImpl newGiftDaoImpl;

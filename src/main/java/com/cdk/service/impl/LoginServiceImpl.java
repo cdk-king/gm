@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 @Service
 public class LoginServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(LoginServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
     @Autowired
     public LoginDaoImpl loginDaoImpl;
 

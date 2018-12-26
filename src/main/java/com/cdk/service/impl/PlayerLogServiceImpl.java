@@ -2,6 +2,7 @@ package com.cdk.service.impl;
 
 
 import com.cdk.dao.impl.PlayerLogDaoImpl;
+import com.cdk.dao.impl.UtilsDaoImpl;
 import com.cdk.entity.Player;
 import com.cdk.result.Result;
 
@@ -24,11 +25,11 @@ import java.util.logging.Logger;
 @Service
 public class PlayerLogServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public PlayerLogDaoImpl playerLogDaoImpl;
+    @Autowired
+    private UtilsDaoImpl utilsDaoImpl;
 
     public Result getPlayerProhibitSpeakLog(Map map) {
         String playerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
@@ -115,6 +116,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getRoleLoginLog(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
 
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -136,22 +138,22 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://192.168.1.16:3306/dbdiablomuzhilog?serverTimezone=Asia/Shanghai";
-        String USER = "root";
-        String PASS = "123456";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
         Connection conn = null;
         Statement stmt = null;
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
-            logger.info("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            logger.info(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM rolelogin where 1=1 ";
+            sql = "SELECT *  FROM rolelogin where DATEDIFF(now(),dtEventTime) < 7 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -170,7 +172,7 @@ public class PlayerLogServiceImpl {
             if (!Objects.equals(iLoginWay, "")) {
                 sql += " and iLoginWay ='" + iLoginWay + "' ";
             }
-
+            sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
             int columnCount = md.getColumnCount();   //获得列数
@@ -206,6 +208,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getCreateRoleLog(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
 
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -227,22 +230,22 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://192.168.1.16:3306/dbdiablomuzhilog?serverTimezone=Asia/Shanghai";
-        String USER = "root";
-        String PASS = "123456";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
         Connection conn = null;
         Statement stmt = null;
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
-            logger.info("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            logger.info(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM createrole where 1=1 ";
+            sql = "SELECT *  FROM createrole where DATEDIFF(now(),dtEventTime) < 7 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -261,7 +264,7 @@ public class PlayerLogServiceImpl {
             if (!Objects.equals(iLoginWay, "")) {
                 sql += " and iLoginWay ='" + iLoginWay + "' ";
             }
-
+            sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
             int columnCount = md.getColumnCount();   //获得列数
@@ -298,13 +301,14 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getMoneyFlowLog(Map map) {
+
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
         String iMoneyType = (map.get("iMoneyType") != null ? map.get("iMoneyType").toString() : "");
         String iAction = (map.get("iAction") != null ? map.get("iAction").toString() : "");
-
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -318,22 +322,22 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://192.168.1.16:3306/dbdiablomuzhilog?serverTimezone=Asia/Shanghai";
-        String USER = "root";
-        String PASS = "123456";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
         Connection conn = null;
         Statement stmt = null;
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
-            logger.info("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            logger.info(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM moneyflow where 1=1 ";
+            sql = "SELECT *  FROM moneyflow where DATEDIFF(now(),dtEventTime) < 7 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -352,7 +356,7 @@ public class PlayerLogServiceImpl {
             if (!Objects.equals(iAction, "")) {
                 sql += " and iAction ='" + iAction + "' ";
             }
-
+            sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
             int columnCount = md.getColumnCount();   //获得列数
@@ -391,6 +395,7 @@ public class PlayerLogServiceImpl {
 
 
     public Result getGoodFlowLog(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
@@ -412,22 +417,24 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-        String DB_URL = "jdbc:mysql://192.168.1.16:3306/dbdiablomuzhilog?serverTimezone=Asia/Shanghai";
-        String USER = "root";
-        String PASS = "123456";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
         Connection conn = null;
         Statement stmt = null;
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
-            logger.info("连接数据库...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            logger.info(" 实例化Statement对象...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM goodsflow where 1=1 ";
+            sql = "SELECT *  FROM goodsflow where DATEDIFF(now(),dtEventTime) < 20 ";
+
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -449,7 +456,7 @@ public class PlayerLogServiceImpl {
             if (!Objects.equals(vOperate, "")) {
                 sql += " and vOperate ='" + vOperate + "' ";
             }
-
+            sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
             ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
             int columnCount = md.getColumnCount();   //获得列数

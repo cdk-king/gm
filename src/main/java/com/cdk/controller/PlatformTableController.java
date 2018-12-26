@@ -20,7 +20,6 @@ import javax.transaction.Transactional;
 @RestController
 public class PlatformTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformTableController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

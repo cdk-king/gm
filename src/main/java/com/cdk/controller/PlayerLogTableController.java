@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class PlayerLogTableController {
     private static Logger logger = Logger.getLogger(String.valueOf(PlayerLogTableController.class));
-    public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -40,28 +39,28 @@ public class PlayerLogTableController {
     @CrossOrigin
     @RequestMapping("/api/log/getGoodFlowLog")
     public Result getGoodFlowLog(@RequestBody Map map) {
-        //Result re = playerLogServiceImpl.getGoodFlowLog(map);
-        return null;
+        Result re = playerLogServiceImpl.getGoodFlowLog(map);
+        return re;
     }
 
     @CrossOrigin
     @RequestMapping("/api/log/getMoneyFlowLog")
     public Result getMoneyFlowLog(@RequestBody Map map) {
-        //Result re = playerLogServiceImpl.getMoneyFlowLog(map);
-        return null;
+        Result re = playerLogServiceImpl.getMoneyFlowLog(map);
+        return re;
     }
 
     @CrossOrigin
     @RequestMapping("/api/log/getCreateRoleLog")
     public Result getCreateRoleLog(@RequestBody Map map) {
-        //Result re = playerLogServiceImpl.getCreateRoleLog(map);
-        return null;
+        Result re = playerLogServiceImpl.getCreateRoleLog(map);
+        return re;
     }
 
     @CrossOrigin
     @RequestMapping("/api/log/getRoleLoginLog")
     public Result getRoleLoginLog(@RequestBody Map map) {
-        //Result re = playerLogServiceImpl.getRoleLoginLog(map);
-        return null;
+        Result re = playerLogServiceImpl.getRoleLoginLog(map);
+        return re;
     }
 }

@@ -21,8 +21,6 @@ import java.util.logging.Logger;
 @Service
 public class SendNoticeServiceImpl extends ApiHandeler {
     private static Logger logger = Logger.getLogger(String.valueOf(SendNoticeServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public SendNoticeDaoImpl sendNoticeDaoImpl;

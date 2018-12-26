@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 @RestController
 public class PlatformNoticeController {
     private static Logger logger = Logger.getLogger(String.valueOf(PlatformNoticeController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private PlatformNoticeServiceImpl platformNoticeServiceImpl;

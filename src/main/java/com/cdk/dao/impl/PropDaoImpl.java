@@ -18,8 +18,6 @@ import java.util.logging.Logger;
 @Repository
 public class PropDaoImpl implements PropDao {
     private static Logger logger = Logger.getLogger(String.valueOf(PropDaoImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

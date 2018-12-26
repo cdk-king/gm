@@ -21,9 +21,6 @@ import java.util.logging.Logger;
 public class PlayerDaoImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(PlayerDaoImpl.class));
 
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

@@ -18,9 +18,6 @@ import java.util.logging.Logger;
 public class UploadServiceImpl {
 
     private static Logger logger = Logger.getLogger(String.valueOf(UploadServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
-
     @Autowired
     public UploadDaoImpl uploadDaoImpl;
 

@@ -14,8 +14,6 @@ import java.util.logging.Logger;
 @Service
 public class ChannelServiceImpl {
     private static Logger logger = Logger.getLogger(String.valueOf(ChannelServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
 
     @Autowired
     public ChannelDaoImpl channelDaoImpl;
@@ -93,10 +91,10 @@ public class ChannelServiceImpl {
     public Result addChannel(Map map) {
         String channelId = ((map.get("channelId") != null && map.get("channelId") != "") ? map.get("channelId").toString() : "0");
         String channelName = ((map.get("channelName") != null && map.get("channelName") != "") ? map.get("channelName").toString() : "");
-        String channelTag = ((map.get("channelTag") != null && map.get("channelTag") != "") ? map.get("channelTag").toString() : "0");
+        String channelTag = ((map.get("channelTag") != null && map.get("channelTag") != "") ? map.get("channelTag").toString() : "");
         String channel_describe =
-                ((map.get("channel_describe") != null && map.get("channel_describe") != "") ? map.get("channel_describe").toString() : "0");
-        String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "0");
+                ((map.get("channel_describe") != null && map.get("channel_describe") != "") ? map.get("channel_describe").toString() : "");
+        String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
 
         Channel channel = new Channel();

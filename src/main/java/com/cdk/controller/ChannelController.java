@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 @RestController
 public class ChannelController {
     private static Logger logger = Logger.getLogger(String.valueOf(ChannelController.class));
-    public static final String Divider = "############################";
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired

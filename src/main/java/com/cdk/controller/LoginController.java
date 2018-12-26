@@ -24,7 +24,6 @@ import javax.validation.Valid;
 @RestController
 public class LoginController {
     private static Logger logger = Logger.getLogger(String.valueOf(LoginController.class));
-    public static final String Divider = "############################";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

@@ -15,6 +15,8 @@ import com.cdk.util.HttpRequestUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,15 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 
 @Service
 public class ServerServiceImpl extends ApiHandeler {
-    private static Logger logger = Logger.getLogger(String.valueOf(ServerServiceImpl.class));
-    public static final String Divider = "############################";
-    public static final String Split = "----------------";
+    private static Logger logger = LoggerFactory.getLogger(ServerServiceImpl.class);
 
     @Autowired
     public ServerDaoImpl serverDaoImpl;
