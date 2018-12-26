@@ -3,6 +3,8 @@ package com.cdk.controller;
 import com.cdk.result.Result;
 import com.cdk.service.impl.ServerServiceImpl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,14 +15,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @RestController
 public class ServerTableController {
-    private static Logger logger = Logger.getLogger(String.valueOf(ServerTableController.class));
+    private static Logger logger = LoggerFactory.getLogger(ServerTableController.class);
     public static final String Divider = "############################";
 
     @Autowired
@@ -190,7 +191,7 @@ public class ServerTableController {
     public String getServerList(HttpServletRequest request) {
         String platform = request.getParameter("platform");
         String re = serverServiceImpl.getServerList(platform);
-        logger.info(Divider);
+        logger.debug(Divider);
         return re;
     }
 }
