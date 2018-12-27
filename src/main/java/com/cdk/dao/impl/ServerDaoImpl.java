@@ -216,8 +216,8 @@ public class ServerDaoImpl {
                             jsonObject.get("sname") + "'," + "a.platformId='" + jsonObject.get("pid") + "',a.platformTag='" +
                             jsonObject.get("pname") + "',a.openServiceTime='" + jsonObject.get("time") + "',a.addDatetime='" + addDatetime + "'," +
                             "a.serverIp='" + jsonObject.get("domain") + "',a.area='" + jsonObject.get("area") + "' ,a.serverPort = '" +
-                            jsonObject.get("port") + "',a.addUser = 'cdk' where a.id =" + jsonObject.get("sid") + " and  a.platformId = '" +
-                            jsonObject.get("pid") + "' and a.channel = '' ";
+                            jsonObject.get("port") + "',a.addUser = 'cdk' where a.serverId =" + jsonObject.get("sid") + " and  a.platformId = '" +
+                            jsonObject.get("pid") + "' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增

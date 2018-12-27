@@ -31,20 +31,22 @@ public class NewPropDaoImpl {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 int index = i;
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                JSONObject jsonObject = jsonArray.getJSONObject(index);
                 String sqlSelect =
                         "select * from t_prop_upload where propId = '" + jsonObject.get("propId") + "' and  platformId = '" + platformId + "'";
                 List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
                 if (list.size() > 0) {
                     //存在，更新
                     String sqlUpdate = "UPDATE t_prop_upload as a SET a.propName='" + jsonObject.get("propName") + "',a.propType = '" +
-                            jsonObject.get("propType") + "'," + "a.propDescribe='" + jsonObject.get("prop_describe") + "' ";
+                            jsonObject.get("propType") + "'," + "a.propDescribe='" + jsonObject.get("prop_describe") + "',a.propMaxCount = '" +
+                            jsonObject.get("propMaxCount") + "' where propId = '" + jsonObject.get("propId") + "' and  platformId = '" + platformId +
+                            "' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增
-                    String sqlInsert = "insert into t_prop_upload (propId,propName,propType,propDescribe,platformId,gameId) values ('" +
+                    String sqlInsert = "insert into t_prop_upload (propId,propName,propType,propDescribe,platformId,gameId,propMaxCount) values ('" +
                             jsonObject.get("propId") + "', '" + jsonObject.get("propName") + "','" + jsonObject.get("propType") + "','" +
-                            jsonObject.get("prop_describe") + "','" + platformId + "','" + gameId + "' ) ; ";
+                            jsonObject.get("prop_describe") + "','" + platformId + "','" + gameId + "','" + jsonObject.get("propMaxCount") + "' ) ; ";
                     jdbcTemplate.update(sqlInsert);
 
                 }

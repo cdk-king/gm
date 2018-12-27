@@ -48,7 +48,9 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         try {
             requestBody = StreamUtils.copyToByteArray(request.getInputStream());
             String strRequestBody = new String(requestBody, "UTF-8");
+            //logger.debug(strRequestBody);
             String re = cleanXSS(strRequestBody);
+            //logger.debug(strRequestBody);
             requestBody = re.getBytes("UTF-8");
         } catch (IOException e) {
             e.printStackTrace();

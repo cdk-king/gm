@@ -28,7 +28,8 @@ public class NewGiftDaoImpl {
         strSql = "";
         int temp = 1;
         for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            int index = 1;
+            JSONObject jsonObject = jsonArray.getJSONObject(index);
             String sqlSelect = "select * from t_gift_upload where giftId = '" + jsonObject.get("giftId") + "' and  platformId = '" + platformId + "'";
             List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
             if (list.size() > 0) {
@@ -36,7 +37,8 @@ public class NewGiftDaoImpl {
                 String sqlUpdate =
                         "UPDATE t_gift_upload as a SET a.giftName='" + jsonObject.get("giftId") + "', a.limitCount='" + jsonObject.get("limit") +
                                 "',a.expire_time = '" + jsonObject.get("expire_time") + "'," + "a.goods_prize1='" + jsonObject.get("goods_prize1") +
-                                "',a.value_prize1='" + jsonObject.get("value_prize1") + "' ";
+                                "',a.value_prize1='" + jsonObject.get("value_prize1") + "' where giftId = '" + jsonObject.get("giftId") +
+                                "' and  platformId = '" + platformId + "' ";
                 jdbcTemplate.update(sqlUpdate);
             } else {
                 //没有，新增

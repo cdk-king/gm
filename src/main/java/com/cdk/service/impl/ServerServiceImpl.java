@@ -124,24 +124,25 @@ public class ServerServiceImpl extends ApiHandeler {
 
     public Result editServer(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "");
+        String serverId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
         String serverIp = (map.get("serverIp") != null ? map.get("serverIp").toString() : "");
         String serverPort = (map.get("serverPort") != null ? map.get("serverPort").toString() : "");
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
-        String openDatetime = (map.get("openDatetime") != null ? map.get("openDatetime").toString() : "");
-        logger.debug(openDatetime);
+        String openServiceTime = (map.get("openServiceTime") != null ? map.get("openServiceTime").toString() : "");
+        logger.debug(openServiceTime);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
+        server.setServerId(Integer.parseInt(serverId));
         server.setServer(serverName);
         server.setServerIp(serverIp);
         server.setServer_describe(server_describe);
         server.setPlatformId(Integer.parseInt(platformId));
         server.setAddUser(addUser);
         server.setServerPort(serverPort);
-        server.setOpenServiceTime(openDatetime);
-
+        server.setOpenServiceTime(openServiceTime);
         Result re;
         int temp = serverDaoImpl.editServer(server);
         if (temp > 0) {
