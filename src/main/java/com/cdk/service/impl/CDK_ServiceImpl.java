@@ -82,6 +82,7 @@ public class CDK_ServiceImpl {
         int couponId = Integer.parseInt(strCouponId);
         int sequenceId = Integer.parseInt(strSequenceId);
         if (couponId > 0) {
+            logger.debug(couponId + "");
             int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
             int check = checkCDK(couponId, sequenceId, cdk, platformId);
             if (checkIsUsed == 1) {

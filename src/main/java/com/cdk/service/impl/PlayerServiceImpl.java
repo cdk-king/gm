@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Objects;
 
@@ -78,9 +80,13 @@ public class PlayerServiceImpl extends ApiHandeler {
         int pageNo = 1;
         int pageSize = 5;
         try {
+            PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
+            AccountName = URLEncoder.encode(AccountName, "UTF-8");
             pageNo = Integer.parseInt(StrPageNo);
             pageSize = Integer.parseInt(StrPageSize);
         } catch (NumberFormatException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         int platformId = Integer.parseInt(strPlatformId);
@@ -180,6 +186,13 @@ public class PlayerServiceImpl extends ApiHandeler {
         String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
 
+        try {
+            PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
+            AccountName = URLEncoder.encode(AccountName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";
         String operator = strPlatformId;
@@ -240,6 +253,12 @@ public class PlayerServiceImpl extends ApiHandeler {
         String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
         String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
+
+        try {
+            PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";

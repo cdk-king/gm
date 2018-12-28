@@ -28,7 +28,7 @@ public class NewGiftDaoImpl {
         strSql = "";
         int temp = 1;
         for (int i = 0; i < jsonArray.size(); i++) {
-            int index = 1;
+            int index = i;
             JSONObject jsonObject = jsonArray.getJSONObject(index);
             String sqlSelect = "select * from t_gift_upload where giftId = '" + jsonObject.get("giftId") + "' and  platformId = '" + platformId + "'";
             List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
@@ -37,16 +37,19 @@ public class NewGiftDaoImpl {
                 String sqlUpdate =
                         "UPDATE t_gift_upload as a SET a.giftName='" + jsonObject.get("giftId") + "', a.limitCount='" + jsonObject.get("limit") +
                                 "',a.expire_time = '" + jsonObject.get("expire_time") + "'," + "a.goods_prize1='" + jsonObject.get("goods_prize1") +
-                                "',a.value_prize1='" + jsonObject.get("value_prize1") + "' where giftId = '" + jsonObject.get("giftId") +
+                                "',a.value_prize1='" + jsonObject.get("value_prize1") + "',a.giftName = '" + jsonObject.get("giftName") +
+                                "',a.giftDescribe='" + jsonObject.get("giftDescribe") + "'  where giftId = '" + jsonObject.get("giftId") +
                                 "' and  platformId = '" + platformId + "' ";
                 jdbcTemplate.update(sqlUpdate);
             } else {
+                System.out.println(jsonObject.get("giftId"));
                 //没有，新增
                 String sqlInsert =
-                        "insert into t_gift_upload (giftId,giftName,limitCount,expire_time,goods_prize1,value_prize1,platformId,gameId) values ('" +
+                        "insert into t_gift_upload (giftId,giftName,limitCount,expire_time,goods_prize1,value_prize1,platformId,gameId,giftName,giftDescribe) values ('" +
                                 jsonObject.get("giftId") + "','" + jsonObject.get("giftId") + "', '" + jsonObject.get("limit") + "','" +
                                 jsonObject.get("expire_time") + "','" + jsonObject.get("goods_prize1") + "', '" + jsonObject.get("value_prize1") +
-                                "'  ,'" + platformId + "','" + gameId + "' ) ; ";
+                                "'  ,'" + platformId + "','" + gameId + "','" + jsonObject.get("giftName") + "','" + jsonObject.get("giftDescribe") +
+                                "' ) ; ";
                 jdbcTemplate.update(sqlInsert);
 
             }

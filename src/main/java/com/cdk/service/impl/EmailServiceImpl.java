@@ -216,6 +216,7 @@ public class EmailServiceImpl extends ApiHandeler {
         String playerNameList = (map.get("playerNameList") != null ? map.get("playerNameList").toString() : "");
         String playerIdList = (map.get("playerIdList") != null ? map.get("playerIdList").toString() : "");
         try {
+            playerNameList = URLEncoder.encode(playerNameList, "UTF-8");
             emailTitle = URLEncoder.encode(emailTitle, "UTF-8");
             emailContent = URLEncoder.encode(emailContent, "UTF-8");
         } catch (UnsupportedEncodingException e) {

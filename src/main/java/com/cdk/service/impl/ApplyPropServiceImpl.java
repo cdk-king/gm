@@ -76,6 +76,14 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String Money = ((map.get("Money") != null) ? map.get("Money").toString() : "");
         int id = Integer.parseInt(strId);
 
+        try {
+            PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
+            Title = URLEncoder.encode(Title, "UTF-8");
+            Content = URLEncoder.encode(Content, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         long time = Math.abs(System.currentTimeMillis() / 1000);
         String strTime = time + "";
         String operator = platformId;
@@ -92,12 +100,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         } else {
             param += "&PlayerName=" + PlayerName;
         }
-        try {
-            Title = URLEncoder.encode(Title, "UTF-8");
-            Content = URLEncoder.encode(Content, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+
         param += "&Title=" + Title;
         param += "&Content=" + Content;
 
@@ -110,6 +113,8 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(platformId, serverId);
 
         String url = apiUrl + "/UpdatePlayer/Mail";
+        logger.debug(url);
+        logger.debug(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
 
