@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class SendNoticeController {
@@ -65,9 +66,14 @@ public class SendNoticeController {
     public Result sendNotice(@RequestBody Map map) {
         String strTimeInterval = (map.get("timeInterval") != null ? map.get("timeInterval").toString() : "");
         String strCycleTime = (map.get("cycleTime") != null ? map.get("cycleTime").toString() : "");
+        String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
         int timeInterval = Integer.parseInt(strTimeInterval);
         int cycleTime = Integer.parseInt(strCycleTime);
-        sendNotice(timeInterval, cycleTime, map);
+        if (Objects.equals(sendType, "1")) {
+            Result re = sendNoticeServiceImpl.sendNotice(map);
+        } else if (Objects.equals(sendType, "2")) {
+            sendNotice(timeInterval, cycleTime, map);
+        }
         return null;
     }
 

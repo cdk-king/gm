@@ -23,7 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class DomAnalysis {
     private static Logger logger = LoggerFactory.getLogger(DomAnalysis.class);
 
-    public void Analysis(String fileName) {
+    public String Analysis(String fileName) {
         List<Map<String, Object>> list = new ArrayList<>();
 
         //创建一个DocumentBuilderFactory的对象
@@ -70,6 +70,7 @@ public class DomAnalysis {
         }
         String jsonString = JSON.toJSONString(list);
         logger.debug(jsonString);
+        return jsonString;
     }
 }
 

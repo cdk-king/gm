@@ -42,7 +42,7 @@
         <entry name="iEventId" type="string" size="60" desc="游戏事件ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="20" desc="角色名"/>
         <entry name="iJobId" type="utinyint" size="" desc="角色职业"/>
@@ -99,7 +99,7 @@
         <entry name="iEventId" type="string" size="60" desc="游戏事件ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="20" desc="角色名"/>
         <entry name="iJobId" type="utinyint" size="" desc="角色职业"/>
@@ -158,7 +158,7 @@
             dont_use_special_arg="ALL"
             event_id_generate_type="PASS_IN">
         <entry name="iEventId" type="string" size="60" desc="操作ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
@@ -166,7 +166,7 @@
         <entry name="iRoleLevel" type="uint" size="" desc="角色等级"/>
         <entry name="vSN" type="string" size="64" desc="流水号"/>
         <entry name="ts" type="uint" size="" desc="充值时间"/>
-        <entry name="iPayDelta" type="uint" size="" desc="充值金额(单位人民币分)"/>
+        <entry name="iPayDelta" type="uint" size="" desc="充值金额"/>
         <entry name="igamepoints" type="bigint" size="" desc="充值货币数"/>
         <entry name="iNewCash" type="bigint" size="" desc="充值货币余量"/>
         <entry name="vSubType" type="string" size="64" desc="子类型"/>
@@ -179,17 +179,17 @@
         <entry name="iEventId" type="string" size="60" desc="游戏事件ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="20" desc="角色名"/>
         <entry name="iJobId" type="utinyint" size="" desc="角色职业"/>
 
         <entry name="iCost" type="bigint" size="" desc="消费充值金子数"/>
-        <entry name="iShopType" type="uint" size="" desc="消费类型 1为各种商店购买，2为其他消费如元宝一键扫荡等"/>
+        <entry name="iShopType" type="uint" size="" desc="消费类型"/>
         <entry name="iOperate" type="uint" size="" desc="操作类型"/>
         <entry name="iGoodsId" type="uint" size="" desc="物品ID"/>
         <entry name="iGoodsNum" type="uint" size="" desc="物品数量"/>
-        <entry name="vGuid" type="string" size="60" desc="全局唯一标识(暂时没用,空着)"/>
+        <entry name="vGuid" type="string" size="60" desc="唯一标识"/>
         <entry name="iGamePoints" type="uint" size="" desc="角色金子数量"/>
     </struct>
 
@@ -201,7 +201,7 @@
         <entry name="iEventId" type="string" size="60" desc="游戏事件ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="20" desc="角色名"/>
         <entry name="iJobId" type="utinyint" size="" desc="角色职业"/>
@@ -221,7 +221,7 @@
         <entry name="iEventId" type="string" size="60" desc="游戏事件ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="20" desc="角色名"/>
         <entry name="iJobId" type="utinyint" size="" desc="角色职业"/>
@@ -240,7 +240,7 @@
         <entry name="iEventId" type="string" size="60" desc="操作ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="60" desc="角色名"/>
         <entry name="iOperate" type="uint" size="60" desc="操作类型"/>
@@ -259,7 +259,7 @@
         <entry name="iEventId" type="string" size="60" desc="操作ID"/>
         <entry name="iWorldId" type="uint" index="1" desc="游戏大区ID"/>
         <entry name="iUin" type="string" size="60" desc="用户ID"/>
-        <entry name="dtEventTime" type="datetime" size="" desc="记录时间, 格式 YYYY-MM-DD HH:MM:SS"/>
+        <entry name="dtEventTime" type="datetime" size="" desc="记录时间"/>
         <entry name="iRoleId" type="bigint" index="1" desc="角色ID"/>
         <entry name="vRoleName" type="string" size="60" desc="角色名"/>
         <entry name="iOperate" type="uint" size="60" desc="操作类型"/>

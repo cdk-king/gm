@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 26/12/2018 18:32:50
+ Date: 29/12/2018 18:50:30
 */
 
 SET NAMES utf8mb4;
@@ -56,10 +56,10 @@ CREATE TABLE `t_cdk`  (
   `couponId` int(20) NULL DEFAULT NULL,
   `sequenceId` int(20) NOT NULL,
   `platformId` int(20) NULL DEFAULT NULL,
-  `cdk` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `cdk` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `isUsed` int(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_config
@@ -87,19 +87,19 @@ CREATE TABLE `t_coupon`  (
   `giftId` int(20) NULL DEFAULT NULL,
   `couponId` int(20) NULL DEFAULT NULL,
   `couponCount` int(20) NULL DEFAULT NULL,
-  `couponTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `coupon_describe` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `couponTitle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `coupon_describe` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `platformId` int(20) NOT NULL,
   `start_sequence` int(20) NULL DEFAULT NULL,
   `end_sequence` int(20) NULL DEFAULT NULL,
   `salt` int(20) NULL DEFAULT NULL,
   `starDatetime` datetime(0) NULL DEFAULT NULL,
   `endDatetime` datetime(0) NULL DEFAULT NULL,
-  `addUser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `addUser` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `addDatetime` datetime(0) NULL DEFAULT NULL,
-  `fileUrl` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `fileUrl` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_coupon_exchange
@@ -143,7 +143,7 @@ CREATE TABLE `t_datasource`  (
   `addUser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `isDelete` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_datasource
@@ -197,17 +197,6 @@ CREATE TABLE `t_game`  (
 INSERT INTO `t_game` VALUES (1, '魔幻ARPG', 'game1', '魔幻ARPG', 'game1', 0, '2018-12-07 11:10:21', 'cdk', 0, 0, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
--- Table structure for t_game_gameflatform
--- ----------------------------
-DROP TABLE IF EXISTS `t_game_gameflatform`;
-CREATE TABLE `t_game_gameflatform`  (
-  `id` int(20) NOT NULL AUTO_INCREMENT,
-  `gameId` int(20) NOT NULL,
-  `gamePlatformId` int(20) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- Table structure for t_gameplatform
 -- ----------------------------
 DROP TABLE IF EXISTS `t_gameplatform`;
@@ -229,23 +218,12 @@ CREATE TABLE `t_gameplatform`  (
   `dataSource_username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `dataSource_password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_gameplatform
 -- ----------------------------
 INSERT INTO `t_gameplatform` VALUES (1, 1, '平台1', 1, 3, 'muzhi', '平台1', NULL, 0, 0, 'cdk', '2018-12-19 16:32:49', 0, NULL, NULL, NULL);
-
--- ----------------------------
--- Table structure for t_gameplatform_gameserver
--- ----------------------------
-DROP TABLE IF EXISTS `t_gameplatform_gameserver`;
-CREATE TABLE `t_gameplatform_gameserver`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `gamePlatformId` int(11) NOT NULL,
-  `gameServerId` int(11) NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_gameserver
@@ -275,7 +253,7 @@ CREATE TABLE `t_gameserver`  (
 -- ----------------------------
 -- Records of t_gameserver
 -- ----------------------------
-INSERT INTO `t_gameserver` VALUES (1, 1, '测试服', 's1.dtest.xssyx.com', '4000', 1, 'muzhi', '测试服', 0, 0, 'cdk', '2018-12-25 22:12:37', 0, 0, '1', '2018-12-14 00:00:00', '');
+INSERT INTO `t_gameserver` VALUES (1, 1, '测试服', '127.0.0.1:19999', '4000', 1, 'muzhi', '测试服', 0, 0, 'cdk', '2018-12-28 20:38:46', 0, 0, '1', '2018-12-14 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for t_gift
@@ -328,7 +306,17 @@ CREATE TABLE `t_gift_upload`  (
   `value_prize1` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `gameId` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_gift_upload
+-- ----------------------------
+INSERT INTO `t_gift_upload` VALUES (1, 2, '豪华礼包', '坐骑进阶丹（绑）[*]10，佣兵进阶丹（绑）[*]10，初级光翼精华（绑）[*]5，1.5倍经验药水（绑）[*]1，离线挂机卡（绑）[*]1', NULL, 1, '1', '2019_11_20', '6020001;count=10;binded', '', 1);
+INSERT INTO `t_gift_upload` VALUES (2, 1, '公会礼包', '100万金币（绑）[*]5，护送令牌（绑）[*]3，1.5倍经验药水（绑）[*]3，初级光翼精华（绑）[*]5，初级圣物精华（绑）[*]5', NULL, 1, '1', '2019_11_10', '420100;count=5;binded', '', 1);
+INSERT INTO `t_gift_upload` VALUES (3, 3, 'VIP礼包', '初级光翼精华(绑) [*] 5、佣兵进阶丹(绑) [*] 10、2倍经验药水(绑) [*] 1、100万金币(绑) [*] 3、橙色符文精华宝箱(绑) [*] 3', NULL, 1, '1', '2019_11_30', '2020004;count=5;binded', '', 1);
+INSERT INTO `t_gift_upload` VALUES (4, 4, '温暖新手礼包', '坐骑进阶丹(绑) [*] 5、佣兵进阶丹(绑) [*] 5、100万金币(绑) [*] 3、1朵玫瑰(绑) [*] 3', NULL, 1, '1', '2019_12_10', '6020001;count=5;binded', '', 1);
+INSERT INTO `t_gift_upload` VALUES (5, 5, '温暖日常礼包', '坐骑进阶丹(绑) [*] 10、初级翅膀精华(绑) [*] 3、100万铜钱(绑) [*] 3', NULL, 1, '1', '2019_12_10', '6020001;count=10;binded', '', 1);
+INSERT INTO `t_gift_upload` VALUES (6, 6, '温暖特权礼包', '2倍经验药(绑) [*] 1、100万铜钱(绑) [*] 3、护花令(绑) [*] 3', NULL, 1, '1', '2019_12_10', '270007;count=1;binded', '', 1);
 
 -- ----------------------------
 -- Table structure for t_platform_channel
@@ -356,7 +344,7 @@ CREATE TABLE `t_platform_email`  (
   `platformId` int(20) NOT NULL,
   `serverList` varchar(225) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `emailTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `emailContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `emailContent` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sendReason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `startDatetime` datetime(0) NULL DEFAULT NULL,
   `endDatetime` datetime(0) NULL DEFAULT NULL,
@@ -377,7 +365,7 @@ CREATE TABLE `t_platform_notice`  (
   `platformId` int(20) NULL DEFAULT NULL,
   `serverList` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `noticeTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `noticeContent` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `noticeContent` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `startDatetime` datetime(0) NULL DEFAULT NULL,
   `endDatetime` datetime(0) NULL DEFAULT NULL,
   `sendState` int(20) NULL DEFAULT NULL,
@@ -388,7 +376,7 @@ CREATE TABLE `t_platform_notice`  (
   `moneyList` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `errorList` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_player
@@ -433,7 +421,7 @@ CREATE TABLE `t_player_ban_log`  (
   `userId` int(20) NULL DEFAULT NULL,
   `banTime` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_player_prohibitspeak_log
@@ -451,7 +439,7 @@ CREATE TABLE `t_player_prohibitspeak_log`  (
   `isToProhibitSpeak` int(20) NULL DEFAULT NULL,
   `prohibitSpeakTime` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_player_type
@@ -606,8 +594,31 @@ CREATE TABLE `t_prop_upload`  (
   `propDescribe` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `platformId` int(20) NOT NULL,
   `gameId` int(20) NULL DEFAULT NULL,
+  `propMaxCount` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_prop_upload
+-- ----------------------------
+INSERT INTO `t_prop_upload` VALUES (1, 220001, '1级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (2, 220002, '2级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (3, 220003, '3级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (4, 220004, '4级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (5, 220005, '5级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (6, 220006, '6级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (7, 220007, '7级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (8, 220008, '8级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (9, 220009, '9级红宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (10, 220010, '1级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (11, 220011, '2级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (12, 220012, '3级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (13, 220013, '4级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (14, 220014, '5级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (15, 220015, '6级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (16, 220016, '7级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (17, 220017, '8级蓝宝石', '24', '', 1, 1, 999);
+INSERT INTO `t_prop_upload` VALUES (18, 220018, '9级蓝宝石', '24', '', 1, 1, 999);
 
 -- ----------------------------
 -- Table structure for t_prop_upload_type
@@ -714,6 +725,8 @@ INSERT INTO `t_right` VALUES (47, '角色创建日志查看权限', '角色创�
 INSERT INTO `t_right` VALUES (48, '角色登录日志查看权限', '角色登录日志查看权限', 0, 'RoleLoginLog_View', 0, 0, '2018-12-25 10:51:19', 'cdk', 0);
 INSERT INTO `t_right` VALUES (49, '数据源管理查看权限', '数据源管理查看权限', 0, 'DataSource_View', 0, 0, '2018-12-26 16:27:55', 'cdk', 0);
 INSERT INTO `t_right` VALUES (50, '数据源管理操作权限', '数据源管理操作权限', 0, 'DataSource_Handle', 0, 0, '2018-12-26 16:29:03', 'cdk', 0);
+INSERT INTO `t_right` VALUES (51, '充值流水日志查看权限', '充值流水日志查看权限', 0, 'ReCharge_View', 0, 0, '2018-12-29 14:31:59', 'cdk', 0);
+INSERT INTO `t_right` VALUES (52, '充值消费日志查看权限', '充值消费日志查看权限', 0, 'Shop_View', 0, 0, '2018-12-29 16:21:03', 'cdk', 0);
 
 -- ----------------------------
 -- Table structure for t_role
@@ -792,6 +805,8 @@ INSERT INTO `t_role_rights` VALUES (34, 5, 47, NULL, 0);
 INSERT INTO `t_role_rights` VALUES (37, 5, 48, NULL, 0);
 INSERT INTO `t_role_rights` VALUES (38, 1, 49, NULL, 0);
 INSERT INTO `t_role_rights` VALUES (39, 1, 50, NULL, 0);
+INSERT INTO `t_role_rights` VALUES (40, 5, 51, NULL, 0);
+INSERT INTO `t_role_rights` VALUES (41, 5, 52, NULL, 0);
 
 -- ----------------------------
 -- Table structure for t_send_email
@@ -802,7 +817,7 @@ CREATE TABLE `t_send_email`  (
   `platformId` int(20) NULL DEFAULT NULL,
   `serverId` int(20) NULL DEFAULT NULL,
   `emailTitle` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `emailContent` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `emailContent` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sendReason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sendType` int(20) NULL DEFAULT NULL COMMENT '012',
   `minLevel` int(20) NULL DEFAULT NULL,
@@ -839,13 +854,13 @@ CREATE TABLE `t_send_notice`  (
   `startDatetime` datetime(0) NULL DEFAULT NULL,
   `endDatetime` datetime(0) NULL DEFAULT NULL,
   `sendDatetime` datetime(0) NULL DEFAULT NULL,
-  `noticeContent` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `noticeContent` varchar(3000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sendState` int(255) NULL DEFAULT NULL,
   `addUser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `addDatetime` datetime(0) NULL DEFAULT NULL,
   `isDelete` int(20) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_send_notice_noticetype

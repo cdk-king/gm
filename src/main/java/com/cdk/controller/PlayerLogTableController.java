@@ -64,4 +64,25 @@ public class PlayerLogTableController {
         Result re = playerLogServiceImpl.getRoleLoginLog(map);
         return re;
     }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getLogXml")
+    public Result getLogXml(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getLogXml(map);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getReChargeLog")
+    public Result getReChargeLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getReChargeLog(map);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/log/getShopLog")
+    public Result getShopLog(@RequestBody Map map) {
+        Result re = playerLogServiceImpl.getShopLog(map);
+        return re;
+    }
 }

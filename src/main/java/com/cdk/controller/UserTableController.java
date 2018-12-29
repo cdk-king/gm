@@ -39,7 +39,6 @@ public class UserTableController {
     @RequestMapping("/getUser")
     public Result getUser(@RequestBody Map map) {
         Result re = userServiceImpl.getUser(map);
-        logger.info("UserData：" + re.toString());
         return re;
     }
 

@@ -5,6 +5,7 @@ import com.cdk.dao.impl.PlayerLogDaoImpl;
 import com.cdk.dao.impl.UtilsDaoImpl;
 import com.cdk.entity.Player;
 import com.cdk.result.Result;
+import com.cdk.util.DomAnalysis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,8 +124,6 @@ public class PlayerLogServiceImpl {
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
-        String vClientIp = (map.get("vClientIp") != null ? map.get("vClientIp").toString() : "");
-        String iLoginWay = (map.get("iLoginWay") != null ? map.get("iLoginWay").toString() : "");
 
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -140,7 +139,9 @@ public class PlayerLogServiceImpl {
             e.printStackTrace();
         }
         List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
-
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         String DB_URL = dblist.get(0).get("dataSource_url").toString();
@@ -154,7 +155,7 @@ public class PlayerLogServiceImpl {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM rolelogin where DATEDIFF(now(),dtEventTime) < 7 ";
+            sql = "SELECT *  FROM rolelogin where DATEDIFF(now(),dtEventTime) < 20 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -166,12 +167,6 @@ public class PlayerLogServiceImpl {
             }
             if (!Objects.equals(vRoleName, "")) {
                 sql += " and vRoleName ='" + vRoleName + "' ";
-            }
-            if (!Objects.equals(vClientIp, "")) {
-                sql += " and vClientIp ='" + vClientIp + "' ";
-            }
-            if (!Objects.equals(iLoginWay, "")) {
-                sql += " and iLoginWay ='" + iLoginWay + "' ";
             }
             sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
@@ -215,8 +210,6 @@ public class PlayerLogServiceImpl {
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
-        String vClientIp = (map.get("vClientIp") != null ? map.get("vClientIp").toString() : "");
-        String iLoginWay = (map.get("iLoginWay") != null ? map.get("iLoginWay").toString() : "");
 
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -233,6 +226,9 @@ public class PlayerLogServiceImpl {
         }
         List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
 
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         String DB_URL = dblist.get(0).get("dataSource_url").toString();
@@ -246,7 +242,7 @@ public class PlayerLogServiceImpl {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM createrole where DATEDIFF(now(),dtEventTime) < 7 ";
+            sql = "SELECT *  FROM createrole where DATEDIFF(now(),dtEventTime) < 20 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -258,12 +254,6 @@ public class PlayerLogServiceImpl {
             }
             if (!Objects.equals(vRoleName, "")) {
                 sql += " and vRoleName ='" + vRoleName + "' ";
-            }
-            if (!Objects.equals(vClientIp, "")) {
-                sql += " and vClientIp ='" + vClientIp + "' ";
-            }
-            if (!Objects.equals(iLoginWay, "")) {
-                sql += " and iLoginWay ='" + iLoginWay + "' ";
             }
             sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
@@ -308,8 +298,6 @@ public class PlayerLogServiceImpl {
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
         String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
         String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
-        String iMoneyType = (map.get("iMoneyType") != null ? map.get("iMoneyType").toString() : "");
-        String iAction = (map.get("iAction") != null ? map.get("iAction").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -325,6 +313,9 @@ public class PlayerLogServiceImpl {
         }
         List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
 
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         String DB_URL = dblist.get(0).get("dataSource_url").toString();
@@ -338,7 +329,7 @@ public class PlayerLogServiceImpl {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM moneyflow where DATEDIFF(now(),dtEventTime) < 7 ";
+            sql = "SELECT *  FROM moneyflow where DATEDIFF(now(),dtEventTime) < 20 ";
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
             }
@@ -350,12 +341,6 @@ public class PlayerLogServiceImpl {
             }
             if (!Objects.equals(vRoleName, "")) {
                 sql += " and vRoleName ='" + vRoleName + "' ";
-            }
-            if (!Objects.equals(iMoneyType, "")) {
-                sql += " and iMoneyType ='" + iMoneyType + "' ";
-            }
-            if (!Objects.equals(iAction, "")) {
-                sql += " and iAction ='" + iAction + "' ";
             }
             sql += " order by dtEventTime DESC ";
             ResultSet rs = stmt.executeQuery(sql);
@@ -420,7 +405,9 @@ public class PlayerLogServiceImpl {
         }
 
         List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
-
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         String DB_URL = dblist.get(0).get("dataSource_url").toString();
@@ -490,6 +477,216 @@ public class PlayerLogServiceImpl {
         JsonMap.put("list", list);
         JsonMap.put("total", total);
         re = new Result(200, "日志列表获取成功", JsonMap);
+        return re;
+    }
+
+    public Result getReChargeLog(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
+        String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
+        String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
+        String vSN = (map.get("vSN") != null ? map.get("vSN").toString() : "");
+        String minIPayDelta = (map.get("minIPayDelta") != null ? map.get("minIPayDelta").toString() : "");
+        String maxIPayDelta = (map.get("maxIPayDelta") != null ? map.get("maxIPayDelta").toString() : "");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        int total = 0;
+        int pageNo = 1;
+        int pageSize = 5;
+        try {
+            pageNo = Integer.parseInt(StrPageNo);
+            pageSize = Integer.parseInt(StrPageSize);
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
+
+        Result re;
+        String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
+        Connection conn = null;
+        Statement stmt = null;
+        List<Map<String, Object>> list = new ArrayList<>();
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT *  FROM recharge where DATEDIFF(now(),dtEventTime) < 20 ";
+
+            if (!Objects.equals(strServerId, "0")) {
+                sql += " and iWorldId IN ('" + strServerId + "') ";
+            }
+            if (!Objects.equals(iUin, "")) {
+                sql += " and iUin ='" + iUin + "' ";
+            }
+            if (!Objects.equals(iRoleId, "")) {
+                sql += " and iRoleId ='" + iRoleId + "' ";
+            }
+            if (!Objects.equals(vRoleName, "")) {
+                sql += " and vRoleName ='" + vRoleName + "' ";
+            }
+            if (!Objects.equals(vSN, "")) {
+                sql += " and vSN ='" + vSN + "' ";
+            }
+            if (!Objects.equals(minIPayDelta, "")) {
+                sql += " and iPayDelta >'" + minIPayDelta + "' ";
+            }
+            if (!Objects.equals(maxIPayDelta, "")) {
+                sql += " and iPayDelta <'" + maxIPayDelta + "' ";
+            }
+            sql += " order by dtEventTime DESC ";
+            ResultSet rs = stmt.executeQuery(sql);
+            ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
+            int columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+                total++;
+            }
+            if (!Objects.equals(isPage, "")) {
+                sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+            }
+            rs = stmt.executeQuery(sql);
+            md = rs.getMetaData(); //获得结果集结构信息,元数据
+            columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+
+                Map<String, Object> rowData = new HashMap<String, Object>();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData.put(md.getColumnName(i), rs.getObject(i));
+                }
+                list.add(rowData);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        JsonMap.put("total", total);
+        re = new Result(200, "日志列表获取成功", JsonMap);
+        return re;
+    }
+
+    public Result getShopLog(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
+        String iRoleId = (map.get("iRoleId") != null ? map.get("iRoleId").toString() : "");
+        String vRoleName = (map.get("vRoleName") != null ? map.get("vRoleName").toString() : "");
+        String vSN = (map.get("vSN") != null ? map.get("vSN").toString() : "");
+        String minIPayDelta = (map.get("minIPayDelta") != null ? map.get("minIPayDelta").toString() : "");
+        String maxIPayDelta = (map.get("maxIPayDelta") != null ? map.get("maxIPayDelta").toString() : "");
+        String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
+        String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
+        String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
+        int total = 0;
+        int pageNo = 1;
+        int pageSize = 5;
+        try {
+            pageNo = Integer.parseInt(StrPageNo);
+            pageSize = Integer.parseInt(StrPageSize);
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
+
+        Result re;
+        String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
+        Connection conn = null;
+        Statement stmt = null;
+        List<Map<String, Object>> list = new ArrayList<>();
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT *  FROM shop where DATEDIFF(now(),dtEventTime) < 20 ";
+
+            if (!Objects.equals(strServerId, "0")) {
+                sql += " and iWorldId IN ('" + strServerId + "') ";
+            }
+            if (!Objects.equals(iUin, "")) {
+                sql += " and iUin ='" + iUin + "' ";
+            }
+            if (!Objects.equals(iRoleId, "")) {
+                sql += " and iRoleId ='" + iRoleId + "' ";
+            }
+            if (!Objects.equals(vRoleName, "")) {
+                sql += " and vRoleName ='" + vRoleName + "' ";
+            }
+            if (!Objects.equals(vSN, "")) {
+                sql += " and vSN ='" + vSN + "' ";
+            }
+            if (!Objects.equals(minIPayDelta, "")) {
+                sql += " and iPayDelta >'" + minIPayDelta + "' ";
+            }
+            if (!Objects.equals(maxIPayDelta, "")) {
+                sql += " and iPayDelta <'" + maxIPayDelta + "' ";
+            }
+            sql += " order by dtEventTime DESC ";
+            ResultSet rs = stmt.executeQuery(sql);
+            ResultSetMetaData md = rs.getMetaData(); //获得结果集结构信息,元数据
+            int columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+                total++;
+            }
+            if (!Objects.equals(isPage, "")) {
+                sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+            }
+            rs = stmt.executeQuery(sql);
+            md = rs.getMetaData(); //获得结果集结构信息,元数据
+            columnCount = md.getColumnCount();   //获得列数
+            while (rs.next()) {
+
+                Map<String, Object> rowData = new HashMap<String, Object>();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData.put(md.getColumnName(i), rs.getObject(i));
+                }
+                list.add(rowData);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> JsonMap = new HashMap();
+        JsonMap.put("list", list);
+        JsonMap.put("total", total);
+        re = new Result(200, "日志列表获取成功", JsonMap);
+        return re;
+    }
+
+
+    public Result getLogXml(Map map) {
+        DomAnalysis domAnalysis = new DomAnalysis();
+        String jsonString = domAnalysis.Analysis("tlog.xml");
+        Result re = new Result(200, "日志列表获取成功", jsonString);
         return re;
     }
 }

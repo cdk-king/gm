@@ -35,6 +35,7 @@ public class EmailDaoImpl {
         if (!Objects.equals(email.getEmailContent(), "")) {
             sql += " and a.emailContent LIKE '%" + email.getEmailContent() + "%' ";
         }
+        sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();

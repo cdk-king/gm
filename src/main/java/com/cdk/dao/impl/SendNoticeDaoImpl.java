@@ -68,6 +68,7 @@ public class SendNoticeDaoImpl {
         if (!Objects.equals(notice.getNoticeContent(), "")) {
             sql += " and a.noticeContent LIKE '%" + notice.getNoticeContent() + "%' ";
         }
+        sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();

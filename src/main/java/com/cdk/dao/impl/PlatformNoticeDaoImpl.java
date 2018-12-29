@@ -36,6 +36,7 @@ public class PlatformNoticeDaoImpl {
         if (!Objects.equals(platformNotice.getNoticeContent(), "")) {
             sql += " and a.noticeContent LIKE '%" + platformNotice.getNoticeContent() + "%' ";
         }
+        sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
@@ -87,12 +88,10 @@ public class PlatformNoticeDaoImpl {
         if (!Objects.equals(platformNotice.getStartDatetime(), null)) {
             startDatetime = "'" + formatter.format(platformNotice.getStartDatetime()) + "'";
         }
-        logger.debug("startDatetime:" + startDatetime);
         formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(platformNotice.getEndDatetime(), null)) {
             endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
         }
-        logger.debug("endDatetime:" + endDatetime);
 
         String sql =
                 "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +

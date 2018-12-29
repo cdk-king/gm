@@ -1,7 +1,5 @@
 package com.cdk;
 
-import com.cdk.util.DomAnalysis;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -24,9 +22,8 @@ public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
 
-        DomAnalysis domAnalysis = new DomAnalysis();
-        domAnalysis.Analysis("tlog.xml");
-        
+        //        DomAnalysis domAnalysis = new DomAnalysis();
+        //        String jsonString = domAnalysis.Analysis("tlog.xml");
         logger.debug("启动成功");
     }
 }
