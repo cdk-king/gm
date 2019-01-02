@@ -48,9 +48,9 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         try {
             requestBody = StreamUtils.copyToByteArray(request.getInputStream());
             String strRequestBody = new String(requestBody, "UTF-8");
-            //logger.debug(strRequestBody);
+            logger.debug(strRequestBody);
             String re = cleanXSS(strRequestBody);
-            //logger.debug(strRequestBody);
+            logger.debug(re);
             requestBody = re.getBytes("UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,10 +153,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         String[] values = value.split(" ");
 
         String badStr = "'|and|exec|execute|insert|select|delete|update|count|drop|%|chr|mid|master|truncate|" +
-                "char|declare|sitename|net user|xp_cmdshell|;|or|-|+|,|like'|and|exec|execute|insert|create|drop|" +
-                "table|from|grant|use|group_concat|column_name|" +
-                "information_schema.columns|table_schema|union|where|select|delete|update|order|by|count|" +
-                "chr|mid|master|truncate|char|declare|or|;|-|--|,|like|//|/|%|#";
+                "char|declare|sitename|net user|xp_cmdshell|;|or|-|+|,|like'|create|table|from|grant|use|group_concat|column_name|" +
+                "information_schema.columns|table_schema|union|where|order|by|--|like|//|/|%|#";
         String[] badStrs = badStr.split("\\|");
         for (int i = 0; i < badStrs.length; i++) {
             for (int j = 0; j < values.length; j++) {

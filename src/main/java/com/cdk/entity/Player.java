@@ -7,7 +7,7 @@ public class Player {
 
     }
 
-    public Player(int id, String playerName, String playerAccount, int playerId, int isOnline, String lastIp, int vipLevel, int diamond,
+    public Player(int id, String playerName, String playerAccount, String playerId, int isOnline, String lastIp, int vipLevel, int diamond,
             int rechargeAmount, int level, Date registrationTime, int combatPower, Date addDateTime, int isProhibitSpeak, int isBan, int platformId,
             int serverId, int prohibitSpeakTime, int banTime) {
         this.id = id;
@@ -49,7 +49,7 @@ public class Player {
     /**
      * 玩家-Id标识
      */
-    private int playerId;
+    private String playerId;
 
 
     /**
@@ -154,11 +154,11 @@ public class Player {
         this.playerAccount = playerAccount;
     }
 
-    public int getPlayerId() {
+    public String getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
 

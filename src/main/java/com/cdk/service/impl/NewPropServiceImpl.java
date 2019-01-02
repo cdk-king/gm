@@ -71,6 +71,7 @@ public class NewPropServiceImpl {
     }
 
     public Result getPropUplaod(Map map) {
+        String propId = ((map.get("propId") != null && map.get("propId") != "") ? map.get("propId").toString() : "0");
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
         String propType = (map.get("propType") != null ? map.get("propType").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -88,6 +89,7 @@ public class NewPropServiceImpl {
         }
         Result re;
         NewProp newProp = new NewProp();
+        newProp.setPropId(Integer.parseInt(propId));
         newProp.setPropName(propName);
         newProp.setPropType(propType);
         newProp.setPlatformId(Integer.parseInt(platformId));

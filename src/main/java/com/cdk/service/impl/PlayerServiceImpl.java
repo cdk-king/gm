@@ -185,7 +185,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
         String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
-
+        String decodePlayerName = PlayerName;
         try {
             PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
             AccountName = URLEncoder.encode(AccountName, "UTF-8");
@@ -228,10 +228,10 @@ public class PlayerServiceImpl extends ApiHandeler {
             player.setBanTime(Integer.parseInt(HowLong));
 
             if (Objects.equals(Remove, "0")) {
-                playerDaoImpl.SaveBanLog(player, userId, PlayerIds, PlayerName);
+                playerDaoImpl.SaveBanLog(player, userId, PlayerIds, decodePlayerName);
                 re = new Result(200, "玩家禁封成功", data);
             } else {
-                playerDaoImpl.SaveBanToNormalLog(player, userId, PlayerIds, PlayerName);
+                playerDaoImpl.SaveBanToNormalLog(player, userId, PlayerIds, decodePlayerName);
                 re = new Result(200, "玩家解除禁封成功", data);
             }
         } else {
@@ -253,7 +253,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         String Remove = (map.get("Remove") != null ? map.get("Remove").toString() : "");
         String HowLong = ((map.get("HowLong") != null && map.get("HowLong") != "") ? map.get("HowLong").toString() : "0");
         String userId = (map.get("userId") != null ? map.get("userId").toString() : "");
-
+        String decodePlayerName = PlayerName;
         try {
             PlayerName = URLEncoder.encode(PlayerName, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -291,13 +291,15 @@ public class PlayerServiceImpl extends ApiHandeler {
             Player player = new Player();
             player.setServerId(Integer.parseInt(WorldID));
             player.setPlatformId(Integer.parseInt(strPlatformId));
-            player.setPlayerName(PlayerName);
+            player.setPlayerName(decodePlayerName);
+            player.setPlayerId(PlayerID);
+            player.setPlayerAccount(PlayerAccount);
             player.setProhibitSpeakTime(Integer.parseInt(HowLong));
             if (Objects.equals(Remove, "0")) {
-                playerDaoImpl.SaveProhibitSpeakLog(player, userId, PlayerID, PlayerAccount);
+                playerDaoImpl.SaveProhibitSpeakLog(player, userId);
                 re = new Result(200, "玩家禁言成功", data);
             } else {
-                playerDaoImpl.SaveProhibitSpeakToNormalLog(player, userId, PlayerID, PlayerAccount);
+                playerDaoImpl.SaveProhibitSpeakToNormalLog(player, userId);
                 re = new Result(200, "玩家解除禁言成功", data);
             }
         } else {
@@ -324,7 +326,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
-        player.setPlayerId(Integer.parseInt(playerId));
+        player.setPlayerId(playerId);
         player.setProhibitSpeakTime(prohibitSpeakTime);
         Result re;
         int temp = playerDaoImpl.ChangeToProhibitSpeak(player, userId);
@@ -350,7 +352,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
-        player.setPlayerId(Integer.parseInt(playerId));
+        player.setPlayerId(playerId);
         Result re;
         int temp = playerDaoImpl.ChangeProhibitSpeakToNormal(player, userId);
         if (temp > 0) {
@@ -377,7 +379,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
-        player.setPlayerId(Integer.parseInt(playerId));
+        player.setPlayerId(playerId);
         player.setBanTime(banTime);
         Result re;
         int temp = playerDaoImpl.ChangeToBan(player, userId);
@@ -403,7 +405,7 @@ public class PlayerServiceImpl extends ApiHandeler {
         player.setPlatformId(Integer.parseInt(strPlatformId));
         player.setPlayerName(playerName);
         player.setPlayerAccount(playerAccount);
-        player.setPlayerId(Integer.parseInt(playerId));
+        player.setPlayerId(playerId);
         Result re;
         int temp = playerDaoImpl.ChangeBanToNormal(player, userId);
         if (temp > 0) {

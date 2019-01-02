@@ -78,6 +78,9 @@ public class NewPropDaoImpl {
         if (newProp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + newProp.getPlatformId() + "' ";
         }
+        if (newProp.getPropId() != 0) {
+            sql += " and a.propId LIKE '%" + newProp.getPropId() + "%'";
+        }
         if (newProp.getPropName() != "") {
             sql += " and a.propName LIKE '%" + newProp.getPropName() + "%'";
         }
