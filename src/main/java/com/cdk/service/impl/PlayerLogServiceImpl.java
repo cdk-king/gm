@@ -152,6 +152,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -193,8 +194,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -239,6 +244,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -281,8 +287,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -326,6 +336,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -368,8 +379,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -406,8 +421,10 @@ public class PlayerLogServiceImpl {
 
         List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
         if (dblist.size() == 0) {
+            logger.debug("数据源获取失败");
             return new Result(400, "数据源获取失败", "");
         }
+        logger.debug("数据源:" + dblist);
         Result re;
         String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         String DB_URL = dblist.get(0).get("dataSource_url").toString();
@@ -418,6 +435,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -470,8 +488,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -519,6 +541,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -571,8 +594,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -620,6 +647,7 @@ public class PlayerLogServiceImpl {
         List<Map<String, Object>> list = new ArrayList<>();
         try {
             Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
@@ -672,8 +700,12 @@ public class PlayerLogServiceImpl {
             conn.close();
         } catch (SQLException se) {
             se.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         } catch (Exception e) {
             e.printStackTrace();
+            re = new Result(400, "日志列表获取失败", "");
+            return re;
         }
         Map<String, Object> JsonMap = new HashMap();
         JsonMap.put("list", list);
@@ -689,4 +721,6 @@ public class PlayerLogServiceImpl {
         Result re = new Result(200, "日志列表获取成功", jsonString);
         return re;
     }
+
+
 }

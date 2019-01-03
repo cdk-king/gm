@@ -85,4 +85,6 @@ public class PlayerLogTableController {
         Result re = playerLogServiceImpl.getShopLog(map);
         return re;
     }
+
+
 }

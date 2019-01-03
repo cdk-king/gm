@@ -94,6 +94,8 @@ public class DownloadController {
             logger.info("file.exists()");
             response.setHeader("content-type", "application/octet-stream");
             response.setContentType("application/octet-stream");
+            //response.setContentType("application/vnd.ms-excel");
+            //response.setHeader("Content-Length", String.valueOf(resourceAsStream.available()));
             response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
 
             byte[] buffer = new byte[1024];

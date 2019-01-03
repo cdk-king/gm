@@ -57,4 +57,11 @@ public class DataSourceController {
         Result re = dataSourceServiceImpl.deleteAllDataSource(map);
         return re;
     }
+
+    @CrossOrigin
+    @RequestMapping("/api/db/testDataSource")
+    public Result testDataSource(@RequestBody Map map) {
+        Result re = dataSourceServiceImpl.testDataSource(map);
+        return re;
+    }
 }

@@ -138,23 +138,25 @@ public class PlatformNoticeDaoImpl {
      * @return
      */
     public Map<String, String> getLastNotice(String strPlatform) {
-        String sql = "select * from t_platform_notice where isDelete!=1 and   platformId=" + strPlatform + " order by startDatetime DESC LIMIT 1";
+        String sql = "select * from t_platform_notice where isDelete!=1 and  sendState = 1 and  platformId=" + strPlatform +
+                " order by startDatetime DESC LIMIT 1";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, String> JsonMap = new HashMap();
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            date = simpleDateFormat.parse(list.get(0).get("startDatetime").toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (list.size() > 0) {
+            Date date = new Date();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                date = simpleDateFormat.parse(list.get(0).get("startDatetime").toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            JsonMap.put("startDatetime", String.valueOf(date.getTime() / 1000L));
+            JsonMap.put("noticeTitle", list.get(0).get("noticeTitle").toString());
+            JsonMap.put("noticeContent", list.get(0).get("noticeContent").toString());
+            JsonMap.put("propList", list.get(0).get("propList").toString());
+            JsonMap.put("moneyList", list.get(0).get("moneyList").toString());
         }
-        JsonMap.put("startDatetime", String.valueOf(date.getTime() / 1000L));
-        JsonMap.put("noticeTitle", list.get(0).get("noticeTitle").toString());
-        JsonMap.put("noticeContent", list.get(0).get("noticeContent").toString());
-        JsonMap.put("propList", list.get(0).get("propList").toString());
-        JsonMap.put("moneyList", list.get(0).get("moneyList").toString());
-
         return JsonMap;
     }
 

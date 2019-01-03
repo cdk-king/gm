@@ -352,7 +352,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         if (lastGonggao.size() != 0) {
             re = new Result(200, "最新的公告获取成功", lastGonggao);
         } else {
-            re = new Result(200, "最新的公告获取失败", lastGonggao);
+            re = new Result(400, "最新的公告获取失败", lastGonggao);
         }
         return re;
     }

@@ -1,6 +1,7 @@
 package com.cdk.service.impl;
 
 import com.cdk.dao.impl.DataSourceDaoImpl;
+import com.cdk.dao.impl.UtilsDaoImpl;
 import com.cdk.entity.DataSource;
 import com.cdk.result.Result;
 
@@ -9,6 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,6 +24,8 @@ public class DataSourceServiceImpl {
 
     @Autowired
     private DataSourceDaoImpl dataSourceDaoImpl;
+    @Autowired
+    private UtilsDaoImpl utilsDaoImpl;
 
     public Result getDataSource(Map map) {
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -142,4 +150,39 @@ public class DataSourceServiceImpl {
         return re;
     }
 
+    public Result testDataSource(Map map) {
+        String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+
+        if (dblist.size() == 0) {
+            return new Result(400, "数据源获取失败", "");
+        }
+
+        String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+        String DB_URL = dblist.get(0).get("dataSource_url").toString();
+        String USER = dblist.get(0).get("dataSource_name").toString();
+        String PASS = dblist.get(0).get("dataSource_password").toString();
+        Connection conn = null;
+        Statement stmt = null;
+        Result re;
+        try {
+            Class.forName(JDBC_DRIVER);
+            DriverManager.setLoginTimeout(10);
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            re = new Result(400, "数据源测试失败", "");
+            return re;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            re = new Result(400, "数据源测试失败", "");
+            return re;
+        }
+
+        logger.debug("数据源测试成功");
+        re = new Result(200, "数据源测试成功", "");
+        return re;
+    }
 }

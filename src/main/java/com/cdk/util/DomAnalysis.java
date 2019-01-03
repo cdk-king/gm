@@ -69,7 +69,6 @@ public class DomAnalysis {
             e.printStackTrace();
         }
         String jsonString = JSON.toJSONString(list);
-        logger.debug(jsonString);
         return jsonString;
     }
 }
