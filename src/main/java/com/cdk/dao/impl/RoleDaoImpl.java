@@ -36,7 +36,7 @@ public class RoleDaoImpl {
 
     public List<Map<String, Object>> getRoleById(String id) {
         String sql = "select * from t_role where id='" + id + "' and isDelete != 1  ";
-
+        logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
 
         return list;

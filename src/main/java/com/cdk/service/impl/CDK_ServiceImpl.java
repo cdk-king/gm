@@ -39,6 +39,8 @@ public class CDK_ServiceImpl {
         String sequenceId = ((map.get("sequenceId") != null && map.get("sequenceId") != "") ? map.get("sequenceId").toString() : "0");
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String giftName = (map.get("giftName") != null ? map.get("giftName").toString() : "");
+        String giftId = ((map.get("giftId") != null && map.get("giftId") != "") ? map.get("giftId").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -57,7 +59,8 @@ public class CDK_ServiceImpl {
         cdkUse.setSequenceId(Integer.parseInt(sequenceId));
         cdkUse.setPlatformId(Integer.parseInt(platformId));
         cdkUse.setCdk(cdk);
-        Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, isPage, pageNo, pageSize, strPlatform);
+        cdkUse.setCouponId(Integer.parseInt(giftId));
+        Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, giftName, isPage, pageNo, pageSize, strPlatform);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {

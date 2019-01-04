@@ -157,13 +157,20 @@ public class CouponDaoImpl {
         return encoding.encode(data);
     }
 
-    public Map<String, Object> getCoupon(Coupon coupon, String isPage, int pageNo, int pageSize, String strPlatform) {
-        String sql = "select a.*, b.platform from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
-                strPlatform + ")  and b.isDelete != 1  ";
+    public Map<String, Object> getCoupon(Coupon coupon, String giftId, String giftName, String isPage, int pageNo, int pageSize, String strPlatform) {
+        String sql =
+                "select a.*, b.platform,c.giftName from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and a.platformId = c.platformId where a.platformId IN (" +
+                        strPlatform + ")  and b.isDelete != 1  ";
         if (coupon.getPlatformId() != 0) {
             sql += " and a.platformId ='" + coupon.getPlatformId() + "' ";
         }
-
+        if (!Objects.equals(giftId, "")) {
+            sql += " and a.couponId like '%" + giftId + "%' ";
+        }
+        if (!Objects.equals(giftName, "")) {
+            sql += " and c.giftName like '%" + giftName + "%'";
+        }
+        sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();

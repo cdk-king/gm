@@ -34,22 +34,20 @@ public class NewGiftDaoImpl {
             List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
             if (list.size() > 0) {
                 //存在，更新
-                String sqlUpdate =
-                        "UPDATE t_gift_upload as a SET a.giftName='" + jsonObject.get("giftId") + "', a.limitCount='" + jsonObject.get("limit") +
-                                "',a.expire_time = '" + jsonObject.get("expire_time") + "'," + "a.goods_prize1='" + jsonObject.get("goods_prize1") +
-                                "',a.value_prize1='" + jsonObject.get("value_prize1") + "',a.giftName = '" + jsonObject.get("giftName") +
-                                "',a.giftDescribe='" + jsonObject.get("giftDescribe") + "'  where giftId = '" + jsonObject.get("giftId") +
-                                "' and  platformId = '" + platformId + "' ";
+                String sqlUpdate = "UPDATE t_gift_upload as a SET  a.limitCount='" + jsonObject.get("limit") + "',a.expire_time = '" +
+                        jsonObject.get("expire_time") + "'," + "a.goods_prize1='" + jsonObject.get("goods_prize1") + "',a.value_prize1='" +
+                        jsonObject.get("value_prize1") + "',a.giftName = '" + jsonObject.get("giftName") + "',a.giftDescribe='" +
+                        jsonObject.get("giftDescribe") + "'  where giftId = '" + jsonObject.get("giftId") + "' and  platformId = '" + platformId +
+                        "' ";
                 jdbcTemplate.update(sqlUpdate);
             } else {
                 System.out.println(jsonObject.get("giftId"));
                 //没有，新增
                 String sqlInsert =
-                        "insert into t_gift_upload (giftId,giftName,limitCount,expire_time,goods_prize1,value_prize1,platformId,gameId,giftName,giftDescribe) values ('" +
-                                jsonObject.get("giftId") + "','" + jsonObject.get("giftId") + "', '" + jsonObject.get("limit") + "','" +
-                                jsonObject.get("expire_time") + "','" + jsonObject.get("goods_prize1") + "', '" + jsonObject.get("value_prize1") +
-                                "'  ,'" + platformId + "','" + gameId + "','" + jsonObject.get("giftName") + "','" + jsonObject.get("giftDescribe") +
-                                "' ) ; ";
+                        "insert into t_gift_upload (giftId,limitCount,expire_time,goods_prize1,value_prize1,platformId,gameId,giftName,giftDescribe) values ('" +
+                                jsonObject.get("giftId") + "','" + jsonObject.get("limit") + "','" + jsonObject.get("expire_time") + "','" +
+                                jsonObject.get("goods_prize1") + "', '" + jsonObject.get("value_prize1") + "'  ,'" + platformId + "','" + gameId +
+                                "','" + jsonObject.get("giftName") + "','" + jsonObject.get("giftDescribe") + "' ) ; ";
                 jdbcTemplate.update(sqlInsert);
 
             }

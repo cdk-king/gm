@@ -23,10 +23,11 @@ public class CDK_DaoImpl {
     @Autowired
     public CouponDaoImpl couponDaoImpl;
 
-    public Map<String, Object> getCDK(CDK cdk, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getCDK(CDK cdk, String giftName, String isPage, int pageNo, int pageSize, String strPlatform) {
 
-        String sql = "select a.* , b.platform  from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
-                strPlatform + ")  and b.isDelete != 1  ";
+        String sql =
+                "select a.* , b.platform ,c.giftName from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and c.platformId = a.platformId where a.platformId IN (" +
+                        strPlatform + ")  and b.isDelete != 1 ";
         if (cdk.getPlatformId() != 0) {
             sql += " and a.platformId ='" + cdk.getPlatformId() + "' ";
         }
@@ -37,11 +38,16 @@ public class CDK_DaoImpl {
         if (cdk.getSequenceId() != 0) {
             sql += " and a.sequenceId LIKE '%" + cdk.getSequenceId() + "%'";
         }
-
+        if (!Objects.equals(giftName, "")) {
+            sql += " and c.giftName LIKE '%" + giftName + "%'";
+        }
+        if (cdk.getCouponId() != 0) {
+            sql += " and a.couponId LIKE '%" + cdk.getCouponId() + "%'";
+        }
         if (cdk.getCdk() != "") {
             sql += " and a.cdk LIKE '%" + cdk.getCdk() + "%'";
         }
-
+        sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();

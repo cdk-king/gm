@@ -55,9 +55,8 @@ public class UtilsServiceImpl {
         if (list.size() > 0) {
             re = new Result(200, "用户权限组获取成功", str);
         } else {
-            re = new Result(400, "用户权限组获取失败", str);
+            re = new Result(200, "用户权限为空", str);
         }
-
         return re;
     }
 
@@ -77,9 +76,8 @@ public class UtilsServiceImpl {
         if (list.size() > 0) {
             re = new Result(200, "用户角色组获取成功", strList);
         } else {
-            re = new Result(400, "用户角色组获取失败", strList);
+            re = new Result(200, "用户角色为空", strList);
         }
-        logger.debug(strList.toString());
         return re;
     }
 
@@ -95,7 +93,7 @@ public class UtilsServiceImpl {
         if (list.size() > 0) {
             re = new Result(200, "用户游戏列表获取成功", JsonMap);
         } else {
-            re = new Result(400, "用户游戏列表获取失败", JsonMap);
+            re = new Result(200, "用户游戏列表为空", JsonMap);
         }
         return re;
     }
@@ -111,7 +109,7 @@ public class UtilsServiceImpl {
         if (list.size() > 0) {
             re = new Result(200, "游戏平台列表获取成功", JsonMap);
         } else {
-            re = new Result(400, "游戏平台列表获取失败", JsonMap);
+            re = new Result(200, "游戏平台列表为空", JsonMap);
         }
         return re;
     }
@@ -130,7 +128,7 @@ public class UtilsServiceImpl {
         if (list.size() > 0) {
             re = new Result(200, "用户游戏平台列表获取成功", JsonMap);
         } else {
-            re = new Result(400, "用户游戏平台列表获取失败", JsonMap);
+            re = new Result(200, "用户游戏平台列表为空", JsonMap);
         }
 
         return re;
