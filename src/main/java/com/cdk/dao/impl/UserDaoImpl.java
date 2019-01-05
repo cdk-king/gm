@@ -98,7 +98,7 @@ public class UserDaoImpl {
     public int editUser(User user) {
         String sql =
                 "UPDATE t_user SET account='" + user.getAccount() + "',name = '" + user.getName() + "',phone = '" + user.getPhone() + "',email = '" +
-                        user.getEmail() + "' where id ='" + user.getId() + "'";
+                        user.getEmail() + "',birthday = '" + user.getBirthday() + "',sex='" + user.getSex() + "' where id ='" + user.getId() + "'";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 

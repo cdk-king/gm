@@ -14,7 +14,7 @@ public class User implements Serializable {
 
     //有参构造器
     public User(int id, String name, String account, String password, String nick, int age, int sex, Date date, String address, String phone,
-            String email, String type, int state, Date addDatetime, Date lastDatetime, int isDelete) {
+            String email, String type, int state, Date addDatetime, Date lastDatetime, int isDelete, String birthday) {
         this.id = id;
         this.name = name;
         this.account = account;
@@ -31,6 +31,7 @@ public class User implements Serializable {
         this.addDatetime = addDatetime;
         this.lastDatetime = lastDatetime;
         this.isDelete = isDelete;
+        this.birthday = birthday;
     }
 
     /**
@@ -58,6 +59,11 @@ public class User implements Serializable {
      */
 
     private String nick;
+    /**
+     * 生日
+     */
+
+    private String birthday;
     /**
      * 年龄
      */
@@ -243,5 +249,13 @@ public class User implements Serializable {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

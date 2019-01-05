@@ -54,6 +54,8 @@ public class UserServiceImpl {
         String phone = (map.get("phone") != null ? map.get("phone").toString() : "");
         String email = (map.get("email") != null ? map.get("email").toString() : "");
         String type = (map.get("type") != null ? map.get("type").toString() : "");
+        String birthday = (map.get("birthday") != null ? map.get("birthday").toString() : "");
+        String sex = ((map.get("sex") != null && map.get("sex") != "") ? map.get("sex").toString() : "1");
 
         User user = new User();
         user.setId(Integer.parseInt(id));
@@ -62,6 +64,8 @@ public class UserServiceImpl {
         user.setPhone(phone);
         user.setEmail(email);
         user.setType(type);
+        user.setBirthday(birthday);
+        user.setSex(Integer.parseInt(sex));
         int temp = userDaoImpl.editUser(user);
         Result re;
         if (temp > 0) {
