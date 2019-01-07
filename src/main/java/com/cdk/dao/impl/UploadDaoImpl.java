@@ -21,27 +21,33 @@ public class UploadDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public int fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser) {
+    public int fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser, String platformId) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String fileName = file.getOriginalFilename().split("\\.")[0];
         String fileType = file.getOriginalFilename().split("\\.")[1];
-
-        String sql = "insert into t_file (fileOldName,fileName,fileSize,addUser,addDatetime,downloadTime,fileDescribe,isDelete,fileType) values('" +
-                fileName + "','" + newName + "','" + fileSize + "','" + addUser + "','" + addDatetime + "','0','" + fileDescribe + "','0','" +
-                fileType + "')";
+        String sql =
+                "insert into t_file (platformId,fileOldName,fileName,fileSize,addUser,addDatetime,downloadTime,fileDescribe,isDelete,fileType) values('" +
+                        platformId + "','" + fileName + "','" + newName + "','" + fileSize + "','" + addUser + "','" + addDatetime + "','0','" +
+                        fileDescribe + "','0','" + fileType + "')";
+        logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
         return temp;
     }
 
-    public Map<String, Object> getFileList(String fileOldName, String fileName, int pageNo, int pageSize) {
-        String sql = "select * from t_file where isDelete!=1 ";
+
+    public Map<String, Object> getFileList(String fileOldName, String fileName, String platformId, String strPlatform, int pageNo, int pageSize) {
+        String sql = "select a.*,b.platform from t_file as a join t_gameplatform as b on a.platformId = b.platformId  where a.platformId in (" +
+                strPlatform + ") and a.isDelete!=1  and b.isDelete!=1 ";
+        if (!Objects.equals(platformId, "0")) {
+            sql += " and a.platformId ='" + platformId + "' ";
+        }
         if (!Objects.equals(fileOldName, "")) {
-            sql += " and fileOldName like '%" + fileOldName + "%' ";
+            sql += " and a.fileOldName like '%" + fileOldName + "%' ";
         }
         if (!Objects.equals(fileName, "")) {
-            sql += " and fileName like '%" + fileName + "%' ";
+            sql += " and a.fileName like '%" + fileName + "%' ";
         }
         sql += " order by id desc ";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
@@ -63,7 +69,19 @@ public class UploadDaoImpl {
     }
 
     public int deleteFile(String id) {
+
         String sql = "update t_file set isDelete = 1 where id='" + id + "' ";
+        int temp = jdbcTemplate.update(sql);
+
+        return temp;
+    }
+
+    public int addDownloadTime(String id) {
+        String sql = "select * from t_file where id = '" + id + "' and isDelete!=1 ";
+        List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
+        int time = Integer.parseInt(list.get(0).get("downloadTime").toString());
+        time++;
+        sql = "update t_file set downloadTime = '" + time + "' where id='" + id + "' ";
         int temp = jdbcTemplate.update(sql);
 
         return temp;

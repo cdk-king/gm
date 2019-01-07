@@ -59,12 +59,13 @@ public class UploadController {
     @RequestMapping(value = "/fileUpload", method = RequestMethod.POST)
     @ResponseBody
     public Result fileUpload(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName,
-            @RequestParam("fileSize") String fileSize, @RequestParam("fileDescribe") String fileDescribe, @RequestParam("addUser") String addUser) {
+            @RequestParam("fileSize") String fileSize, @RequestParam("fileDescribe") String fileDescribe, @RequestParam("addUser") String addUser,
+            @RequestParam("platformId") String platformId) {
 
         if (file.isEmpty()) {
             return new Result(400, "文件为空", "");
         }
-        Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser);
+        Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser, platformId);
         return re;
     }
 
@@ -74,6 +75,14 @@ public class UploadController {
     @ResponseBody
     public Result getFileList(@RequestBody Map map) {
         Result re = uploadServiceImpl.getFileList(map);
+        return re;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/api/file/addDownloadTime")
+    @ResponseBody
+    public Result addDownloadTime(@RequestBody Map map) {
+        Result re = uploadServiceImpl.addDownloadTime(map);
         return re;
     }
 
