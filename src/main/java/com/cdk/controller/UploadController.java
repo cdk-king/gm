@@ -123,6 +123,20 @@ public class UploadController {
         return null;
     }
 
+    @CrossOrigin
+    @RequestMapping("/api/file/deleteAllFile")
+    public Result deleteAllFile(@RequestBody Map map) {
+        String fileName = map.get("fileName").toString();
+        String id = map.get("id").toString();
+        String filePath = map.get("filePath").toString();
+        String[] idList = id.split(",");
+        String[] fileNames = fileName.split(",");
+        deleteALLFile(filePath, fileNames);
+        int[] temp = uploadDaoImpl.deleteAllFile(idList);
+
+        return null;
+    }
+
     /**
      * 删除单个文件
      * @param filePath
@@ -145,4 +159,32 @@ public class UploadController {
         }
     }
 
+    /**
+     * 删除多个文件
+     * @param filePath
+     *         文件目录路径
+     * @param fileNames
+     *         文件名称
+     */
+    public static void deleteALLFile(String filePath, String[] fileNames) {
+        File file = new File(filePath);
+        int len = fileNames.length;
+        int isDel = 0;
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    for (int j = 0; j < len; j++) {
+                        if (files[i].getName().equals(fileNames[j])) {
+                            files[i].delete();
+                            isDel++;
+                            if (isDel >= len) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

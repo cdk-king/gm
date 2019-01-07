@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class UploadDaoImpl {
@@ -34,11 +35,19 @@ public class UploadDaoImpl {
         return temp;
     }
 
-    public Map<String, Object> getFileList(int pageNo, int pageSize) {
+    public Map<String, Object> getFileList(String fileOldName, String fileName, int pageNo, int pageSize) {
         String sql = "select * from t_file where isDelete!=1 ";
+        if (!Objects.equals(fileOldName, "")) {
+            sql += " and fileOldName like '%" + fileOldName + "%' ";
+        }
+        if (!Objects.equals(fileName, "")) {
+            sql += " and fileName like '%" + fileName + "%' ";
+        }
+        sql += " order by id desc ";
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();
         sql += " limit " + (pageNo - 1) * pageSize + ", " + pageSize;
+
         logger.debug("sql：" + sql);
         list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -57,6 +66,19 @@ public class UploadDaoImpl {
         String sql = "update t_file set isDelete = 1 where id='" + id + "' ";
         int temp = jdbcTemplate.update(sql);
 
+        return temp;
+    }
+
+    public int[] deleteAllFile(String[] idList) {
+        String strSql = "";
+        String sql[] = new String[idList.length];
+        int[] temp = new int[idList.length];
+        for (int i = 0; i < idList.length; i++) {
+            sql[i] = "UPDATE  t_file  set isDelete='1' where id = '" + idList[i] + "';";
+            strSql += sql;
+        }
+        logger.debug("sql：" + strSql);
+        temp = jdbcTemplate.batchUpdate(sql);
         return temp;
     }
 

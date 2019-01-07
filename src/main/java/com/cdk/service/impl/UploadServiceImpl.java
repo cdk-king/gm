@@ -81,6 +81,9 @@ public class UploadServiceImpl {
 
     public Result getFileList(Map map) {
         Result re;
+        String fileOldName = (map.get("fileOldName") != null ? map.get("fileOldName").toString() : "");
+        String fileName = (map.get("fileName") != null ? map.get("fileName").toString() : "");
+
         //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -95,7 +98,7 @@ public class UploadServiceImpl {
             e.printStackTrace();
         }
 
-        Map<String, Object> JsonMap = uploadDaoImpl.getFileList(pageNo, pageSize);
+        Map<String, Object> JsonMap = uploadDaoImpl.getFileList(fileOldName, fileName, pageNo, pageSize);
         if (!Objects.equals(JsonMap.get("total"), 0)) {
             re = new Result(200, "文件列表获取成功", JsonMap);
         } else {

@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.Charset;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,9 +39,6 @@ public class ApplyGiftCDK_ServiceImpl {
         String couponTitle = (map.get("couponTitle") != null ? map.get("couponTitle").toString() : "");
         String coupon_describe = (map.get("coupon_describe") != null ? map.get("coupon_describe").toString() : "");
         String couponCount = (map.get("couponCount") != null ? map.get("couponCount").toString() : "");
-        String startDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
-        String endDatetime = (map.get("endDatetime") != null ? map.get("endDatetime").toString() : "");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
@@ -52,14 +47,6 @@ public class ApplyGiftCDK_ServiceImpl {
         coupon.setCoupon_describe(coupon_describe);
         coupon.setCouponCount(Integer.parseInt(couponCount));
 
-        try {
-            coupon.setStartDatetime(sdf.parse(startDatetime));
-            coupon.setEndDatetime(sdf.parse(endDatetime));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         int type = 0;
         String expectedSign = getSign(type, coupon.getGiftId(), coupon.getPlatformId(), coupon.getCouponCount());
         if (!expectedSign.equals(sign)) {

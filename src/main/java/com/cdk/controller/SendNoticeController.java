@@ -93,6 +93,11 @@ public class SendNoticeController {
                     if (c >= cycleTime) {
                         isContinue = false;
                     }
+                    try {
+                        this.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }.start();

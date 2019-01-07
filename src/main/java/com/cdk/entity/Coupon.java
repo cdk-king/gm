@@ -9,7 +9,7 @@ public class Coupon {
     }
 
     public Coupon(int id, int platformId, int couponId, int giftId, String couponTitle, String coupon_describe, int couponCount, Date startDatetime,
-            Date endDatetime, String addUser, Date addDatetime) {
+            Date endDatetime, String addUser, Date addDatetime, int isDelete) {
         this.id = id;
         this.platformId = platformId;
         this.couponId = couponId;
@@ -21,6 +21,7 @@ public class Coupon {
         this.endDatetime = endDatetime;
         this.addUser = addUser;
         this.addDatetime = addDatetime;
+        this.isDelete = isDelete;
 
     }
 
@@ -89,6 +90,12 @@ public class Coupon {
      */
 
     private Date addDatetime;
+
+    /**
+     * 删除标识
+     */
+
+    private int isDelete;
 
     public int getId() {
         return id;
@@ -176,5 +183,13 @@ public class Coupon {
 
     public void setCouponId(int couponId) {
         this.couponId = couponId;
+    }
+
+    public int getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(int isDelete) {
+        this.isDelete = isDelete;
     }
 }
