@@ -149,7 +149,7 @@ public class PlatformServiceImpl {
         Platform platform = new Platform();
         platform.setId(Integer.parseInt(id));
         Result re;
-        int temp = platformDaoImpl.editPlatform(platform);
+        int temp = platformDaoImpl.deletePlatform(platform);
         if (temp > 0) {
             logger.debug("平台删除成功");
             re = new Result(200, "平台删除成功", null);

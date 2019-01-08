@@ -1,16 +1,42 @@
+    
+道具导入表:
+
+	NORMAL("D-道具表.xls"),
+
+   	EQUIPMENT("Z-装备道具表.xls"),
+
+    	GEM("B-宝石表.xls"),
+
+    	SPRITE_GOODS("X-小鬼怪表.xls")
+
+礼包导入表:
+
+	NORMAL("J-激活码.xls"),
+
+
+
 db_url=172.16.0.3:3306/gm
 db_user=root
 db_passwd=95@mysqlmima
 managemant_port:19998
 api-url:s1.test.xssyx.com
 
-[root@VM_0_6_centos gm]# mysql -uroot -p95@mysqlmima -h172.16.0.3
+//导入sql
+mysql -uroot -p95@mysqlmima -h172.16.0.3
 source /data/gm/gm.sql
-
-
-#spring.datasource.url=jdbc:mysql://172.16.0.3:3306/gm?serverTimezone=Asia/Shanghai
-#spring.datasource.username=root
-#spring.datasource.password=95@mysqlmima
-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/gm?serverTimezone=Asia/Shanghai&useSSL=false
+//执行game.sh
+sh game.sh start
+sh game.sh stop
+sh game.sh restart
+//sql地址
+spring.datasource.url=jdbc:mysql://172.16.0.3:3306/gm?serverTimezone=Asia/Shanghai
 spring.datasource.username=root
-spring.datasource.password=123456
+spring.datasource.password=95@mysqlmima
+//本地地址
+#spring.datasource.url=jdbc:mysql://127.0.0.1:3306/cdk?serverTimezone=Asia/Shanghai
+#spring.datasource.username=root
+#spring.datasource.password=123456
+#测试服接口
+SynServerListUrl.url=http://123.207.115.217:21234/serversByJson
+#外网接口
+#SynServerListUrl.url=http://gd.xssyx.com/serversByJson
