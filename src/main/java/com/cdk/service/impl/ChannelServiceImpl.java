@@ -24,9 +24,9 @@ public class ChannelServiceImpl {
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getAllChannelFormPlatform(platformId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(200, "通道列表为空", "");
+            re = new Result(200, "渠道列表为空", "");
         } else {
-            re = new Result(200, "通道列表获取成功", JsonMap);
+            re = new Result(200, "渠道列表获取成功", JsonMap);
         }
         return re;
     }
@@ -35,9 +35,9 @@ public class ChannelServiceImpl {
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getAllChannel();
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(200, "通道列表为空", "");
+            re = new Result(200, "渠道列表为空", "");
         } else {
-            re = new Result(200, "通道列表获取成功", JsonMap);
+            re = new Result(200, "渠道列表获取成功", JsonMap);
         }
         return re;
     }
@@ -47,9 +47,9 @@ public class ChannelServiceImpl {
         Result re;
         Map<String, Object> JsonMap = channelDaoImpl.getChannel(id);
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(200, "通道列表为空", "");
+            re = new Result(200, "渠道列表为空", "");
         } else {
-            re = new Result(200, "通道列表获取成功", JsonMap);
+            re = new Result(200, "渠道列表获取成功", JsonMap);
         }
         return re;
     }
@@ -82,9 +82,9 @@ public class ChannelServiceImpl {
 
         Map<String, Object> JsonMap = channelDaoImpl.getChannelTable(channel, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
-            re = new Result(200, "通道列表为空", "");
+            re = new Result(200, "渠道列表为空", "");
         } else {
-            re = new Result(200, "通道列表获取成功", JsonMap);
+            re = new Result(200, "渠道列表获取成功", JsonMap);
         }
         return re;
     }
@@ -109,9 +109,9 @@ public class ChannelServiceImpl {
         Result re;
         int temp = channelDaoImpl.addChannel(channel);
         if (temp > 0) {
-            re = new Result(200, "通道添加成功", temp);
+            re = new Result(200, "渠道添加成功", temp);
         } else {
-            re = new Result(400, "通道添加失败", temp);
+            re = new Result(400, "渠道添加失败", temp);
         }
         return re;
     }
@@ -137,9 +137,9 @@ public class ChannelServiceImpl {
         Result re;
         int temp = channelDaoImpl.editChannel(channel);
         if (temp > 0) {
-            re = new Result(200, "通道修改成功", temp);
+            re = new Result(200, "渠道修改成功", temp);
         } else {
-            re = new Result(400, "通道修改失败", temp);
+            re = new Result(400, "渠道修改失败", temp);
         }
         return re;
     }
@@ -150,9 +150,9 @@ public class ChannelServiceImpl {
         Result re;
         int temp = channelDaoImpl.deleteChannel(id);
         if (temp > 0) {
-            re = new Result(200, "通道删除成功", temp);
+            re = new Result(200, "渠道删除成功", temp);
         } else {
-            re = new Result(400, "通道删除失败", temp);
+            re = new Result(400, "渠道删除失败", temp);
         }
         return re;
     }
@@ -163,9 +163,9 @@ public class ChannelServiceImpl {
         Result re;
         int temp = channelDaoImpl.saveCheckChannel(id, channel);
         if (temp > 0) {
-            re = new Result(200, "通道更新成功", temp);
+            re = new Result(200, "渠道更新成功", temp);
         } else {
-            re = new Result(400, "通道更新失败", temp);
+            re = new Result(400, "渠道更新失败", temp);
         }
         return re;
     }
@@ -180,9 +180,9 @@ public class ChannelServiceImpl {
             temp = channelDaoImpl.saveCheckChannel(array[i], channel);
         }
         if (temp > 0) {
-            re = new Result(200, "通道批量处理完成", temp);
+            re = new Result(200, "渠道批量处理完成", temp);
         } else {
-            re = new Result(400, "通道批量处理失败", temp);
+            re = new Result(400, "渠道批量处理失败", temp);
         }
         return re;
     }
