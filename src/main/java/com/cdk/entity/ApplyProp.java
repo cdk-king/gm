@@ -7,10 +7,12 @@ public class ApplyProp {
 
     }
 
-    public ApplyProp(int id, int platformId, int serverId, String releaseTitle, String releaseContent, String propList, int applyType, int playerType,
-            String applyUser, String applyReason, int confirmUserId, Date confirmDatetime, int addUser, Date addDatetime, int isDelete,
-            int confirmState, String playerNameList, String playerAccountList, String playerIdList, String moneyList, Date applyDatetime) {
+    public ApplyProp(int id, int gameId, int platformId, int serverId, String releaseTitle, String releaseContent, String propList, int applyType,
+            int playerType, String applyUser, String applyReason, int confirmUserId, Date confirmDatetime, int addUser, Date addDatetime,
+            int isDelete, int confirmState, String playerNameList, String playerAccountList, String playerIdList, String moneyList,
+            Date applyDatetime) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverId = serverId;
         this.releaseTitle = releaseTitle;
@@ -39,6 +41,12 @@ public class ApplyProp {
      */
 
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+
+    private int gameId;
 
     /**
      * 平台-编号
@@ -342,5 +350,13 @@ public class ApplyProp {
 
     public void setApplyDatetime(Date applyDatetime) {
         this.applyDatetime = applyDatetime;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

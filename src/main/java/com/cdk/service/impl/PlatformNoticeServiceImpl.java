@@ -50,6 +50,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
     }
 
     public Result getPlatformNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
@@ -67,7 +68,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         platformNotice.setServerList(serverName);
         platformNotice.setNoticeContent(noticeContent);
         platformNotice.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = platformNoticeDaoImpl.getPlatformNotice(platformNotice, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服公告列表获取失败", "");
         } else {
@@ -77,6 +78,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
     }
 
     public Result addPlatformNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
@@ -96,6 +98,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
         Result re;
         PlatformNotice platformNotice = new PlatformNotice();
+        platformNotice.setGameId(Integer.parseInt(gameId));
         platformNotice.setPlatformId(platformId);
         platformNotice.setServerList(strServerList);
         platformNotice.setNoticeTitle(noticeTitle);
@@ -119,6 +122,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
     public Result editPlatformNotice(Map map) {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
@@ -141,6 +145,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         Result re;
         PlatformNotice platformNotice = new PlatformNotice();
         platformNotice.setId(id);
+        platformNotice.setGameId(Integer.parseInt(gameId));
         platformNotice.setPlatformId(platformId);
         platformNotice.setServerList(strServerList);
         platformNotice.setNoticeTitle(noticeTitle);
@@ -185,6 +190,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
 
     //todo
     public Result reSendNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String noticeTitle = (map.get("noticeTitle") != null ? map.get("noticeTitle").toString() : "");
@@ -213,7 +219,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             param += "&Money=" + moneyList;
         }
         param += "&StartTime=" + time;
-        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId, gameId);
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
@@ -246,6 +252,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
     }
 
     public Result sendPlatformNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String noticeTitle = (map.get("noticeTitle") != null ? map.get("noticeTitle").toString() : "");
@@ -273,7 +280,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             param += "&Money=" + moneyList;
         }
         param += "&StartTime=" + time;
-        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId, gameId);
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";
@@ -286,6 +293,7 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             }
             apiUrl = getApiUrl(urlList.get(i));
             url = apiUrl + "/notice/sendAllNotice";
+            logger.debug(url);
             String data = httpRequestUtil.sendGet(url, param);
             //返回结果判空处理
             if (!Objects.equals(data, null)) {
@@ -306,16 +314,22 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             }
         }
         Result re;
-        if (datas.length() > 0) {
-            datas = datas.substring(0, datas.length() - 1);
-        }
-        if (error.length() > 0) {
-            error = error.substring(0, error.length() - 1);
-            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
-
+        if (urlList.size() == 0) {
+            re = new Result(400, "公告发送失败", "");
+            return re;
         } else {
-            int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, "", 1, time);
+            if (datas.length() > 0) {
+                datas = datas.substring(0, datas.length() - 1);
+            }
+            if (error.length() > 0) {
+                error = error.substring(0, error.length() - 1);
+                int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
+
+            } else {
+                int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, "", 1, time);
+            }
         }
+
         Map<String, String> remap = new HashMap<>();
         remap.put("codes", datas);
         remap.put("error", error);

@@ -21,10 +21,11 @@ public class BanIpDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getBanIp(BanIp banIp, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getBanIp(BanIp banIp, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         String sql =
-                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId  where a.platformId IN (" +
-                        strPlatform + ")  and b.isDelete != 1 and c.isDelete != 1 and a.isDelete != 1 ";
+                "select a.* , b.platform ,c.server from t_ban_ip as a join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on a.serverId = c.serverId  join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and  a.platformId IN (" + strPlatform +
+                        ")  and b.isDelete != 1 and c.isDelete != 1 and a.isDelete != 1 ";
         if (banIp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + banIp.getPlatformId() + "' ";
         }
@@ -47,9 +48,10 @@ public class BanIpDaoImpl {
     public int addBanIp(BanIp banIp) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
-        String sql = "insert t_ban_ip (platformId,serverId,ip,banLong,note,addUser,isDelete,addDatetime,banState) values ('" + banIp.getPlatformId() +
-                "','" + banIp.getServerId() + "','" + banIp.getIp() + "','" + banIp.getBanLong() + "','" + banIp.getNote() + "','" +
-                banIp.getAddUser() + "','0','" + addDatetime + "',0)";
+        String sql =
+                "insert t_ban_ip (gameId,platformId,serverId,ip,banLong,note,addUser,isDelete,addDatetime,banState) values ('" + banIp.getGameId() +
+                        "','" + banIp.getPlatformId() + "','" + banIp.getServerId() + "','" + banIp.getIp() + "','" + banIp.getBanLong() + "','" +
+                        banIp.getNote() + "','" + banIp.getAddUser() + "','0','" + addDatetime + "',0)";
         logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

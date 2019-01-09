@@ -9,14 +9,16 @@ public class Server {
         //无参构造器
     }
 
-    public Server(int id, int serverId, String server, String serverIp, String serverPort, int platformId, String server_describe, int state,
-            int sort, String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area, String openServiceTime) {
+    public Server(int id, int serverId, String server, String serverIp, String serverPort, int gameId, int platformId, String server_describe,
+            int state, int sort, String addUser, Date addDatetime, int isDelete, int isDefault, String platformTag, String area,
+            String openServiceTime) {
         //有参构造器
         this.id = id;
         this.serverId = serverId;
         this.server = server;
         this.serverIp = serverIp;
         this.serverPort = serverPort;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.server_describe = server_describe;
         this.state = state;
@@ -36,6 +38,13 @@ public class Server {
      */
 
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+
+    private int gameId;
+
     /**
      * 服务器-编号
      */
@@ -253,5 +262,13 @@ public class Server {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

@@ -22,9 +22,10 @@ public class DataSourceDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getDataSource(DataSource dataSource, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getDataSource(String gameId, DataSource dataSource, String isPage, int pageNo, int pageSize) {
         String sql =
-                "select a.* , b.platform  from t_datasource as a join  t_gameplatform as b on a.platformId = b.platformId where a.isDelete != 1 and b.isDelete != 1  ";
+                "select a.* , b.platform  from t_datasource as a join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId and c.isDelete!=1 where c.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and a.isDelete != 1 and b.isDelete != 1  ";
         if (dataSource.getPlatformId() != 0) {
             sql += " and a.platformId = '" + dataSource.getPlatformId() + "'";
         }
@@ -48,10 +49,10 @@ public class DataSourceDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String addDatetime = df.format(new Date());
         String sql =
-                "insert into  t_datasource (platformId,dataSource_id,dataSource_url,dataSource_name,dataSource_password,addDatetime,addUser,isDelete) values ('" +
-                        dataSource.getPlatformId() + "','" + dataSource.getDataSource_id() + "','" + dataSource.getDataSource_url() + "','" +
-                        dataSource.getDataSource_name() + "','" + dataSource.getDataSource_password() + "','" + addDatetime + "','" +
-                        dataSource.getAddUser() + "','0');";
+                "insert into  t_datasource (gameId,platformId,dataSource_id,dataSource_url,dataSource_name,dataSource_password,addDatetime,addUser,isDelete) values ('" +
+                        dataSource.getGameId() + "','" + dataSource.getPlatformId() + "','" + dataSource.getDataSource_id() + "','" +
+                        dataSource.getDataSource_url() + "','" + dataSource.getDataSource_name() + "','" + dataSource.getDataSource_password() +
+                        "','" + addDatetime + "','" + dataSource.getAddUser() + "','0');";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -61,10 +62,10 @@ public class DataSourceDaoImpl {
     public int editDataSource(DataSource dataSource) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String addDatetime = df.format(new Date());
-        String sql = "update t_datasource set platformId = '" + dataSource.getPlatformId() + "',dataSource_id='" + dataSource.getDataSource_id() +
-                "',dataSource_url='" + dataSource.getDataSource_url() + "',dataSource_name='" + dataSource.getDataSource_name() + "',addUser='" +
-                dataSource.getAddUser() + "',addDatetime='" + addDatetime + "',dataSource_password='" + dataSource.getDataSource_password() +
-                "',isDelete='0' where id = '" + dataSource.getId() + "'";
+        String sql = "update t_datasource set gameId = '" + dataSource.getGameId() + "', platformId = '" + dataSource.getPlatformId() +
+                "',dataSource_id='" + dataSource.getDataSource_id() + "',dataSource_url='" + dataSource.getDataSource_url() + "',dataSource_name='" +
+                dataSource.getDataSource_name() + "',addUser='" + dataSource.getAddUser() + "',addDatetime='" + addDatetime +
+                "',dataSource_password='" + dataSource.getDataSource_password() + "',isDelete='0' where id = '" + dataSource.getId() + "'";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

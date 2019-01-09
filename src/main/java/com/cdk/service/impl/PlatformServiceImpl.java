@@ -20,6 +20,7 @@ public class PlatformServiceImpl {
     public PlatformDaoImpl platformDaoImpl;
 
     public Result getAllPlatform(Map map) {
+        String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");
@@ -49,7 +50,7 @@ public class PlatformServiceImpl {
 
         Result re;
 
-        Map<String, Object> JsonMap = platformDaoImpl.getAllPlatform(platform, gameName, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = platformDaoImpl.getAllPlatform(gameId, platform, gameName, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "平台列表获取失败", "");
         } else {

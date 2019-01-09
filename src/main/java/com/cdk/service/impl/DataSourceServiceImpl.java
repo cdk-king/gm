@@ -28,8 +28,8 @@ public class DataSourceServiceImpl {
     private UtilsDaoImpl utilsDaoImpl;
 
     public Result getDataSource(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -45,7 +45,7 @@ public class DataSourceServiceImpl {
         DataSource dataSource = new DataSource();
         dataSource.setPlatformId(Integer.parseInt(platformId));
 
-        Map<String, Object> JsonMap = dataSourceDaoImpl.getDataSource(dataSource, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = dataSourceDaoImpl.getDataSource(gameId, dataSource, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "通道列表为空", "");
         } else {
@@ -55,6 +55,7 @@ public class DataSourceServiceImpl {
     }
 
     public Result addDataSource(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "");
@@ -66,6 +67,7 @@ public class DataSourceServiceImpl {
                 ((map.get("dataSource_password") != null && map.get("dataSource_password") != "") ? map.get("dataSource_password").toString() : "");
 
         DataSource dataSource = new DataSource();
+        dataSource.setGameId(Integer.parseInt(gameId));
         dataSource.setPlatformId(Integer.parseInt(platformId));
         dataSource.setDataSource_id(Integer.parseInt(dataSource_id));
         dataSource.setDataSource_url(dataSource_url);
@@ -84,6 +86,7 @@ public class DataSourceServiceImpl {
     }
 
     public Result editDataSource(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "");
@@ -95,6 +98,7 @@ public class DataSourceServiceImpl {
                 ((map.get("dataSource_password") != null && map.get("dataSource_password") != "") ? map.get("dataSource_password").toString() : "");
 
         DataSource dataSource = new DataSource();
+        dataSource.setGameId(Integer.parseInt(gameId));
         dataSource.setId(Integer.parseInt(id));
         dataSource.setPlatformId(Integer.parseInt(platformId));
         dataSource.setDataSource_id(Integer.parseInt(dataSource_id));
@@ -151,9 +155,10 @@ public class DataSourceServiceImpl {
     }
 
     public Result testDataSource(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
 
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
 
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");

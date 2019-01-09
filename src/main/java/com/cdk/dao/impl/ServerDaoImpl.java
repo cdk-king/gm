@@ -27,11 +27,12 @@ public class ServerDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getAllServer(Server server, String platformId, String channelId, String gameName, String isPage, int pageNo,
-            int pageSize) {
+    public Map<String, Object> getAllServer(Server server, String gameId, String platformId, String channelId, String gameName, String isPage,
+            int pageNo, int pageSize) {
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.platformId and b.isDelete!=1  left JOIN \n" +
-                " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
+                " t_game as c on b.gameId = c.id and c.isDelete != 1  where c.id = '" + gameId + "' and a.gameId = '" + gameId +
+                "' and a.isDelete != 1 ";
 
         if (server.getServer() != "") {
             sql += " and a.server LIKE '%" + server.getServer() + "%'";
@@ -93,9 +94,9 @@ public class ServerDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql =
-                "insert into t_gameserver (serverId,server,serverIp,serverPort,server_describe,platformId,sort,addUser,addDatetime,state,isDelete) " +
-                        " values ('" + server.getServerId() + "','" + server.getServer() + "','" + server.getServerIp() + "','" +
-                        server.getServerPort() + "','" + server.getServer_describe() + "','" + server.getPlatformId() + "','0','" +
+                "insert into t_gameserver (gameId,serverId,server,serverIp,serverPort,server_describe,platformId,sort,addUser,addDatetime,state,isDelete) " +
+                        " values ('" + server.getGameId() + "','" + server.getServerId() + "','" + server.getServer() + "','" + server.getServerIp() +
+                        "','" + server.getServerPort() + "','" + server.getServer_describe() + "','" + server.getPlatformId() + "','0','" +
                         server.getAddUser() + "','" + addDatetime + "','0','0')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
@@ -103,17 +104,20 @@ public class ServerDaoImpl {
     }
 
     public int editServer(Server server) {
-        String sql = "UPDATE t_gameserver as a SET a.serverId = '" + server.getServerId() + "', a.server='" + server.getServer() +
-                "',a.server_describe = '" + server.getServer_describe() + "'," + "a.platformId='" + server.getPlatformId() + "'," + "a.serverIp='" +
-                server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" + server.getAddUser() +
-                "',a.openServiceTime='" + server.getOpenServiceTime() + "'   where a.id =" + server.getId() + "";
+        String sql = "UPDATE t_gameserver as a SET a.gameId = '" + server.getGameId() + "', a.serverId = '" + server.getServerId() + "', a.server='" +
+                server.getServer() + "',a.server_describe = '" + server.getServer_describe() + "'," + "a.platformId='" + server.getPlatformId() +
+                "'," + "a.serverIp='" + server.getServerIp() + "' ,a.serverPort = '" + server.getServerPort() + "',a.addUser = '" +
+                server.getAddUser() + "',a.openServiceTime='" + server.getOpenServiceTime() + "'   where a.id =" + server.getId() + "";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    public List<Map<String, Object>> getAllPlatformList() {
+    public List<Map<String, Object>> getAllPlatformList(String gameId) {
         String sql = "select * from t_gameplatform where isDelete != 1 ";
+        if (!Objects.equals(gameId, "")) {
+            sql += " and gameId = '" + gameId + "'";
+        }
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         logger.debug("sql：" + sql);
         return list;
@@ -163,10 +167,10 @@ public class ServerDaoImpl {
         return list;
     }
 
-    public List<Map<String, Object>> getServerListForPlatform(Platform platform) {
+    public List<Map<String, Object>> getServerListForPlatform(Platform platform, String gameId) {
         String sql = "SELECT a.serverId as serverId,a.server as serverName,a.serverIp from t_gameserver as a \n" +
-                "join t_gameplatform as b on a.platformId = b.platformId \n" + "where a.isDelete != 1 and b.isDelete!=1  and  b.platformId =" +
-                platform.getPlatformId();
+                "join t_gameplatform as b on a.platformId = b.platformId join t_game as c on b.gameId = c.id and c.isDelete!=1  where c.id='" +
+                gameId + "' and a.gameId = '" + gameId + "' and a.isDelete != 1 and b.isDelete!=1  and  b.platformId =" + platform.getPlatformId();
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
@@ -188,17 +192,31 @@ public class ServerDaoImpl {
         return temp;
     }
 
-    public List<Map<String, Object>> getServerTree() {
+    public List<Map<String, Object>> getServerTree(String gameId) {
         String sql =
                 "SELECT a.id as gameId ,b.platformId as platformId,c.serverId as serverId,a.gameName,b.platform,c.server FROM t_game as a join t_gameplatform as b on a.id = b.gameId \n" +
-                        "join t_gameserver as c on b.platformId = c.platformId where a.isDelete!=1 and b.isDelete!=1 and c.isDelete !=1 ORDER BY a.id ,b.id,c.id";
+                        "join t_gameserver as c on b.platformId = c.platformId and c.gameId = a.id where c.gameId = '" + gameId +
+                        "' and a.isDelete!=1 and b.isDelete!=1 and c.isDelete !=1 ORDER BY a.id ,b.id,c.id";
 
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
 
-    public int[] SynServerList(JSONArray jsonArray) {
+    public String getGameServerApi(String gameId) {
+        String sql = "select * from t_game where isDelete != 1 ";
+        if (!Objects.equals(gameId, "")) {
+            sql += " and id = '" + gameId + "'";
+        }
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        logger.debug("sql：" + sql);
+        if (Objects.equals(list.get(0).get("serverApi"), null)) {
+            return "";
+        }
+        return list.get(0).get("serverApi").toString();
+    }
+
+    public int[] SynServerList(JSONArray jsonArray, String gameId) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         int[] temp = null;
@@ -213,7 +231,7 @@ public class ServerDaoImpl {
                 jsonObject = jsonArray.getJSONObject(i);
                 String sqlSelect =
                         "select * from t_gameserver where serverId = '" + jsonObject.get("sid") + "' and  platformId = '" + jsonObject.get("pid") +
-                                "'";
+                                "' and gameId = '" + gameId + "'  and isDelete != 1";
                 List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
                 if (list.size() > 0) {
                     //存在，更新
@@ -222,16 +240,16 @@ public class ServerDaoImpl {
                             jsonObject.get("pname") + "',a.openServiceTime='" + jsonObject.get("time") + "',a.addDatetime='" + addDatetime + "'," +
                             "a.serverIp='" + jsonObject.get("domain") + "',a.area='" + jsonObject.get("area") + "' ,a.serverPort = '" +
                             jsonObject.get("port") + "',a.addUser = 'cdk' where a.serverId =" + jsonObject.get("sid") + " and  a.platformId = '" +
-                            jsonObject.get("pid") + "' ";
+                            jsonObject.get("pid") + "' and a.gameId = '" + gameId + "' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增
                     String sqlInsert =
-                            "insert into t_gameserver (serverId,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime,channel) values ('" +
+                            "insert into t_gameserver (serverId,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime,channel,gameId) values ('" +
                                     jsonObject.get("sid") + "', '" + jsonObject.get("sname") + "','" + jsonObject.get("domain") + "','" +
                                     jsonObject.get("port") + "','" + jsonObject.get("pid") + "','" + jsonObject.get("pname") + "','" +
                                     jsonObject.get("sname") + "','0','0','cdk','" + addDatetime + "',0,'0','" + jsonObject.get("area") + "','" +
-                                    jsonObject.get("time") + "','' ) ; ";
+                                    jsonObject.get("time") + "','','" + gameId + "' ) ; ";
                     jdbcTemplate.update(sqlInsert);
                 }
             } catch (JSONException e) {

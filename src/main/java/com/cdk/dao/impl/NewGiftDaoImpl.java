@@ -55,10 +55,10 @@ public class NewGiftDaoImpl {
         return temp;
     }
 
-    public Map<String, Object> getGiftUpload(NewGift newGift, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getGiftUpload(NewGift newGift, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         String sql =
-                "select a.* , b.platform  from t_gift_upload as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId IN (" +
-                        strPlatform + ")  and b.isDelete != 1  ";
+                "select a.* , b.platform  from t_gift_upload as a join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId and c.isDelete!=1 where c.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and  a.platformId IN (" + strPlatform + ")  and b.isDelete != 1  ";
         if (newGift.getPlatformId() != 0) {
             sql += " and a.platformId ='" + newGift.getPlatformId() + "' ";
         }

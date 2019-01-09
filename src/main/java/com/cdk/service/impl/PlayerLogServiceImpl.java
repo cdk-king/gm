@@ -34,6 +34,7 @@ public class PlayerLogServiceImpl {
     private UtilsDaoImpl utilsDaoImpl;
 
     public Result getPlayerProhibitSpeakLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String playerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -65,7 +66,7 @@ public class PlayerLogServiceImpl {
         player.setIsProhibitSpeak(isToProhibitSpeak);
 
         Result re;
-        Map<String, Object> JsonMap = playerLogDaoImpl.getPlayerProhibitSpeakLog(player, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = playerLogDaoImpl.getPlayerProhibitSpeakLog(player, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "日志列表获取失败", "");
         } else {
@@ -77,6 +78,7 @@ public class PlayerLogServiceImpl {
 
 
     public Result getPlayerBan(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String playerName = (map.get("playerName") != null ? map.get("playerName").toString() : "");
         String playerAccount = (map.get("playerAccount") != null ? map.get("playerAccount").toString() : "");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -107,7 +109,7 @@ public class PlayerLogServiceImpl {
         player.setIsBan(isToBan);
 
         Result re;
-        Map<String, Object> JsonMap = playerLogDaoImpl.getPlayerBan(player, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = playerLogDaoImpl.getPlayerBan(player, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "日志列表获取失败", "");
         } else {
@@ -118,6 +120,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getRoleLoginLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
 
@@ -138,7 +141,7 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");
         }
@@ -209,6 +212,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getCreateRoleLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
 
@@ -229,7 +233,7 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
 
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");
@@ -302,7 +306,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getMoneyFlowLog(Map map) {
-
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -321,7 +325,7 @@ public class PlayerLogServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
 
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");
@@ -396,6 +400,7 @@ public class PlayerLogServiceImpl {
 
 
     public Result getGoodFlowLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -419,7 +424,7 @@ public class PlayerLogServiceImpl {
             e.printStackTrace();
         }
 
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
         if (dblist.size() == 0) {
             logger.debug("数据源获取失败");
             return new Result(400, "数据源获取失败", "");
@@ -439,7 +444,7 @@ public class PlayerLogServiceImpl {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT *  FROM goodsflow where DATEDIFF(now(),dtEventTime) < 20 ";
+            sql = "SELECT *  FROM goodsflow where DATEDIFF(now(),dtEventTime) < 20";
 
             if (!Objects.equals(strServerId, "0")) {
                 sql += " and iWorldId IN ('" + strServerId + "') ";
@@ -503,6 +508,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getReChargeLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -525,7 +531,7 @@ public class PlayerLogServiceImpl {
             e.printStackTrace();
         }
 
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
 
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");
@@ -609,6 +615,7 @@ public class PlayerLogServiceImpl {
     }
 
     public Result getShopLog(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String iUin = (map.get("iUin") != null ? map.get("iUin").toString() : "");
@@ -631,7 +638,7 @@ public class PlayerLogServiceImpl {
             e.printStackTrace();
         }
 
-        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId));
+        List<Map<String, Object>> dblist = utilsDaoImpl.getDataSourceForPlatformId(Integer.parseInt(strPlatformId), gameId);
 
         if (dblist.size() == 0) {
             return new Result(400, "数据源获取失败", "");

@@ -23,10 +23,12 @@ public class PlatformNoticeDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getPlatformNotice(PlatformNotice platformNotice, String isPage, int pageNo, int pageSize, String strPlatform,
+            String gameId) {
         String sql =
-                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser where a.platformId in (" +
-                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform,c.name as userName from t_platform_notice as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and a.platformId in (" + strPlatform +
+                        ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(platformNotice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + platformNotice.getPlatformId() + "' ";
         }
@@ -68,11 +70,11 @@ public class PlatformNoticeDaoImpl {
         }
         logger.debug("endDatetime:" + endDatetime);
         String sql =
-                "insert into t_platform_notice (platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete,moneyList,propList) " +
-                        " values ('" + platformNotice.getPlatformId() + "','" + platformNotice.getServerList() + "','" +
-                        platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "'," + startDatetime + "," + endDatetime +
-                        ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0','" + platformNotice.getMoneyList() + "','" +
-                        platformNotice.getPropList() + "')";
+                "insert into t_platform_notice (gameId,platformId,serverList,noticeTitle,noticeContent,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete,moneyList,propList) " +
+                        " values ('" + platformNotice.getGameId() + "','" + platformNotice.getPlatformId() + "','" + platformNotice.getServerList() +
+                        "','" + platformNotice.getNoticeTitle() + "','" + platformNotice.getNoticeContent() + "'," + startDatetime + "," +
+                        endDatetime + ",'0','" + platformNotice.getAddUser() + "','" + addDatetime + "','0','" + platformNotice.getMoneyList() +
+                        "','" + platformNotice.getPropList() + "')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -93,12 +95,11 @@ public class PlatformNoticeDaoImpl {
             endDatetime = "'" + formatter.format(platformNotice.getEndDatetime()) + "'";
         }
 
-        String sql =
-                "UPDATE  t_platform_notice  set platformId='" + platformNotice.getPlatformId() + "',serverList='" + platformNotice.getServerList() +
-                        "',noticeTitle='" + platformNotice.getNoticeTitle() + "',noticeContent='" + platformNotice.getNoticeContent() +
-                        "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime + ",addUser='" + platformNotice.getAddUser() +
-                        "', moneyList = '" + platformNotice.getMoneyList() + "' , propList = '" + platformNotice.getPropList() + "'  where id = '" +
-                        platformNotice.getId() + "'";
+        String sql = "UPDATE  t_platform_notice  set gameId='" + platformNotice.getGameId() + "', platformId='" + platformNotice.getPlatformId() +
+                "',serverList='" + platformNotice.getServerList() + "',noticeTitle='" + platformNotice.getNoticeTitle() + "',noticeContent='" +
+                platformNotice.getNoticeContent() + "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime + ",addUser='" +
+                platformNotice.getAddUser() + "', moneyList = '" + platformNotice.getMoneyList() + "' , propList = '" + platformNotice.getPropList() +
+                "'  where id = '" + platformNotice.getId() + "'";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

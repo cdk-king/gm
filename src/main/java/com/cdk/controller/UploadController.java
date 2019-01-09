@@ -60,12 +60,12 @@ public class UploadController {
     @ResponseBody
     public Result fileUpload(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName,
             @RequestParam("fileSize") String fileSize, @RequestParam("fileDescribe") String fileDescribe, @RequestParam("addUser") String addUser,
-            @RequestParam("platformId") String platformId) {
+            @RequestParam("platformId") String platformId, @RequestParam("gameId") String gameId) {
 
         if (file.isEmpty()) {
             return new Result(400, "文件为空", "");
         }
-        Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser, platformId);
+        Result re = uploadServiceImpl.fileUpload(file, fileName, fileSize, fileDescribe, addUser, platformId, gameId);
         return re;
     }
 

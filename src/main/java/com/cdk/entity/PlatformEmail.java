@@ -7,9 +7,10 @@ public class PlatformEmail {
 
     }
 
-    public PlatformEmail(int id, int platformId, String serverList, Date startDatetime, Date endDatetime, String emailTitle, String emailContent,
-            String sendReason, int sendState, String addUser, Date addDatetime, int isDelete) {
+    public PlatformEmail(int id, int gameId, int platformId, String serverList, Date startDatetime, Date endDatetime, String emailTitle,
+            String emailContent, String sendReason, int sendState, String addUser, Date addDatetime, int isDelete) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverList = serverList;
         this.startDatetime = startDatetime;
@@ -27,6 +28,11 @@ public class PlatformEmail {
      * 公告-编号
      */
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+    private int gameId;
 
     /**
      * 平台-编号
@@ -178,5 +184,13 @@ public class PlatformEmail {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

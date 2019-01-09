@@ -22,9 +22,9 @@ public class UtilsServiceImpl {
     @Autowired
     public UtilsDaoImpl utilsDaoImpl;
 
-    public List<Map<String, String>> getServerUrl(String serverIdList, String platformId) {
+    public List<Map<String, String>> getServerUrl(String serverIdList, String platformId, String gameId) {
         String[] serverIdArray = serverIdList.split(",");
-        List<Map<String, Object>> list = utilsDaoImpl.getServerUrl(platformId);
+        List<Map<String, Object>> list = utilsDaoImpl.getServerUrl(platformId, gameId);
         List<Map<String, String>> urlList = new ArrayList<>();
         Map<String, String> map = new HashMap();
         for (int j = 0; j < serverIdArray.length; j++) {

@@ -6,13 +6,15 @@ public class Channel {
 
     }
 
-    public Channel(int channelId, String channelName, String channelTag, String channel_describe, String addUser, int platformId, int id) {
+    public Channel(int channelId, String channelName, String channelTag, String channel_describe, String addUser, int gameId, int platformId,
+            int id) {
 
         this.channelId = channelId;
         this.channelName = channelName;
         this.channelTag = channelTag;
         this.channel_describe = channel_describe;
         this.addUser = addUser;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.id = id;
     }
@@ -52,6 +54,12 @@ public class Channel {
      */
 
     private String addUser;
+
+    /**
+     * 游戏标识
+     */
+
+    private int gameId;
 
     /**
      * 平台标识
@@ -114,5 +122,13 @@ public class Channel {
 
     public void setPlatformId(int platformId) {
         this.platformId = platformId;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

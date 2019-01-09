@@ -31,8 +31,8 @@ public class UtilsDaoImpl {
         return list;
     }
 
-    public List<Map<String, Object>> getServerUrl(String platformId) {
-        String sql = "SELECT * from t_gameserver where platformId = " + platformId + " and isDelete!=1";
+    public List<Map<String, Object>> getServerUrl(String platformId, String gameId) {
+        String sql = "SELECT * from t_gameserver where gameId = '" + gameId + "' and platformId = " + platformId + " and isDelete!=1";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
@@ -88,8 +88,10 @@ public class UtilsDaoImpl {
         return JsonMap;
     }
 
-    public List<Map<String, Object>> getDataSourceForPlatformId(int platformId) {
-        String sql = "select * from t_datasource where platformId  =" + platformId;
+    public List<Map<String, Object>> getDataSourceForPlatformId(int platformId, String gameId) {
+        String sql =
+                "select a.* from t_datasource as a join t_gameplatform as b on a.platformId = b.platformId and b.isDelete!=1 join t_game as c on b.gameId = c.id and c.isDelete!=1  where c.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and  a.platformId  =" + platformId + " and a.isDelete!=1";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;

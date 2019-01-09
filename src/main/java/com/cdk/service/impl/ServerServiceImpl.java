@@ -18,7 +18,6 @@ import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -55,6 +54,7 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getAllServer(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String channelId = ((map.get("channelId") != null && map.get("channelId") != "") ? map.get("channelId").toString() : "0");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
@@ -83,7 +83,7 @@ public class ServerServiceImpl extends ApiHandeler {
         server.setServer_describe(server_describe);
         server.setState(Integer.parseInt(state));
 
-        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, platformId, channelId, gameName, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = serverDaoImpl.getAllServer(server, gameId, platformId, channelId, gameName, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "服务器列表获取失败", "");
         } else {
@@ -94,6 +94,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
 
     public Result addServer(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String serverId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
         String serverName = (map.get("server") != null ? map.get("server").toString() : "");
@@ -102,6 +103,7 @@ public class ServerServiceImpl extends ApiHandeler {
         String server_describe = (map.get("server_describe") != null ? map.get("server_describe").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         Server server = new Server();
+        server.setGameId(Integer.parseInt(gameId));
         server.setServer(serverName);
         server.setServerId(Integer.parseInt(serverId));
         server.setServerIp(serverIp);
@@ -124,6 +126,7 @@ public class ServerServiceImpl extends ApiHandeler {
 
 
     public Result editServer(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String id = (map.get("id") != null ? map.get("id").toString() : "");
         String serverId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
@@ -136,6 +139,7 @@ public class ServerServiceImpl extends ApiHandeler {
         logger.debug(openServiceTime);
         Server server = new Server();
         server.setId(Integer.parseInt(id));
+        server.setGameId(Integer.parseInt(gameId));
         server.setServerId(Integer.parseInt(serverId));
         server.setServer(serverName);
         server.setServerIp(serverIp);
@@ -158,14 +162,15 @@ public class ServerServiceImpl extends ApiHandeler {
     }
 
     public Result getAllPlatformList(Map map) {
-        List<Map<String, Object>> list = serverDaoImpl.getAllPlatformList();
+        String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
+        List<Map<String, Object>> list = serverDaoImpl.getAllPlatformList(gameId);
         Result re;
         if (list.size() > 0) {
-            logger.debug("渠道列表获取成功");
-            re = new Result(200, "渠道列表获取成功", list);
+            logger.debug("平台列表获取成功");
+            re = new Result(200, "平台列表获取成功", list);
         } else {
-            logger.debug("渠道列表获取失败");
-            re = new Result(400, "渠道列表获取失败", list);
+            logger.debug("平台列表获取失败");
+            re = new Result(400, "平台列表获取失败", list);
         }
         return re;
     }
@@ -253,33 +258,35 @@ public class ServerServiceImpl extends ApiHandeler {
         List<Map<String, Object>> list = serverDaoImpl.getPlatformListForUser(user);
         Result re;
         if (list.size() != 0) {
-            re = new Result(200, "用户渠道列表获取成功", list);
+            re = new Result(200, "用户平台列表获取成功", list);
         } else {
-            re = new Result(400, "用户渠道列表获取失败", list);
+            re = new Result(400, "用户平台列表获取失败", list);
         }
         return re;
     }
 
     public Result getServerListForPlatform(Map map) {
         String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
+        String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "");
         if (Objects.equals(platformId, "")) {
-            return new Result(400, "渠道服务器列表获取失败", null);
+            return new Result(400, "平台服务器列表获取失败", null);
         }
         Platform platform = new Platform();
         platform.setPlatformId(Integer.parseInt(platformId));
 
-        List<Map<String, Object>> list = serverDaoImpl.getServerListForPlatform(platform);
+        List<Map<String, Object>> list = serverDaoImpl.getServerListForPlatform(platform, gameId);
         Result re;
         if (list.size() != 0) {
-            re = new Result(200, "渠道服务器列表获取成功", list);
+            re = new Result(200, "平台服务器列表获取成功", list);
         } else {
-            re = new Result(400, "渠道服务器列表获取失败", list);
+            re = new Result(400, "平台服务器列表获取失败", list);
         }
         return re;
     }
 
     public Result getServerTree(Map map) {
-        List<Map<String, Object>> list = serverDaoImpl.getServerTree();
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        List<Map<String, Object>> list = serverDaoImpl.getServerTree(gameId);
         Result re;
         if (list.size() != 0) {
             re = new Result(200, "服务器树状结构获取成功", list);
@@ -289,12 +296,17 @@ public class ServerServiceImpl extends ApiHandeler {
         return re;
     }
 
-    @Value("${SynServerListUrl.url}")
-    public String SynServerListUrl;
 
     public Result SynServerList(Map map) {
+
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+
         String param = "";
-        String url = SynServerListUrl;
+        String url = serverDaoImpl.getGameServerApi(gameId);
+        if (Objects.equals(url, "")) {
+            return new Result(400, "操作失败，接口不存在", "");
+        }
+        logger.debug("url：" + url);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
         Result re;
@@ -306,7 +318,7 @@ public class ServerServiceImpl extends ApiHandeler {
                 e.printStackTrace();
                 re = new Result(400, "服务器列表数据解析失败", data);
             }
-            int[] temp = serverDaoImpl.SynServerList(jsonArray);
+            int[] temp = serverDaoImpl.SynServerList(jsonArray, gameId);
 
             re = new Result(200, "服务器列表获取成功", data);
             serverListCache.invalidateAll();

@@ -70,7 +70,7 @@ public class GiftDaoImpl {
     }
 
     public Map<String, Object> getGiftListForPlatformId(Gift gift) {
-        String sql = "select * from t_gift where platformId = " + gift.getPlatformId() + "  and isDelete!=1 ";
+        String sql = "select * from t_gift where   platformId = " + gift.getPlatformId() + "  and isDelete!=1 ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();
@@ -78,8 +78,8 @@ public class GiftDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getNewGiftListForPlatformId(Gift gift) {
-        String sql = "select *  from t_gift_upload where platformId = " + gift.getPlatformId() + " ";
+    public Map<String, Object> getNewGiftListForPlatformId(Gift gift, String gameId) {
+        String sql = "select *  from t_gift_upload where gameId = '" + gameId + "' and  platformId = " + gift.getPlatformId() + " ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, Object> JsonMap = new HashMap();

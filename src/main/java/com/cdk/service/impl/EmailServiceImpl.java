@@ -29,6 +29,7 @@ public class EmailServiceImpl extends ApiHandeler {
     public EmailDaoImpl emailDaoImpl;
 
     public Result getEmail(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String emailContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
@@ -46,7 +47,7 @@ public class EmailServiceImpl extends ApiHandeler {
         email.setServerId(serverId);
         email.setEmailContent(emailContent);
         email.setAddUser(addUser);
-        Map<String, Object> JsonMap = emailDaoImpl.getEmail(email, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = emailDaoImpl.getEmail(email, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "邮件列表获取失败", "");
         } else {
@@ -56,6 +57,7 @@ public class EmailServiceImpl extends ApiHandeler {
     }
 
     public Result addEmail(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
@@ -86,6 +88,7 @@ public class EmailServiceImpl extends ApiHandeler {
 
         Result re;
         Email email = new Email();
+        email.setGameId(Integer.parseInt(gameId));
         email.setPlatformId(platformId);
         email.setServerId(serverId);
         email.setEmailTitle(emailTitle);
@@ -129,6 +132,7 @@ public class EmailServiceImpl extends ApiHandeler {
 
     public Result editEmail(Map map) {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
@@ -162,6 +166,7 @@ public class EmailServiceImpl extends ApiHandeler {
         Result re;
         Email email = new Email();
         email.setId(id);
+        email.setGameId(Integer.parseInt(gameId));
         email.setPlatformId(platformId);
         email.setServerId(serverId);
         email.setEmailTitle(emailTitle);
@@ -208,6 +213,7 @@ public class EmailServiceImpl extends ApiHandeler {
         Result re;
         Email email = new Email();
         email.setId(id);
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strserverId = (map.get("serverId") != null ? map.get("serverId").toString() : "0");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
@@ -247,7 +253,11 @@ public class EmailServiceImpl extends ApiHandeler {
         }
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
-        apiUrl = getApiUrl(strPlatformId, strserverId);
+        apiUrl = getApiUrl(gameId, strPlatformId, strserverId);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         url = apiUrl + "/UpdatePlayer/Mail";
         String data = httpRequestUtil.sendGet(url, param);

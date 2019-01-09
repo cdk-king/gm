@@ -34,7 +34,8 @@ public class ApplyGiftCDK_ServiceImpl {
 
     public Result generateCDK(Map map) {
         String sign = (map.get("sign") != null ? map.get("sign").toString() : "");
-        String platformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "");
         String giftId = (map.get("giftId") != null ? map.get("giftId").toString() : "");
         String couponTitle = (map.get("couponTitle") != null ? map.get("couponTitle").toString() : "");
         String coupon_describe = (map.get("coupon_describe") != null ? map.get("coupon_describe").toString() : "");
@@ -53,7 +54,7 @@ public class ApplyGiftCDK_ServiceImpl {
             return new Result(400, "CDK生成失败", "");
         }
         coupon.setCouponId(type + coupon.getGiftId() * GIFTID_OFFSET);
-        String[] temp = couponDaoImpl.generateCDK(coupon);
+        String[] temp = couponDaoImpl.generateCDK(coupon, gameId);
         Result re;
         if (!Objects.equals(temp, null)) {
             re = new Result(200, "CDK生成成功", temp);
@@ -113,6 +114,7 @@ public class ApplyGiftCDK_ServiceImpl {
     }
 
     public Result getGiftListForPlatformId(Map map) {
+
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         Gift gift = new Gift();
         gift.setPlatformId(Integer.parseInt(platformId));
@@ -127,10 +129,11 @@ public class ApplyGiftCDK_ServiceImpl {
     }
 
     public Result getNewGiftListForPlatformId(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         Gift gift = new Gift();
         gift.setPlatformId(Integer.parseInt(platformId));
-        Map<String, Object> JsonMap = giftDaoImpl.getNewGiftListForPlatformId(gift);
+        Map<String, Object> JsonMap = giftDaoImpl.getNewGiftListForPlatformId(gift, gameId);
         Result re;
         if (!Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "礼包列表获取成功", JsonMap);
@@ -141,6 +144,7 @@ public class ApplyGiftCDK_ServiceImpl {
     }
 
     public Result getCoupon(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String giftId = ((map.get("giftId") != null && map.get("giftId") != "") ? map.get("giftId").toString() : "");
         String giftName = ((map.get("giftName") != null && map.get("giftName") != "") ? map.get("giftName").toString() : "");
@@ -159,7 +163,7 @@ public class ApplyGiftCDK_ServiceImpl {
         Result re;
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
-        Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, giftId, giftName, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, giftId, giftName, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "列表获取失败", "");
         } else {

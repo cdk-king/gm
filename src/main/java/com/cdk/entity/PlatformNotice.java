@@ -8,9 +8,11 @@ public class PlatformNotice {
     }
 
 
-    public PlatformNotice(int id, int platformId, String serverList, Date startDatetime, Date endDatetime, String noticeTitle, String noticeContent,
-            int sendState, String addUser, Date addDatetime, int isDelete, String propList, String moneyList, String errorList) {
+    public PlatformNotice(int id, int gameId, int platformId, String serverList, Date startDatetime, Date endDatetime, String noticeTitle,
+            String noticeContent, int sendState, String addUser, Date addDatetime, int isDelete, String propList, String moneyList,
+            String errorList) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverList = serverList;
         this.startDatetime = startDatetime;
@@ -31,6 +33,11 @@ public class PlatformNotice {
      * 公告-编号
      */
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+    private int gameId;
 
     /**
      * 平台-编号
@@ -207,5 +214,13 @@ public class PlatformNotice {
 
     public void setErrorList(String errorList) {
         this.errorList = errorList;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

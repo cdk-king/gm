@@ -60,9 +60,9 @@ public class GameDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
 
-        String sql = "insert into t_game (gameName,gameTag,game_describe,gameEncryptSign,sort,addUser,addDatetime,state,isDelete) " + " values ('" +
-                game.getGameName() + "','" + game.getGameTag() + "','" + game.getGame_describe() + "','" + game.getGameEncryptSign() + "','0','" +
-                game.getAddUser() + "','" + addDatetime + "','0','0')";
+        String sql = "insert into t_game (gameName,gameTag,game_describe,gameEncryptSign,sort,addUser,addDatetime,state,isDelete,serverApi) " +
+                " values ('" + game.getGameName() + "','" + game.getGameTag() + "','" + game.getGame_describe() + "','" + game.getGameEncryptSign() +
+                "','0','" + game.getAddUser() + "','" + addDatetime + "','0','0','" + game.getServerApi() + "')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -71,7 +71,7 @@ public class GameDaoImpl {
     public int editGame(Game game) {
         String sql = "UPDATE t_game as a SET a.gameName='" + game.getGameName() + "',a.game_describe = '" + game.getGame_describe() + "'," +
                 "a.gameTag='" + game.getGameTag() + "' ,a.gameEncryptSign = '" + game.getGameEncryptSign() + "',a.addUser = '" + game.getAddUser() +
-                "' where a.id =" + game.getId() + "";
+                "',a.serverApi = '" + game.getServerApi() + "' where a.id =" + game.getId() + "";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 

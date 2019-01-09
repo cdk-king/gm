@@ -22,10 +22,12 @@ public class PlatformEmailDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getPlatformEmail(PlatformEmail platformEmail, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getPlatformEmail(PlatformEmail platformEmail, String isPage, int pageNo, int pageSize, String strPlatform,
+            String gameId) {
         String sql =
-                "select a.*,b.platform,c.name as userName from t_platform_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser where a.platformId in (" +
-                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform,c.name as userName from t_platform_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "'  and a.platformId in (" + strPlatform +
+                        ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(platformEmail.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + platformEmail.getPlatformId() + "' ";
         }
@@ -63,11 +65,10 @@ public class PlatformEmailDaoImpl {
         }
         logger.debug("endDatetime:" + endDatetime);
 
-        String sql =
-                "update t_platform_email SET platformId = '" + platformEmail.getPlatformId() + "',serverList = '" + platformEmail.getServerList() +
-                        "',emailTitle = '" + platformEmail.getEmailTitle() + "',emailContent ='" + platformEmail.getEmailContent() +
-                        "',sendReason ='" + platformEmail.getSendReason() + "',startDatetime=" + startDatetime + ",endDatetime=" + endDatetime +
-                        "  where id  = '" + platformEmail.getId() + "'";
+        String sql = "update t_platform_email SET gameId = '" + platformEmail.getGameId() + "', platformId = '" + platformEmail.getPlatformId() +
+                "',serverList = '" + platformEmail.getServerList() + "',emailTitle = '" + platformEmail.getEmailTitle() + "',emailContent ='" +
+                platformEmail.getEmailContent() + "',sendReason ='" + platformEmail.getSendReason() + "',startDatetime=" + startDatetime +
+                ",endDatetime=" + endDatetime + "  where id  = '" + platformEmail.getId() + "'";
         logger.debug(sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -90,10 +91,10 @@ public class PlatformEmailDaoImpl {
         }
         logger.debug("endDatetime:" + endDatetime);
         String sql =
-                "insert into t_platform_email (platformId,serverList,emailTitle,emailContent,sendReason,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete) " +
-                        " values ('" + platformEmail.getPlatformId() + "','" + platformEmail.getServerList() + "','" + platformEmail.getEmailTitle() +
-                        "','" + platformEmail.getEmailContent() + "','" + platformEmail.getSendReason() + "'," + startDatetime + "," + endDatetime +
-                        ",'0','" + platformEmail.getAddUser() + "','" + addDatetime + "','0')";
+                "insert into t_platform_email (gameId,platformId,serverList,emailTitle,emailContent,sendReason,startDatetime,endDatetime,sendState,addUser,addDatetime,isDelete) " +
+                        " values ('" + platformEmail.getGameId() + "','" + platformEmail.getPlatformId() + "','" + platformEmail.getServerList() +
+                        "','" + platformEmail.getEmailTitle() + "','" + platformEmail.getEmailContent() + "','" + platformEmail.getSendReason() +
+                        "'," + startDatetime + "," + endDatetime + ",'0','" + platformEmail.getAddUser() + "','" + addDatetime + "','0')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

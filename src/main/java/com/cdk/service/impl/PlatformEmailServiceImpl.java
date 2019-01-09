@@ -31,6 +31,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
     public PlatformEmailDaoImpl platformEmailDaoImpl;
 
     public Result getPlatformEmail(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
@@ -48,7 +49,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         platformEmail.setServerList(serverName);
         platformEmail.setEmailContent(emailContent);
         platformEmail.setAddUser(addUser);
-        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = platformEmailDaoImpl.getPlatformEmail(platformEmail, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "全服邮件列表获取失败", "");
         } else {
@@ -59,6 +60,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
     public Result editPlatformEmail(Map map) {
         String strId = (map.get("id") != null ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
@@ -79,6 +81,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
         platformEmail.setId(id);
+        platformEmail.setGameId(Integer.parseInt(gameId));
         platformEmail.setPlatformId(platformId);
         platformEmail.setServerList(strServerList);
         platformEmail.setEmailTitle(emailTitle);
@@ -102,6 +105,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
 
     public Result addPlatformEmail(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String strStartDatetime = (map.get("startDatetime") != null ? map.get("startDatetime").toString() : "");
@@ -121,6 +125,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
 
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
+        platformEmail.setGameId(Integer.parseInt(gameId));
         platformEmail.setPlatformId(platformId);
         platformEmail.setServerList(strServerList);
         platformEmail.setEmailTitle(emailTitle);
@@ -165,7 +170,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         Result re;
         PlatformEmail platformEmail = new PlatformEmail();
         platformEmail.setId(id);
-
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
@@ -187,8 +192,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         param += "&IsAllPlayer=1";
         String url = "";
         String error = "";
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
-
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerList, strPlatformId, gameId);
 
         for (int i = 0; i < ServerList.length; i++) {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();

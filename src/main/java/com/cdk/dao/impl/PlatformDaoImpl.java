@@ -22,12 +22,15 @@ public class PlatformDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getAllPlatform(Platform platform, String gameName, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getAllPlatform(String gameId, Platform platform, String gameName, String isPage, int pageNo, int pageSize) {
 
         String sql = "select a.*,b.gameName,c.role from t_gameplatform as a left JOIN " +
                 "  t_game  as b on a.gameId = b.id and b.isDelete!=1  left JOIN" +
                 "  t_role as c on a.roleId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
 
+        if (gameId != "") {
+            sql += " and a.gameId = '" + gameId + "'";
+        }
         if (platform.getPlatform() != "") {
             sql += " and a.platform LIKE '%" + platform.getPlatform() + "%'";
         }

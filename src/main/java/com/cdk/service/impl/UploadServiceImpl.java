@@ -21,7 +21,8 @@ public class UploadServiceImpl {
     @Autowired
     public UploadDaoImpl uploadDaoImpl;
 
-    public Result fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser, String platformId) {
+    public Result fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser, String platformId,
+            String gameId) {
         String fileName = file.getOriginalFilename();
         int size = (int) file.getSize();
         logger.debug(fileName + "-->" + size);
@@ -57,7 +58,7 @@ public class UploadServiceImpl {
             //file.transferTo 方法调用时，判断如果是相对路径，则使用temp目录，为父目录
             file.transferTo(dest); //保存文件
 
-            int temp = uploadDaoImpl.fileUpload(file, newName, fileSize, fileDescribe, addUser, platformId);
+            int temp = uploadDaoImpl.fileUpload(file, newName, fileSize, fileDescribe, addUser, platformId, gameId);
 
             if (temp > 0) {
                 return new Result(200, "文件上传成功", "");
@@ -96,6 +97,7 @@ public class UploadServiceImpl {
         String fileOldName = (map.get("fileOldName") != null ? map.get("fileOldName").toString() : "");
         String fileName = (map.get("fileName") != null ? map.get("fileName").toString() : "");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         //分页查询
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -111,7 +113,7 @@ public class UploadServiceImpl {
             e.printStackTrace();
         }
 
-        Map<String, Object> JsonMap = uploadDaoImpl.getFileList(fileOldName, fileName, platformId, strPlatform, pageNo, pageSize);
+        Map<String, Object> JsonMap = uploadDaoImpl.getFileList(fileOldName, fileName, gameId, platformId, strPlatform, pageNo, pageSize);
         if (!Objects.equals(JsonMap.get("total"), 0)) {
             re = new Result(200, "文件列表获取成功", JsonMap);
         } else {

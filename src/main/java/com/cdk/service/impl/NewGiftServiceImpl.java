@@ -50,6 +50,7 @@ public class NewGiftServiceImpl {
     }
 
     public Result getGiftUpload(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String giftName = map.get("giftName").toString();
         String giftTag = map.get("giftTag").toString();
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
@@ -70,7 +71,7 @@ public class NewGiftServiceImpl {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        Map<String, Object> JsonMap = newGiftDaoImpl.getGiftUpload(newGift, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = newGiftDaoImpl.getGiftUpload(newGift, isPage, pageNo, pageSize, strPlatform, gameId);
         if (!Objects.equals(JsonMap.get("list"), 0)) {
             logger.debug("礼包列表获取成功");
             re = new Result(200, "礼包列表获取成功", JsonMap);

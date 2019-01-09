@@ -46,19 +46,20 @@ public class SendNoticeDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String sql =
-                "insert into t_send_notice (platformId,serverList,sendType,noticeType,timeInterval,cycleTime,noticeContent,sendState,addUser,addDatetime,isDelete) " +
-                        " values ('" + notice.getPlatformId() + "','" + notice.getServerList() + "','" + notice.getSendType() + "','" +
-                        notice.getNoticeType() + "','" + notice.getTimeInterval() + "','" + notice.getCycleTime() + "','" +
-                        notice.getNoticeContent() + "','0','" + notice.getAddUser() + "','" + addDatetime + "','0')";
+                "insert into t_send_notice (gameId,platformId,serverList,sendType,noticeType,timeInterval,cycleTime,noticeContent,sendState,addUser,addDatetime,isDelete) " +
+                        " values ('" + notice.getGameId() + "','" + notice.getPlatformId() + "','" + notice.getServerList() + "','" +
+                        notice.getSendType() + "','" + notice.getNoticeType() + "','" + notice.getTimeInterval() + "','" + notice.getCycleTime() +
+                        "','" + notice.getNoticeContent() + "','0','" + notice.getAddUser() + "','" + addDatetime + "','0')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
-    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getNotice(Notice notice, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         String sql =
-                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.platformId  where a.platformId in (" +
-                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 ";
+                "select a.*,b.platform from t_send_notice as a  join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId and c.isDelete!=1  where c.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and  a.platformId in (" + strPlatform +
+                        ") and a.isDelete != 1  and b.isDelete != 1 ";
         if (!Objects.equals(notice.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + notice.getPlatformId() + "' ";
         }

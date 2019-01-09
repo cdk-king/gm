@@ -71,6 +71,7 @@ public class NewPropServiceImpl {
     }
 
     public Result getPropUplaod(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String propId = ((map.get("propId") != null && map.get("propId") != "") ? map.get("propId").toString() : "0");
         String propName = (map.get("propName") != null ? map.get("propName").toString() : "");
         String propType = (map.get("propType") != null ? map.get("propType").toString() : "");
@@ -94,7 +95,7 @@ public class NewPropServiceImpl {
         newProp.setPropType(propType);
         newProp.setPlatformId(Integer.parseInt(platformId));
 
-        Map<String, Object> JsonMap = newPropDaoImpl.getPropUplaod(newProp, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = newPropDaoImpl.getPropUplaod(newProp, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具列表获取失败", "");
         } else {

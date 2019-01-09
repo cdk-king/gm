@@ -23,11 +23,11 @@ public class CDK_DaoImpl {
     @Autowired
     public CouponDaoImpl couponDaoImpl;
 
-    public Map<String, Object> getCDK(CDK cdk, String giftName, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getCDK(CDK cdk, String giftName, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
 
         String sql =
-                "select a.* , b.platform ,c.giftName from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and c.platformId = a.platformId where a.platformId IN (" +
-                        strPlatform + ")  and b.isDelete != 1 ";
+                "select a.* , b.platform ,c.giftName from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and c.platformId = a.platformId join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                        gameId + "' and a.gameId ='" + gameId + "' and a.platformId IN (" + strPlatform + ")  and b.isDelete != 1 ";
         if (cdk.getPlatformId() != 0) {
             sql += " and a.platformId ='" + cdk.getPlatformId() + "' ";
         }
@@ -62,25 +62,26 @@ public class CDK_DaoImpl {
         return JsonMap;
     }
 
-    public int exchangeCDK(int couponId, int sequenceId, int platformId, String cdk) {
-        String sql = "insert into t_cdk (couponId,sequenceId,platformId,cdk,isUsed) values ('" + couponId + "','" + sequenceId + "','" + platformId +
-                "','" + cdk + "',1)";
+    public int exchangeCDK(int couponId, int sequenceId, int platformId, String cdk, String gameId) {
+        String sql =
+                "insert into t_cdk (gameId,couponId,sequenceId,platformId,cdk,isUsed) values ('" + gameId + "','" + couponId + "','" + sequenceId +
+                        "','" + platformId + "','" + cdk + "',1)";
         int temp = jdbcTemplate.update(sql);
         return temp;
     }
 
 
-    public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
-        String sql = "select * from t_cdk where couponId = '" + couponId + "' and sequenceId = '" + sequenceId + "' and cdk = '" + cdk +
-                "' and platformId = '" + platformId + "' ";
+    public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId, String gameId) {
+        String sql = "select * from t_cdk where gameId = '" + gameId + "' and couponId = '" + couponId + "' and sequenceId = '" + sequenceId +
+                "' and cdk = '" + cdk + "' and platformId = '" + platformId + "' ";
         logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
 
-    public List<Map<String, Object>> checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
-        String sql = "select * from t_coupon where couponId = '" + couponId + "' and end_sequence >= '" + sequenceId + "' and start_sequence <='" +
-                sequenceId + "' and  platformId = '" + platformId + "' ";
+    public List<Map<String, Object>> checkCDK(int couponId, int sequenceId, String cdk, int platformId, String gameId) {
+        String sql = "select * from t_coupon where gameId = '" + gameId + "' and couponId = '" + couponId + "' and end_sequence >= '" + sequenceId +
+                "' and start_sequence <='" + sequenceId + "' and  platformId = '" + platformId + "' ";
         logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         if (Objects.equals(list.size(), 0)) {

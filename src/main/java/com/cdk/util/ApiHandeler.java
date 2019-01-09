@@ -78,9 +78,12 @@ public class ApiHandeler {
         return param;
     }
 
-    public String getApiUrl(String platformId, String serverId) {
+    public String getApiUrl(String gameId, String platformId, String serverId) {
         String apiUrl = "";
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(serverId, platformId);
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(serverId, platformId, gameId);
+        if (serverUrl.size() == 0) {
+            return "";
+        }
         if (serverUrl.get(0).get("url").matches(".*[a-zA-z].*")) {
             if (serverUrl.get(0).get("url").indexOf("http") != -1) {
                 apiUrl = serverUrl.get(0).get("url").split(":")[0];

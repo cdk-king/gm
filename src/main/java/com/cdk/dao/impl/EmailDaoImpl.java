@@ -22,10 +22,11 @@ public class EmailDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getEmail(Email email, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getEmail(Email email, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         String sql =
-                "select a.*,b.platform,c.name as userName,d.server from t_send_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_gameserver as d on d.serverId = a.serverId where a.platformId IN (" +
-                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete !=1 ";
+                "select a.*,b.platform,c.name as userName,d.server from t_send_email as a  join  t_gameplatform as b on a.platformId = b.platformId join t_user as c on c.id = a.addUser join t_gameserver as d on d.serverId = a.serverId join t_game as e on b.gameId = e.id and e.isDelete!=1 where e.id='" +
+                        gameId + "' and a.gameId='" + gameId + "' and  a.platformId IN (" + strPlatform +
+                        ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 and d.isDelete !=1 ";
         if (!Objects.equals(email.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + email.getPlatformId() + "' ";
         }
@@ -57,11 +58,12 @@ public class EmailDaoImpl {
         String maxRegistrationTime = "";
 
         String sql =
-                "insert into t_send_email (platformId,serverId,emailTitle,emailContent,sendReason,sendType,minLevel,maxLevel,minVipLevel,maxVipLevel," +
+                "insert into t_send_email (gameId,platformId,serverId,emailTitle,emailContent,sendReason,sendType,minLevel,maxLevel,minVipLevel,maxVipLevel," +
                         "minRegistrationTime,maxRegistrationTime,isOnline,sex,playerNameList,playerAccountList,playerIdList,addUser,addDatetime,isDelete,sendState) " +
-                        " values ('" + email.getPlatformId() + "','" + email.getServerId() + "','" + email.getEmailTitle() + "','" +
-                        email.getEmailContent() + "','" + email.getSendReason() + "','" + email.getSendType() + "','" + email.getMinLevel() + "','" +
-                        email.getMaxLevel() + "','" + email.getMinVipLevel() + "','" + email.getMaxVipLevel() + "',";
+                        " values ('" + email.getGameId() + "','" + email.getPlatformId() + "','" + email.getServerId() + "','" +
+                        email.getEmailTitle() + "','" + email.getEmailContent() + "','" + email.getSendReason() + "','" + email.getSendType() +
+                        "','" + email.getMinLevel() + "','" + email.getMaxLevel() + "','" + email.getMinVipLevel() + "','" + email.getMaxVipLevel() +
+                        "',";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(email.getMinRegistrationTime(), null)) {
             minRegistrationTime = formatter.format(email.getMinRegistrationTime());
@@ -92,10 +94,10 @@ public class EmailDaoImpl {
         String maxRegistrationTime = "";
 
 
-        String sql = "update t_send_email SET platformId='" + email.getPlatformId() + "',serverId='" + email.getServerId() + "',emailTitle='" +
-                email.getEmailTitle() + "',emailContent='" + email.getEmailContent() + "',sendReason='" + email.getSendReason() + "',sendType='" +
-                email.getSendType() + "',minLevel='" + email.getMinLevel() + "',maxLevel='" + email.getMaxLevel() + "',minVipLevel='" +
-                email.getMinVipLevel() + "',maxVipLevel='" + email.getMaxVipLevel() + "',";
+        String sql = "update t_send_email SET gameId = '" + email.getGameId() + "', platformId='" + email.getPlatformId() + "',serverId='" +
+                email.getServerId() + "',emailTitle='" + email.getEmailTitle() + "',emailContent='" + email.getEmailContent() + "',sendReason='" +
+                email.getSendReason() + "',sendType='" + email.getSendType() + "',minLevel='" + email.getMinLevel() + "',maxLevel='" +
+                email.getMaxLevel() + "',minVipLevel='" + email.getMinVipLevel() + "',maxVipLevel='" + email.getMaxVipLevel() + "',";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if (!Objects.equals(email.getMinRegistrationTime(), null)) {
             minRegistrationTime = formatter.format(email.getMinRegistrationTime());

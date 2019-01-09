@@ -7,11 +7,12 @@ public class Email {
 
     }
 
-    public Email(int id, int platformId, int serverId, String emailTitle, String emailContent, String sendReason, int sendType, int minLevel,
-            int maxLevel, int minVipLevel, int maxVipLevel, Date minRegistrationTime, Date maxRegistrationTime, int isOnline, int sex,
+    public Email(int id, int gameId, int platformId, int serverId, String emailTitle, String emailContent, String sendReason, int sendType,
+            int minLevel, int maxLevel, int minVipLevel, int maxVipLevel, Date minRegistrationTime, Date maxRegistrationTime, int isOnline, int sex,
             String playerNameList, String playerIdList, String playerAccountList, int sendState, Date sendDatetime, String addUser, Date addDatetime,
             int isDelete) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverId = serverId;
         this.emailTitle = emailTitle;
@@ -41,6 +42,11 @@ public class Email {
      * 公告-编号
      */
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+    private int gameId;
 
     /**
      * 平台-编号
@@ -333,5 +339,13 @@ public class Email {
 
     public void setSendReason(String sendReason) {
         this.sendReason = sendReason;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

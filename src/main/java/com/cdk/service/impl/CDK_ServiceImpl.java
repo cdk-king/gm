@@ -35,6 +35,7 @@ public class CDK_ServiceImpl {
      * @return
      */
     public Result getCDK(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String couponId = ((map.get("couponId") != null && map.get("couponId") != "") ? map.get("couponId").toString() : "0");
         String sequenceId = ((map.get("sequenceId") != null && map.get("sequenceId") != "") ? map.get("sequenceId").toString() : "0");
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
@@ -60,7 +61,7 @@ public class CDK_ServiceImpl {
         cdkUse.setPlatformId(Integer.parseInt(platformId));
         cdkUse.setCdk(cdk);
         cdkUse.setCouponId(Integer.parseInt(giftId));
-        Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, giftName, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = cdkDaoImpl.getCDK(cdkUse, giftName, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "礼包列表获取失败", "");
         } else {
@@ -78,6 +79,7 @@ public class CDK_ServiceImpl {
     public Result exchangeCDK_External(Map map) {
         Result re;
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "");
         String strCouponId = (map.get("couponId") != null ? map.get("couponId").toString() : "");
         String strSequenceId = (map.get("sequenceId") != null ? map.get("sequenceId").toString() : "");
         String strPlatformId = (map.get("platformId") != null ? map.get("platformId").toString() : "");
@@ -86,8 +88,8 @@ public class CDK_ServiceImpl {
         int sequenceId = Integer.parseInt(strSequenceId);
         if (couponId > 0) {
             logger.debug(couponId + "");
-            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-            int check = checkCDK(couponId, sequenceId, cdk, platformId);
+            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId, gameId);
+            int check = checkCDK(couponId, sequenceId, cdk, platformId, gameId);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -96,7 +98,7 @@ public class CDK_ServiceImpl {
                 re = new Result(400, "CDK校验不通过", "-1");
                 return re;
             }
-            int a = cdkDaoImpl.exchangeCDK(couponId, sequenceId, platformId, cdk);
+            int a = cdkDaoImpl.exchangeCDK(couponId, sequenceId, platformId, cdk, gameId);
             if (a > 0) {
                 re = new Result(200, "CDK兑换成功", "1");
             } else {
@@ -116,6 +118,7 @@ public class CDK_ServiceImpl {
     public Result exchangeCDK(Map map) {
         Result re;
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         int platformId = Integer.parseInt(strPlatformId);
 
@@ -127,8 +130,8 @@ public class CDK_ServiceImpl {
         int couponId = Integer.parseInt(temp.get("couponId").toString());
         int sequenceId = Integer.parseInt(temp.get("sequenceId").toString());
         if (couponId > 0) {
-            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-            int check = checkCDK(couponId, sequenceId, cdk, platformId);
+            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId, gameId);
+            int check = checkCDK(couponId, sequenceId, cdk, platformId, gameId);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -137,7 +140,7 @@ public class CDK_ServiceImpl {
                 re = new Result(400, "CDK校验不通过", "-1");
                 return re;
             }
-            int a = cdkDaoImpl.exchangeCDK(couponId, sequenceId, platformId, cdk);
+            int a = cdkDaoImpl.exchangeCDK(couponId, sequenceId, platformId, cdk, gameId);
             if (a > 0) {
                 re = new Result(200, "CDK解析成功", temp);
             } else {
@@ -157,6 +160,7 @@ public class CDK_ServiceImpl {
     public Result checkCDKIsUse(Map map) {
         Result re;
         String cdk = (map.get("cdk") != null ? map.get("cdk").toString() : "");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         int platformId = Integer.parseInt(strPlatformId);
 
@@ -164,8 +168,8 @@ public class CDK_ServiceImpl {
         int couponId = Integer.parseInt(temp.get("couponId").toString());
         int sequenceId = Integer.parseInt(temp.get("sequenceId").toString());
         if (couponId > 0) {
-            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
-            int check = checkCDK(couponId, sequenceId, cdk, platformId);
+            int checkIsUsed = checkIsUsedCDK(couponId, sequenceId, cdk, platformId, gameId);
+            int check = checkCDK(couponId, sequenceId, cdk, platformId, gameId);
             if (checkIsUsed == 1) {
                 re = new Result(400, "当前CDK已被使用或者激活", "-4");
                 return re;
@@ -189,8 +193,8 @@ public class CDK_ServiceImpl {
      * @param platformId
      * @return
      */
-    public int checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId) {
-        List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId);
+    public int checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId, String gameId) {
+        List<Map<String, Object>> list = cdkDaoImpl.checkIsUsedCDK(couponId, sequenceId, cdk, platformId, gameId);
         if (null == list || list.size() == 0) {
             return 0;
         }
@@ -206,8 +210,8 @@ public class CDK_ServiceImpl {
      * @param platformId
      * @return
      */
-    public int checkCDK(int couponId, int sequenceId, String cdk, int platformId) {
-        List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId);
+    public int checkCDK(int couponId, int sequenceId, String cdk, int platformId, String gameId) {
+        List<Map<String, Object>> list = cdkDaoImpl.checkCDK(couponId, sequenceId, cdk, platformId, gameId);
         if (null == list || list.size() == 0) {
             return 0;
         }

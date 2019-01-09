@@ -50,6 +50,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
     }
 
     public Result addNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String strSendType = (map.get("sendType") != null ? map.get("sendType").toString() : "0");
@@ -65,6 +66,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         int cycleTime = Integer.parseInt(strCycleTime);
         Result re;
         Notice notice = new Notice();
+        notice.setGameId(Integer.parseInt(gameId));
         notice.setPlatformId(platformId);
         notice.setServerList(strServerList);
         notice.setSendType(sendType);
@@ -86,6 +88,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
     }
 
     public Result getNotice(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String serverName = (map.get("serverName") != null ? map.get("serverName").toString() : "");
@@ -115,7 +118,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         notice.setCycleTime(cycleTime);
         notice.setNoticeContent(noticeContent);
         notice.setAddUser(addUser);
-        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = sendNoticeDaoImpl.getNotice(notice, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "公告列表获取失败", "");
         } else {
@@ -151,6 +154,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
 
     public Result sendNotice(Map map) {
         String id = (map.get("id") != null ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerList = (map.get("serverList") != null ? map.get("serverList").toString() : "");
         String Content = (map.get("Content") != null ? map.get("Content").toString() : "");
@@ -174,7 +178,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
         if (!Objects.equals(noticeType, "")) {
             param += "&noticeType=" + noticeType;
         }
-        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId);
+        List<Map<String, String>> urlList = utilsServiceImpl.getServerUrl(strServerList, strPlatformId, gameId);
         String url = "";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String datas = "";

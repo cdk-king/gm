@@ -28,6 +28,7 @@ public class BanIpServiceImpl extends ApiHandeler {
     public BanIpDaoImpl banIpDaoImpl;
 
     public Result getBanIp(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
@@ -48,7 +49,7 @@ public class BanIpServiceImpl extends ApiHandeler {
         banIp.setPlatformId(platformId);
         banIp.setServerId(serverId);
         Result re;
-        Map<String, Object> JsonMap = banIpDaoImpl.getBanIp(banIp, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = banIpDaoImpl.getBanIp(banIp, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "禁封IP列表获取失败", "");
         } else {
@@ -59,6 +60,7 @@ public class BanIpServiceImpl extends ApiHandeler {
     }
 
     public Result addBanIp(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String ip = (map.get("ip") != null ? map.get("ip").toString() : "");
@@ -69,6 +71,7 @@ public class BanIpServiceImpl extends ApiHandeler {
         int platformId = Integer.parseInt(strPlatformId);
         int serverId = Integer.parseInt(strServerId);
         BanIp banIp = new BanIp();
+        banIp.setGameId(Integer.parseInt(gameId));
         banIp.setPlatformId(platformId);
         banIp.setServerId(serverId);
         banIp.setIp(ip);
@@ -88,6 +91,7 @@ public class BanIpServiceImpl extends ApiHandeler {
 
     public Result banIp(Map map) {
         String strid = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String remove = ((map.get("remove") != null && map.get("remove") != "") ? map.get("remove").toString() : "0");
@@ -119,8 +123,8 @@ public class BanIpServiceImpl extends ApiHandeler {
             param += "&Describle=" + note;
         }
 
-        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerId, strPlatformId);
-        apiUrl = http + serverUrl.get(0).get("url").split(":")[0];
+        List<Map<String, String>> serverUrl = utilsServiceImpl.getServerUrl(strServerId, strPlatformId, gameId);
+        apiUrl = getApiUrl(serverUrl.get(0));
 
         String url = apiUrl + "/UpdateAccount/FreezeIP";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();

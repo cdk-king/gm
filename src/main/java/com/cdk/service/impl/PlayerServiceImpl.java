@@ -32,6 +32,7 @@ public class PlayerServiceImpl extends ApiHandeler {
     public PlayerDaoImpl playerDaoImpl;
 
     public Result getPlayerDetailInfo(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
@@ -48,7 +49,11 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(PlayerID, "")) {
             param += "&PlayerID=" + PlayerID;
         }
-        apiUrl = getApiUrl(strPlatformId, WorldID);
+        apiUrl = getApiUrl(gameId, strPlatformId, WorldID);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         String url = apiUrl + "/QueryPlayer/PlayerInfoBase";
         logger.debug(url);
@@ -66,6 +71,7 @@ public class PlayerServiceImpl extends ApiHandeler {
     }
 
     public Result getPlayerFromServer(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("WorldID") != null && map.get("WorldID") != "") ? map.get("WorldID").toString() : "0");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -122,7 +128,11 @@ public class PlayerServiceImpl extends ApiHandeler {
             param += "&TalkBan=" + TalkBan;
         }
 
-        apiUrl = getApiUrl(strPlatformId, strServerId);
+        apiUrl = getApiUrl(gameId, strPlatformId, strServerId);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         String url = apiUrl + "/QueryPlayer/PlayerList";
         logger.debug(url);
@@ -177,6 +187,7 @@ public class PlayerServiceImpl extends ApiHandeler {
 
 
     public Result Ban(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerIds = (map.get("PlayerIds") != null ? map.get("PlayerIds").toString() : "");
@@ -213,7 +224,11 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
-        apiUrl = getApiUrl(strPlatformId, WorldID);
+        apiUrl = getApiUrl(gameId, strPlatformId, WorldID);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         String url = apiUrl + "/UpdateAccount/FreezeAccount";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
@@ -228,10 +243,10 @@ public class PlayerServiceImpl extends ApiHandeler {
             player.setBanTime(Integer.parseInt(HowLong));
 
             if (Objects.equals(Remove, "0")) {
-                playerDaoImpl.SaveBanLog(player, userId, PlayerIds, decodePlayerName);
+                playerDaoImpl.SaveBanLog(player, userId, PlayerIds, decodePlayerName, gameId);
                 re = new Result(200, "玩家禁封成功", data);
             } else {
-                playerDaoImpl.SaveBanToNormalLog(player, userId, PlayerIds, decodePlayerName);
+                playerDaoImpl.SaveBanToNormalLog(player, userId, PlayerIds, decodePlayerName, gameId);
                 re = new Result(200, "玩家解除禁封成功", data);
             }
         } else {
@@ -245,6 +260,7 @@ public class PlayerServiceImpl extends ApiHandeler {
     }
 
     public Result talkBan(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String WorldID = (map.get("WorldID") != null ? map.get("WorldID").toString() : "");
         String PlayerID = (map.get("PlayerID") != null ? map.get("PlayerID").toString() : "");
@@ -280,7 +296,15 @@ public class PlayerServiceImpl extends ApiHandeler {
         if (!Objects.equals(HowLong, "")) {
             param += "&HowLong=" + HowLong;
         }
-        apiUrl = getApiUrl(strPlatformId, WorldID);
+        apiUrl = getApiUrl(gameId, strPlatformId, WorldID);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         String url = apiUrl + "/UpdatePlayer/GagPlayer";
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
@@ -296,10 +320,10 @@ public class PlayerServiceImpl extends ApiHandeler {
             player.setPlayerAccount(PlayerAccount);
             player.setProhibitSpeakTime(Integer.parseInt(HowLong));
             if (Objects.equals(Remove, "0")) {
-                playerDaoImpl.SaveProhibitSpeakLog(player, userId);
+                playerDaoImpl.SaveProhibitSpeakLog(player, userId, gameId);
                 re = new Result(200, "玩家禁言成功", data);
             } else {
-                playerDaoImpl.SaveProhibitSpeakToNormalLog(player, userId);
+                playerDaoImpl.SaveProhibitSpeakToNormalLog(player, userId, gameId);
                 re = new Result(200, "玩家解除禁言成功", data);
             }
         } else {

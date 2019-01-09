@@ -65,6 +65,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
     public Result confirmApply(Map map) {
         String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String serverId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String IsAllPlayer = ((map.get("IsAllPlayer") != null && map.get("IsAllPlayer") != "") ? map.get("IsAllPlayer").toString() : "0");
@@ -110,7 +111,11 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         if (!Objects.equals(Money, "")) {
             param += "&Money=" + Money;
         }
-        apiUrl = getApiUrl(platformId, serverId);
+        apiUrl = getApiUrl(gameId, platformId, serverId);
+
+        if (Objects.equals(apiUrl, "")) {
+            return new Result(400, "操作失败,接口不存在", "");
+        }
 
         String url = apiUrl + "/UpdatePlayer/Mail";
         logger.debug(url);
@@ -137,6 +142,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
 
     public Result getApplyProp(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
@@ -154,7 +160,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         applyProp.setServerId(serverId);
 
 
-        Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize, strPlatform);
+        Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "道具申请列表获取失败", "");
         } else {
@@ -164,6 +170,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
     }
 
     public Result addApplyProp(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String strApplyType = (map.get("applyType") != null ? map.get("applyType").toString() : "0");
@@ -186,6 +193,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
         Result re;
         ApplyProp applyProp = new ApplyProp();
+        applyProp.setGameId(Integer.parseInt(gameId));
         applyProp.setPlatformId(platformId);
         applyProp.setServerId(serverId);
         applyProp.setApplyType(applyType);
@@ -214,6 +222,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
 
     public Result editApplyProp(Map map) {
         String strId = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = (map.get("serverId") != null ? map.get("serverId").toString() : "");
         String strApplyType = (map.get("applyType") != null ? map.get("applyType").toString() : "0");
@@ -238,6 +247,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         Result re;
         ApplyProp applyProp = new ApplyProp();
         applyProp.setId(id);
+        applyProp.setGameId(Integer.parseInt(gameId));
         applyProp.setPlatformId(platformId);
         applyProp.setServerId(serverId);
         applyProp.setApplyType(applyType);

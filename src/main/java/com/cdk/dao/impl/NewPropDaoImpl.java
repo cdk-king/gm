@@ -70,11 +70,11 @@ public class NewPropDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getPropUplaod(NewProp newProp, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getPropUplaod(NewProp newProp, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         //如果查询结果有个重复的字段，默认取后边
         String sql =
-                "select a.*, b.platform ,c.propType as propTypeName from t_prop_upload as a join  t_gameplatform as b on a.platformId = b.platformId join t_prop_upload_type as c on a.propType = c.propTypeId and c.gameId = a.gameId where a.platformId IN (" +
-                        strPlatform + ")  and b.isDelete != 1  ";
+                "select a.*, b.platform ,c.propType as propTypeName from t_prop_upload as a join  t_gameplatform as b on a.platformId = b.platformId join t_prop_upload_type as c on a.propType = c.propTypeId and c.gameId = a.gameId join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and a.platformId IN (" + strPlatform + ")  and b.isDelete != 1  ";
         if (newProp.getPlatformId() != 0) {
             sql += " and a.platformId ='" + newProp.getPlatformId() + "' ";
         }

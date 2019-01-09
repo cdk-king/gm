@@ -7,9 +7,11 @@ public class Notice {
 
     }
 
-    public Notice(int id, int platformId, String serverList, int sendType, int noticeType, int timeInterval, int cycleTime, Date startDatetime,
-            Date endDatetime, Date sendDatetime, String noticeContent, int sendState, String addUser, Date addDatetime, int isDelete) {
+    public Notice(int id, int gameId, int platformId, String serverList, int sendType, int noticeType, int timeInterval, int cycleTime,
+            Date startDatetime, Date endDatetime, Date sendDatetime, String noticeContent, int sendState, String addUser, Date addDatetime,
+            int isDelete) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverList = serverList;
         this.sendType = sendType;
@@ -31,6 +33,11 @@ public class Notice {
      * 公告-编号
      */
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+    private int gameId;
 
     /**
      * 平台-编号
@@ -220,5 +227,13 @@ public class Notice {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

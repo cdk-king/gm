@@ -12,7 +12,7 @@ public class Game implements Serializable {
     }
 
     public Game(int id, String gameName, String game_describe, String gameTag, String gameEncryptSign, int state, Date addDatetime, String addUser,
-            int sort, int isDelete) {
+            int sort, String serverApi, int isDelete) {
         //有参构造器
         this.id = id;
         this.gameName = gameName;
@@ -24,6 +24,7 @@ public class Game implements Serializable {
         this.sort = sort;
         this.isDelete = isDelete;
         this.gameEncryptSign = gameEncryptSign;
+        this.serverApi = serverApi;
     }
 
     /**
@@ -67,6 +68,13 @@ public class Game implements Serializable {
      */
 
     private Date addDatetime;
+
+
+    /**
+     * 服务器接口
+     */
+
+    private String serverApi;
 
     /**
      * 游戏添加人
@@ -168,5 +176,13 @@ public class Game implements Serializable {
 
     public void setGameEncryptSign(String gameEncryptSign) {
         this.gameEncryptSign = gameEncryptSign;
+    }
+
+    public String getServerApi() {
+        return serverApi;
+    }
+
+    public void setServerApi(String serverApi) {
+        this.serverApi = serverApi;
     }
 }

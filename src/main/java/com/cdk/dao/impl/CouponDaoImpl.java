@@ -33,7 +33,7 @@ public class CouponDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public String[] generateCDK(Coupon coupon) {
+    public String[] generateCDK(Coupon coupon, String gameId) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         int max_end_sequence = getMaxEnd_sequence(coupon);
@@ -45,11 +45,11 @@ public class CouponDaoImpl {
         long int2Long = CDKUtil.int2Long(start_sequence, salt);
         String fileUrl =
                 "cdk/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
-        String sql = "insert into t_coupon (giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
-                "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl,isDelete) " + " values ('" + coupon.getGiftId() + "','" +
-                coupon.getCouponId() + "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" + coupon.getCoupon_describe() +
-                "','" + coupon.getPlatformId() + "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" + coupon.getAddUser() + "','" +
-                addDatetime + "','" + fileUrl + "',0 )";
+        String sql = "insert into t_coupon (gameId,giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
+                "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl,isDelete) " + " values ('" + gameId + "','" + coupon.getGiftId() +
+                "','" + coupon.getCouponId() + "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" +
+                coupon.getCoupon_describe() + "','" + coupon.getPlatformId() + "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" +
+                coupon.getAddUser() + "','" + addDatetime + "','" + fileUrl + "',0 )";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         String[] resultList = new String[coupon.getCouponCount()];
@@ -171,10 +171,12 @@ public class CouponDaoImpl {
         return temp;
     }
 
-    public Map<String, Object> getCoupon(Coupon coupon, String giftId, String giftName, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getCoupon(Coupon coupon, String giftId, String giftName, String isPage, int pageNo, int pageSize, String strPlatform,
+            String gameId) {
         String sql =
-                "select a.*, b.platform,c.giftName from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and a.platformId = c.platformId where a.platformId IN (" +
-                        strPlatform + ")  and a.isDelete!=1 and  b.isDelete != 1  ";
+                "select a.*, b.platform,c.giftName from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and a.platformId = c.platformId  join t_game as d on d.id = b.gameId and d.isDelete !=1  where d.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and  a.platformId IN (" + strPlatform +
+                        ")  and a.isDelete!=1 and  b.isDelete != 1  ";
         if (coupon.getPlatformId() != 0) {
             sql += " and a.platformId ='" + coupon.getPlatformId() + "' ";
         }

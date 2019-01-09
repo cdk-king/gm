@@ -7,9 +7,10 @@ public class BanIp {
 
     }
 
-    public BanIp(int id, int platformId, int serverId, String ip, String note, String banLong, Date addDatetime, Date banDatetime, String banState,
-            String addUser, int isDelete) {
+    public BanIp(int id, int gameId, int platformId, int serverId, String ip, String note, String banLong, Date addDatetime, Date banDatetime,
+            String banState, String addUser, int isDelete) {
         this.id = id;
+        this.gameId = gameId;
         this.platformId = platformId;
         this.serverId = serverId;
         this.ip = ip;
@@ -27,6 +28,12 @@ public class BanIp {
      */
 
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+
+    private int gameId;
 
     /**
      * 平台-编号
@@ -175,5 +182,13 @@ public class BanIp {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

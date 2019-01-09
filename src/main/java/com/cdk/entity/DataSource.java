@@ -6,8 +6,8 @@ public class DataSource {
 
     }
 
-    public DataSource(int id, int platformId, int dataSource_id, String dataSource_url, String dataSource_name, String dataSource_password,
-            String addDatetime, String addUser, int isDelete) {
+    public DataSource(int id, int gameId, int platformId, int dataSource_id, String dataSource_url, String dataSource_name,
+            String dataSource_password, String addDatetime, String addUser, int isDelete) {
         this.id = id;
         this.platformId = platformId;
         this.dataSource_id = dataSource_id;
@@ -17,12 +17,18 @@ public class DataSource {
         this.addDatetime = addDatetime;
         this.addUser = addUser;
         this.isDelete = isDelete;
+        this.gameId = gameId;
     }
 
     /**
      * 表-编号
      */
     private int id;
+
+    /**
+     * 游戏-编号
+     */
+    private int gameId;
 
     /**
      * 平台-编号
@@ -136,5 +142,13 @@ public class DataSource {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

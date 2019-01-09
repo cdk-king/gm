@@ -54,10 +54,11 @@ public class ApplyPropDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize, String strPlatform) {
+    public Map<String, Object> getApplyProp(ApplyProp applyProp, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
         String sql =
-                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on c.serverId = a.serverId join t_user as d on d.id = a.addUser where a.platformId in (" +
-                        strPlatform + ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
+                "select a.*,b.platform ,c.server,d.name as userName from t_prop_apply as a  join  t_gameplatform as b on a.platformId = b.platformId join t_gameserver as c on c.serverId = a.serverId join t_user as d on d.id = a.addUser join t_game as e on e.id = b.gameId and e.isDelete!=1  where e.id='" +
+                        gameId + "' and a.gameId = '" + gameId + "' and a.platformId in (" + strPlatform +
+                        ") and a.isDelete != 1  and b.isDelete != 1 and c.isDelete != 1 ";
         if (!Objects.equals(applyProp.getPlatformId(), 0)) {
             sql += " and a.platformId ='" + applyProp.getPlatformId() + "' ";
         }
@@ -90,12 +91,13 @@ public class ApplyPropDaoImpl {
     public int addApplyProp(ApplyProp applyProp) {
         String addDatetime = df.format(new Date());
         String sql =
-                "insert into t_prop_apply (platformId,serverId,applyType,propList,releaseTitle,releaseContent,playerType,applyUser,applyReason,confirmState,addUser,addDatetime,isDelete,playerAccountList,playerNameList,playerIdList,moneyList) " +
-                        " values ('" + applyProp.getPlatformId() + "','" + applyProp.getServerId() + "','" + applyProp.getApplyType() + "','" +
-                        applyProp.getPropList() + "','" + applyProp.getReleaseTitle() + "','" + applyProp.getReleaseContent() + "','" +
-                        applyProp.getPlayerType() + "','" + applyProp.getApplyUser() + "','" + applyProp.getApplyReason() + "','0','" +
-                        applyProp.getAddUser() + "','" + addDatetime + "','0','" + applyProp.getPlayerAccountList() + "','" +
-                        applyProp.getPlayerNameList() + "','" + applyProp.getPlayerIdList() + "','" + applyProp.getMoneyList() + "')";
+                "insert into t_prop_apply (gameId,platformId,serverId,applyType,propList,releaseTitle,releaseContent,playerType,applyUser,applyReason,confirmState,addUser,addDatetime,isDelete,playerAccountList,playerNameList,playerIdList,moneyList) " +
+                        " values ('" + applyProp.getGameId() + "','" + applyProp.getPlatformId() + "','" + applyProp.getServerId() + "','" +
+                        applyProp.getApplyType() + "','" + applyProp.getPropList() + "','" + applyProp.getReleaseTitle() + "','" +
+                        applyProp.getReleaseContent() + "','" + applyProp.getPlayerType() + "','" + applyProp.getApplyUser() + "','" +
+                        applyProp.getApplyReason() + "','0','" + applyProp.getAddUser() + "','" + addDatetime + "','0','" +
+                        applyProp.getPlayerAccountList() + "','" + applyProp.getPlayerNameList() + "','" + applyProp.getPlayerIdList() + "','" +
+                        applyProp.getMoneyList() + "')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;
@@ -105,13 +107,14 @@ public class ApplyPropDaoImpl {
         String addDatetime = df.format(new Date());
 
         String sql =
-                "UPDATE t_prop_apply set platformId = '" + applyProp.getPlatformId() + "' ,serverId = '" + applyProp.getServerId() + "',applyType='" +
-                        applyProp.getApplyType() + "',propList='" + applyProp.getPropList() + "',releaseTitle='" + applyProp.getReleaseTitle() +
-                        "',releaseContent='" + applyProp.getReleaseContent() + "',playerType='" + applyProp.getPlayerType() + "',applyUser='" +
-                        applyProp.getApplyUser() + "',applyReason='" + applyProp.getApplyReason() + "',confirmState='0',addUser='" +
-                        applyProp.getAddUser() + "',addDatetime='" + addDatetime + "',isDelete='0',playerAccountList='" +
-                        applyProp.getPlayerAccountList() + "',playerNameList='" + applyProp.getPlayerNameList() + "',playerIdList='" +
-                        applyProp.getPlayerIdList() + "',moneyList='" + applyProp.getMoneyList() + "' where id='" + applyProp.getId() + "';";
+                "UPDATE t_prop_apply set gameId='" + applyProp.getGameId() + "', platformId = '" + applyProp.getPlatformId() + "' ,serverId = '" +
+                        applyProp.getServerId() + "',applyType='" + applyProp.getApplyType() + "',propList='" + applyProp.getPropList() +
+                        "',releaseTitle='" + applyProp.getReleaseTitle() + "',releaseContent='" + applyProp.getReleaseContent() + "',playerType='" +
+                        applyProp.getPlayerType() + "',applyUser='" + applyProp.getApplyUser() + "',applyReason='" + applyProp.getApplyReason() +
+                        "',confirmState='0',addUser='" + applyProp.getAddUser() + "',addDatetime='" + addDatetime +
+                        "',isDelete='0',playerAccountList='" + applyProp.getPlayerAccountList() + "',playerNameList='" +
+                        applyProp.getPlayerNameList() + "',playerIdList='" + applyProp.getPlayerIdList() + "',moneyList='" +
+                        applyProp.getMoneyList() + "' where id='" + applyProp.getId() + "';";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

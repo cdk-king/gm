@@ -21,8 +21,9 @@ public class ChannelServiceImpl {
 
     public Result getAllChannelFormPlatform(Map map) {
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         Result re;
-        Map<String, Object> JsonMap = channelDaoImpl.getAllChannelFormPlatform(platformId);
+        Map<String, Object> JsonMap = channelDaoImpl.getAllChannelFormPlatform(gameId, platformId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "渠道列表为空", "");
         } else {
@@ -32,8 +33,9 @@ public class ChannelServiceImpl {
     }
 
     public Result getAllChannel(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         Result re;
-        Map<String, Object> JsonMap = channelDaoImpl.getAllChannel();
+        Map<String, Object> JsonMap = channelDaoImpl.getAllChannel(gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "渠道列表为空", "");
         } else {
@@ -55,6 +57,7 @@ public class ChannelServiceImpl {
     }
 
     public Result getChannelTable(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String channelId = ((map.get("channelId") != null && map.get("channelId") != "") ? map.get("channelId").toString() : "0");
         String channelTag = ((map.get("channelTag") != null && map.get("channelTag") != "") ? map.get("channelTag").toString() : "");
         String channelName = ((map.get("channelName") != null && map.get("channelName") != "") ? map.get("channelName").toString() : "");
@@ -80,7 +83,7 @@ public class ChannelServiceImpl {
         channel.setChannelTag(channelTag);
         channel.setChannel_describe(channel_describe);
 
-        Map<String, Object> JsonMap = channelDaoImpl.getChannelTable(channel, isPage, pageNo, pageSize);
+        Map<String, Object> JsonMap = channelDaoImpl.getChannelTable(gameId, channel, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(200, "渠道列表为空", "");
         } else {
@@ -90,6 +93,7 @@ public class ChannelServiceImpl {
     }
 
     public Result addChannel(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String channelId = ((map.get("channelId") != null && map.get("channelId") != "") ? map.get("channelId").toString() : "0");
         String channelName = ((map.get("channelName") != null && map.get("channelName") != "") ? map.get("channelName").toString() : "");
         String channelTag = ((map.get("channelTag") != null && map.get("channelTag") != "") ? map.get("channelTag").toString() : "");
@@ -99,6 +103,7 @@ public class ChannelServiceImpl {
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
 
         Channel channel = new Channel();
+        channel.setGameId(Integer.parseInt(gameId));
         channel.setChannelId(Integer.parseInt(channelId));
         channel.setChannelName(channelName);
         channel.setPlatformId(Integer.parseInt(platformId));
@@ -117,6 +122,7 @@ public class ChannelServiceImpl {
     }
 
     public Result editChannel(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String id = ((map.get("id") != null && map.get("id") != "") ? map.get("id").toString() : "0");
         String channelId = ((map.get("channelId") != null && map.get("channelId") != "") ? map.get("channelId").toString() : "0");
         String channelName = ((map.get("channelName") != null && map.get("channelName") != "") ? map.get("channelName").toString() : "");
@@ -126,6 +132,7 @@ public class ChannelServiceImpl {
         String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         Channel channel = new Channel();
+        channel.setGameId(Integer.parseInt(gameId));
         channel.setId(Integer.parseInt(id));
         channel.setChannelId(Integer.parseInt(channelId));
         channel.setChannelName(channelName);

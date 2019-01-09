@@ -21,10 +21,11 @@ public class ChannelDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, Object> getAllChannelFormPlatform(String platformId) {
+    public Map<String, Object> getAllChannelFormPlatform(String gameId, String platformId) {
         String sql =
-                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId where a.platformId ='" +
-                        platformId + "'  and a.isDelete != 1 and b.isDelete != 1  ";
+                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId where  c.id = '" +
+                        gameId + "' and a.gameId = '" + gameId + "' and c.isDelete!=1 and  a.platformId ='" + platformId +
+                        "'  and a.isDelete != 1 and b.isDelete != 1  ";
 
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
@@ -35,9 +36,10 @@ public class ChannelDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getAllChannel() {
+    public Map<String, Object> getAllChannel(String gameId) {
         String sql =
-                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId where a.isDelete != 1 and b.isDelete != 1  ";
+                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId where c.id = '" +
+                        gameId + "' and a.gameId = '" + gameId + "' and c.isDelete!=1 and  a.isDelete != 1 and b.isDelete != 1  ";
 
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
@@ -61,9 +63,10 @@ public class ChannelDaoImpl {
         return JsonMap;
     }
 
-    public Map<String, Object> getChannelTable(Channel channel, String isPage, int pageNo, int pageSize) {
+    public Map<String, Object> getChannelTable(String gameId, Channel channel, String isPage, int pageNo, int pageSize) {
         String sql =
-                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId where a.isDelete != 1 and b.isDelete != 1  ";
+                "select a.* , b.platform  from t_platform_channel as a join  t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId where c.id = '" +
+                        gameId + "' and a.gameId = '" + gameId + "' and c.isDelete!=1 and a.isDelete != 1 and b.isDelete != 1  ";
         if (channel.getChannelName() != "") {
             sql += " and a.channelName LIKE '%" + channel.getChannelName() + "%'";
         }
@@ -108,9 +111,9 @@ public class ChannelDaoImpl {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String addDatetime = df.format(new Date());
         String sql =
-                "insert into  t_platform_channel (platformId,channelId,channelName,channelTag,addUser,addDatetime,channel_describe,isDelete) values ('" +
-                        channel.getPlatformId() + "','" + channel.getChannelId() + "','" + channel.getChannelName() + "','" +
-                        channel.getChannelTag() + "','" + channel.getAddUser() + "','" + addDatetime + "','" + channel.getChannel_describe() +
+                "insert into  t_platform_channel (gameId,platformId,channelId,channelName,channelTag,addUser,addDatetime,channel_describe,isDelete) values ('" +
+                        channel.getGameId() + "','" + channel.getPlatformId() + "','" + channel.getChannelId() + "','" + channel.getChannelName() +
+                        "','" + channel.getChannelTag() + "','" + channel.getAddUser() + "','" + addDatetime + "','" + channel.getChannel_describe() +
                         "','0');";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
@@ -120,10 +123,11 @@ public class ChannelDaoImpl {
     public int editChannel(Channel channel) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String addDatetime = df.format(new Date());
-        String sql = "update t_platform_channel set platformId = '" + channel.getPlatformId() + "',channelId='" + channel.getChannelId() +
-                "',channelName='" + channel.getChannelName() + "',channelTag='" + channel.getChannelTag() + "',addUser='" + channel.getAddUser() +
-                "',addDatetime='" + addDatetime + "',channel_describe='" + channel.getChannel_describe() + "',isDelete='0' where id = '" +
-                channel.getId() + "'";
+        String sql =
+                "update t_platform_channel set gameId='" + channel.getGameId() + "', platformId = '" + channel.getPlatformId() + "',channelId='" +
+                        channel.getChannelId() + "',channelName='" + channel.getChannelName() + "',channelTag='" + channel.getChannelTag() +
+                        "',addUser='" + channel.getAddUser() + "',addDatetime='" + addDatetime + "',channel_describe='" +
+                        channel.getChannel_describe() + "',isDelete='0' where id = '" + channel.getId() + "'";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         return temp;

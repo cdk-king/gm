@@ -21,15 +21,16 @@ public class UploadDaoImpl {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public int fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser, String platformId) {
+    public int fileUpload(MultipartFile file, String newName, String fileSize, String fileDescribe, String addUser, String platformId,
+            String gameId) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         String fileName = file.getOriginalFilename().split("\\.")[0];
         String fileType = file.getOriginalFilename().split("\\.")[1];
         String sql =
-                "insert into t_file (platformId,fileOldName,fileName,fileSize,addUser,addDatetime,downloadTime,fileDescribe,isDelete,fileType) values('" +
-                        platformId + "','" + fileName + "','" + newName + "','" + fileSize + "','" + addUser + "','" + addDatetime + "','0','" +
-                        fileDescribe + "','0','" + fileType + "')";
+                "insert into t_file (gameId,platformId,fileOldName,fileName,fileSize,addUser,addDatetime,downloadTime,fileDescribe,isDelete,fileType) values('" +
+                        gameId + "','" + platformId + "','" + fileName + "','" + newName + "','" + fileSize + "','" + addUser + "','" + addDatetime +
+                        "','0','" + fileDescribe + "','0','" + fileType + "')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
 
@@ -37,9 +38,11 @@ public class UploadDaoImpl {
     }
 
 
-    public Map<String, Object> getFileList(String fileOldName, String fileName, String platformId, String strPlatform, int pageNo, int pageSize) {
-        String sql = "select a.*,b.platform from t_file as a join t_gameplatform as b on a.platformId = b.platformId  where a.platformId in (" +
-                strPlatform + ") and a.isDelete!=1  and b.isDelete!=1 ";
+    public Map<String, Object> getFileList(String fileOldName, String fileName, String gameId, String platformId, String strPlatform, int pageNo,
+            int pageSize) {
+        String sql =
+                "select a.*,b.platform from t_file as a join t_gameplatform as b on a.platformId = b.platformId join t_game as c on c.id = b.gameId and c.isDelete!=1  where c.id = '" +
+                        gameId + "' and a.platformId in (" + strPlatform + ") and a.gameId = '" + gameId + "' and  a.isDelete!=1  and b.isDelete!=1 ";
         if (!Objects.equals(platformId, "0")) {
             sql += " and a.platformId ='" + platformId + "' ";
         }
