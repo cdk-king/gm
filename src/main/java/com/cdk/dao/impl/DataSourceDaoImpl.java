@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class DataSourceDaoImpl {
@@ -28,6 +29,9 @@ public class DataSourceDaoImpl {
                         gameId + "' and a.gameId = '" + gameId + "' and a.isDelete != 1 and b.isDelete != 1  ";
         if (dataSource.getPlatformId() != 0) {
             sql += " and a.platformId = '" + dataSource.getPlatformId() + "'";
+        }
+        if (Objects.equals(dataSource.getDataSource_url(), "")) {
+            sql += " and a.dataSource_url like '%" + dataSource.getDataSource_url() + "%' ";
         }
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);
         int total = list.size();

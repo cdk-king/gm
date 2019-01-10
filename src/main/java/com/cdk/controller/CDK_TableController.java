@@ -49,10 +49,11 @@ public class CDK_TableController {
 
     @CrossOrigin
     @RequestMapping("/api/cdk/exchangeCDK_External")
-    public String exchangeCDK_External(@RequestParam("id") String id, @RequestParam("oid") String oid, @RequestParam("sequence") String sequence,
-            @RequestParam("coupon") String coupon) {
+    public String exchangeCDK_External(@RequestParam("gameId") String gameId, @RequestParam("id") String id, @RequestParam("oid") String oid,
+            @RequestParam("sequence") String sequence, @RequestParam("coupon") String coupon) {
         Map<String, String> map = new HashMap<>();
         map.put("cdk", coupon);
+        map.put("gameId", gameId);
         map.put("couponId", id);
         map.put("sequenceId", sequence);
         map.put("platformId", oid);

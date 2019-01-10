@@ -30,6 +30,7 @@ public class DataSourceServiceImpl {
     public Result getDataSource(Map map) {
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String dataSource_url = (map.get("dataSource_url") != null ? map.get("dataSource_url").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
         String StrPageSize = (map.get("pageSize") != null ? map.get("pageSize").toString() : "5");
@@ -44,6 +45,7 @@ public class DataSourceServiceImpl {
         }
         DataSource dataSource = new DataSource();
         dataSource.setPlatformId(Integer.parseInt(platformId));
+        dataSource.setDataSource_url(dataSource_url);
 
         Map<String, Object> JsonMap = dataSourceDaoImpl.getDataSource(gameId, dataSource, isPage, pageNo, pageSize);
         if (Objects.equals(JsonMap.get("list"), 0)) {
