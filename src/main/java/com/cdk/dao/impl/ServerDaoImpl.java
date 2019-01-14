@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,13 +77,30 @@ public class ServerDaoImpl {
 
     /***
      * 外部通过平台Tag回去服务器列表
-     * @param platform
+     * @param str
      * @return
      */
-    public Map<String, Object> getServerList(String platform) {
+    public Map<String, Object> getServerList(String str) {
+        String gameId = str.split(";")[0].toString();
+        String platform = str.split(";")[1].toString();
+        String channel = str.split(";")[2].toString();
         String sql = "select a.*,b.platform,c.gameName from t_gameserver as a left JOIN \n" +
                 " t_gameplatform  as b on a.platformId = b.platformId and b.isDelete!=1  left JOIN \n" +
-                " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 and a.platformTag = '" + platform + "' ";
+                " t_game as c on b.gameId = c.id and c.isDelete != 1  where a.isDelete != 1 and a.platformTag = '" + platform + "' and a.gameId = '" +
+                gameId + "'";
+        if (Objects.equals(channel, "null")) {
+            //没有渠道参数
+        } else {
+            String channelId = getChannalIdForGameIdForPlatformForChannel(gameId, platform, channel);
+            if (Objects.equals(channelId, "")) {
+                //找不到渠道Id
+                Map<String, Object> JsonMap = new HashMap();
+                JsonMap.put("list", new ArrayList<>());
+                JsonMap.put("total", 0);
+                return JsonMap;
+            }
+            sql += " and  a.channel like '%|" + channelId + "|%' ";
+        }
         sql += " order by a.id ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         int total = list.size();
@@ -88,6 +108,20 @@ public class ServerDaoImpl {
         JsonMap.put("list", list);
         JsonMap.put("total", total);
         return JsonMap;
+    }
+
+    public String getChannalIdForGameIdForPlatformForChannel(String gameId, String platform, String channel) {
+        String sql =
+                "select c.channelId from t_game as a join t_gameplatform  as b on a.id = b.gameId join t_platform_channel as c on c.platformId = b.platformId where a.isDelete!=1 and b.isDelete!=1 and c.isDelete!=1 and a.id='" +
+                        gameId + "' and b.platformTag='" + platform + "' and c.channelTag = '" + channel + "'";
+        sql += " order by a.id ";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        if (list.size() > 0) {
+            return list.get(0).get("channelId").toString();
+        } else {
+            return "";
+        }
+
     }
 
     public int addServer(Server server) {
@@ -216,8 +250,22 @@ public class ServerDaoImpl {
         return list.get(0).get("serverApi").toString();
     }
 
+    private static boolean isSameDate(Date date1, Date date2) {
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        boolean isSameYear = cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+        boolean isSameMonth = isSameYear && cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH);
+        boolean isSameDate = isSameMonth && cal1.get(Calendar.DAY_OF_MONTH) == cal2.get(Calendar.DAY_OF_MONTH);
+        return isSameDate;
+    }
+
     public int[] SynServerList(JSONArray jsonArray, String gameId) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
         int[] temp = null;
         logger.debug("jsonArray.length():" + jsonArray.length());
@@ -233,14 +281,19 @@ public class ServerDaoImpl {
                         "select * from t_gameserver where serverId = '" + jsonObject.get("sid") + "' and  platformId = '" + jsonObject.get("pid") +
                                 "' and gameId = '" + gameId + "'  and isDelete != 1";
                 List<Map<String, Object>> list = jdbcTemplate.queryForList(sqlSelect);
+                Date synData = dfDate.parse(jsonObject.get("time").toString());
+                Date oldData = df.parse(list.get(0).get("openServiceTime").toString());
                 if (list.size() > 0) {
                     //存在，更新
                     String sqlUpdate = "UPDATE t_gameserver as a SET a.server='" + jsonObject.get("sname") + "',a.server_describe = '" +
                             jsonObject.get("sname") + "'," + "a.platformId='" + jsonObject.get("pid") + "',a.platformTag='" +
-                            jsonObject.get("pname") + "',a.openServiceTime='" + jsonObject.get("time") + "',a.addDatetime='" + addDatetime + "'," +
-                            "a.serverIp='" + jsonObject.get("domain") + "',a.area='" + jsonObject.get("area") + "' ,a.serverPort = '" +
-                            jsonObject.get("port") + "',a.addUser = 'cdk' where a.serverId =" + jsonObject.get("sid") + " and  a.platformId = '" +
-                            jsonObject.get("pid") + "' and a.gameId = '" + gameId + "' ";
+                            jsonObject.get("pname") + "',";
+                    if (!isSameDate(synData, oldData)) {
+                        sqlUpdate += "a.openServiceTime='" + jsonObject.get("time") + "',";
+                    }
+                    sqlUpdate += "a.addDatetime='" + addDatetime + "'," + "a.serverIp='" + jsonObject.get("domain") + "',a.area='" +
+                            jsonObject.get("area") + "' ,a.serverPort = '" + jsonObject.get("port") + "',a.addUser = 'cdk' where a.serverId =" +
+                            jsonObject.get("sid") + " and  a.platformId = '" + jsonObject.get("pid") + "' and a.gameId = '" + gameId + "' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增
@@ -253,6 +306,8 @@ public class ServerDaoImpl {
                     jdbcTemplate.update(sqlInsert);
                 }
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }

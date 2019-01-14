@@ -49,8 +49,8 @@ public class ServerServiceImpl extends ApiHandeler {
         });
     }
 
-    public Map<String, Object> getServerListCache(String platform) {
-        return serverListCache.getUnchecked(platform);
+    public Map<String, Object> getServerListCache(String str) {
+        return serverListCache.getUnchecked(str);
     }
 
     public Result getAllServer(Map map) {
@@ -378,11 +378,14 @@ public class ServerServiceImpl extends ApiHandeler {
      * @param
      * @return
      */
-    public String getServerList(String platform) {
+    public String getServerList(String str) {
+        String gameId = str.split(";")[0].toString();
+        String platform = str.split(";")[1].toString();
+        String channel = str.split(";")[2].toString();
         int def = 0;
         //        String channel = (map.get("channel") != null ? map.get("channel").toString() : "");
         //        String while_id = (map.get("while_id") != null ? map.get("while_id").toString() : "");
-        Map<String, Object> JsonMap = getServerListCache(platform);
+        Map<String, Object> JsonMap = getServerListCache(str);
 
         List<Map<String, Object>> list = (List<Map<String, Object>>) JsonMap.get("list");
         int len = list.size();

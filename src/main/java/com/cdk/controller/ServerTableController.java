@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -175,8 +177,17 @@ public class ServerTableController {
     @Transactional
     @RequestMapping("/api/server/getServerList")
     public String getServerList(HttpServletRequest request) {
-        String platform = request.getParameter("platform");
-        String re = serverServiceImpl.getServerList(platform);
+        String channel = (request.getParameter("channel") != null ? request.getParameter("channel") : "null");
+        String gameId = (request.getParameter("gameId") != null ? request.getParameter("gameId") : "null");
+        String platform = (request.getParameter("platform") != null ? request.getParameter("platform") : "null");
+        try {
+            channel = URLDecoder.decode(channel, "UTF-8");
+            platform = URLDecoder.decode(platform, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String re = serverServiceImpl.getServerList(gameId + ";" + platform + ";" + channel);
         return re;
     }
 }

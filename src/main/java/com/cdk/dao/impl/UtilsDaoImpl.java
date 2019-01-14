@@ -24,7 +24,7 @@ public class UtilsDaoImpl {
         String sql = "SELECT e.id,e.name,c.role,a.rightName,a.rightTag from t_right as a join\n" +
                 "t_role_rights as b on a.id = b.rightId join t_role as c on c.id = b.roleId " +
                 "join t_user_roles as d on c.id = d.roleId join t_user as e on d.userId = e.id " +
-                "where e.isDelete != 1 and c.isDelete!=1 and a.isDelete!=1  and  e.id = " + user.getId();
+                "where e.isDelete != 1 and  b.isDelete!=1 and d.isDelete!=1 and c.isDelete!=1 and a.isDelete!=1  and  e.id = " + user.getId();
 
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
@@ -41,7 +41,7 @@ public class UtilsDaoImpl {
     public List<Map<String, Object>> getUserAllRole(User user) {
         String sql =
                 "SELECT a.id,c.name,a.role from t_role as a " + "join t_user_roles as b on a.id = b.roleId join t_user as c on b.userId = c.id " +
-                        "where a.isDelete != 1 and c.isDelete!=1 and  c.id = " + user.getId();
+                        "where a.isDelete != 1 and b.isDelete!=1 and c.isDelete!=1 and  c.id = " + user.getId();
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
@@ -67,7 +67,8 @@ public class UtilsDaoImpl {
     public List<Map<String, Object>> getPlatformListForUserIdAndGameId(User user, Game game) {
         String sql = "SELECT d.platformId, d.platform   from t_user as a \n" + "join t_user_roles as b on a.id = b.userId \n" +
                 "join t_role as c on b.roleId = c.id \n" + "join t_gameplatform as d on c.id = d.roleId  \n" +
-                "where a.isDelete != 1 and c.isDelete!=1 and d.isDelete!=1 and  a.id ='" + user.getId() + "' and d.gameId ='" + game.getId() + "' ";
+                "where a.isDelete != 1 and b.isDelete!=1 and c.isDelete!=1 and d.isDelete!=1 and  a.id ='" + user.getId() + "' and d.gameId ='" +
+                game.getId() + "' ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
     }
