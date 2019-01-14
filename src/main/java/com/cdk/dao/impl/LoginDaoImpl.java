@@ -20,7 +20,7 @@ public class LoginDaoImpl {
     private JdbcTemplate jdbcTemplate;
 
     public List<Map<String, Object>> login(VueLoginInfoVo loginInfoVo) {
-        String sql = "select * from t_user where name = '" + loginInfoVo.getUsername() + "' order by id desc limit 1";
+        String sql = "select * from t_user where account = '" + loginInfoVo.getUsername() + "' and isDelete!=1  order by id desc limit 1";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;
