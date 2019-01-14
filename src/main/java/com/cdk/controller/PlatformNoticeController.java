@@ -76,8 +76,9 @@ public class PlatformNoticeController {
 
     @CrossOrigin
     @RequestMapping("/api/notice/getLastNotice")
-    public String getLastNotice(@RequestParam("oid") String oid) {
-        Result re = platformNoticeServiceImpl.getLastNotice(oid);
+    public String getLastNotice(@RequestParam("oid") String oid, @RequestParam("gameId") String gameId) {
+        String str = gameId + ";" + oid;
+        Result re = platformNoticeServiceImpl.getLastNotice(str);
         JSONObject jsonObject = JSONObject.fromObject(re.getData());
         return jsonObject.toString();
     }

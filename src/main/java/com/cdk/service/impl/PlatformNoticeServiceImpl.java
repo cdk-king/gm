@@ -360,9 +360,9 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
         return re;
     }
 
-    public Result getLastNotice(String platformId) {
+    public Result getLastNotice(String str) {
         Result re;
-        Map<String, String> lastGonggao = noticeCache.getUnchecked(platformId);
+        Map<String, String> lastGonggao = noticeCache.getUnchecked(str);
         if (lastGonggao.size() != 0) {
             re = new Result(200, "最新的公告获取成功", lastGonggao);
         } else {

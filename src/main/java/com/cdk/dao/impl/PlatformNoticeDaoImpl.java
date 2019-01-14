@@ -135,12 +135,15 @@ public class PlatformNoticeDaoImpl {
 
     /**
      * 获取最新的公告
-     * @param strPlatform
+     * @param str
      * @return
      */
-    public Map<String, String> getLastNotice(String strPlatform) {
-        String sql = "select * from t_platform_notice where isDelete!=1 and  sendState = 1 and  platformId=" + strPlatform +
-                " order by startDatetime DESC LIMIT 1";
+    public Map<String, String> getLastNotice(String str) {
+        String gameId = str.split(";")[0];
+        String platformId = str.split(";")[1];
+        String sql =
+                "select * from t_platform_notice where isDelete!=1 and  sendState = 1 and  gameId = '" + gameId + "' and platformId=" + platformId +
+                        " order by startDatetime DESC LIMIT 1";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         Map<String, String> JsonMap = new HashMap();
