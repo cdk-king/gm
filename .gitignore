@@ -3,3 +3,5 @@
 target
 log/*
 
+dist
+/src/main/resources/static/dist
