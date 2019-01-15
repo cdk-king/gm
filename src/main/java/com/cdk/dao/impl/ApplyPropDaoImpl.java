@@ -65,6 +65,9 @@ public class ApplyPropDaoImpl {
         if (!Objects.equals(applyProp.getServerId(), "") && !Objects.equals(applyProp.getServerId(), 0)) {
             sql += " and a.serverId = '" + applyProp.getServerId() + "' ";
         }
+        if (!Objects.equals(applyProp.getReleaseContent(), "")) {
+            sql += " and a.releaseContent like '%" + applyProp.getReleaseContent() + "%' ";
+        }
         sql += " order by id desc ";
         logger.debug("sql：" + sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);

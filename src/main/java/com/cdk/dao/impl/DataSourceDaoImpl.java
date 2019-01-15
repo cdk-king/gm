@@ -30,7 +30,7 @@ public class DataSourceDaoImpl {
         if (dataSource.getPlatformId() != 0) {
             sql += " and a.platformId = '" + dataSource.getPlatformId() + "'";
         }
-        if (Objects.equals(dataSource.getDataSource_url(), "")) {
+        if (!Objects.equals(dataSource.getDataSource_url(), "")) {
             sql += " and a.dataSource_url like '%" + dataSource.getDataSource_url() + "%' ";
         }
         List<Map<String, Object>> list = this.jdbcTemplate.queryForList(sql);

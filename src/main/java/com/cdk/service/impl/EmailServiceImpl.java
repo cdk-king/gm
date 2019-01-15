@@ -31,7 +31,7 @@ public class EmailServiceImpl extends ApiHandeler {
     public Result getEmail(Map map) {
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
-        String emailContent = (map.get("noticeContent") != null ? map.get("noticeContent").toString() : "");
+        String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");

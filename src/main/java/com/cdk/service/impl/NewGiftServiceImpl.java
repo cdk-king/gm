@@ -52,7 +52,7 @@ public class NewGiftServiceImpl {
     public Result getGiftUpload(Map map) {
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String giftName = map.get("giftName").toString();
-        String giftTag = map.get("giftTag").toString();
+        String gift_describe = map.get("gift_describe").toString();
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -63,7 +63,7 @@ public class NewGiftServiceImpl {
         Result re;
         NewGift newGift = new NewGift();
         newGift.setGiftName(giftName);
-        newGift.setGiftTag(giftTag);
+        newGift.setGiftDescribe(gift_describe);
         try {
             pageNo = Integer.parseInt(StrPageNo);
             pageSize = Integer.parseInt(StrPageSize);

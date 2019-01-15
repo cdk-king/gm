@@ -145,6 +145,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String strPlatformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
         String strServerId = ((map.get("serverId") != null && map.get("serverId") != "") ? map.get("serverId").toString() : "0");
+        String releaseContent = ((map.get("releaseContent") != null && map.get("releaseContent") != "") ? map.get("releaseContent").toString() : "");
         String strPlatform = (map.get("strPlatform") != null ? map.get("strPlatform").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
         String StrPageNo = (map.get("pageNo") != null ? map.get("pageNo").toString() : "1");
@@ -158,7 +159,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         ApplyProp applyProp = new ApplyProp();
         applyProp.setPlatformId(platformId);
         applyProp.setServerId(serverId);
-
+        applyProp.setReleaseContent(releaseContent);
 
         Map<String, Object> JsonMap = applyPropDaoImpl.getApplyProp(applyProp, isPage, pageNo, pageSize, strPlatform, gameId);
         if (Objects.equals(JsonMap.get("list"), 0)) {

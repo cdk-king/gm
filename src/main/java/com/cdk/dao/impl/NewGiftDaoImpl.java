@@ -66,8 +66,8 @@ public class NewGiftDaoImpl {
             sql += " and a.giftName LIKE '%" + newGift.getGiftName() + "%'";
         }
 
-        if (newGift.getGiftTag() != "") {
-            sql += " and a.giftTag LIKE '%" + newGift.getGiftTag() + "%'";
+        if (newGift.getGiftDescribe() != "") {
+            sql += " and a.giftDescribe LIKE '%" + newGift.getGiftDescribe() + "%'";
         }
 
         logger.debug("sql：" + sql);
