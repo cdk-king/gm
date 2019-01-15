@@ -103,4 +103,21 @@ public class NewPropServiceImpl {
         }
         return re;
     }
+
+    public Result deleteAllPropForPlatform(Map map) {
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+
+        Result re;
+        int temp = newPropDaoImpl.deleteAllPropForPlatform(gameId, platformId);
+
+        if (temp > 0) {
+            logger.debug("道具批量删除成功");
+            re = new Result(200, "道具批量删除成功", temp);
+        } else {
+            logger.debug("道具批量删除失败");
+            re = new Result(400, "道具批量删除失败", temp);
+        }
+        return re;
+    }
 }

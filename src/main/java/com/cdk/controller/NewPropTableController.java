@@ -43,4 +43,11 @@ public class NewPropTableController {
         Result re = newPropServiceImpl.getPropTypeList(map);
         return re;
     }
+
+    @CrossOrigin
+    @RequestMapping("/api/newProp/deleteAllPropForPlatform")
+    public Result deleteAllPropForPlatform(@RequestBody Map map) {
+        Result re = newPropServiceImpl.deleteAllPropForPlatform(map);
+        return re;
+    }
 }

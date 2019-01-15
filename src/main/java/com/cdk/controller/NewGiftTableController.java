@@ -38,4 +38,11 @@ public class NewGiftTableController {
         Result re = newGiftServiceImpl.getGiftUpload(map);
         return re;
     }
+
+    @CrossOrigin
+    @RequestMapping("/api/newGift/deleteAllGiftForPlatform")
+    public Result deleteAllGiftForPlatform(@RequestBody Map map) {
+        Result re = newGiftServiceImpl.deleteAllGiftForPlatform(map);
+        return re;
+    }
 }

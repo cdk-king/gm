@@ -83,4 +83,12 @@ public class NewGiftDaoImpl {
         JsonMap.put("total", total);
         return JsonMap;
     }
+
+    public int deleteAllGiftForPlatform(String gameId, String platformId) {
+
+        String sql = "DELETE from  t_gift_upload where gameId = '" + gameId + "' and platformId = '" + platformId + "';";
+        logger.debug("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
 }

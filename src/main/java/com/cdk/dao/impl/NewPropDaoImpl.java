@@ -101,4 +101,12 @@ public class NewPropDaoImpl {
         JsonMap.put("total", total);
         return JsonMap;
     }
+
+    public int deleteAllPropForPlatform(String gameId, String platformId) {
+
+        String sql = "DELETE from  t_prop_upload where gameId = '" + gameId + "' and platformId = '" + platformId + "';";
+        logger.debug("sql：" + sql);
+        int temp = jdbcTemplate.update(sql);
+        return temp;
+    }
 }

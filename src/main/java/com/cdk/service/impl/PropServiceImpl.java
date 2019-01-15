@@ -172,14 +172,14 @@ public class PropServiceImpl {
         int[] temp = propDaoImpl.deleteAllProp(ObjectArry);
 
         if (temp.length != 0) {
-            logger.debug("游戏批量删除成功");
-            re = new Result(200, "游戏批量删除成功", null);
+            logger.debug("道具批量删除成功");
+            re = new Result(200, "道具批量删除成功", null);
         } else if (ObjectArry.length == 0) {
             logger.debug("无任何删除操作");
             re = new Result(400, "无任何删除操作", null);
         } else {
-            logger.debug("游戏批量删除失败");
-            re = new Result(400, "游戏批量删除失败", null);
+            logger.debug("道具批量删除失败");
+            re = new Result(400, "道具批量删除失败", null);
         }
         return re;
     }
