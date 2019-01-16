@@ -40,6 +40,7 @@ public class ApplyGiftCDK_ServiceImpl {
         String couponTitle = (map.get("couponTitle") != null ? map.get("couponTitle").toString() : "");
         String coupon_describe = (map.get("coupon_describe") != null ? map.get("coupon_describe").toString() : "");
         String couponCount = (map.get("couponCount") != null ? map.get("couponCount").toString() : "");
+        String addUser = (map.get("addUser") != null ? map.get("addUser").toString() : "");
         String isCommonCDK = ((map.get("isCommonCDK") != null && map.get("isCommonCDK") != "") ? map.get("isCommonCDK").toString() : "0");
 
         Coupon coupon = new Coupon();
@@ -49,6 +50,7 @@ public class ApplyGiftCDK_ServiceImpl {
         coupon.setCoupon_describe(coupon_describe);
         coupon.setCouponCount(Integer.parseInt(couponCount));
         coupon.setIsCommonCDK(Integer.parseInt(isCommonCDK));
+        coupon.setAddUser(addUser);
 
         int type = 0;
         String expectedSign = getSign(type, coupon.getGiftId(), coupon.getPlatformId(), coupon.getCouponCount());
