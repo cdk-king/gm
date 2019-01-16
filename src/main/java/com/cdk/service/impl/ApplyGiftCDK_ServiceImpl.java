@@ -40,6 +40,7 @@ public class ApplyGiftCDK_ServiceImpl {
         String couponTitle = (map.get("couponTitle") != null ? map.get("couponTitle").toString() : "");
         String coupon_describe = (map.get("coupon_describe") != null ? map.get("coupon_describe").toString() : "");
         String couponCount = (map.get("couponCount") != null ? map.get("couponCount").toString() : "");
+        String isCommonCDK = ((map.get("isCommonCDK") != null && map.get("isCommonCDK") != "") ? map.get("isCommonCDK").toString() : "0");
 
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
@@ -47,6 +48,7 @@ public class ApplyGiftCDK_ServiceImpl {
         coupon.setCouponTitle(couponTitle);
         coupon.setCoupon_describe(coupon_describe);
         coupon.setCouponCount(Integer.parseInt(couponCount));
+        coupon.setIsCommonCDK(Integer.parseInt(isCommonCDK));
 
         int type = 0;
         String expectedSign = getSign(type, coupon.getGiftId(), coupon.getPlatformId(), coupon.getCouponCount());
@@ -146,6 +148,7 @@ public class ApplyGiftCDK_ServiceImpl {
     public Result getCoupon(Map map) {
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformId = ((map.get("platformId") != null && map.get("platformId") != "") ? map.get("platformId").toString() : "0");
+        String isCommonCDK = ((map.get("isCommonCDK") != null && map.get("isCommonCDK") != "") ? map.get("isCommonCDK").toString() : "");
         String giftId = ((map.get("giftId") != null && map.get("giftId") != "") ? map.get("giftId").toString() : "");
         String giftName = ((map.get("giftName") != null && map.get("giftName") != "") ? map.get("giftName").toString() : "");
         String isPage = (map.get("isPage") != null ? map.get("isPage").toString() : "");
@@ -163,7 +166,7 @@ public class ApplyGiftCDK_ServiceImpl {
         Result re;
         Coupon coupon = new Coupon();
         coupon.setPlatformId(Integer.parseInt(platformId));
-        Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, giftId, giftName, isPage, pageNo, pageSize, strPlatform, gameId);
+        Map<String, Object> JsonMap = couponDaoImpl.getCoupon(coupon, giftId, giftName, isPage, pageNo, pageSize, strPlatform, gameId, isCommonCDK);
         if (Objects.equals(JsonMap.get("list"), 0)) {
             re = new Result(400, "列表获取失败", "");
         } else {

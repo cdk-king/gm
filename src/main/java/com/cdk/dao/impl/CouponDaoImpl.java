@@ -46,16 +46,16 @@ public class CouponDaoImpl {
         String fileUrl =
                 "cdk/平台" + coupon.getPlatformId() + "_礼包id" + coupon.getGiftId() + "_个数" + coupon.getCouponCount() + "_序号" + start_sequence + ".txt";
         String sql = "insert into t_coupon (gameId,giftId,couponId,couponCount,couponTitle,coupon_describe,platformId," +
-                "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl,isDelete) " + " values ('" + gameId + "','" + coupon.getGiftId() +
-                "','" + coupon.getCouponId() + "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" +
+                "start_sequence,end_sequence,salt,addUser,addDatetime,fileUrl,isDelete,isCommonCDK) " + " values ('" + gameId + "','" +
+                coupon.getGiftId() + "','" + coupon.getCouponId() + "','" + coupon.getCouponCount() + "','" + coupon.getCouponTitle() + "','" +
                 coupon.getCoupon_describe() + "','" + coupon.getPlatformId() + "','" + start_sequence + "','" + end_sequence + "','" + salt + "','" +
-                coupon.getAddUser() + "','" + addDatetime + "','" + fileUrl + "',0 )";
+                coupon.getAddUser() + "','" + addDatetime + "','" + fileUrl + "',0 ,'" + coupon.getIsCommonCDK() + "')";
         logger.debug("sql：" + sql);
         int temp = jdbcTemplate.update(sql);
         String[] resultList = new String[coupon.getCouponCount()];
         if (temp > 0) {
             resultList = generateCDK(start_sequence, salt, int2Long, coupon.getCouponCount(), coupon.getCouponId(), coupon.getPlatformId(),
-                    coupon.getGiftId());
+                    coupon.getGiftId(), coupon.getIsCommonCDK());
         } else {
             return null;
         }
@@ -82,7 +82,7 @@ public class CouponDaoImpl {
         return maxEnd_sequence;
     }
 
-    public String[] generateCDK(int start_sequence, int salt, long int2Long, int count, int CouponId, int platformId, int giftId) {
+    public String[] generateCDK(int start_sequence, int salt, long int2Long, int count, int CouponId, int platformId, int giftId, int isCommonCDK) {
         File f1 = new File("cdk");
         if (!f1.exists()) {
             //生成所有目录
@@ -102,7 +102,8 @@ public class CouponDaoImpl {
             FileWriter writer = new FileWriter(file);
             // 创建 FileReader 对象
             for (int i = 0; i < count; i++) {
-                String s = generate(0 + giftId * 1, start_sequence + i, salt);
+                String s = "";
+                s = generate(0 + giftId * 1, start_sequence + i, salt);
                 //writer.append(s);
                 writer.write(s);
                 results = results + s + ";";
@@ -172,7 +173,7 @@ public class CouponDaoImpl {
     }
 
     public Map<String, Object> getCoupon(Coupon coupon, String giftId, String giftName, String isPage, int pageNo, int pageSize, String strPlatform,
-            String gameId) {
+            String gameId, String isCommonCDK) {
         String sql =
                 "select a.*, b.platform,c.giftName from t_coupon as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and a.platformId = c.platformId  join t_game as d on d.id = b.gameId and d.isDelete !=1  where d.id='" +
                         gameId + "' and a.gameId = '" + gameId + "' and  a.platformId IN (" + strPlatform +
@@ -185,6 +186,9 @@ public class CouponDaoImpl {
         }
         if (!Objects.equals(giftName, "")) {
             sql += " and c.giftName like '%" + giftName + "%'";
+        }
+        if (!Objects.equals(isCommonCDK, "")) {
+            sql += " and a.isCommonCDK = '" + isCommonCDK + "'";
         }
         sql += " order by id desc ";
         logger.debug("sql：" + sql);

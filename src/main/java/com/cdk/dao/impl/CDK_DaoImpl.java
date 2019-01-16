@@ -23,10 +23,11 @@ public class CDK_DaoImpl {
     @Autowired
     public CouponDaoImpl couponDaoImpl;
 
-    public Map<String, Object> getCDK(CDK cdk, String giftName, String isPage, int pageNo, int pageSize, String strPlatform, String gameId) {
+    public Map<String, Object> getCDK(CDK cdk, String giftName, String isPage, int pageNo, int pageSize, String strPlatform, String gameId,
+            String isCommonCDK) {
 
         String sql =
-                "select a.* , b.platform ,c.giftName from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and c.platformId = a.platformId join t_game as d on d.id = b.gameId and d.isDelete!=1 where d.id='" +
+                "select a.* , b.platform ,c.giftName,e.isCommonCDK from t_cdk as a join  t_gameplatform as b on a.platformId = b.platformId join t_gift_upload as c on c.giftId = a.couponId and c.platformId = a.platformId join t_game as d on d.id = b.gameId and d.isDelete!=1 join t_coupon as e on a.couponId = e.couponId and a.gameId = e.gameId and a.platformId = e.platformId and e.end_sequence >= a.sequenceId and e.start_sequence <= a.sequenceId and e.isDelete!=1 where d.id='" +
                         gameId + "' and a.gameId ='" + gameId + "' and a.platformId IN (" + strPlatform + ")  and b.isDelete != 1 ";
         if (cdk.getPlatformId() != 0) {
             sql += " and a.platformId ='" + cdk.getPlatformId() + "' ";
@@ -40,6 +41,9 @@ public class CDK_DaoImpl {
         }
         if (!Objects.equals(giftName, "")) {
             sql += " and c.giftName LIKE '%" + giftName + "%'";
+        }
+        if (!Objects.equals(isCommonCDK, "")) {
+            sql += " and e.isCommonCDK = '" + isCommonCDK + "'";
         }
         if (cdk.getCouponId() != 0) {
             sql += " and a.couponId LIKE '%" + cdk.getCouponId() + "%'";
@@ -72,8 +76,10 @@ public class CDK_DaoImpl {
 
 
     public List<Map<String, Object>> checkIsUsedCDK(int couponId, int sequenceId, String cdk, int platformId, String gameId) {
-        String sql = "select * from t_cdk where gameId = '" + gameId + "' and couponId = '" + couponId + "' and sequenceId = '" + sequenceId +
-                "' and cdk = '" + cdk + "' and platformId = '" + platformId + "' ";
+        String sql =
+                "select a.* from t_cdk as a join t_coupon as b on a.couponId = b.couponId and a.gameId = b.gameId and a.platformId = b.platformId and b.end_sequence >= a.sequenceId and b.start_sequence <= a.sequenceId and b.isDelete!=1 where a.gameId = '" +
+                        gameId + "' and a.couponId = '" + couponId + "' and a.sequenceId = '" + sequenceId + "' and a.cdk = '" + cdk +
+                        "' and a.platformId = '" + platformId + "' and b.isCommonCDK= 0";
         logger.debug(sql);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         return list;

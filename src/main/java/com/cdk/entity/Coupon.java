@@ -9,7 +9,7 @@ public class Coupon {
     }
 
     public Coupon(int id, int platformId, int couponId, int giftId, String couponTitle, String coupon_describe, int couponCount, Date startDatetime,
-            Date endDatetime, String addUser, Date addDatetime, int isDelete) {
+            Date endDatetime, String addUser, Date addDatetime, int isDelete, int isCommonCDK) {
         this.id = id;
         this.platformId = platformId;
         this.couponId = couponId;
@@ -22,7 +22,7 @@ public class Coupon {
         this.addUser = addUser;
         this.addDatetime = addDatetime;
         this.isDelete = isDelete;
-
+        this.isCommonCDK = isCommonCDK;
     }
 
     /**
@@ -96,6 +96,18 @@ public class Coupon {
      */
 
     private int isDelete;
+
+    /**
+     * 是否通用
+     */
+
+    private int isCommonCDK;
+
+    /**
+     * 通用激活码
+     */
+
+    private String commonCDK;
 
     public int getId() {
         return id;
@@ -191,5 +203,13 @@ public class Coupon {
 
     public void setIsDelete(int isDelete) {
         this.isDelete = isDelete;
+    }
+
+    public int getIsCommonCDK() {
+        return isCommonCDK;
+    }
+
+    public void setIsCommonCDK(int isCommonCDK) {
+        this.isCommonCDK = isCommonCDK;
     }
 }
