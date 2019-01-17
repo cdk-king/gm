@@ -300,6 +300,7 @@ public class ServerServiceImpl extends ApiHandeler {
     public Result SynServerList(Map map) {
 
         String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
+        String addUser = ((map.get("addUser") != null && map.get("addUser") != "") ? map.get("addUser").toString() : "");
 
         String param = "";
         String url = serverDaoImpl.getGameServerApi(gameId);
@@ -318,7 +319,7 @@ public class ServerServiceImpl extends ApiHandeler {
                 e.printStackTrace();
                 re = new Result(400, "服务器列表数据解析失败", data);
             }
-            int[] temp = serverDaoImpl.SynServerList(jsonArray, gameId);
+            int[] temp = serverDaoImpl.SynServerList(jsonArray, gameId, addUser);
 
             re = new Result(200, "服务器列表获取成功", data);
             serverListCache.invalidateAll();

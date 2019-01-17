@@ -20,7 +20,7 @@ public class PlatformServiceImpl {
     public PlatformDaoImpl platformDaoImpl;
 
     public Result getAllPlatform(Map map) {
-        String gameId = (map.get("gameId") != null ? map.get("gameId").toString() : "0");
+        String gameId = ((map.get("gameId") != null && map.get("gameId") != "") ? map.get("gameId").toString() : "0");
         String platformName = (map.get("platform") != null ? map.get("platform").toString() : "");
         String platformTag = (map.get("platformTag") != null ? map.get("platformTag").toString() : "");
         String platform_describe = (map.get("platform_describe") != null ? map.get("platform_describe").toString() : "");

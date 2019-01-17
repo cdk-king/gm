@@ -263,7 +263,7 @@ public class ServerDaoImpl {
         return isSameDate;
     }
 
-    public int[] SynServerList(JSONArray jsonArray, String gameId) {
+    public int[] SynServerList(JSONArray jsonArray, String gameId, String addUser) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         SimpleDateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String addDatetime = df.format(new Date());// new Date()为获取当前系统时间，也可使用当前时间戳
@@ -292,8 +292,9 @@ public class ServerDaoImpl {
                         sqlUpdate += "a.openServiceTime='" + jsonObject.get("time") + "',";
                     }
                     sqlUpdate += "a.addDatetime='" + addDatetime + "'," + "a.serverIp='" + jsonObject.get("domain") + "',a.area='" +
-                            jsonObject.get("area") + "' ,a.serverPort = '" + jsonObject.get("port") + "',a.addUser = 'cdk' where a.serverId =" +
-                            jsonObject.get("sid") + " and  a.platformId = '" + jsonObject.get("pid") + "' and a.gameId = '" + gameId + "' ";
+                            jsonObject.get("area") + "' ,a.serverPort = '" + jsonObject.get("port") + "',a.addUser = '" + addUser +
+                            "' where a.serverId =" + jsonObject.get("sid") + " and  a.platformId = '" + jsonObject.get("pid") + "' and a.gameId = '" +
+                            gameId + "' ";
                     jdbcTemplate.update(sqlUpdate);
                 } else {
                     //没有，新增
@@ -301,8 +302,8 @@ public class ServerDaoImpl {
                             "insert into t_gameserver (serverId,server,serverIp,serverPort,platformId,platformTag,server_describe,state,sort,addUser,addDatetime,isDelete,isDefault,area,openServiceTime,channel,gameId) values ('" +
                                     jsonObject.get("sid") + "', '" + jsonObject.get("sname") + "','" + jsonObject.get("domain") + "','" +
                                     jsonObject.get("port") + "','" + jsonObject.get("pid") + "','" + jsonObject.get("pname") + "','" +
-                                    jsonObject.get("sname") + "','0','0','cdk','" + addDatetime + "',0,'0','" + jsonObject.get("area") + "','" +
-                                    jsonObject.get("time") + "','','" + gameId + "' ) ; ";
+                                    jsonObject.get("sname") + "','0','0','" + addUser + "','" + addDatetime + "',0,'0','" + jsonObject.get("area") +
+                                    "','" + jsonObject.get("time") + "','','" + gameId + "' ) ; ";
                     jdbcTemplate.update(sqlInsert);
                 }
             } catch (JSONException e) {
