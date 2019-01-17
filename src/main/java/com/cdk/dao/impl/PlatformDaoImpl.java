@@ -28,7 +28,7 @@ public class PlatformDaoImpl {
                 "  t_game  as b on a.gameId = b.id and b.isDelete!=1  left JOIN" +
                 "  t_role as c on a.roleId = c.id and c.isDelete != 1  where a.isDelete != 1 ";
 
-        if (gameId != "") {
+        if (Objects.equals(gameId, "")) {
             sql += " and a.gameId = '" + gameId + "'";
         }
         if (platform.getPlatform() != "") {

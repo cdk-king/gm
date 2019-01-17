@@ -176,7 +176,7 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         String emailContent = (map.get("emailContent") != null ? map.get("emailContent").toString() : "");
         String emailTitle = (map.get("emailTitle") != null ? map.get("emailTitle").toString() : "");
         String[] ServerList = strServerList.split("-");
-
+        Long time = Math.abs(new Date().getTime() / 1000L);
         try {
             //中文转码
             emailTitle = URLEncoder.encode(emailTitle, "UTF-8");
@@ -197,16 +197,24 @@ public class PlatformEmailServiceImpl extends ApiHandeler {
         for (int i = 0; i < ServerList.length; i++) {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
             apiUrl = getApiUrl(serverUrl.get(i));
+
+            if (Objects.equals(apiUrl, "")) {
+                int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error, time);
+                return new Result(400, "操作失败,接口不存在", "");
+            }
+
             url = apiUrl + "/UpdatePlayer/Mail";
             String data = httpRequestUtil.sendGet(url, param + "&WorldID=" + ServerList[i]);
-            JSONObject jb = JSONObject.fromObject(data);
-            Map resultMap = (Map) jb;
-            if (!Objects.equals(resultMap.get("Result"), 1)) {
+            if (Objects.equals(data, "")) {
                 error += ServerList[i];
+            } else {
+                JSONObject jb = JSONObject.fromObject(data);
+                Map resultMap = (Map) jb;
+                if (!Objects.equals(resultMap.get("Result"), 1)) {
+                    error += ServerList[i];
+                }
             }
         }
-        logger.debug("error:" + error);
-        Long time = Math.abs(new Date().getTime() / 1000L);
         if (!Objects.equals(error.length(), 0)) {
             int temp = platformEmailDaoImpl.sendPlatformEmail(platformEmail, 2, error, time);
             re = new Result(400, "全服邮件发送失败", error);

@@ -188,13 +188,18 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             if (!Objects.equals(serverArray[i], "")) {
                 param += "&WorldID=" + serverArray[i];
             } else {
+                int temp = sendNoticeDaoImpl.sendNoticeToError(id);
                 return new Result(400, "广播发送失败，无效的服务器", "");
             }
             apiUrl = getApiUrl(urlList.get(i));
+            if (Objects.equals(apiUrl, "")) {
+                int temp = sendNoticeDaoImpl.sendNoticeToError(id);
+                return new Result(400, "操作失败,接口不存在", "");
+            }
             url = apiUrl + "/notice/sendBroadcast";
             String data = httpRequestUtil.sendGet(url, param);
             //返回结果判空处理
-            if (!Objects.equals(data, null)) {
+            if (!Objects.equals(data, "") && !Objects.equals(data, null)) {
                 JSONObject jo = JSONObject.parseObject(data);
                 if (data.indexOf("Result") > 0) {
                     data = jo.getString("Result");
@@ -220,9 +225,7 @@ public class SendNoticeServiceImpl extends ApiHandeler {
             error = error.substring(0, error.length() - 1);
 
         }
-        logger.debug("error:" + error);
         Result re;
-
         if (error.length() > 0 || datas.length() == 0) {
             int temp = sendNoticeDaoImpl.sendNoticeToError(id);
             logger.debug("广播发送失败");

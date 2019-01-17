@@ -69,12 +69,13 @@ public class SendNoticeController {
         String sendType = (map.get("sendType") != null ? map.get("sendType").toString() : "");
         int timeInterval = Integer.parseInt(strTimeInterval);
         int cycleTime = Integer.parseInt(strCycleTime);
+        Result re = new Result(200, "广播已发送", "");
         if (Objects.equals(sendType, "1")) {
-            Result re = sendNoticeServiceImpl.sendNotice(map);
+            re = sendNoticeServiceImpl.sendNotice(map);
         } else if (Objects.equals(sendType, "2")) {
             sendNotice(timeInterval, cycleTime, map);
         }
-        return null;
+        return re;
     }
 
     public void sendNotice(int timeInterval, int cycleTime, Map map) {

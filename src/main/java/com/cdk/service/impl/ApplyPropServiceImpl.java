@@ -114,6 +114,7 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         apiUrl = getApiUrl(gameId, platformId, serverId);
 
         if (Objects.equals(apiUrl, "")) {
+            int temp = applyPropDaoImpl.changeApplyState(id, 2);
             return new Result(400, "操作失败,接口不存在", "");
         }
 
@@ -122,13 +123,16 @@ public class ApplyPropServiceImpl extends ApiHandeler {
         logger.debug(param);
         HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
         String data = httpRequestUtil.sendGet(url, param);
-
+        if (Objects.equals(data, "")) {
+            int temp = applyPropDaoImpl.changeApplyState(id, 2);
+            return new Result(400, "邮件发送失败", "");
+        }
         Result re;
         JSONObject jb = JSONObject.fromObject(data);
         Map resultMap = (Map) jb;
         if (!Objects.equals(resultMap.get("Result"), 1)) {
             int temp = applyPropDaoImpl.changeApplyState(id, 2);
-            re = new Result(400, "道具申请邮件发送失败", data);
+            return new Result(400, "道具申请邮件发送失败", data);
         } else {
             int temp = applyPropDaoImpl.changeApplyState(id, 1);
             if (temp > 0) {

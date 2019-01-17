@@ -260,20 +260,29 @@ public class EmailServiceImpl extends ApiHandeler {
         }
 
         url = apiUrl + "/UpdatePlayer/Mail";
-        String data = httpRequestUtil.sendGet(url, param);
-
-        JSONObject jb = JSONObject.fromObject(data);
-        Map resultMap = (Map) jb;
-        if (!Objects.equals(resultMap.get("Result"), 1)) {
-            int temp = emailDaoImpl.sendEmail(email, 2);
-            re = new Result(400, "邮件发送失败", data);
-        } else {
-            int temp = emailDaoImpl.sendEmail(email, 1);
-            if (temp > 0) {
-                re = new Result(200, "邮件发送成功", data);
-            } else {
-                re = new Result(200, "邮件发送成功，信息录入失败", data);
+        String data = "";
+        try {
+            data = httpRequestUtil.sendGet(url, param);
+            if (Objects.equals(data, "")) {
+                int temp = emailDaoImpl.sendEmail(email, 2);
+                return new Result(400, "邮件发送失败", "");
             }
+            logger.debug("data:" + data);
+            JSONObject jb = JSONObject.fromObject(data);
+            Map resultMap = (Map) jb;
+            if (!Objects.equals(resultMap.get("Result"), 1)) {
+                int temp = emailDaoImpl.sendEmail(email, 2);
+                return new Result(400, "邮件发送失败", data);
+            } else {
+                int temp = emailDaoImpl.sendEmail(email, 1);
+                if (temp > 0) {
+                    re = new Result(200, "邮件发送成功", data);
+                } else {
+                    re = new Result(200, "邮件发送成功，信息录入失败", data);
+                }
+            }
+        } catch (Exception e) {
+            return new Result(400, "邮件发送失败", "");
         }
         return re;
     }

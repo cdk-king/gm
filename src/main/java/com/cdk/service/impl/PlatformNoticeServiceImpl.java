@@ -289,14 +289,21 @@ public class PlatformNoticeServiceImpl extends ApiHandeler {
             if (!Objects.equals(serverArray[i], "")) {
                 param += "&WorldID=" + serverArray[i];
             } else {
+                int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
                 return new Result(400, "公告发送失败，无效的服务器", "");
             }
             apiUrl = getApiUrl(urlList.get(i));
+
+            if (Objects.equals(apiUrl, "")) {
+                int temp = platformNoticeDaoImpl.changeNoticeSendState(strId, error, 2, time);
+                return new Result(400, "操作失败,接口不存在", "");
+            }
+
             url = apiUrl + "/notice/sendAllNotice";
             logger.debug(url);
             String data = httpRequestUtil.sendGet(url, param);
             //返回结果判空处理
-            if (!Objects.equals(data, null)) {
+            if (!Objects.equals(data, "") && !Objects.equals(data, null)) {
                 JSONObject jo = JSONObject.parseObject(data);
                 if (data.indexOf("Result") > 0) {
                     data = jo.getString("Result");
